@@ -95,7 +95,7 @@ class QuitPage extends Component {
     background: {
      flex: 1,
      flexDirection: 'column',
-     backgroundColor: '#587987',
+     backgroundColor: '#8D9E98',
      alignItems: "center",
      justifyContent: "center",
      paddingHorizontal: 10
@@ -120,12 +120,13 @@ class QuitPage extends Component {
     },
 
     button: {
-      backgroundColor: "#af1d32",
+      backgroundColor: "#28454B",
       alignItems: "center",
+      borderRadius: 15,
       padding: 10,
       width: 180,
       borderWidth: 7,
-      borderColor: '#587987'
+      borderColor: '#8D9E98'
     },
 
   });

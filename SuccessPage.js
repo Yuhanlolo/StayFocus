@@ -56,7 +56,7 @@ class SuccessPage extends Component {
     background: {
      flex: 1,
      flexDirection: 'column',
-     backgroundColor: '#587987',
+     backgroundColor: '#8D9E98',
      alignItems: "center",
      justifyContent: "center",
      paddingHorizontal: 10

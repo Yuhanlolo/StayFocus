@@ -110,7 +110,7 @@ class HomePage extends Component {
     background: {
      flex: 1,
      flexDirection: 'column',
-     backgroundColor: '#587987',
+     backgroundColor: '#8D9E98',
      justifyContent: "center",
      paddingHorizontal: 80
     },
@@ -133,8 +133,9 @@ class HomePage extends Component {
 
     button: {
      top: 105,
+     borderRadius: 15,
      alignItems: "center",
-     backgroundColor: "#af1d32",
+     backgroundColor: "#28454B",
      padding: 10
     },
 

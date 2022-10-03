@@ -130,7 +130,7 @@ class TimerPage extends Component {
       return (
         <View style = {styles.background}>
         <TouchableOpacity
-          style={{backgroundColor: "#af1d32", width: 100, height:32, alignItems: "center",}}
+          style={{backgroundColor: "#28454B", width: 100, height:32, borderRadius: 15, alignItems: "center",}}
           onPress={() => {
           this.setState({pause:false});
           this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, });
@@ -158,7 +158,7 @@ class TimerPage extends Component {
     background: {
      flex: 1,
      flexDirection: 'column',
-     backgroundColor: '#587987',
+     backgroundColor: '#8D9E98',
      justifyContent: "center",
      paddingHorizontal: 10
     },
@@ -175,8 +175,9 @@ class TimerPage extends Component {
 
     button: {
      height: 530,
+     borderRadius: 15,
      alignItems: "center",
-     backgroundColor: "#587987",
+     backgroundColor: "#8D9E98",
      padding: 10
     },
 
