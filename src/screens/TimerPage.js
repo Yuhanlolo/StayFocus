@@ -5,11 +5,21 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { createStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton } from "../components/CustomButton";
 
-function TimerPage({ route, navigation }) {
-  const styles = useStyles();
+function Timer(props) {
+  const [seconds, setSeconds] = useState(props.seconds);
 
-  const { minutes, plan } = route.params;
-  const [seconds, setSeconds] = useState(minutes * 60);
+  useEffect(() => {
+    if (!props.paused) {
+      const interval = setInterval(() => {
+        setSeconds((seconds) => seconds - 1);
+        if (seconds <= 0) {
+          clearInterval(interval);
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [props.paused]);
 
   const timeString = (secs, showHour) => {
     const [h, m, s] = secondsToHHMMSS(secs);
@@ -19,22 +29,26 @@ function TimerPage({ route, navigation }) {
     return showHour ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`;
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSeconds((seconds) => seconds - 1);
-      if (seconds <= 0) {
-        clearInterval(interval);
-      }
-    }, 1000);
+  return (
+    <Text style={props.style}>
+      {timeString(seconds, props.seconds >= 60 * 60)}
+    </Text>
+  );
+}
 
-    return () => clearInterval(interval);
-  }, []);
+function TimerPage({ route, navigation }) {
+  const styles = useStyles();
+
+  const { minutes, plan } = route.params;
+  const [paused, setPaused] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
-      <CustomButton style={styles.button}>Give up</CustomButton>
+      <CustomButton style={styles.button} onPress={() => setPaused(true)}>
+        Give up
+      </CustomButton>
       <Text style={styles.plan}>{plan}</Text>
-      <Text style={styles.timer}>{timeString(seconds, minutes > 60)}</Text>
+      <Timer seconds={minutes * 60} paused={paused} style={styles.timer} />
     </SafeAreaView>
   );
 }
