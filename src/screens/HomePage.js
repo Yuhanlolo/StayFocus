@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { createStyles, ThemeContext } from "../helpers";
 import { SelectButton } from "../components/SelectButton";
+import { CustomButton } from "../components/CustomButton";
 
 //Home page to set focusing time
 const times = [
@@ -38,15 +39,16 @@ function HomePage({ navigation }) {
           style={styles.prompt.select}
         />
       </View>
-      <Pressable
-        android_ripple={{ color: theme.primaryColor, borderless: true }}
-        style={styles.button}
+      <CustomButton
         onPress={() =>
-          navigation.navigate("TimerPage", { timeSet: times[index].value })
+          navigation.navigate("TimerPage", {
+            minutes: times[index].value,
+            plan: plan || "Doing stuff",
+          })
         }
       >
-        <Text style={styles.button.text}>Start</Text>
-      </Pressable>
+        Start
+      </CustomButton>
     </SafeAreaView>
   );
 }
@@ -82,18 +84,6 @@ const useStyles = createStyles((theme) => ({
         fontSize: theme.fontSizes.lg,
         fontWeight: "700",
       },
-    },
-  },
-  button: {
-    width: 120,
-    padding: theme.padding,
-    backgroundColor: theme.secondaryColor,
-    borderRadius: 12,
-    text: {
-      color: theme.primaryColor,
-      fontSize: theme.fontSizes.lg,
-      fontWeight: "500",
-      textAlign: "center",
     },
   },
 }));
