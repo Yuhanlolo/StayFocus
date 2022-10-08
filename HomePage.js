@@ -9,6 +9,7 @@ import {
   useColorScheme,
   View,
   Button,
+  TextInput,
   TouchableOpacity
 } from 'react-native';
 
@@ -27,7 +28,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import TimerPage from './TimerPage';
 
-const type=['               25min', '               50min', '               75min','               100min'];
+const type=['25min', '50min', '75min','100min'];
 
 //Home page to set focusing time
 
@@ -51,11 +52,10 @@ class HomePage extends Component {
             this.setState({
                 areaIndex: index
             });
-            let time = value.substr(15);
+            let time = value.substr(0);
             time = time.replace('m','');
             time = time.replace('i','');
             time = time.replace('n','');
-            this.setState({temp: time});
             let num = Number(time);
             this.setState({minSet: num});
         }
@@ -69,8 +69,8 @@ class HomePage extends Component {
         _adjustType = () => {
             return({
                 justifyContent: "center",
-                top: 295,
-                left: 140
+                top: '44%',
+                left: '34%'
             })
         }
 
@@ -79,10 +79,21 @@ class HomePage extends Component {
       return (
         <View style = {styles.background}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
+        <TextInput
+          style={{ top: '23%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'50%'}}
+          onChangeText={(text) => {
+            text = text.replace('m','');
+            text = text.replace('i','');
+            text = text.replace('n','');
+            let num = Number(text);
+            this.setState({minSet: num});
+          }}
+          //value = ' Input focusing time (e.g., 35mins)'
+        />
         <ModalDropdown
                 options={type}    //下拉内容数组
                 style={styles.selectIcon}    //按钮样式
-                dropdownStyle={[styles.selectIcon,{height:32*type.length, width: 130}]}    //下拉框样式
+                dropdownStyle={[styles.selectIcon,{height:32*type.length, width: '32%'}]}    //下拉框样式
                 dropdownTextStyle={styles.dropdownText}    //下拉框文本样式
                 renderSeparator={this._separator}    //下拉框文本分隔样式
                 adjustFrame={this._adjustType}    //下拉框位置
@@ -110,20 +121,16 @@ class HomePage extends Component {
     background: {
      flex: 1,
      flexDirection: 'column',
+     alignItems: "center",
      backgroundColor: '#8D9E98',
-     justifyContent: "center",
      paddingHorizontal: 80
     },
 
     textStyle: {
      fontFamily: 'Cochin',
      fontSize: 23,
-     position:  'absolute',
-     top: 170,
-     left: 80,
+     top: '15%',
      color: 'white',
-     textAlign: 'center',
-     textAlignVertical: 'center',
     },
 
     dropdownText: {
@@ -132,24 +139,28 @@ class HomePage extends Component {
     },
 
     button: {
-     top: 105,
-     borderRadius: 15,
-     alignItems: "center",
+     top: '60%',
      backgroundColor: "#28454B",
+     borderRadius: 15,
+     width: '60%',
      padding: 10
     },
 
     buttonText: {
      color: 'white',
-     fontFamily: 'Cochin'
+     fontFamily: 'Cochin',
+     left: '38%'
     },
 
     selectIcon: {
+    top:'35%',
     color:'white',
-    position:  'absolute',
-    top: 270,
-    left: 138,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: '#28454B',
+    borderWidth: 3
     },
+
 
   });
 

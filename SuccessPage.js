@@ -58,15 +58,12 @@ class SuccessPage extends Component {
      flexDirection: 'column',
      backgroundColor: '#8D9E98',
      alignItems: "center",
-     justifyContent: "center",
      paddingHorizontal: 10
     },
 
     baseText: {
       fontSize: 25,
-      position:'absolute',
-      top:240,
-      left:30,
+      top: '40%',
       fontFamily: "Cochin",
       color: 'white',
       textAlign: 'center',

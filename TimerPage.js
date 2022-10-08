@@ -18,6 +18,7 @@ import {
   View,
   Button,
   Picker,
+  DeviceEventEmitter,
   TouchableOpacity
 } from 'react-native';
 
@@ -53,6 +54,7 @@ class TimerPage extends Component {
         sec_1: 0,
         sec_2: 0,
         pause: true,
+        temp: 0,
       };
       }
 
@@ -61,6 +63,7 @@ class TimerPage extends Component {
       timeSetter()
       {
         let {timeSet, second_1, second_2, tag} = this.props.route.params;
+        this.setState({temp: timeSet});
         this.setState({pause: true});
         this.setState({min_1:Math.floor(timeSet/10)});
         this.setState({min_2:timeSet-Math.floor(timeSet/10)*10});
@@ -92,7 +95,6 @@ class TimerPage extends Component {
                           this.setState({sec_1:this.state.sec_1});
                           this.setState({min_2:this.state.min_2});
                           this.setState({min_1:this.state.min_1});
-                          this.interval && clearInterval(this.interval);
                         }
                         else
                         {
@@ -124,30 +126,31 @@ class TimerPage extends Component {
      componentDidMount()
      {
        this.timeSetter();
+       this.timeCounter();
+       this.listener = DeviceEventEmitter.addListener('changeResult', () => {
+             this.setState({ pause: true });
+           });
      }
 
     render() {
       return (
         <View style = {styles.background}>
+        <View>
         <TouchableOpacity
-          style={{backgroundColor: "#28454B", width: 100, height:32, borderRadius: 15, alignItems: "center",}}
+          style={{backgroundColor: "#28454B", top: '10%', width: '25%', height:'22%', borderRadius: 15, alignItems: "center",}}
           onPress={() => {
           this.setState({pause:false});
           this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, });
 }}>
           <Text style={{fontFamily: "Cochin", color: 'white', textAlign: 'center', textAlignVertical: 'center', fontSize: 18,}}>{'Give up'}</Text>
          </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-          this.timeSetter();
-          this.timeCounter();}}>
-          <Text>{' '}</Text>
-         </TouchableOpacity>
+         </View>
+         <View style = {styles.timer}>
           <Text style = {styles.baseText}>
-          <Text style = {styles.timeText}>{this.state.min_1}{this.state.min_2}{':'}{this.state.sec_1}{this.state.sec_2}{'\n'}{'\n'}{'\n'}</Text>
-          <Text>{this.state.text_1}{'\n'}{this.state.text_2}</Text>
+          <Text style = {styles.timeText}>{this.state.min_1}{this.state.min_2}{':'}{this.state.sec_1}{this.state.sec_2}</Text>
+
           </Text>
+        </View>
         </View>
       );
     }
@@ -159,31 +162,20 @@ class TimerPage extends Component {
      flex: 1,
      flexDirection: 'column',
      backgroundColor: '#8D9E98',
-     justifyContent: "center",
      paddingHorizontal: 10
     },
 
-    baseText: {
-      position:'absolute',
-      top:200,
-      left:120,
-      fontFamily: "Cochin",
-      color: 'white',
-      textAlign: 'center',
-      textAlignVertical: 'center',
+    timer: {
+     alignItems: "center",
     },
 
-    button: {
-     height: 530,
-     borderRadius: 15,
-     alignItems: "center",
-     backgroundColor: "#8D9E98",
-     padding: 10
+    baseText: {
+      top: '45%',
+      fontFamily: "Cochin",
+      color: 'white',
     },
 
     timeText: {
-      position: 'absolute',
-      top:150,
       fontSize: 60,
     },
   });

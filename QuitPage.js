@@ -18,6 +18,7 @@ import {
   View,
   Button,
   Picker,
+  DeviceEventEmitter,
   TouchableOpacity
 } from 'react-native';
 
@@ -49,6 +50,14 @@ class QuitPage extends Component {
       };
       }
 
+//Make timeSetter method execute without binding to events
+
+     componentDidMount()
+     {
+       this.timeSetter();
+     }
+
+
 //Save the time before user want to give up
 
      timeSetter()
@@ -61,16 +70,11 @@ class QuitPage extends Component {
         this.setState({sec_two: secBreak_2,});
      };
 
-//Make timeSetter method execute without binding to events
-
-     componentDidMount()
-     {
-       this.timeSetter();
-     }
 
     render() {
       return (
         <View style = {styles.background}>
+        <Text style = {styles.baseText}>{this.state.text_1}{'\n'}{this.state.text_2}</Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
@@ -81,10 +85,11 @@ class QuitPage extends Component {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-          this.props.navigation.navigate('TimerPage',{timeSet: this.state.min, second_1: this.state.sec_one, second_2: this.state.sec_two, tag: true});}}>
+           DeviceEventEmitter.emit('changeResult');
+           this.props.navigation.navigate('TimerPage',{timeSet: this.state.min, second_1: this.state.sec_one, second_2: this.state.sec_two, tag: true});
+          }}>
           <Text style = {styles.buttonText}>{'Keep on focusing'}</Text>
          </TouchableOpacity>
-         <Text style = {styles.baseText}>{this.state.text_1}{'\n'}{this.state.text_2}</Text>
         </View>
       );
     }
@@ -97,15 +102,12 @@ class QuitPage extends Component {
      flexDirection: 'column',
      backgroundColor: '#8D9E98',
      alignItems: "center",
-     justifyContent: "center",
      paddingHorizontal: 10
     },
 
     baseText: {
       fontSize: 25,
-      position:'absolute',
-      top:150,
-      left:120,
+      top: '20%',
       fontFamily: "Cochin",
       color: 'white',
       textAlign: 'center',
@@ -122,9 +124,10 @@ class QuitPage extends Component {
     button: {
       backgroundColor: "#28454B",
       alignItems: "center",
+      top: '35%',
       borderRadius: 15,
       padding: 10,
-      width: 180,
+      width: '40%',
       borderWidth: 7,
       borderColor: '#8D9E98'
     },
