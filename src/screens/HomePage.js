@@ -1,145 +1,101 @@
-import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useContext, useState } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import ModalDropdown from "react-native-modal-dropdown";
-
-const type = [
-    "               25min",
-    "               50min",
-    "               75min",
-    "               100min",
-];
+import { createStyles, ThemeContext } from "../helpers";
+import { SelectButton } from "../components/SelectButton";
 
 //Home page to set focusing time
+const times = [
+  { label: "25 minutes", value: 25 },
+  { label: "50 minutes", value: 50 },
+  { label: "75 minutes", value: 75 },
+  { label: "100 minutes", value: 100 },
+];
 
-class HomePage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            text: "I want to keep focus for",
-            minSet: 0,
-            areaIndex: "0",
-            typeShow: false,
-            flag: false,
-            temp: "0",
-        };
-    }
+function HomePage({ navigation }) {
+  const styles = useStyles();
+  const theme = useContext(ThemeContext);
+  const [plan, setPlan] = useState("");
+  const [index, setIndex] = useState(0);
 
-    _selectType = (index, value) => {
-        console.log(index + "--" + value);
-        this.setState({
-            areaIndex: index,
-        });
-        let time = value.substr(15);
-        time = time.replace("m", "");
-        time = time.replace("i", "");
-        time = time.replace("n", "");
-        this.setState({ temp: time });
-        let num = Number(time);
-        this.setState({ minSet: num });
-    };
-
-    _separator = () => {
-        return <Text style={{ height: 0 }}></Text>;
-    };
-
-    _adjustType = () => {
-        return {
-            justifyContent: "center",
-            top: 295,
-            left: 140,
-        };
-    };
-
-    render() {
-        return (
-            <View style={styles.background}>
-                <Text style={styles.textStyle}>{this.state.text}</Text>
-                <ModalDropdown
-                    options={type} //下拉内容数组
-                    style={styles.selectIcon} //按钮样式
-                    dropdownStyle={[
-                        styles.selectIcon,
-                        { height: 32 * type.length, width: 130 },
-                    ]} //下拉框样式
-                    dropdownTextStyle={styles.dropdownText} //下拉框文本样式
-                    renderSeparator={this._separator} //下拉框文本分隔样式
-                    adjustFrame={this._adjustType} //下拉框位置
-                    dropdownTextHighlightStyle={{
-                        color: "rgba(42, 130, 228, 1)",
-                    }} //下拉框选中颜色
-                    onDropdownWillShow={() => {
-                        this.setState({ typeShow: true });
-                    }} //按下按钮显示按钮时触发
-                    onDropdownWillHide={() =>
-                        this.setState({ typeShow: false })
-                    } //当下拉按钮通过触摸按钮隐藏时触发
-                    onSelect={this._selectType} //当选项行与选定的index 和 value 接触时触发
-                    defaultValue={"Press me to select time!"}
-                />
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {
-                        this.setState({ flag: true });
-                        this.props.navigation.navigate("TimerPage", {
-                            timeSet: this.state.minSet,
-                            second_1: 0,
-                            second_2: 0,
-                            tag: true,
-                        });
-                    }}
-                >
-                    <Text style={styles.buttonText}>{"Start"}</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    }
+  return (
+    <SafeAreaView style={styles.container}>
+      <TextInput
+        style={styles.input}
+        onChangeText={setPlan}
+        placeholder={"My plan is..."}
+        placeholderTextColor={theme.muteColor}
+        multiline={true}
+        value={plan}
+      />
+      <View style={styles.prompt}>
+        <Text style={styles.prompt.text}>I want to focus for</Text>
+        <SelectButton
+          data={times}
+          index={index}
+          onChange={setIndex}
+          style={styles.prompt.select}
+        />
+      </View>
+      <Pressable
+        android_ripple={{ color: theme.primaryColor, borderless: true }}
+        style={styles.button}
+        onPress={() =>
+          navigation.navigate("TimerPage", { timeSet: times[index].value })
+        }
+      >
+        <Text style={styles.button.text}>Start</Text>
+      </Pressable>
+    </SafeAreaView>
+  );
 }
 
-const styles = StyleSheet.create({
-    background: {
-        flex: 1,
-        flexDirection: "column",
-        backgroundColor: "#8D9E98",
-        justifyContent: "center",
-        paddingHorizontal: 80,
+const useStyles = createStyles((theme) => ({
+  container: {
+    alignItems: "center",
+    height: "100%",
+    padding: theme.padding,
+    backgroundColor: theme.primaryColor,
+  },
+  input: {
+    height: "50%",
+    width: "100%",
+    color: theme.secondaryColor,
+    fontWeight: "700",
+    fontSize: theme.fontSizes.huge,
+    textAlign: "center",
+    overflowWrap: "break-word",
+  },
+  prompt: {
+    marginBottom: 40,
+    text: {
+      color: theme.secondaryColor,
+      fontSize: theme.fontSizes.lg,
+      textAlign: "center",
     },
-
-    textStyle: {
-        fontFamily: "sans-serif",
-        fontSize: 23,
-        position: "absolute",
-        top: 170,
-        left: 80,
-        color: "white",
-        textAlign: "center",
-        textAlignVertical: "center",
+    select: {
+      backgroundColor: "transparent",
+      color: theme.secondaryColor,
+      text: {
+        color: theme.secondaryColor,
+        fontSize: theme.fontSizes.lg,
+        fontWeight: "700",
+      },
     },
-
-    dropdownText: {
-        fontFamily: "sans-serif",
-        color: "black",
+  },
+  button: {
+    width: 120,
+    padding: theme.padding,
+    backgroundColor: theme.secondaryColor,
+    borderRadius: 12,
+    text: {
+      color: theme.primaryColor,
+      fontSize: theme.fontSizes.lg,
+      fontWeight: "500",
+      textAlign: "center",
     },
-
-    button: {
-        top: 105,
-        borderRadius: 15,
-        alignItems: "center",
-        backgroundColor: "#28454B",
-        padding: 10,
-    },
-
-    buttonText: {
-        color: "white",
-        fontFamily: "sans-serif",
-    },
-
-    selectIcon: {
-        color: "white",
-        position: "absolute",
-        top: 270,
-        left: 138,
-    },
-});
+  },
+}));
 
 export default HomePage;
