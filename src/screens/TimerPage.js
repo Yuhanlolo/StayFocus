@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Modal, TextInput, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -7,13 +7,17 @@ import { CustomButton } from "../components/CustomButton";
 
 function Timer(props) {
   const [seconds, setSeconds] = useState(props.seconds);
+  const secondsRef = useRef(null);
+  secondsRef.current = seconds;
 
   useEffect(() => {
     if (!props.paused) {
       const interval = setInterval(() => {
-        setSeconds((seconds) => seconds - 1);
-        if (seconds <= 0) {
+        if (secondsRef.current <= 0) {
           clearInterval(interval);
+          typeof props.onComplete === "function" ? props.onComplete() : null;
+        } else {
+          setSeconds((seconds) => seconds - 1);
         }
       }, 1000);
 
@@ -64,6 +68,7 @@ function TimerPage({ route, navigation }) {
         seconds={initialSeconds}
         paused={paused}
         onPaused={(left) => setElapsedSeconds(initialSeconds - left)}
+        onComplete={() => navigation.navigate("SuccessPage")}
         style={styles.timer}
       />
       <Modal
