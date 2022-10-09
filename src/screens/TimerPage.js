@@ -68,7 +68,9 @@ function TimerPage({ route, navigation }) {
         seconds={initialSeconds}
         paused={paused}
         onPaused={(left) => setElapsedSeconds(initialSeconds - left)}
-        onComplete={() => navigation.navigate("SuccessPage")}
+        onComplete={() =>
+          navigation.navigate("SuccessPage", { minutes: minutes, plan: plan })
+        }
         style={styles.timer}
       />
       <Modal
@@ -171,6 +173,7 @@ const useStyles = createStyles((theme) => ({
   modalInput: {
     marginBottom: 15,
     padding: 12,
+    borderRadius: 12,
     backgroundColor: theme.primaryColor,
     fontSize: theme.fontSizes.md,
     textAlignVertical: "top",
