@@ -9,11 +9,11 @@ export function CustomButton(props) {
 
   return (
     <Pressable
-      android_ripple={{ color: theme.primaryColor, borderless: true }}
+      android_ripple={{ color: props.style?.rippleColor, borderless: true }}
       {...props}
-      style={{ ...defaultStyles, ...props.style }}
+      style={[defaultStyles, props.style]}
     >
-      <Text style={{ ...defaultStyles.text, ...props.style?.text }}>
+      <Text style={[defaultStyles.text, props.style?.text]}>
         {props.children}
       </Text>
     </Pressable>
@@ -28,7 +28,6 @@ const useStyles = createStyles((theme) => ({
   borderRadius: 12,
   text: {
     color: theme.primaryColor,
-    fontSize: theme.fontSizes.lg,
     fontWeight: "500",
     textAlign: "center",
   },

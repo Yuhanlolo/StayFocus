@@ -40,6 +40,7 @@ function HomePage({ navigation }) {
         />
       </View>
       <CustomButton
+        style={styles.button}
         onPress={() =>
           navigation.navigate("TimerPage", {
             minutes: times[index].value,
@@ -64,6 +65,8 @@ const useStyles = createStyles((theme) => ({
     height: "50%",
     width: "100%",
     color: theme.secondaryColor,
+    fontFamily: "serif",
+    fontStyle: "italic",
     fontWeight: "700",
     fontSize: theme.fontSizes.huge,
     textAlign: "center",
@@ -84,6 +87,12 @@ const useStyles = createStyles((theme) => ({
         fontSize: theme.fontSizes.lg,
         fontWeight: "700",
       },
+    },
+  },
+  button: {
+    rippleColor: theme.primaryColor,
+    text: {
+      fontSize: theme.fontSizes.lg,
     },
   },
 }));
