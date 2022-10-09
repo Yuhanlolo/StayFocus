@@ -80,7 +80,7 @@ class HomePage extends Component {
         <View style = {styles.background}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         <TextInput
-          style={{ top: '23%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'50%'}}
+          style={{ top: '23%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'50%', borderRadius: 10,}}
           onChangeText={(text) => {
             text = text.replace('m','');
             text = text.replace('i','');
@@ -93,7 +93,7 @@ class HomePage extends Component {
         <ModalDropdown
                 options={type}    //下拉内容数组
                 style={styles.selectIcon}    //按钮样式
-                dropdownStyle={[styles.selectIcon,{height:32*type.length, width: '32%'}]}    //下拉框样式
+                dropdownStyle={[styles.selectIcon,{height:32*type.length, width: '32%',}]}    //下拉框样式
                 dropdownTextStyle={styles.dropdownText}    //下拉框文本样式
                 renderSeparator={this._separator}    //下拉框文本分隔样式
                 adjustFrame={this._adjustType}    //下拉框位置
@@ -158,7 +158,8 @@ class HomePage extends Component {
     justifyContent: "center",
     alignItems: "center",
     borderColor: '#28454B',
-    borderWidth: 3
+    borderWidth: 3,
+    borderRadius: 10,
     },
 
 
