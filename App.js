@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomePage from './HomePage';
-import TimerPage from './TimerPage';
-import QuitPage from './QuitPage';
-import SuccessPage from './SuccessPage';
-import LoginPage from './LoginPage';
-import SignUpPage from './SignUpPage';
+import HomePage from './Pages/HomePage';
+import TimerPage from './Pages/TimerPage';
+import QuitPage from './Pages/QuitPage';
+import SuccessPage from './Pages/SuccessPage';
+import LoginPage from './Pages/LoginPage';
+import SignUpPage from './Pages/SignUpPage';
 
 const Stack = createNativeStackNavigator();
 
