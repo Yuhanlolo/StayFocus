@@ -3,8 +3,8 @@ import React, { createContext } from "react";
 const theme = {
   primaryColor: "#19534f",
   secondaryColor: "#f1fec9",
-  muteColor: "rgba(241, 254, 201, 0.5)",
-  padding: 12,
+  muteColor: "#f1fec980",
+  padding: 16,
   fontSizes: {
     xs: 12,
     sm: 14,
