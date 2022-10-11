@@ -4,6 +4,7 @@ const theme = {
   primaryColor: "#19534f",
   secondaryColor: "#f1fec9",
   muteColor: "#f1fec980",
+  textColor: "#e0e3e2",
   padding: 16,
   fontSizes: {
     xs: 12,

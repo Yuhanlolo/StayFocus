@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import { Modal, TextInput, Text, View } from "react-native";
+import { TextInput, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { createStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton } from "../components/CustomButton";
+import { CustomModal } from "../components/CustomModal";
 
 function Timer(props) {
   const [seconds, setSeconds] = useState(props.seconds);
@@ -73,42 +74,33 @@ function TimerPage({ route, navigation }) {
         }
         style={styles.timer}
       />
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modal}
-        onRequestClose={toggleTimerAndModal}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalHead}>Give up now?</Text>
-            <Text style={styles.modalText}>
-              You have been focusing for {Math.ceil(elapsedSeconds / 60)}{" "}
-              minutes. Why do you want to use your phone now?
-            </Text>
-            <TextInput
-              style={styles.modalInput}
-              onChangeText={setInput}
-              value={input}
-              multiline={true}
-            />
-            <View style={styles.modalButtons}>
-              <CustomButton
-                onPress={toggleTimerAndModal}
-                style={styles.modalButton}
-              >
-                Give up
-              </CustomButton>
-              <CustomButton
-                onPress={toggleTimerAndModal}
-                style={styles.modalButton}
-              >
-                Continue
-              </CustomButton>
-            </View>
-          </View>
+      <CustomModal visible={modal} onRequestClose={toggleTimerAndModal}>
+        <Text style={styles.modalHead}>Give up now?</Text>
+        <Text style={styles.modalText}>
+          You have been focusing for {Math.ceil(elapsedSeconds / 60)} minutes.
+          Why do you want to use your phone now?
+        </Text>
+        <TextInput
+          style={styles.modalInput}
+          onChangeText={setInput}
+          value={input}
+          multiline={true}
+        />
+        <View style={styles.modalButtons}>
+          <CustomButton
+            onPress={toggleTimerAndModal}
+            style={styles.modalButton}
+          >
+            Give up
+          </CustomButton>
+          <CustomButton
+            onPress={toggleTimerAndModal}
+            style={styles.modalButton}
+          >
+            Continue
+          </CustomButton>
         </View>
-      </Modal>
+      </CustomModal>
     </SafeAreaView>
   );
 }
@@ -144,48 +136,33 @@ const useStyles = createStyles((theme) => ({
     fontSize: theme.fontSizes.huge * 2.25,
     textAlign: "center",
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.32)",
-  },
-  modalView: {
-    margin: 24,
-    backgroundColor: "#006a65",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "stretch",
-    elevation: 3,
-  },
   modalHead: {
-    marginBottom: 15,
-    color: "#e0e3e2",
+    marginBottom: 12,
+    color: theme.textColor,
     fontSize: theme.fontSizes.xl,
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
-    color: "#e0e3e2",
+    marginBottom: 12,
+    color: theme.textColor,
     fontSize: theme.fontSizes.md,
     textAlign: "center",
   },
   modalInput: {
-    marginBottom: 15,
+    marginBottom: 24,
     padding: 12,
     borderRadius: 12,
     backgroundColor: theme.primaryColor,
     fontSize: theme.fontSizes.md,
     textAlignVertical: "top",
-    color: "#e0e3e2",
+    color: theme.textColor,
   },
   modalButtons: {
-    marginTop: 15,
     flexDirection: "row",
     justifyContent: "flex-end",
   },
   modalButton: {
-    width: 90,
+    marginLeft: 24,
     paddingTop: 0,
     paddingBottom: 0,
     paddingLeft: 0,
