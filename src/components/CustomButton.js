@@ -1,10 +1,8 @@
-import { useContext } from "react";
 import { Pressable, Text } from "react-native";
 
-import { createStyles, ThemeContext } from "../helpers";
+import { createStyles } from "../helpers";
 
 export function CustomButton(props) {
-  const theme = useContext(ThemeContext);
   const defaultStyles = useStyles();
 
   return (
