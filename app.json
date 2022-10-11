@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ReactNativeTest",
-    "slug": "ReactNativeTest",
+    "name": "StayFocusExpo",
+    "slug": "StayFocusExpo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
