@@ -52,6 +52,8 @@ function TimerPage({ route, navigation }) {
 
   const initialSeconds = minutes * 60;
 
+  const elapsedMinutes = () => Math.ceil(elapsedSeconds / 60);
+
   const toggleTimerAndModal = () => {
     setPaused(!paused);
     setModal(!modal);
@@ -77,8 +79,8 @@ function TimerPage({ route, navigation }) {
       <CustomModal visible={modal} onRequestClose={toggleTimerAndModal}>
         <Text style={styles.modalHead}>Give up now?</Text>
         <Text style={styles.modalText}>
-          You have been focusing for {Math.ceil(elapsedSeconds / 60)} minutes.
-          Why do you want to use your phone now?
+          You have been focusing for {elapsedMinutes()} minutes. Why do you want
+          to use your phone now?
         </Text>
         <TextInput
           style={styles.modalInput}
@@ -88,7 +90,13 @@ function TimerPage({ route, navigation }) {
         />
         <View style={styles.modalButtons}>
           <CustomButton
-            onPress={toggleTimerAndModal}
+            onPress={() => {
+              setModal(false);
+              navigation.navigate("FailPage", {
+                minutes: elapsedMinutes(),
+                plan: plan,
+              });
+            }}
             style={styles.modalButton}
           >
             Give up
