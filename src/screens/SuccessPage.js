@@ -63,19 +63,19 @@ function ReflectionModal({ onRequestClose, onBackToHome }) {
 
 const useModalStyles = createStyles((theme) => ({
   modalHead: {
-    marginBottom: 15,
+    marginBottom: 12,
     color: "#e0e3e2",
     fontSize: theme.fontSizes.xl,
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    marginBottom: 12,
     color: "#e0e3e2",
     fontSize: theme.fontSizes.md,
     textAlign: "center",
   },
   modalInput: {
-    marginBottom: 15,
+    marginBottom: 24,
     padding: 12,
     borderRadius: 12,
     backgroundColor: theme.primaryColor,
@@ -89,6 +89,10 @@ const useModalStyles = createStyles((theme) => ({
   },
   modalButton: {
     width: "100%",
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
     backgroundColor: "transparent",
     rippleColor: "transparent",
     text: {
