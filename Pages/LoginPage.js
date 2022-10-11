@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect} from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -24,8 +24,11 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import auth from '@react-native-firebase/auth';
+
 import HomePage from './HomePage';
 import SignUpPage from './SignUpPage';
+
 
 class LoginPage extends Component {
     constructor(props) {

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "617152809483",
+    "project_id": "persuasivechatbot-4bac6",
+    "storage_bucket": "persuasivechatbot-4bac6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617152809483:android:c375a6019330a4a857150e",
+        "android_client_info": {
+          "package_name": "com.awesomeproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "617152809483-15hra1vi7v44jvt83ehtctnatvgu265f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC25kgCowJ5zfbmX3JZ_EWpY7d7RO0kZ6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "617152809483-15hra1vi7v44jvt83ehtctnatvgu265f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

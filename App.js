@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {connect} from 'react-redux';
 import HomePage from './Pages/HomePage';
 import TimerPage from './Pages/TimerPage';
 import QuitPage from './Pages/QuitPage';
@@ -11,7 +12,7 @@ import SignUpPage from './Pages/SignUpPage';
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -25,3 +26,5 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+export default App;
