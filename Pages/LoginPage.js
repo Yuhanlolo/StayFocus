@@ -10,7 +10,8 @@ import {
   View,
   Button,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import {
@@ -29,25 +30,89 @@ import auth from '@react-native-firebase/auth';
 import HomePage from './HomePage';
 import SignUpPage from './SignUpPage';
 
+function Login()
+  {
+    // Set an initializing state whilst Firebase connects
+     const [initializing, setInitializing] = useState(true);
+     const [user, setUser] = useState();
+
+    // Handle user state changes
+     function onAuthStateChanged(user) {
+        setUser(user);
+        if (initializing) setInitializing(false);
+          }
+
+          useEffect(() => {
+            const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+            return subscriber; // unsubscribe on unmount
+          }, []);
+
+        if (initializing) return null;
+
+        if (!user) {
+            return (
+              <View>
+              </View>
+            );
+          }
+
+     return (
+        <View>
+        </View>
+     );
+  }
+
 
 class LoginPage extends Component {
     constructor(props) {
       super(props);
       this.state = {
         title: "Log In",
+        text: "",
         text_1: "E-mail :",
         text_2: "Password :",
         text_3: "Not a user yet?  ",
         text_4: "Sign up",
         text_5: "Start your focused time Now!",
-        email: "",
-        password: "",
+        email: "jane.doe@example.com",
+        password: "SuperSecretPassword!",
       };
       }
+
+     logoff = () =>
+     {
+       auth()
+         .signOut()
+         .then(() => {console.log('User signed out!');
+                      this.setState({text: 'User signed out!'});});
+     }
+
+       signIn = () =>
+       {
+         auth()
+           .signInWithEmailAndPassword(this.state.email, this.state.password)
+           .then(() => {
+             this.setState({text: 'User account created & signed in!'});
+             this.props.navigation.navigate('HomePage');
+           })
+           .catch(error => {
+             if (error.code === 'auth/email-already-in-use') {
+               this.setState({text: 'That email address is already in use!'});
+               Alert.alert('That email address is already in use!');
+             }
+
+             if (error.code === 'auth/invalid-email') {
+               this.setState({text: 'That email address is invalid!'});
+               Alert.alert('That email address is invalid!');
+             }
+             console.error(error);
+           });
+       }
 
     render() {
       return (
         <View style = {styles.background}>
+         <Login />
          <Text style = {styles.baseText}>{this.state.title}</Text>
          <Text style = {styles.comments_1}>{this.state.text_1}</Text>
          <View style = {styles.inputContainer}>
@@ -73,16 +138,17 @@ class LoginPage extends Component {
             <TouchableOpacity
                       style={styles.buttonHelper}
                       onPress={() => {
-                        this.props.navigation.navigate('SignUpPage');
-                      }}>
+
+                                        this.props.navigation.navigate('SignUpPage');
+                              }}>
                       <Text style = {styles.buttonText}>{this.state.text_4}</Text>
             </TouchableOpacity>
          </View>
             <TouchableOpacity
                       style={styles.button}
-                      onPress={() => {
-                        this.props.navigation.navigate('HomePage');
-                      }}>
+                      onPress={
+                        this.signIn
+                      }>
                       <Text style = {styles.buttonText}>{this.state.text_5}</Text>
             </TouchableOpacity>
         </View>

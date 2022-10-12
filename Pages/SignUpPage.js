@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect} from 'react';
 import type {Node} from 'react';
 import {
   SafeAreaView,
@@ -24,8 +24,42 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import auth from '@react-native-firebase/auth';
+
 import HomePage from './HomePage';
 import LoginPage from './LoginPage';
+
+function Login()
+  {
+    // Set an initializing state whilst Firebase connects
+     const [initializing, setInitializing] = useState(true);
+     const [user, setUser] = useState();
+
+    // Handle user state changes
+     function onAuthStateChanged(user) {
+        setUser(user);
+        if (initializing) setInitializing(false);
+          }
+
+          useEffect(() => {
+            const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+            return subscriber; // unsubscribe on unmount
+          }, []);
+
+        if (initializing) return null;
+
+        if (!user) {
+            return (
+              <View>
+              </View>
+            );
+          }
+
+     return (
+        <View>
+        </View>
+     );
+  }
 
 class SignUpPage extends Component {
     constructor(props) {
@@ -39,16 +73,40 @@ class SignUpPage extends Component {
         text_5: "Already a user?  ",
         text_6: "Log in",
         text_7: "Start your focused time Now!",
-        email: "",
+        email: "jack.doe@example.com",
         userName: "",
-        password: "",
+        password: "SupPassword!",
         confirmPassword: "",
       };
       }
 
+     createUser = () =>
+     {
+       auth()
+         .createUserWithEmailAndPassword(this.state.email, this.state.password)
+         .then(() => {
+           this.setState({text: 'User account created & signed in!'});
+           this.props.navigation.navigate('HomePage');
+         })
+         .catch(error => {
+           if (error.code === 'auth/email-already-in-use') {
+             this.setState({text: 'That email address is already in use!'});
+             Alert.alert('That email address is already in use!');
+           }
+
+           if (error.code === 'auth/invalid-email') {
+             this.setState({text: 'That email address is invalid!'});
+             Alert.alert('That email address is invalid!');
+           }
+
+           console.error(error);
+         });
+     }
+
     render() {
       return (
         <View style = {styles.background}>
+         <Login />
          <Text style = {styles.baseText}>{this.state.title}</Text>
          <Text style = {styles.comments_1}>{this.state.text_1}</Text>
          <View style = {styles.inputContainer}>
@@ -103,9 +161,9 @@ class SignUpPage extends Component {
          </View>
             <TouchableOpacity
                       style={styles.button}
-                      onPress={() => {
-                        this.props.navigation.navigate('HomePage');
-                      }}>
+                      onPress={
+                        this.createUser
+                      }>
                       <Text style = {styles.buttonText}>{this.state.text_7}</Text>
             </TouchableOpacity>
         </View>
