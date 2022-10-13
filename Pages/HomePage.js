@@ -80,7 +80,7 @@ class HomePage extends Component {
         <View style = {styles.background}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         <TextInput
-          style={{ top: '23%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'50%', borderRadius: 10,}}
+          style={{ top: '23%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'50%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
             text = text.replace('m','');
             text = text.replace('i','');

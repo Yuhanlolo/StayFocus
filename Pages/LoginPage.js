@@ -74,8 +74,8 @@ class LoginPage extends Component {
         text_3: "Not a user yet?  ",
         text_4: "Sign up",
         text_5: "Start your focused time Now!",
-        email: "jane.doe@example.com",
-        password: "SuperSecretPassword!",
+        email: "",
+        password: "",
       };
       }
 
@@ -117,7 +117,7 @@ class LoginPage extends Component {
          <Text style = {styles.comments_1}>{this.state.text_1}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10,}}
+          style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
             this.setState({email: text});
           }}
@@ -126,7 +126,7 @@ class LoginPage extends Component {
          <Text style = {styles.comments_2}>{this.state.text_2}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{top: '50%',height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10,}}
+          style={{top: '50%',height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           password={true}
           onChangeText={(text) => {
             this.setState({password: text});
@@ -189,7 +189,7 @@ class LoginPage extends Component {
 
     container: {
       flexDirection: 'row',
-      top: '40%',
+      top: '45%',
       left: '9.3%',
     },
 

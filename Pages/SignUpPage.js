@@ -73,7 +73,7 @@ class SignUpPage extends Component {
         text_5: "Already a user?  ",
         text_6: "Log in",
         text_7: "Start your focused time Now!",
-        email: "jack.doe@example.com",
+        email: "",
         userName: "",
         password: "SupPassword!",
         confirmPassword: "",
@@ -111,7 +111,7 @@ class SignUpPage extends Component {
          <Text style = {styles.comments_1}>{this.state.text_1}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10,}}
+          style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
             this.setState({email: text});
           }}
@@ -120,7 +120,7 @@ class SignUpPage extends Component {
          <Text style = {styles.comments_2}>{this.state.text_2}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{top: '20%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10,}}
+          style={{top: '20%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
             this.setState({userName: text});
           }}
@@ -130,7 +130,7 @@ class SignUpPage extends Component {
         <Text style = {styles.comments_3}>{this.state.text_3}</Text>
                  <View style = {styles.inputContainer}>
                  <TextInput
-                  style={{top: '40%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10,}}
+                  style={{top: '40%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
                   password={true}
                   onChangeText={(text) => {
                     this.setState({password: text});
@@ -141,7 +141,7 @@ class SignUpPage extends Component {
          <Text style = {styles.comments_4}>{this.state.text_4}</Text>
                   <View style = {styles.inputContainer}>
                   <TextInput
-                   style={{top: '60%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10,}}
+                   style={{top: '60%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
                    password={true}
                    onChangeText={(text) => {
                      this.setState({confirmPassword: text});
@@ -218,7 +218,7 @@ class SignUpPage extends Component {
 
     container: {
       flexDirection: 'row',
-      top: '33%',
+      top: '38%',
       left: '9.5%',
     },
 
