@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.0",
+    "dotenv": "^16.0.3",
     "expo": "~46.0.13",
     "expo-status-bar": "~1.4.0",
     "firebase": "^9.12.0",
