@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomModal } from "../components/CustomModal";
 import { CustomButton } from "../components/CustomButton";
 import { createStyles } from "../helpers";
+import { useLocalStore, saveSessionToFirestore } from "../store";
 
 //When finish the focusing task, this page come out for congrats.
 const prompts = [
@@ -18,9 +19,13 @@ function ReflectionModal({ onRequestClose, onBackToHome }) {
   const [promptIndex, setPromptIndex] = useState(0);
   const [input, setInput] = useState("");
 
+  const saveReflectionAnswer = useLocalStore(
+    (state) => state.saveReflectionAnswer
+  );
+
   const next = () => {
     if (promptIndex < prompts.length - 1) {
-      console.log(input);
+      saveReflectionAnswer(input);
       setInput("");
       setPromptIndex(promptIndex + 1);
     } else if (promptIndex === prompts.length - 1) {
@@ -102,8 +107,9 @@ const useModalStyles = createStyles((theme) => ({
   },
 }));
 
-function SuccessPage({ route, navigation }) {
-  const { minutes, plan } = route.params;
+function SuccessPage({ navigation }) {
+  const minutes = useLocalStore((state) => state.setTimeSeconds) / 60;
+  const plan = useLocalStore((state) => state.plan);
   const planLowerCase = plan[0].toLowerCase() + plan.slice(1);
   const [modal, setModal] = useState(false);
 
@@ -122,7 +128,10 @@ function SuccessPage({ route, navigation }) {
       {modal ? (
         <ReflectionModal
           onRequestClose={() => setModal(false)}
-          onBackToHome={() => navigation.navigate("HomePage")}
+          onBackToHome={() => {
+            saveSessionToFirestore();
+            navigation.navigate("HomePage");
+          }}
         />
       ) : null}
     </SafeAreaView>

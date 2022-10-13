@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { createStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton } from "../components/CustomButton";
 import { CustomModal } from "../components/CustomModal";
+import { useLocalStore } from "../store";
 
 function Timer(props) {
   const [seconds, setSeconds] = useState(props.seconds);
@@ -43,12 +44,18 @@ function Timer(props) {
   );
 }
 
-function TimerPage({ route, navigation }) {
-  const { minutes, plan } = route.params;
+function TimerPage({ navigation }) {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [paused, setPaused] = useState(false);
   const [modal, setModal] = useState(false);
   const [input, setInput] = useState("");
+
+  const minutes = useLocalStore((state) => state.setTimeSeconds) / 60;
+  const plan = useLocalStore((state) => state.plan);
+  const saveElapsedTimeSeconds = useLocalStore(
+    (state) => state.saveElapsedTimeSeconds
+  );
+  const saveGiveUpReason = useLocalStore((state) => state.saveGiveUpReason);
 
   const initialSeconds = minutes * 60;
 
@@ -57,6 +64,13 @@ function TimerPage({ route, navigation }) {
   const toggleTimerAndModal = () => {
     setPaused(!paused);
     setModal(!modal);
+  };
+
+  const onPress = () => {
+    setModal(false);
+    saveGiveUpReason(input);
+    saveElapsedTimeSeconds(elapsedSeconds);
+    navigation.navigate("FailPage");
   };
 
   const styles = useStyles();
@@ -71,9 +85,7 @@ function TimerPage({ route, navigation }) {
         seconds={initialSeconds}
         paused={paused}
         onPaused={(left) => setElapsedSeconds(initialSeconds - left)}
-        onComplete={() =>
-          navigation.navigate("SuccessPage", { minutes: minutes, plan: plan })
-        }
+        onComplete={() => navigation.navigate("SuccessPage")}
         style={styles.timer}
       />
       <CustomModal visible={modal} onRequestClose={toggleTimerAndModal}>
@@ -89,16 +101,7 @@ function TimerPage({ route, navigation }) {
           multiline={true}
         />
         <View style={styles.modalButtons}>
-          <CustomButton
-            onPress={() => {
-              setModal(false);
-              navigation.navigate("FailPage", {
-                minutes: elapsedMinutes(),
-                plan: plan,
-              });
-            }}
-            style={styles.modalButton}
-          >
+          <CustomButton onPress={onPress} style={styles.modalButton}>
             Give up
           </CustomButton>
           <CustomButton

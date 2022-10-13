@@ -3,11 +3,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { CustomButton } from "../components/CustomButton";
 import { createStyles } from "../helpers";
+import { useLocalStore, saveSessionToFirestore } from "../store";
 
 // When user gives up
 
 function SuccessPage({ route, navigation }) {
-  const { minutes, plan } = route.params;
+  const minutes = useLocalStore((state) => state.setTimeSeconds) / 60;
+  const plan = useLocalStore((state) => state.plan);
   const planLowerCase = plan[0].toLowerCase() + plan.slice(1);
 
   const styles = useStyles();
@@ -21,7 +23,10 @@ function SuccessPage({ route, navigation }) {
       </Text>
       <CustomButton
         style={styles.button}
-        onPress={() => navigation.navigate("HomePage")}
+        onPress={() => {
+          saveSessionToFirestore();
+          navigation.navigate("HomePage");
+        }}
       >
         Back to home
       </CustomButton>

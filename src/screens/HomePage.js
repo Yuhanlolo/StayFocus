@@ -5,10 +5,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { createStyles, ThemeContext } from "../helpers";
 import { SelectButton } from "../components/SelectButton";
 import { CustomButton } from "../components/CustomButton";
+import { useLocalStore } from "../store";
 
 //Home page to set focusing time
 const times = [
-  { label: "25 minutes", value: 25 },
+  { label: "0.1 minutes", value: 0.1 },
   { label: "50 minutes", value: 50 },
   { label: "75 minutes", value: 75 },
   { label: "100 minutes", value: 100 },
@@ -19,6 +20,17 @@ function HomePage({ navigation }) {
   const theme = useContext(ThemeContext);
   const [plan, setPlan] = useState("");
   const [index, setIndex] = useState(0);
+
+  const savePlan = useLocalStore((state) => state.savePlan);
+  const saveStartDatetime = useLocalStore((state) => state.saveStartDatetime);
+  const saveSetTimeSeconds = useLocalStore((state) => state.saveSetTimeSeconds);
+
+  const onPress = () => {
+    savePlan(plan);
+    saveStartDatetime();
+    saveSetTimeSeconds(times[index].value * 60);
+    navigation.navigate("TimerPage");
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -39,15 +51,7 @@ function HomePage({ navigation }) {
           style={styles.prompt.select}
         />
       </View>
-      <CustomButton
-        style={styles.button}
-        onPress={() =>
-          navigation.navigate("TimerPage", {
-            minutes: times[index].value,
-            plan: plan || "Doing stuff",
-          })
-        }
-      >
+      <CustomButton style={styles.button} onPress={onPress}>
         Start
       </CustomButton>
     </SafeAreaView>
