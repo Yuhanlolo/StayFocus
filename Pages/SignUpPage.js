@@ -25,15 +25,30 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 import HomePage from './HomePage';
 import LoginPage from './LoginPage';
 
-function Login()
+function SignUpPage({ navigation })
   {
     // Set an initializing state whilst Firebase connects
      const [initializing, setInitializing] = useState(true);
      const [user, setUser] = useState();
+     const [title, setTitle] = useState('Sign up');
+     const [text, setText] = useState('aaa');
+     const [text_, setText_] = useState('');
+     const [text_1, setText_1] = useState('E-mail :');
+     const [text_2, setText_2] = useState('User Name :');
+     const [text_3, setText_3] = useState('Password :');
+     const [text_4, setText_4] = useState('Confirm Password :');
+     const [text_5, setText_5] = useState('Already a user?  ');
+     const [text_6, setText_6] = useState('Log in');
+     const [text_7, setText_7] = useState('Start your focused time Now!');
+     const [email, setEmail] = useState('');
+     const [userName, setUserName] = useState('');
+     const [password, setPassword] = useState('');
+     const [confirmPassword, setConfirmPassword] = useState('');
 
     // Handle user state changes
      function onAuthStateChanged(user) {
@@ -41,135 +56,95 @@ function Login()
         if (initializing) setInitializing(false);
           }
 
-          useEffect(() => {
-            const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-            return subscriber; // unsubscribe on unmount
+     useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        return subscriber; // unsubscribe on unmount
           }, []);
-
-        if (initializing) return null;
-
-        if (!user) {
-            return (
-              <View>
-              </View>
-            );
-          }
-
-     return (
-        <View>
-        </View>
-     );
-  }
-
-class SignUpPage extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        title: "Sign up",
-        text_1: "E-mail :",
-        text_2: "User Name :",
-        text_3: "Password :",
-        text_4: "Confirm Password :",
-        text_5: "Already a user?  ",
-        text_6: "Log in",
-        text_7: "Start your focused time Now!",
-        email: "",
-        userName: "",
-        password: "SupPassword!",
-        confirmPassword: "",
-      };
-      }
 
      createUser = () =>
      {
-       auth()
-         .createUserWithEmailAndPassword(this.state.email, this.state.password)
+          auth()
+         .createUserWithEmailAndPassword(email, password)
          .then(() => {
-           this.setState({text: 'User account created & signed in!'});
-           this.props.navigation.navigate('HomePage');
+           navigation.navigate('LoginPage');
          })
          .catch(error => {
            if (error.code === 'auth/email-already-in-use') {
-             this.setState({text: 'That email address is already in use!'});
              Alert.alert('That email address is already in use!');
            }
 
            if (error.code === 'auth/invalid-email') {
-             this.setState({text: 'That email address is invalid!'});
              Alert.alert('That email address is invalid!');
            }
-
            console.error(error);
          });
      }
 
-    render() {
-      return (
+       return (
         <View style = {styles.background}>
-         <Login />
-         <Text style = {styles.baseText}>{this.state.title}</Text>
-         <Text style = {styles.comments_1}>{this.state.text_1}</Text>
+         <Text style = {styles.baseText}>{title}</Text>
+         <Text style = {styles.comments_1}>{text_1}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
           style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
-            this.setState({email: text});
+            setEmail(text);
           }}
         />
          </View>
-         <Text style = {styles.comments_2}>{this.state.text_2}</Text>
+         <Text style = {styles.comments_2}>{text_2}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
           style={{top: '20%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
-            this.setState({userName: text});
+            setUserName(text);
           }}
         />
         </View>
 
-        <Text style = {styles.comments_3}>{this.state.text_3}</Text>
+        <Text style = {styles.comments_3}>{text_3}</Text>
                  <View style = {styles.inputContainer}>
                  <TextInput
                   style={{top: '40%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
                   password={true}
                   onChangeText={(text) => {
-                    this.setState({password: text});
+                    setPassword(text);
                   }}
                 />
                 </View>
 
-         <Text style = {styles.comments_4}>{this.state.text_4}</Text>
+         <Text style = {styles.comments_4}>{text_4}</Text>
                   <View style = {styles.inputContainer}>
                   <TextInput
                    style={{top: '60%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
                    password={true}
                    onChangeText={(text) => {
-                     this.setState({confirmPassword: text});
+                     setConfirmPassword(text);
                    }}
                  />
                  </View>
 
          <View style = {styles.container}>
-           <Text style = {styles.helper}>{this.state.text_5}</Text>
+           <Text style = {styles.helper}>{text_5}</Text>
             <TouchableOpacity
                       style={styles.buttonHelper}
                       onPress={() => {
-                        this.props.navigation.navigate('LoginPage');
+                        navigation.navigate('LoginPage');
                       }}>
-                      <Text style = {styles.buttonText}>{this.state.text_6}</Text>
+                      <Text style = {styles.buttonText}>{text_6}</Text>
             </TouchableOpacity>
          </View>
             <TouchableOpacity
                       style={styles.button}
                       onPress={
-                        this.createUser
-                      }>
-                      <Text style = {styles.buttonText}>{this.state.text_7}</Text>
+                        createUser
+                       }>
+                      <Text style = {styles.buttonText}>{text_7}</Text>
             </TouchableOpacity>
         </View>
       );
-    }
-}
+  }
+
 
   const styles = StyleSheet.create({
 

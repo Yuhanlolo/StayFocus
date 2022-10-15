@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 
 import ModalDropdown from 'react-native-modal-dropdown';
-
+import auth from '@react-native-firebase/auth';
 import {
   Colors,
   DebugInstructions,
@@ -69,18 +69,32 @@ class HomePage extends Component {
         _adjustType = () => {
             return({
                 justifyContent: "center",
-                top: '44%',
-                left: '34%'
+                top: '45%',
+                left: '29.6%',
+                width: '40%'
             })
         }
 
+        logoff ()
+        {
+           auth()
+              .signOut()
+              .then(() => {console.log('User signed out!');});
+        }
 
     render() {
       return (
         <View style = {styles.background}>
+        <TouchableOpacity
+                  style={{backgroundColor: "#28454B", borderRadius: 15,  padding: 10, top: '2%', right: '65%'}}
+                  onPress= {this.logoff}>
+                  <Text style = {{fontFamily: 'Cochin', color: 'white',}}>{'Log off'}</Text>
+        </TouchableOpacity>
+        <View style = {{alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
+        </View>
         <TextInput
-          style={{ top: '23%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'50%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          style={{ top: '13%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'50%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
             text = text.replace('m','');
             text = text.replace('i','');
@@ -129,7 +143,8 @@ class HomePage extends Component {
     textStyle: {
      fontFamily: 'Cochin',
      fontSize: 23,
-     top: '15%',
+     top: '90%',
+     width: '60%',
      color: 'white',
     },
 
@@ -139,7 +154,7 @@ class HomePage extends Component {
     },
 
     button: {
-     top: '60%',
+     top: '45%',
      backgroundColor: "#28454B",
      borderRadius: 15,
      width: '60%',
@@ -153,7 +168,7 @@ class HomePage extends Component {
     },
 
     selectIcon: {
-    top:'35%',
+    top:'23%',
     color:'white',
     justifyContent: "center",
     alignItems: "center",

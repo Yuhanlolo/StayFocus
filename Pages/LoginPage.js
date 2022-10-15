@@ -1,45 +1,56 @@
-import React, { Component, useState, useEffect} from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Button,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+  import React, { useState, useEffect, Component } from 'react';
+    import auth from '@react-native-firebase/auth';
+    import database from '@react-native-firebase/database';
+    import {
+      SafeAreaView,
+      ScrollView,
+      StatusBar,
+      StyleSheet,
+      Text,
+      useColorScheme,
+      View,
+      Button,
+      TextInput,
+      TouchableOpacity,
+      Alert,
+    } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+    import {
+      Colors,
+      DebugInstructions,
+      Header,
+      LearnMoreLinks,
+      ReloadInstructions,
+    } from 'react-native/Libraries/NewAppScreen';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+    import { NavigationContainer } from '@react-navigation/native';
+    import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import auth from '@react-native-firebase/auth';
+    import HomePage from './HomePage';
+    import SignUpPage from './SignUpPage';
 
-import HomePage from './HomePage';
-import SignUpPage from './SignUpPage';
+     function LoginPage({ navigation })
+     {
+          // Set an initializing state whilst Firebase connects
+          const [initializing, setInitializing] = useState(true);
+          const [user, setUser] = useState();
+          const [title, setTitle] = useState('Log In');
+          const [text, setText] = useState('aaa');
+          const [text_, setText_] = useState('');
+          const [text_1, setText_1] = useState('E-mail :');
+          const [text_2, setText_2] = useState('Password :');
+          const [text_3, setText_3] = useState('Not a user yet?  ');
+          const [text_4, setText_4] = useState('Sign up');
+          const [text_5, setText_5] = useState('Start your focused time Now!');
+          const [email, setEmail] = useState('');
+          const [password, setPassword] = useState('');
 
-function Login()
-  {
-    // Set an initializing state whilst Firebase connects
-     const [initializing, setInitializing] = useState(true);
-     const [user, setUser] = useState();
 
-    // Handle user state changes
-     function onAuthStateChanged(user) {
-        setUser(user);
-        if (initializing) setInitializing(false);
+
+          // Handle user state changes
+          function onAuthStateChanged(user) {
+            setUser(user);
+            if (initializing) setInitializing(false);
           }
 
           useEffect(() => {
@@ -47,114 +58,151 @@ function Login()
             return subscriber; // unsubscribe on unmount
           }, []);
 
-        if (initializing) return null;
-
-        if (!user) {
-            return (
-              <View>
-              </View>
-            );
+          function updateUser(id, email, password)
+          {
+            let key;
+            if(id!=null)
+            {
+              key = id;
+            }
+            else
+            {
+              key = database()
+                .ref()
+                .push().key;
+            }
+            let dataToSave = {
+              id: key,
+              email: email,
+              password: password,
+            };
+            database()
+               .ref('users')
+               .update(dataToSave)
+               .then(snapshot => {console.log('Data updated');})
           }
 
-     return (
-        <View>
-        </View>
-     );
-  }
+          function createUser()
+               {
+                 auth()
+                   .createUserWithEmailAndPassword(email, password)
+                   .then(() => {
+                     console.log('User account created & signed in!');
+                     setText('User account created & signed in!');
+                   })
+                   .catch(error => {
+                     if (error.code === 'auth/email-already-in-use') {
+                       console.log('That email address is already in use!');
+
+                     }
+
+                     if (error.code === 'auth/invalid-email') {
+                       console.log('That email address is invalid!');
+                     }
+                     console.error(error);
+                   });
+               }
+
+           function signIn ()
+                 {
+                   auth()
+                     .signInWithEmailAndPassword(email, password)
+                     .then(() => {
+                       console.log('User account created & signed in!');
+                       setText('User account created & signed in!');
+                       navigation.navigate('HomePage');
+                     })
+                     .catch(error => {
+                       if (error.code === 'auth/email-already-in-use') {
+                         console.log('That email address is already in use!');
+                       }
+                       if (error.code === 'auth/invalid-email') {
+                         console.log('That email address is invalid!');
+                       }
+                       console.error(error);
+                     });
+
+                    let key;
+                    if(user.uid!=null)
+                    {
+                      key = user.uid;
+                    }
+                    else
+                    {
+                      key = database()
+                        .ref()
+                        .push().key;
+                    }
+                    let dataToSave = {
+                      id: key,
+                      email: user.email,
+                      password: user.password,
+                    };
+                    database()
+                       .ref('users')
+                       .update(dataToSave)
+                       .then(snapshot => {console.log('Data updated');})
+                       .catch(error=>{console.error(error);});
+                 }
 
 
-class LoginPage extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        title: "Log In",
-        text: "",
-        text_1: "E-mail :",
-        text_2: "Password :",
-        text_3: "Not a user yet?  ",
-        text_4: "Sign up",
-        text_5: "Start your focused time Now!",
-        email: "",
-        password: "",
-      };
-      }
 
-     logoff = () =>
-     {
-       auth()
-         .signOut()
-         .then(() => {console.log('User signed out!');
-                      this.setState({text: 'User signed out!'});});
+           function logoff()
+               {
+                 auth()
+                   .signOut()
+                   .then(() => {console.log('User signed out!');
+                                setText('User signed out!')
+                                });
+               }
+
+           return (
+                     <View style = {styles.background}>
+                      <Text style = {styles.baseText}>{title}</Text>
+                      <Text style = {styles.comments_1}>{text_1}</Text>
+                      <View style = {styles.inputContainer}>
+                      <TextInput
+                       style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+                       onChangeText={(text) => {
+                         setEmail(text);
+                       }}
+                     />
+                      </View>
+                      <Text style = {styles.comments_2}>{text_2}</Text>
+                      <View style = {styles.inputContainer}>
+                      <TextInput
+                       style={{top: '50%',height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+                       password={true}
+                       onChangeText={(text) => {
+                         setPassword(text);
+                       }}
+                     />
+                     </View>
+                      <View style = {styles.container}>
+                        <Text style = {styles.helper}>{text_3}</Text>
+                         <TouchableOpacity
+                                   style={styles.buttonHelper}
+                                   onPress={() => {
+
+                                            navigation.navigate('SignUpPage');
+                                           }}>
+                                   <Text style = {styles.buttonText}>{text_4}</Text>
+                         </TouchableOpacity>
+                      </View>
+                         <TouchableOpacity
+                                   style={styles.button}
+                                   onPress={
+                                     signIn
+                                   }>
+                                   <Text style = {styles.buttonText}>{text_5}</Text>
+                         </TouchableOpacity>
+                     </View>
+            );
      }
 
-       signIn = () =>
-       {
-         auth()
-           .signInWithEmailAndPassword(this.state.email, this.state.password)
-           .then(() => {
-             this.setState({text: 'User account created & signed in!'});
-             this.props.navigation.navigate('HomePage');
-           })
-           .catch(error => {
-             if (error.code === 'auth/email-already-in-use') {
-               this.setState({text: 'That email address is already in use!'});
-               Alert.alert('That email address is already in use!');
-             }
 
-             if (error.code === 'auth/invalid-email') {
-               this.setState({text: 'That email address is invalid!'});
-               Alert.alert('That email address is invalid!');
-             }
-             console.error(error);
-           });
-       }
 
-    render() {
-      return (
-        <View style = {styles.background}>
-         <Login />
-         <Text style = {styles.baseText}>{this.state.title}</Text>
-         <Text style = {styles.comments_1}>{this.state.text_1}</Text>
-         <View style = {styles.inputContainer}>
-         <TextInput
-          style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
-          onChangeText={(text) => {
-            this.setState({email: text});
-          }}
-        />
-         </View>
-         <Text style = {styles.comments_2}>{this.state.text_2}</Text>
-         <View style = {styles.inputContainer}>
-         <TextInput
-          style={{top: '50%',height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
-          password={true}
-          onChangeText={(text) => {
-            this.setState({password: text});
-          }}
-        />
-        </View>
-         <View style = {styles.container}>
-           <Text style = {styles.helper}>{this.state.text_3}</Text>
-            <TouchableOpacity
-                      style={styles.buttonHelper}
-                      onPress={() => {
 
-                                        this.props.navigation.navigate('SignUpPage');
-                              }}>
-                      <Text style = {styles.buttonText}>{this.state.text_4}</Text>
-            </TouchableOpacity>
-         </View>
-            <TouchableOpacity
-                      style={styles.button}
-                      onPress={
-                        this.signIn
-                      }>
-                      <Text style = {styles.buttonText}>{this.state.text_5}</Text>
-            </TouchableOpacity>
-        </View>
-      );
-    }
-}
 
   const styles = StyleSheet.create({
 
@@ -230,5 +278,7 @@ class LoginPage extends Component {
       textAlignVertical: 'center',
     }
   });
+
+
 
 export default LoginPage;
