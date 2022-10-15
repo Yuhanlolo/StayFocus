@@ -1,11 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getStore, resetStore } from "./store";
-import * as dotenv from "dotenv";
-dotenv.config();
+import Constants from "expo-constants";
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_APIKEY,
+  apiKey: Constants.expoConfig.extra.FIREBASE_APIKEY,
   authDomain: "stayfocus-cityu.firebaseapp.com",
   projectId: "stayfocus-cityu",
   storageBucket: "stayfocus-cityu.appspot.com",
