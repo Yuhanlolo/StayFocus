@@ -58,51 +58,6 @@
             return subscriber; // unsubscribe on unmount
           }, []);
 
-          function updateUser(id, email, password)
-          {
-            let key;
-            if(id!=null)
-            {
-              key = id;
-            }
-            else
-            {
-              key = database()
-                .ref()
-                .push().key;
-            }
-            let dataToSave = {
-              id: key,
-              email: email,
-              password: password,
-            };
-            database()
-               .ref('users')
-               .update(dataToSave)
-               .then(snapshot => {console.log('Data updated');})
-          }
-
-          function createUser()
-               {
-                 auth()
-                   .createUserWithEmailAndPassword(email, password)
-                   .then(() => {
-                     console.log('User account created & signed in!');
-                     setText('User account created & signed in!');
-                   })
-                   .catch(error => {
-                     if (error.code === 'auth/email-already-in-use') {
-                       console.log('That email address is already in use!');
-
-                     }
-
-                     if (error.code === 'auth/invalid-email') {
-                       console.log('That email address is invalid!');
-                     }
-                     console.error(error);
-                   });
-               }
-
            function signIn ()
                  {
                    auth()
@@ -111,6 +66,17 @@
                        console.log('User account created & signed in!');
                        setText('User account created & signed in!');
                        navigation.navigate('HomePage');
+                       let id = user.uid;
+                       let dataToSave = {
+                          id: user.uid,
+                          email: user.email,
+                          password: password,
+                        };
+                       database()
+                           .ref('users/' + id)
+                           .update(dataToSave)
+                           .then(snapshot => {console.log('Data updated');})
+                           .catch(error=>{console.error(error);});
                      })
                      .catch(error => {
                        if (error.code === 'auth/email-already-in-use') {
@@ -121,40 +87,7 @@
                        }
                        console.error(error);
                      });
-
-                    let key;
-                    if(user.uid!=null)
-                    {
-                      key = user.uid;
-                    }
-                    else
-                    {
-                      key = database()
-                        .ref()
-                        .push().key;
-                    }
-                    let dataToSave = {
-                      id: key,
-                      email: user.email,
-                      password: user.password,
-                    };
-                    database()
-                       .ref('users')
-                       .update(dataToSave)
-                       .then(snapshot => {console.log('Data updated');})
-                       .catch(error=>{console.error(error);});
                  }
-
-
-
-           function logoff()
-               {
-                 auth()
-                   .signOut()
-                   .then(() => {console.log('User signed out!');
-                                setText('User signed out!')
-                                });
-               }
 
            return (
                      <View style = {styles.background}>
@@ -183,7 +116,6 @@
                          <TouchableOpacity
                                    style={styles.buttonHelper}
                                    onPress={() => {
-
                                             navigation.navigate('SignUpPage');
                                            }}>
                                    <Text style = {styles.buttonText}>{text_4}</Text>
@@ -199,10 +131,6 @@
                      </View>
             );
      }
-
-
-
-
 
   const styles = StyleSheet.create({
 
