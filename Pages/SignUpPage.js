@@ -10,7 +10,8 @@ import {
   View,
   Button,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 
 import {
@@ -61,12 +62,48 @@ function SignUpPage({ navigation })
         return subscriber; // unsubscribe on unmount
           }, []);
 
+     function storeInfo ()
+     {
+       return new Promise(function(resolve,reject)
+       {
+          let dataToSave = {
+          id: user.uid,
+          email: user.email,
+          password: password,
+          focusBreak: 0,
+          focusQuit: 0,
+          };
+       database()
+          .ref('users/' + user.uid)
+          .update(dataToSave)
+          .then(snapshot => {console.log('Data updated');})
+          .catch(error=>{reject(error);});
+       })
+     }
+
      createUser = () =>
      {
+         return new Promise(function(resolve,reject){
           auth()
          .createUserWithEmailAndPassword(email, password)
-         .then(() => {
-           navigation.navigate('LoginPage');
+         .then((data) => {
+           //setId(data.user.uid);
+           const uid = data.user.uid;
+           let dataToSave = {
+               id: uid,
+               email: email,
+               password: password,
+               focusBreak: 0,
+               focusQuit: 0,
+           };
+           database()
+               .ref('users/' + uid)
+               .update(dataToSave)
+               .then(snapshot => {console.log('Data updated');})
+               .catch(error=>{reject(error);});
+           //console.log(uid);
+           navigation.navigate('HomePage', {userId: uid});
+           resolve('User account created & signed in!');
          })
          .catch(error => {
            if (error.code === 'auth/email-already-in-use') {
@@ -76,8 +113,9 @@ function SignUpPage({ navigation })
            if (error.code === 'auth/invalid-email') {
              Alert.alert('That email address is invalid!');
            }
-           console.error(error);
+           reject(error);
          });
+         })
      }
 
        return (
@@ -138,6 +176,7 @@ function SignUpPage({ navigation })
                       style={styles.button}
                       onPress={
                         createUser
+                        //()=>{navigation.navigate('HomePage',{userId: 'a'});}
                        }>
                       <Text style = {styles.buttonText}>{text_7}</Text>
             </TouchableOpacity>

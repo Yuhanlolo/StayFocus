@@ -60,23 +60,12 @@
 
            function signIn ()
                  {
-                   auth()
+                    auth()
                      .signInWithEmailAndPassword(email, password)
-                     .then(() => {
+                     .then((data) => {
                        console.log('User account created & signed in!');
-                       setText('User account created & signed in!');
-                       navigation.navigate('HomePage');
-                       let id = user.uid;
-                       let dataToSave = {
-                          id: user.uid,
-                          email: user.email,
-                          password: password,
-                        };
-                       database()
-                           .ref('users/' + id)
-                           .update(dataToSave)
-                           .then(snapshot => {console.log('Data updated');})
-                           .catch(error=>{console.error(error);});
+                       const uid = data.user.uid;
+                       navigation.navigate('HomePage', {userId: uid});
                      })
                      .catch(error => {
                        if (error.code === 'auth/email-already-in-use') {

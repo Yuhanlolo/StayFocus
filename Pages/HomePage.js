@@ -15,6 +15,7 @@ import {
 
 import ModalDropdown from 'react-native-modal-dropdown';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import {
   Colors,
   DebugInstructions,
@@ -41,11 +42,22 @@ class HomePage extends Component {
       areaIndex: '0',
       typeShow: false,
       flag: false,
-      temp:'0'
+      temp:'0',
+      userId: '',
       };
       }
 
+    userSetter()
+    {
+         let id = this.props.route.params.userId;
+         this.setState({userId: id},()=>{console.log(this.state.userId)});
+         console.log(id);
+    }
 
+    componentDidMount()
+    {
+         this.userSetter();
+    }
 
         _selectType = (index,value) => {
             console.log(index + '--' + value)
@@ -120,7 +132,7 @@ class HomePage extends Component {
                   style={styles.button}
                   onPress={() => {
                   this.setState({flag:true});
-                  this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true });
+                  this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId });
                   }}>
                   <Text style = {styles.buttonText}>{'Start'}</Text>
         </TouchableOpacity>
