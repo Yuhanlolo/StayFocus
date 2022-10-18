@@ -42,6 +42,7 @@ class TimerPage extends Component {
         flag: true,
         set: false,
         userId: '',
+        //focusBreaking: 0,
         min_1: 0,
         min_2: 0,
         minSet_1: 0,
@@ -128,6 +129,46 @@ class TimerPage extends Component {
            });
      }
 
+     readData()
+     {
+          this.setState({pause:false});
+          this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, userId: this.state.userId});
+          //console.log(this.state.userId);
+          let focusBreaking = 0;
+          database()
+           .ref('users/' + this.state.userId)
+           .once('value')
+           .then(
+             snapshot => {
+             console.log('User data: ', snapshot.val());
+             //this.setState({focusBreaking: snapshot.val().focusBreak + 1});
+             focusBreaking = snapshot.val().focusBreak;
+             //console.log('original break：' + focusBreaking.toString());
+             focusBreaking = focusBreaking + 1;
+             //console.log('update:' + focusBreaking.toString());
+             database()
+              .ref('users/' + this.state.userId)
+              .update({focusBreak: focusBreaking,})
+              .then(snapshot => {console.log('Data updated');})
+              .catch(error=>{console.log(error)});
+           });
+     }
+
+     updateData()
+     {
+           database()
+              .ref('users/' + this.state.userId)
+              .update({focusBreak: this.state.focusBreaking,})
+              .then(snapshot => {console.log('Data updated');})
+              .catch(error=>{console.log(error)});
+     }
+
+     setData()
+     {
+        var promise = Promise.resolve();
+        promise .then(this.readData()).then(this.updateData());
+     }
+
     render() {
       return (
         <View style = {styles.background}>
@@ -135,21 +176,28 @@ class TimerPage extends Component {
         <TouchableOpacity
           style={{backgroundColor: "#28454B", top: '10%', width: '25%', height:'22%', borderRadius: 15, alignItems: "center",}}
           onPress={() => {
-          let focusBreaking = 0;
-          this.setState({pause:false});
-          this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, userId: this.state.userId});
+          this.readData();
+          //this.setState({pause:false});
+          //this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, userId: this.state.userId});
           //console.log(this.state.userId);
-          database()
-           .ref('users/' + this.state.userId)
-           .on('value', snapshot => {
-             console.log('User data: ', snapshot.val());
-             focusBreaking = snapshot.val().focusBreak + 1;
-           });
-           database()
-            .ref('users/' + this.state.userId)
-            .update({focusBreak: focusBreaking,})
-            .then(snapshot => {console.log('Data updated');})
-            .catch(error=>{console.log(error)});
+          //database()
+          // .ref('users/' + this.state.userId)
+          // .on('value', snapshot => {
+          //   console.log('User data: ', snapshot.val());
+          //   focusBreaking = snapshot.val().focusBreak;
+          //   console.log('original break：' + focusBreaking.toString());
+          //   focusBreaking = focusBreaking + 1;
+          //   console.log('update:' + focusBreaking.toString());
+          // });
+
+           //console.log('update:' + focusBreaking.toString());
+
+          // database()
+          //    .ref('users/' + this.state.userId)
+          //    .update({focusBreak: focusBreaking,})
+          //    .then(snapshot => {console.log('Data updated');})
+          //    .catch(error=>{console.log(error)});
+
             }}>
           <Text style={{fontFamily: "Cochin", color: 'white', textAlign: 'center', textAlignVertical: 'center', fontSize: 18,}}>{'Give up'}</Text>
          </TouchableOpacity>

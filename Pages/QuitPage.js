@@ -67,6 +67,31 @@ class QuitPage extends Component {
         this.setState({userId: id,});
      };
 
+     readData()
+          {
+               this.setState({pause:false});
+               this.props.navigation.navigate('HomePage', {userId: this.state.userId});
+               //console.log(this.state.userId);
+               let focusQuiting = 0;
+               database()
+                .ref('users/' + this.state.userId)
+                .once('value')
+                .then(
+                  snapshot => {
+                  console.log('User data: ', snapshot.val());
+                  //this.setState({focusBreaking: snapshot.val().focusBreak + 1});
+                  focusQuiting = snapshot.val().focusQuit;
+                  //console.log('original break：' + focusBreaking.toString());
+                  focusQuiting = focusQuiting + 1;
+                  //console.log('update:' + focusBreaking.toString());
+                  database()
+                   .ref('users/' + this.state.userId)
+                   .update({focusQuit: focusQuiting,})
+                   .then(snapshot => {console.log('Data updated');})
+                   .catch(error=>{console.log(error)});
+                });
+          }
+
 
     render() {
       return (
@@ -75,20 +100,7 @@ class QuitPage extends Component {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-          let focusQuiting = 0;
-          this.props.navigation.navigate('HomePage', {userId: this.state.userId});
-          database()
-           .ref('users/' + this.state.userId)
-           .on('value', snapshot => {
-             console.log('User data: ', snapshot.val());
-             focusQuiting = snapshot.val().focusQuit;
-           });
-            focusQuiting = focusQuiting + 1;
-           database()
-            .ref('users/' + this.state.userId)
-            .update({focusQuit: focusQuiting,})
-            .then(snapshot => {console.log('Data updated');})
-            .catch(error=>{console.log(error)});
+          this.readData();
           }}>
           <Text style = {styles.buttonText}>{'Give up'}</Text>
          </TouchableOpacity>
