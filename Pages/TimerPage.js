@@ -42,6 +42,7 @@ class TimerPage extends Component {
         flag: true,
         set: false,
         userId: '',
+        oneTimeId: '',
         //focusBreaking: 0,
         min_1: 0,
         min_2: 0,
@@ -58,12 +59,13 @@ class TimerPage extends Component {
 
       timeSetter()
       {
-        let {timeSet, second_1, second_2, tag, userId} = this.props.route.params;
+        let {timeSet, second_1, second_2, tag, userId, oneTimeId} = this.props.route.params;
         this.setState({temp: timeSet});
         this.setState({pause: true});
         this.setState({min_1: Math.floor(timeSet/10)});
         this.setState({min_2: timeSet-Math.floor(timeSet/10)*10});
         this.setState({userId: userId});
+        this.setState({oneTimeId: oneTimeId});
       }
 
 //Timer
@@ -132,9 +134,11 @@ class TimerPage extends Component {
      readData()
      {
           this.setState({pause:false});
-          this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, userId: this.state.userId});
+          //this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, userId: this.state.userId});
           //console.log(this.state.userId);
           let focusBreaking = 0;
+          let oneTimeBreaking = 0;
+          let focusTime = this.state.temp - this.state.min_1 * 10 - this.state.min_2;
           database()
            .ref('users/' + this.state.userId)
            .once('value')
@@ -152,6 +156,25 @@ class TimerPage extends Component {
               .then(snapshot => {console.log('Data updated');})
               .catch(error=>{console.log(error)});
            });
+
+          database()
+           .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
+           .once('value')
+           .then(
+             snapshot=>
+             {
+               console.log('User oneTime data: ', snapshot.val());
+               oneTimeBreaking = snapshot.val().oneQuitTry;
+               oneTimeBreaking = oneTimeBreaking + 1;
+
+               database()
+                  .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
+                  .update({oneQuitTry: oneTimeBreaking,})
+                  .then(snapshot => {console.log('Data updated oneTime');})
+                  .catch(error=>{console.log(error)});
+             }
+           );
+         this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, userId: this.state.userId, oneTimeId: this.state.oneTimeId, endTime: focusTime});
      }
 
      updateData()

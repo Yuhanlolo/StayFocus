@@ -1,7 +1,7 @@
   import React, { useState, useEffect, Component } from 'react';
-    import auth from '@react-native-firebase/auth';
-    import database from '@react-native-firebase/database';
-    import {
+  import auth from '@react-native-firebase/auth';
+  import database from '@react-native-firebase/database';
+  import {
       SafeAreaView,
       ScrollView,
       StatusBar,
@@ -15,7 +15,7 @@
       Alert,
     } from 'react-native';
 
-    import {
+  import {
       Colors,
       DebugInstructions,
       Header,
@@ -23,11 +23,11 @@
       ReloadInstructions,
     } from 'react-native/Libraries/NewAppScreen';
 
-    import { NavigationContainer } from '@react-navigation/native';
-    import { createNativeStackNavigator } from '@react-navigation/native-stack';
+  import { NavigationContainer } from '@react-navigation/native';
+  import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-    import HomePage from './HomePage';
-    import SignUpPage from './SignUpPage';
+  import HomePage from './HomePage';
+  import SignUpPage from './SignUpPage';
 
      function LoginPage({ navigation })
      {
@@ -65,7 +65,20 @@
                      .then((data) => {
                        console.log('User account created & signed in!');
                        const uid = data.user.uid;
-                       navigation.navigate('HomePage', {userId: uid});
+                       database()
+                         .ref('users/' + uid)
+                         .once('value')
+                         .then(snapshot=>{console.log(snapshot.val());});
+
+                       item = database()
+                       .ref('users/' + uid + '/oneTimeBehavior')
+                       .push();
+                       itemId = item.key;
+                       console.log(itemId);
+                       item
+                       .set({oneFocusTime: 0, oneQuitTry: 0, oneQuit: 0,})
+                       .then(()=>{console.log('Data updated twice');});
+                       navigation.navigate('HomePage', {userId: uid, oneTimeId: itemId});
                      })
                      .catch(error => {
                        if (error.code === 'auth/email-already-in-use') {

@@ -89,20 +89,45 @@ function SignUpPage({ navigation })
          .then((data) => {
            //setId(data.user.uid);
            const uid = data.user.uid;
+           let item;
+           let itemId;
            let dataToSave = {
                id: uid,
                email: email,
                password: password,
+               oneTimeBehavior: 'oneTimeBehavior',
                focusBreak: 0,
                focusQuit: 0,
            };
            database()
                .ref('users/' + uid)
                .update(dataToSave)
-               .then(snapshot => {console.log('Data updated');})
+               .then(snapshot => {
+                 console.log('Data updated');
+                 item = database()
+                   .ref('users/' + uid + '/oneTimeBehavior')
+                   .push();
+                 itemId = item.key;
+                 console.log(itemId);
+                  item
+                   .set({oneFocusTime: 0, oneQuitTry: 0, oneQuit: 0,})
+                   .then(()=>{console.log('Data updated twice');});
+                   //
+                 //  .update({time: timeSet})
+                 //  .then(snapshot =>
+                 //  {
+                 //    database()
+                 //    .ref('users/' +uid + '/oneTimeBehavior/' + timeSet)
+                 //    .update({oneFocusTime: 0, oneQuitTry: 0, oneQuit: 0,})
+                 //    .then(snapshot => {console.log('Data updated twice');});
+                 //  }
+                 //  );
+                 //  .update({oneFocusTime: 0, oneQuitTry: 0, oneQuit: 0,})
+                 //  .then(snapshot => {console.log('Data updated twice');})
+               })
                .catch(error=>{reject(error);});
            //console.log(uid);
-           navigation.navigate('HomePage', {userId: uid});
+           navigation.navigate('HomePage', {userId: uid, oneTimeId: itemId});
            resolve('User account created & signed in!');
          })
          .catch(error => {

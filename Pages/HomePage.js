@@ -44,6 +44,7 @@ class HomePage extends Component {
       flag: false,
       temp:'0',
       userId: '',
+      oneTimeId: '',
       };
       }
 
@@ -51,7 +52,9 @@ class HomePage extends Component {
     {
          let id = this.props.route.params.userId;
          this.setState({userId: id},()=>{console.log(this.state.userId)});
-         console.log(id);
+         let item = this.props.route.params.oneTimeId;
+         this.setState({oneTimeId: item},()=>{console.log(this.state.oneTimeId)});
+         //console.log(id);
     }
 
     componentDidMount()
@@ -132,7 +135,7 @@ class HomePage extends Component {
                   style={styles.button}
                   onPress={() => {
                   this.setState({flag:true});
-                  this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId });
+                  this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
                   }}>
                   <Text style = {styles.buttonText}>{'Start'}</Text>
         </TouchableOpacity>

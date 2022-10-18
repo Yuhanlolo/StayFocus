@@ -42,6 +42,8 @@ class QuitPage extends Component {
         sec_one: 0,
         sec_two: 0,
         userId: '',
+        oneTimeId: '',
+        focusTime: 0,
       };
       }
 
@@ -61,10 +63,14 @@ class QuitPage extends Component {
         let secBreak_1 = this.props.route.params.secBreak_1;
         let secBreak_2 = this.props.route.params.secBreak_2;
         let id = this.props.route.params.userId;
+        let oneId = this.props.route.params.oneTimeId;
+        let time = this.props.route.params.endTime;
         this.setState({min:timeBreak,});
         this.setState({sec_one: secBreak_1,});
         this.setState({sec_two: secBreak_2,});
         this.setState({userId: id,});
+        this.setState({oneTimeId: oneId,});
+        this.setState({focusTime: time,});
      };
 
      readData()
@@ -73,6 +79,7 @@ class QuitPage extends Component {
                this.props.navigation.navigate('HomePage', {userId: this.state.userId});
                //console.log(this.state.userId);
                let focusQuiting = 0;
+               let oneTimeQuit = 0;
                database()
                 .ref('users/' + this.state.userId)
                 .once('value')
@@ -90,8 +97,25 @@ class QuitPage extends Component {
                    .then(snapshot => {console.log('Data updated');})
                    .catch(error=>{console.log(error)});
                 });
-          }
 
+                 database()
+                   .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
+                   .once('value')
+                   .then(
+                     snapshot=>
+                     {
+                       console.log('User oneTime data: ', snapshot.val());
+                       oneTimeQuit = snapshot.val().oneQuit;
+                       oneTimeQuit = oneTimeQuit + 1;
+
+                       database()
+                          .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
+                          .update({oneQuit: oneTimeQuit, oneFocusTime: this.state.focusTime})
+                          .then(snapshot => {console.log('Data updated oneTime');})
+                          .catch(error=>{console.log(error)});
+                     }
+                   );
+          }
 
     render() {
       return (
