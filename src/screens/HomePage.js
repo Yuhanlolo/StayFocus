@@ -5,15 +5,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { createStyles, ThemeContext } from "../helpers";
 import { SelectButton } from "../components/SelectButton";
 import { CustomButton } from "../components/CustomButton";
-import { useLocalStore } from "../store";
+import { useLocalStore, durationMinutes } from "../store";
 
 //Home page to set focusing time
-const times = [
-  { label: "0.1 minutes", value: 0.1 },
-  { label: "50 minutes", value: 50 },
-  { label: "75 minutes", value: 75 },
-  { label: "100 minutes", value: 100 },
-];
 
 function HomePage({ navigation }) {
   const styles = useStyles();
@@ -32,6 +26,11 @@ function HomePage({ navigation }) {
     navigation.navigate("TimerPage");
   };
 
+  const data = durationMinutes.map((minutes) => ({
+    label: `${minutes} minutes`,
+    value: minutes,
+  }));
+
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
@@ -45,7 +44,7 @@ function HomePage({ navigation }) {
       <View style={styles.prompt}>
         <Text style={styles.prompt.text}>I want to focus for</Text>
         <SelectButton
-          data={times}
+          data={data}
           index={index}
           onChange={setIndex}
           style={styles.prompt.select}
@@ -88,7 +87,7 @@ const useStyles = createStyles((theme) => ({
       color: theme.secondaryColor,
       text: {
         color: theme.secondaryColor,
-        fontSize: theme.fontSizes.lg,
+        fontSize: theme.fontSizes.xl,
         fontWeight: "700",
       },
     },
