@@ -29,7 +29,7 @@
   import HomePage from './HomePage';
   import SignUpPage from './SignUpPage';
 
-     function LoginPage({ navigation })
+  function LoginPage({ navigation })
      {
           // Set an initializing state whilst Firebase connects
           const [initializing, setInitializing] = useState(true);

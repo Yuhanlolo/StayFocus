@@ -1354,6 +1354,11 @@
   resolved "https://registry.npmmirror.com/@react-native-firebase/database/-/database-15.7.0.tgz#f4af53eab4a119a64bc3103190b4b9f34793ebe7"
   integrity sha512-eOdJ+J/9MuJBqanzzsrqJzspM9jto4Zu/UrWu2/qatey6FXRfeQIn9nJr2TbaiP0M5qVEISmA9suIFyfY7bCDw==
 
+"@react-native-firebase/messaging@^15.7.0":
+  version "15.7.0"
+  resolved "https://registry.npmmirror.com/@react-native-firebase/messaging/-/messaging-15.7.0.tgz#fa81872ceb202125652678ebf310ae5e22107d2a"
+  integrity sha512-c2BLLbBm4kMjbkm1fJ465qZ2o24GHylLxeHSjU63SHIUVhnD5j7rWV/XvumNIEkSWtZmy9v+uGpmArLCAjZraw==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz"
@@ -5916,6 +5921,11 @@ react-native-modal-dropdown@^1.0.2:
   integrity sha512-X13RbwoQdaOb9Ffi7fjRVwh9OXauXIJhum0uXGzYZLMyoCQ5yt5cxf27P/YZbdh80Fb7bdPx6vTA4PTpUK2WDQ==
   dependencies:
     prop-types "^15.6.0"
+
+react-native-notifications@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.npmmirror.com/react-native-notifications/-/react-native-notifications-4.3.1.tgz#ad9a8e6881bc17cf03ef16d4dfdaee9ec8bb721d"
+  integrity sha512-A668d+Q0/VQRjmrh+LvDpc/REA8GXgwCijXDCIlDHGMK8enmrtdxY5OANQf1VM3hecf+fD0wYFw2uqL/ZR8jgg==
 
 react-native-reanimated@^2.10.0:
   version "2.10.0"

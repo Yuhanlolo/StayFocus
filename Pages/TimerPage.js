@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import type {Node} from 'react';
+import {Notifications} from 'react-native-notifications';
 import {
   SafeAreaView,
   ScrollView,
@@ -11,7 +12,8 @@ import {
   Button,
   Picker,
   DeviceEventEmitter,
-  TouchableOpacity
+  TouchableOpacity,
+  AppState,
 } from 'react-native';
 
 import {
@@ -36,7 +38,26 @@ import SuccessPage from './SuccessPage';
 class TimerPage extends Component {
     constructor(props) {
       super(props);
-      this.state = {
+
+    Notifications.registerRemoteNotifications();
+
+    Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
+      console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
+      completion({alert: false, sound: false, badge: false});
+    });
+
+    Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
+      console.log(`Notification opened: ${notification.payload}`);
+      completion();
+    });
+
+
+    Notifications.events().registerNotificationReceivedBackground((notification: Notification, completion: (response: NotificationCompletion) => void) => {
+    console.log("Notification Received - Background", notification.payload);
+    completion({alert: true, sound: true, badge: false});
+            });
+
+    this.state = {
         text_1: "Tap the clock",
         text_2: "To start your focused time!",
         flag: true,
@@ -120,6 +141,17 @@ class TimerPage extends Component {
         }
       }
 
+      _handleAppStateChange = (nextAppState) => {
+           if (nextAppState === 'background') {
+             	  console.log('**********running background**********');
+                  Notifications.postLocalNotification({
+                      title: "Stay Focused",
+                      body: "Click here to continue your focus time!",
+                      extra: "data"
+                  });
+           }
+      }
+
 //Make timeSetter method execute without binding to events
 
      componentDidMount()
@@ -129,6 +161,7 @@ class TimerPage extends Component {
        this.listener = DeviceEventEmitter.addListener('changeResult', () => {
              this.setState({ pause: true });
            });
+       AppState.addEventListener('change', this._handleAppStateChange);
      }
 
      readData()
