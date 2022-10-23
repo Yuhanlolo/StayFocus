@@ -105,12 +105,16 @@ class QuitPage extends Component {
                      snapshot=>
                      {
                        console.log('User oneTime data: ', snapshot.val());
-                       oneTimeQuit = snapshot.val().oneQuit;
-                       oneTimeQuit = oneTimeQuit + 1;
+                       let meta = snapshot.val().metadata;
+                       let temp = meta.pop();
+                       temp.quit = 'yes';
+                       meta.push(temp);
+                       //oneTimeQuit = snapshot.val().oneQuit;
+                       //oneTimeQuit = oneTimeQuit + 1;
 
                        database()
                           .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
-                          .update({oneQuit: oneTimeQuit, oneFocusTime: this.state.focusTime})
+                          .update({metadata: meta, complete: this.state.focusTime.toString() + 'mins'})
                           .then(snapshot => {console.log('Data updated oneTime');})
                           .catch(error=>{console.log(error)});
                      }
@@ -146,7 +150,7 @@ class QuitPage extends Component {
     background: {
      flex: 1,
      flexDirection: 'column',
-     backgroundColor: '#8D9E98',
+     backgroundColor: 'black',
      alignItems: "center",
      paddingHorizontal: 10
     },
@@ -168,14 +172,14 @@ class QuitPage extends Component {
     },
 
     button: {
-      backgroundColor: "#28454B",
+      backgroundColor: "#506F4C",
       alignItems: "center",
       top: '35%',
       borderRadius: 15,
       padding: 10,
       width: '40%',
       borderWidth: 7,
-      borderColor: '#8D9E98'
+      borderColor: 'black'
     },
 
   });

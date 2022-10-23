@@ -60,6 +60,27 @@
 
            function signIn ()
                  {
+                    let date = new Date();
+                    let year = date.getFullYear().toString();
+                    let month = (date.getMonth()+1).toString();
+                    let day = date.getDate().toString();
+                    let hour =  date.getHours().toString();
+                    let minute = date.getMinutes().toString();
+                    let second =   date.getSeconds().toString();
+                    if(Number(hour) <= 9)
+                    {
+                      hour = '0'+hour;
+                    }
+                    if(Number(minute) <= 9)
+                    {
+                      minute = '0'+minute;
+                    }
+                    if(Number(second) <= 9 )
+                    {
+                      second = '0'+second;
+                    }
+                    let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+
                     auth()
                      .signInWithEmailAndPassword(email, password)
                      .then((data) => {
@@ -74,9 +95,10 @@
                        .ref('users/' + uid + '/oneTimeBehavior')
                        .push();
                        itemId = item.key;
+                       let meta = [{timestamp: '0', quit: 'no'}];
                        console.log(itemId);
                        item
-                       .set({oneFocusTime: 0, oneQuitTry: 0, oneQuit: 0,})
+                       .set({timestamp: timestamp, focusDuration: '0', metadata: meta, complete: ''})
                        .then(()=>{console.log('Data updated twice');});
                        navigation.navigate('HomePage', {userId: uid, oneTimeId: itemId});
                      })
@@ -97,7 +119,7 @@
                       <Text style = {styles.comments_1}>{text_1}</Text>
                       <View style = {styles.inputContainer}>
                       <TextInput
-                       style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+                       style={{height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
                        onChangeText={(text) => {
                          setEmail(text);
                        }}
@@ -106,7 +128,7 @@
                       <Text style = {styles.comments_2}>{text_2}</Text>
                       <View style = {styles.inputContainer}>
                       <TextInput
-                       style={{top: '50%',height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+                       style={{top: '50%',height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
                        password={true}
                        onChangeText={(text) => {
                          setPassword(text);
@@ -139,7 +161,7 @@
     background: {
      flex: 1,
      flexDirection: 'column',
-     backgroundColor: '#8D9E98',
+     backgroundColor: 'black',
      paddingHorizontal: 10
     },
 
@@ -148,7 +170,7 @@
       top: '10%',
       left: "10%",
       fontFamily: "Cochin",
-      color: 'white',
+      color: '#B8C59E',
     },
 
     comments_1: {
@@ -178,13 +200,13 @@
 
     helper: {
       fontFamily: "Cochin",
-      color: 'white',
+      color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
     },
 
     buttonHelper: {
-      backgroundColor: "#28454B",
+      backgroundColor: "#506F4C",
       borderRadius: 15,
       padding: 10,
     },
@@ -192,13 +214,13 @@
     button: {
       top: '40%',
       left:'25%',
-      backgroundColor: "#28454B",
+      backgroundColor: "#506F4C",
       alignItems: "center",
       borderRadius: 23,
       padding: 10,
       width: '50%',
       borderWidth: 7,
-      borderColor: '#8D9E98'
+      borderColor: 'black'
     },
 
     buttonText: {

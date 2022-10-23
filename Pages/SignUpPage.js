@@ -84,17 +84,36 @@ function SignUpPage({ navigation })
      createUser = () =>
      {
          return new Promise(function(resolve,reject){
+         let date = new Date();
+         let year = date.getFullYear().toString();
+         let month = (date.getMonth()+1).toString();
+         let day = date.getDate().toString();
+         let hour =  date.getHours().toString();
+         let minute = date.getMinutes().toString();
+         let second =   date.getSeconds().toString();
+         if(Number(hour) <= 9)
+         {
+           hour = '0'+hour;
+         }
+         if(Number(minute) <= 9)
+         {
+           minute = '0'+minute;
+         }
+         if(Number(second) <= 9 )
+         {
+           second = '0'+second;
+         }
+         let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
           auth()
          .createUserWithEmailAndPassword(email, password)
          .then((data) => {
            //setId(data.user.uid);
            const uid = data.user.uid;
-           let item;
-           let itemId;
+
            let dataToSave = {
                id: uid,
                email: email,
-               password: password,
+               //password: password,
                oneTimeBehavior: 'oneTimeBehavior',
                focusBreak: 0,
                focusQuit: 0,
@@ -108,10 +127,12 @@ function SignUpPage({ navigation })
                    .ref('users/' + uid + '/oneTimeBehavior')
                    .push();
                  itemId = item.key;
+                 let meta = [{timestamp: '0', quit: 'no'}];
                  console.log(itemId);
                   item
-                   .set({oneFocusTime: 0, oneQuitTry: 0, oneQuit: 0,})
+                   .set({timestamp: timestamp, focusDuration: '0', metadata: meta, complete: ''})
                    .then(()=>{console.log('Data updated twice');});
+                   navigation.navigate('HomePage', {userId: uid, oneTimeId: itemId});
                    //
                  //  .update({time: timeSet})
                  //  .then(snapshot =>
@@ -127,7 +148,6 @@ function SignUpPage({ navigation })
                })
                .catch(error=>{reject(error);});
            //console.log(uid);
-           navigation.navigate('HomePage', {userId: uid, oneTimeId: itemId});
            resolve('User account created & signed in!');
          })
          .catch(error => {
@@ -215,7 +235,7 @@ function SignUpPage({ navigation })
     background: {
      flex: 1,
      flexDirection: 'column',
-     backgroundColor: '#8D9E98',
+     backgroundColor: 'black',
      paddingHorizontal: 10
     },
 
@@ -274,7 +294,7 @@ function SignUpPage({ navigation })
     },
 
     buttonHelper: {
-      backgroundColor: "#28454B",
+      backgroundColor: "#506F4C",
       borderRadius: 15,
       padding: 10,
     },
@@ -282,13 +302,13 @@ function SignUpPage({ navigation })
     button: {
       top: '25%',
       left:'25%',
-      backgroundColor: "#28454B",
+      backgroundColor: "#506F4C",
       alignItems: "center",
       borderRadius: 23,
       padding: 10,
       width: '50%',
       borderWidth: 7,
-      borderColor: '#8D9E98'
+      borderColor: 'black'
     },
 
     buttonText: {

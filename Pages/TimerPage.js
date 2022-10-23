@@ -73,6 +73,7 @@ class TimerPage extends Component {
         sec_2: 0,
         pause: true,
         temp: 0,
+
       };
       }
 
@@ -106,7 +107,7 @@ class TimerPage extends Component {
                           this.interval && clearInterval(this.interval);
                           if(this.state.set == true)
                           {
-                            this.props.navigation.navigate('SuccessPage');
+                            this.props.navigation.navigate('SuccessPage', {focusTime: this.state.temp, id: this.state.userId, thisTime: this.state.oneTimeId});
                           }
                         }
                         if(this.state.pause == false)
@@ -159,7 +160,7 @@ class TimerPage extends Component {
        this.timeSetter();
        this.timeCounter();
        this.listener = DeviceEventEmitter.addListener('changeResult', () => {
-             this.setState({ pause: true });
+          this.setState({ pause: true });
            });
        AppState.addEventListener('change', this._handleAppStateChange);
      }
@@ -172,6 +173,31 @@ class TimerPage extends Component {
           let focusBreaking = 0;
           let oneTimeBreaking = 0;
           let focusTime = this.state.temp - this.state.min_1 * 10 - this.state.min_2;
+          let focusSet = this.state.temp;
+
+          let date = new Date();
+          let year = date.getFullYear().toString();
+          let month = (date.getMonth()+1).toString();
+          let day = date.getDate().toString();
+          let hour =  date.getHours().toString();
+          let minute = date.getMinutes().toString();
+          let second =   date.getSeconds().toString();
+
+          if(Number(hour) <= 9)
+          {
+            hour = '0'+hour;
+          }
+          if(Number(minute) <= 9)
+          {
+            minute = '0'+minute;
+          }
+          if(Number(second) <= 9 )
+          {
+            second = '0'+second;
+          }
+
+          let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+
           database()
            .ref('users/' + this.state.userId)
            .once('value')
@@ -196,13 +222,23 @@ class TimerPage extends Component {
            .then(
              snapshot=>
              {
+               console.log('passing data: ', this.state.oneTimeId);
                console.log('User oneTime data: ', snapshot.val());
-               oneTimeBreaking = snapshot.val().oneQuitTry;
-               oneTimeBreaking = oneTimeBreaking + 1;
+               let meta = snapshot.val().metadata;
+               console.log('User meta: ', meta);
+               if(meta[0].timestamp == '0')
+               {
+                 meta.pop();
+               }
+               let record = {timestamp: timestamp, quit: 'no'};
+               meta.push(record);
+               //oneTimeBreaking = snapshot.val().oneQuitTry;
+               //oneTimeBreaking = oneTimeBreaking + 1;
+
 
                database()
                   .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
-                  .update({oneQuitTry: oneTimeBreaking,})
+                  .update({focusDuration: focusSet.toString() + 'mins', metadata: meta})
                   .then(snapshot => {console.log('Data updated oneTime');})
                   .catch(error=>{console.log(error)});
              }
@@ -230,7 +266,7 @@ class TimerPage extends Component {
         <View style = {styles.background}>
         <View>
         <TouchableOpacity
-          style={{backgroundColor: "#28454B", top: '10%', width: '25%', height:'22%', borderRadius: 15, alignItems: "center",}}
+          style={{backgroundColor: "#506F4C", top: '10%', width: '25%', height:'22%', borderRadius: 15, alignItems: "center",}}
           onPress={() => {
           this.readData();
           //this.setState({pause:false});
@@ -274,7 +310,7 @@ class TimerPage extends Component {
     background: {
      flex: 1,
      flexDirection: 'column',
-     backgroundColor: '#8D9E98',
+     backgroundColor: 'black',
      paddingHorizontal: 10
     },
 
