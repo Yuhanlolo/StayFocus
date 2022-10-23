@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { CustomModal } from "../components/CustomModal";
 import { CustomButton } from "../components/CustomButton";
+import { Screen } from "../components/Screen";
 import { createStyles } from "../helpers";
 import { useLocalStore, saveSessionToFirestore } from "../store";
 
@@ -116,7 +116,7 @@ function SuccessPage({ navigation }) {
   const styles = useStyles();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Screen>
       <Text style={styles.text}>
         Congrats! You focused on{" "}
         <Text style={{ fontStyle: "italic" }}>{planLowerCase}</Text> for{" "}
@@ -134,17 +134,11 @@ function SuccessPage({ navigation }) {
           }}
         />
       ) : null}
-    </SafeAreaView>
+    </Screen>
   );
 }
 
 const useStyles = createStyles((theme) => ({
-  container: {
-    alignItems: "center",
-    height: "100%",
-    padding: theme.padding,
-    backgroundColor: theme.primaryColor,
-  },
   text: {
     marginTop: "70%",
     marginBottom: "30%",

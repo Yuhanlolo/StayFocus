@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { TextInput, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { createStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton } from "../components/CustomButton";
 import { CustomModal } from "../components/CustomModal";
+import { Screen } from "../components/Screen";
 import { useLocalStore } from "../store";
 
 function Timer(props) {
@@ -76,7 +76,7 @@ function TimerPage({ navigation }) {
   const styles = useStyles();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Screen>
       <CustomButton style={styles.button} onPress={toggleTimerAndModal}>
         Give up
       </CustomButton>
@@ -112,17 +112,11 @@ function TimerPage({ navigation }) {
           </CustomButton>
         </View>
       </CustomModal>
-    </SafeAreaView>
+    </Screen>
   );
 }
 
 const useStyles = createStyles((theme) => ({
-  container: {
-    alignItems: "center",
-    height: "100%",
-    padding: theme.padding,
-    backgroundColor: theme.primaryColor,
-  },
   button: {
     marginTop: "20%",
     rippleColor: theme.primaryColor,

@@ -1,11 +1,10 @@
 import { useContext, useState } from "react";
 import { Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { createStyles, ThemeContext } from "../helpers";
 import { SelectButton } from "../components/SelectButton";
 import { CustomButton } from "../components/CustomButton";
-import { useLocalStore, durationMinutes } from "../store";
+import { Screen } from "../components/Screen";
 
 //Home page to set focusing time
 
@@ -26,13 +25,8 @@ function HomePage({ navigation }) {
     navigation.navigate("TimerPage");
   };
 
-  const data = durationMinutes.map((minutes) => ({
-    label: `${minutes} minutes`,
-    value: minutes,
-  }));
-
   return (
-    <SafeAreaView style={styles.container}>
+    <Screen>
       <TextInput
         style={styles.input}
         onChangeText={setPlan}
@@ -53,7 +47,7 @@ function HomePage({ navigation }) {
       <CustomButton style={styles.button} onPress={onPress}>
         Start
       </CustomButton>
-    </SafeAreaView>
+    </Screen>
   );
 }
 
