@@ -1,79 +1,124 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 import { Svg, Path } from "react-native-svg";
 import { createStyles } from "../helpers";
 
 export function SelectButton(props) {
-  const data = props.data;
-  const index = props.index || 0;
-
+  const value = props.value;
   const defaultStyles = useDefaultStyles();
 
+  const decrease = () => {
+    const newValue =
+      props.min +
+      (Math.ceil((value - props.min) / props.step) - 1) * props.step;
+    if (newValue >= props.min) props.onChange(newValue);
+  };
+
+  const increase = () => {
+    const newValue =
+      props.max -
+      (Math.ceil((props.max - value) / props.step) - 1) * props.step;
+    if (newValue <= props.max) props.onChange(newValue);
+  };
+
+  const onChangeText = (text) => {
+    const newValue = parseInt(text, 10);
+    console.log(newValue);
+    props.onChange(text);
+  };
+
+  const onEndEditing = (e) => {
+    const newValue = parseInt(e.nativeEvent.text, 10);
+    if (newValue >= props.min && newValue <= props.max) {
+      props.onChange(e.nativeEvent.text);
+    } else if (newValue < props.min) {
+      props.onChange(props.min);
+    } else {
+      props.onChange(props.max);
+    }
+  };
+
   return (
-    <View style={defaultStyles}>
-      <Pressable
-        onPress={() => props.onChange((index - 1 + data.length) % data.length)}
-        style={[defaultStyles.button, props.style]}
-      >
-        <Svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={defaultStyles.button.width}
-          height={defaultStyles.button.height}
-          fill={defaultStyles.button.fill}
-          viewBox="0 0 256 256"
+    <View style={defaultStyles.container}>
+      <View style={defaultStyles.form}>
+        <Pressable
+          onPress={decrease}
+          pressRetentionOffset={200}
+          style={[defaultStyles.button, props.style]}
         >
-          <Path fill="none" d="M0 0h256v256H0z" />
-          <Path
-            fill="none"
-            stroke={defaultStyles.button.fill}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={50}
-            d="M40 128h176"
-          />
-        </Svg>
-      </Pressable>
-      <Text style={[defaultStyles.text, props.style.text]}>
-        {data[index].label}
-      </Text>
-      <Pressable
-        onPress={() => props.onChange((index + 1) % data.length)}
-        style={[defaultStyles.button, props.style]}
-      >
-        <Svg
-          xmlns="http://www.w3.org/2000/svg"
-          width={defaultStyles.button.width}
-          height={defaultStyles.button.height}
-          fill={defaultStyles.button.fill}
-          viewBox="0 0 256 256"
+          <Svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={32}
+            height={32}
+            fill={defaultStyles.button.fill}
+            viewBox="0 0 256 256"
+          >
+            <Path fill="none" d="M0 0h256v256H0z" />
+            <Path
+              fill="none"
+              stroke={defaultStyles.button.fill}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={32}
+              d="M40 128h176"
+            />
+          </Svg>
+        </Pressable>
+        <TextInput
+          keyboardType="numeric"
+          onEndEditing={onEndEditing}
+          onChangeText={onChangeText}
+          style={[defaultStyles.textInput, props.style.textInput]}
         >
-          <Path fill="none" d="M0 0h256v256H0z" />
-          <Path
-            fill="none"
-            stroke={defaultStyles.button.fill}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={50}
-            d="M40 128h176M128 40v176"
-          />
-        </Svg>
-      </Pressable>
+          {value}
+        </TextInput>
+        <Pressable
+          onPress={increase}
+          pressRetentionOffset={100}
+          style={[defaultStyles.button, props.style]}
+        >
+          <Svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={32}
+            height={32}
+            fill={defaultStyles.button.fill}
+            viewBox="0 0 256 256"
+          >
+            <Path fill="none" d="M0 0h256v256H0z" />
+            <Path
+              fill="none"
+              stroke={defaultStyles.button.fill}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={32}
+              d="M40 128h176M128 40v176"
+            />
+          </Svg>
+        </Pressable>
+      </View>
+      <Text style={props.style.suffix}>{props.suffix}</Text>
     </View>
   );
 }
 
 const useDefaultStyles = createStyles((theme) => ({
-  backgroundColor: "transparent",
-  flexDirection: "row",
-  justifyContent: "center",
-  alignItems: "center",
-  button: {
-    width: theme.fontSizes.xl,
-    height: theme.fontSizes.xl,
-    fill: theme.secondaryColor,
-    marginLeft: theme.padding,
-    marginRight: theme.padding,
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
   },
-  text: {
+  form: {
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 3 * theme.fontSizes.huge,
+    height: 2 * theme.fontSizes.huge,
+    fill: theme.secondaryColor,
+  },
+  textInput: {
     textAlign: "center",
   },
 }));

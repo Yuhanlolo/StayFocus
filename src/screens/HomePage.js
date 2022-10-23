@@ -5,6 +5,7 @@ import { createStyles, ThemeContext } from "../helpers";
 import { SelectButton } from "../components/SelectButton";
 import { CustomButton } from "../components/CustomButton";
 import { Screen } from "../components/Screen";
+import { useLocalStore } from "../store";
 
 //Home page to set focusing time
 
@@ -12,7 +13,7 @@ function HomePage({ navigation }) {
   const styles = useStyles();
   const theme = useContext(ThemeContext);
   const [plan, setPlan] = useState("");
-  const [index, setIndex] = useState(0);
+  const [minutes, setMinutes] = useState(10);
 
   const savePlan = useLocalStore((state) => state.savePlan);
   const saveStartDatetime = useLocalStore((state) => state.saveStartDatetime);
@@ -21,7 +22,7 @@ function HomePage({ navigation }) {
   const onPress = () => {
     savePlan(plan);
     saveStartDatetime();
-    saveSetTimeSeconds(times[index].value * 60);
+    saveSetTimeSeconds(minutes * 60);
     navigation.navigate("TimerPage");
   };
 
@@ -38,9 +39,15 @@ function HomePage({ navigation }) {
       <View style={styles.prompt}>
         <Text style={styles.prompt.text}>I want to focus for</Text>
         <SelectButton
-          data={data}
-          index={index}
-          onChange={setIndex}
+          min={10}
+          max={120}
+          step={5}
+          suffix="minutes"
+          value={minutes}
+          onChange={(v) => {
+            console.log(typeof v);
+            setMinutes(v);
+          }}
           style={styles.prompt.select}
         />
       </View>
@@ -59,9 +66,10 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.primaryColor,
   },
   input: {
-    height: "50%",
     width: "100%",
     color: theme.secondaryColor,
+    marginTop: "30%",
+    marginBottom: "30%",
     fontFamily: "serif",
     fontStyle: "italic",
     fontWeight: "700",
@@ -72,6 +80,7 @@ const useStyles = createStyles((theme) => ({
   prompt: {
     marginBottom: 40,
     text: {
+      width: "100%",
       color: theme.secondaryColor,
       fontSize: theme.fontSizes.lg,
       textAlign: "center",
@@ -79,11 +88,15 @@ const useStyles = createStyles((theme) => ({
     select: {
       backgroundColor: "transparent",
       color: theme.secondaryColor,
-      text: {
+      textInput: {
         color: theme.secondaryColor,
-        fontSize: theme.fontSizes.xl,
+        fontSize: 2 * theme.fontSizes.xl,
         fontWeight: "700",
       },
+    },
+    suffix: {
+      color: theme.secondaryColor,
+      fontSize: theme.fontSizes.lg,
     },
   },
   button: {

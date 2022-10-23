@@ -9,13 +9,9 @@ const defaultStates = {
   reflectionAnswers: [],
 };
 
-export const durationMinutes = [
-  0.1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120,
-];
-
 export const useLocalStore = create((set) => ({
   ...defaultStates,
-  savePlan: (str) => set({ plan: str }),
+  savePlan: (str) => set((state) => ({ plan: str || state.plan })),
   saveStartDatetime: () => set({ startDatetime: new Date().toJSON() }),
   saveSetTimeSeconds: (num) => set({ setTimeSeconds: num }),
   saveElapsedTimeSeconds: (num) => set({ elapsedTimeSeconds: num }),
