@@ -1,0 +1,75 @@
+import React, { Component } from 'react';
+import type {Node} from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+  Button,
+  Picker,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import AboutPage from './AboutPage';
+import ReminderPage from './ReminderPage';
+
+class ControlPanel extends Component {
+
+constructor(props) {super(props); }
+
+render(){
+   return (
+        <View style = {styles.background}>
+         <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('AboutPage')}}>{"Sound & Notifications"}</Text>
+         <Text style = {styles.baseText_2} onPress = {()=>{this.props.navigate('ReminderPage')}}>{"About"}{'\n'}{"StayFocused"}</Text>
+        </View>
+      );
+   }
+}
+
+  const styles = StyleSheet.create({
+
+    background: {
+     flex: 1,
+     flexDirection: 'column',
+     backgroundColor: '#506F4C',
+     alignItems: "center",
+     paddingHorizontal: 10
+    },
+
+    baseText_1: {
+      fontSize: 18,
+      top: '21%',
+      fontFamily: "Cochin",
+      color: 'white',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+    },
+
+    baseText_2: {
+      fontSize: 18,
+      top: '30%',
+      fontFamily: "Cochin",
+      color: 'white',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+    },
+
+  });
+
+export default ControlPanel;

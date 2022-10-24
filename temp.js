@@ -9,9 +9,6 @@ import QuitPage from './Pages/QuitPage';
 import SuccessPage from './Pages/SuccessPage';
 import LoginPage from './Pages/LoginPage';
 import SignUpPage from './Pages/SignUpPage';
-import AboutPage from './Pages/AboutPage';
-import ReminderPage from './Pages/ReminderPage';
-import ControlPanel from './Pages/ControlPanel';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,9 +22,6 @@ const Stack = createNativeStackNavigator();
         <Stack.Screen name="TimerPage" component={TimerPage} />
         <Stack.Screen name="QuitPage" component={QuitPage} />
         <Stack.Screen name="SuccessPage" component={SuccessPage} />
-        <Stack.Screen name="ReminderPage" component={ReminderPage} />
-        <Stack.Screen name="AboutPage" component={AboutPage} />
-        <Stack.Screen name="ControlPanel" component={ControlPanel} />
       </Stack.Navigator>
     </NavigationContainer>
   );

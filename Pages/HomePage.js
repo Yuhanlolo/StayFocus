@@ -26,10 +26,12 @@ import {
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Drawer from 'react-native-drawer';
 
 import TimerPage from './TimerPage';
+import ControlPanel from './ControlPanel';
 
-const type=['25min', '50min', '75min','100min'];
+const type=['25 Minutes', '50 Minutes', '75 Minutes','100 Minutes'];
 
 //Home page to set focusing time
 
@@ -45,8 +47,17 @@ class HomePage extends Component {
       temp:'0',
       userId: '',
       oneTimeId: '',
+      drawerOpen: false,
+      drawerDisabled: false,
       };
       }
+
+    closeDrawer = () => {
+        this._drawer.close()
+    };
+    openDrawer = () => {
+        this._drawer.open()
+    };
 
     userSetter()
     {
@@ -68,9 +79,7 @@ class HomePage extends Component {
                 areaIndex: index
             });
             let time = value.substr(0);
-            time = time.replace('m','');
-            time = time.replace('i','');
-            time = time.replace('n','');
+            time = time.replace(' Minutes','');
             let num = Number(time);
             this.setState({minSet: num});
         }
@@ -99,17 +108,62 @@ class HomePage extends Component {
 
     render() {
       return (
-        <View style = {styles.background}>
+      <Drawer
+                   ref={(ref) => this._drawer = ref}
+                   // type: 一共是3种（displace,overlay,static）, 用static就好啦，static让人感觉更舒适一些
+                   type="static"
+                   // Drawer 展开区域组件
+                   content={
+                       <ControlPanel navigate={this.props.navigation.navigate} closeDrawer={this.closeDrawer} />
+                   }
+                   // 响应区域双击可以打开抽屉
+                   acceptDoubleTap
+                   // styles 和 tweenHandler是设置向左拉后主内容区的颜色，相当于给主内容区加了一个遮罩
+                   styles={{
+                       mainOverlay: {
+                           backgroundColor: 'black',
+                           opacity: 0,
+                       },
+                   }}
+                   tweenHandler={(ratio) => ({
+                       mainOverlay: {
+                           opacity: ratio / 2,
+                       }
+                   })}
+                   // drawer打开后调用的函数
+                   onOpen={() => {
+                       this.setState({drawerOpen: true});
+                   }}
+                   // drawer关闭后调用的函数
+                   onClose={() => {
+                       this.setState({drawerOpen: false});
+                   }}
+
+                   captureGestures={false}
+                   // 打开/关闭 Drawer所需要的时间
+                   tweenDuration={100}
+                   // 触发抽屉打开/关闭必须经过的屏幕宽度比例
+                   panThreshold={0.08}
+                   disabled={this.state.drawerDisabled}
+                   // Drawer打开后有边界距离屏幕右边界的距离
+                   openDrawerOffset={0.5}
+                   // 拉开抽屉的响应区域
+                   panOpenMask={0.2}
+                   // 如果为true, 则尝试仅处理水平滑动
+                   negotiatePan
+         >
+
+        <ScrollView contentContainerStyle = {styles.background}>
         <TouchableOpacity
                   style={{backgroundColor: "#28454B", borderRadius: 15,  padding: 10, top: '2%', right: '65%'}}
                   onPress= {this.logoff}>
                   <Text style = {{fontFamily: 'Cochin', color: 'white',}}>{'Log off'}</Text>
         </TouchableOpacity>
-        <View style = {{alignItems: "center",}}>
+        <View style = {{top: '20%', alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         </View>
         <TextInput
-          style={{ top: '13%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'50%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          style={{ top: '25%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'85%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
             text = text.replace('m','');
             text = text.replace('i','');
@@ -117,12 +171,12 @@ class HomePage extends Component {
             let num = Number(text);
             this.setState({minSet: num});
           }}
-          //value = ' Input focusing time (e.g., 35mins)'
+          //value = 'enter xxmin'
         />
         <ModalDropdown
                 options={type}    //下拉内容数组
                 style={styles.selectIcon}    //按钮样式
-                dropdownStyle={[styles.selectIcon,{height:32*type.length, width: '32%',}]}    //下拉框样式
+                dropdownStyle={{top:'19.5%',left: '24%',height: '5.3%',color: 'white',backgroundColor:'white',justifyContent: "center",alignItems: "center",borderColor: 'white',borderWidth: 3,borderRadius: 10,height:32*type.length, width: '32%',}}    //下拉框样式
                 dropdownTextStyle={styles.dropdownText}    //下拉框文本样式
                 renderSeparator={this._separator}    //下拉框文本分隔样式
                 adjustFrame={this._adjustType}    //下拉框位置
@@ -130,7 +184,8 @@ class HomePage extends Component {
                 onDropdownWillShow={() => {this.setState({typeShow:true})}}      //按下按钮显示按钮时触发
                 onDropdownWillHide={() => this.setState({typeShow:false})}    //当下拉按钮通过触摸按钮隐藏时触发
                 onSelect={this._selectType}    //当选项行与选定的index 和 value 接触时触发
-                defaultValue={'Press me to select time!'} />
+                defaultValue={'Select Time'}
+                />
         <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
@@ -139,7 +194,8 @@ class HomePage extends Component {
                   }}>
                   <Text style = {styles.buttonText}>{'Start'}</Text>
         </TouchableOpacity>
-        </View>
+        </ScrollView>
+      </Drawer>
       );
     }
 }
@@ -157,7 +213,7 @@ class HomePage extends Component {
 
     textStyle: {
      fontFamily: 'Cochin',
-     fontSize: 23,
+     fontSize: 17,
      top: '90%',
      width: '60%',
      color: 'white',
@@ -172,7 +228,7 @@ class HomePage extends Component {
      top: '45%',
      backgroundColor: "#506F4C",
      borderRadius: 15,
-     width: '60%',
+     width: '85%',
      padding: 10
     },
 
@@ -183,16 +239,17 @@ class HomePage extends Component {
     },
 
     selectIcon: {
-    top:'23%',
-    color:'white',
+    top:'19.5%',
+    left: '24.7%',
+    height: '5.3%',
+    color: '#506F4C',
+    backgroundColor:'#506F4C',
     justifyContent: "center",
     alignItems: "center",
-    borderColor: '#28454B',
+    borderColor: '#506F4C',
     borderWidth: 3,
     borderRadius: 10,
     },
-
-
   });
 
 export default HomePage;

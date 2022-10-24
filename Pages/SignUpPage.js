@@ -244,7 +244,7 @@ function SignUpPage({ navigation })
       top: '10%',
       left: "10%",
       fontFamily: "Cochin",
-      color: 'white',
+      color: '#B8C59E',
     },
 
     comments_1: {
@@ -277,8 +277,8 @@ function SignUpPage({ navigation })
 
     container: {
       flexDirection: 'row',
-      top: '38%',
-      left: '9.5%',
+      top: '42%',
+      left: '7.5%',
     },
 
     inputContainer: {
@@ -288,7 +288,7 @@ function SignUpPage({ navigation })
 
     helper: {
       fontFamily: "Cochin",
-      color: 'white',
+      color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
     },

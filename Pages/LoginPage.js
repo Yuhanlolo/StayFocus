@@ -189,8 +189,8 @@
 
     container: {
       flexDirection: 'row',
-      top: '45%',
-      left: '9.3%',
+      top: '50%',
+      left: '7.5%',
     },
 
     inputContainer: {
