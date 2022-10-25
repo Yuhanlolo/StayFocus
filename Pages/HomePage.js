@@ -93,7 +93,7 @@ class HomePage extends Component {
         _adjustType = () => {
             return({
                 justifyContent: "center",
-                top: '45%',
+                top: '40%',
                 left: '29.6%',
                 width: '40%'
             })

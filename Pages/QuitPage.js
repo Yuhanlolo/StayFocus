@@ -36,8 +36,7 @@ class QuitPage extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        text_1: "Are you sure to",
-        text_2: "give up?",
+        text: "Are you sure you're leaving focus mode?",
         min: 0,
         sec_one: 0,
         sec_two: 0,
@@ -124,22 +123,27 @@ class QuitPage extends Component {
     render() {
       return (
         <View style = {styles.background}>
-        <Text style = {styles.baseText}>{this.state.text_1}{'\n'}{this.state.text_2}</Text>
+        <View style = {styles.container}>
+        <Text style = {styles.baseText}>{this.state.text}</Text>
+        </View>
+        <View style = {styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={styles.buttonLeft}
           onPress={() => {
           this.readData();
           }}>
-          <Text style = {styles.buttonText}>{'Give up'}</Text>
+          <Text style = {styles.buttonText}>{'Leave'}</Text>
          </TouchableOpacity>
+         <Text>{' '}</Text>
         <TouchableOpacity
-          style={styles.button}
+          style={styles.buttonRight}
           onPress={() => {
            DeviceEventEmitter.emit('changeResult');
            this.props.navigation.navigate('TimerPage',{timeSet: this.state.min, second_1: this.state.sec_one, second_2: this.state.sec_two, tag: true, userId: this.state.userId, });
           }}>
-          <Text style = {styles.buttonText}>{'Keep on focusing'}</Text>
+          <Text style = {styles.buttonText}>{'Keep focusing'}</Text>
          </TouchableOpacity>
+         </View>
         </View>
       );
     }
@@ -155,11 +159,24 @@ class QuitPage extends Component {
      paddingHorizontal: 10
     },
 
+    container: {
+     flexDirection: 'column',
+     backgroundColor: '#B8C59E',
+     alignItems: "center",
+     paddingHorizontal: 10,
+     top: '35%',
+     height: '20%',
+     width: '80%',
+     borderRadius: 15,
+     borderWidth: 7,
+     borderColor: 'black'
+    },
+
     baseText: {
-      fontSize: 25,
-      top: '20%',
+      fontSize: 18,
       fontFamily: "Cochin",
-      color: 'white',
+      top: '20%',
+      color: 'black',
       textAlign: 'center',
       textAlignVertical: 'center',
     },
@@ -171,17 +188,32 @@ class QuitPage extends Component {
       textAlignVertical: 'center',
     },
 
-    button: {
+    buttonLeft: {
       backgroundColor: "#506F4C",
       alignItems: "center",
       top: '35%',
-      borderRadius: 15,
+      borderBottomStartRadius: 8.5,
       padding: 10,
-      width: '40%',
-      borderWidth: 7,
-      borderColor: 'black'
+      width: '37.5%',
+      //borderWidth: 5,
+      borderColor: '#B8C59E'
     },
 
+    buttonRight: {
+      backgroundColor: "#506F4C",
+      alignItems: "center",
+      top: '35%',
+      borderBottomEndRadius: 8.5,
+      padding: 10,
+      width: '37.5%',
+      //borderWidth: 5,
+      borderColor: '#B8C59E'
+    },
+
+    buttonContainer: {
+     flexDirection: 'row',
+     top: '24%',
+    }
   });
 
 export default QuitPage;

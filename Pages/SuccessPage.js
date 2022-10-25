@@ -26,13 +26,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import database from '@react-native-firebase/database';
 
+import HomePage from './HomePage';
 //When finish the focusing task, this page come out for congrats.
 
 class SuccessPage extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        text: "Congrats! You have completed your focusing plan now!",
+        text: "Well done! You have finished your focusing time!",
       };
       }
 
@@ -101,7 +102,16 @@ class SuccessPage extends Component {
     render() {
       return (
         <View style = {styles.background}>
+         <View style = {styles.container}>
          <Text style = {styles.baseText}>{this.state.text}</Text>
+         <TouchableOpacity
+          style={styles.buttonRight}
+          onPress={() => {
+           this.props.navigation.navigate('HomePage');
+          }}>
+          <Text style = {styles.buttonText}>{'Back to home'}</Text>
+         </TouchableOpacity>
+         </View>
         </View>
       );
     }
@@ -117,13 +127,38 @@ class SuccessPage extends Component {
      paddingHorizontal: 10
     },
 
-    baseText: {
-      fontSize: 25,
-      top: '40%',
-      fontFamily: "Cochin",
-      color: 'white',
-      textAlign: 'center',
-      textAlignVertical: 'center',
+     baseText: {
+       fontSize: 18,
+       fontFamily: "Cochin",
+       top: '20%',
+       color: 'black',
+       textAlign: 'center',
+       textAlignVertical: 'center',
+     },
+
+    container: {
+     flexDirection: 'column',
+     backgroundColor: '#B8C59E',
+     alignItems: "center",
+     paddingHorizontal: 10,
+     top: '35%',
+     height: '20%',
+     width: '80%',
+     borderRadius: 15,
+     borderWidth: 7,
+     borderColor: 'black'
+    },
+
+    buttonRight: {
+      backgroundColor: "#506F4C",
+      alignItems: "center",
+      top: '34%',
+      borderBottomEndRadius: 8.5,
+      borderBottomStartRadius: 8.5,
+      padding: 10,
+      width: '108.5%',
+      //borderWidth: 5,
+      borderColor: '#B8C59E'
     },
 
   });

@@ -104,11 +104,12 @@ class TimerPage extends Component {
                           this.setState({sec_1:0});
                           this.setState({min_2:0});
                           this.setState({min_1:0});
-                          this.interval && clearInterval(this.interval);
+                          //this.interval && clearInterval(this.interval);
                           if(this.state.set == true)
                           {
                             this.props.navigation.navigate('SuccessPage', {focusTime: this.state.temp, id: this.state.userId, thisTime: this.state.oneTimeId});
                           }
+                          this.interval && clearInterval(this.interval);
                         }
                         if(this.state.pause == false)
                         {
@@ -266,7 +267,7 @@ class TimerPage extends Component {
         <View style = {styles.background}>
         <View>
         <TouchableOpacity
-          style={{backgroundColor: "#506F4C", top: '10%', width: '25%', height:'22%', borderRadius: 15, alignItems: "center",}}
+          style={{backgroundColor: "#506F4C", top: '10%', width: '45%', height:'22%', borderRadius: 15, alignItems: "center",}}
           onPress={() => {
           this.readData();
           //this.setState({pause:false});
@@ -291,7 +292,7 @@ class TimerPage extends Component {
           //    .catch(error=>{console.log(error)});
 
             }}>
-          <Text style={{fontFamily: "Cochin", color: 'white', textAlign: 'center', textAlignVertical: 'center', fontSize: 18,}}>{'Give up'}</Text>
+          <Text style={{fontFamily: "Cochin", color: 'white', textAlign: 'center', textAlignVertical: 'center', fontSize: 16, top:'15%'}}>{'Leave focus mode'}</Text>
          </TouchableOpacity>
          </View>
          <View style = {styles.timer}>
