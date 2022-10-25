@@ -24,6 +24,7 @@ import {
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import auth from '@react-native-firebase/auth';
 
 import AboutPage from './AboutPage';
 import ReminderPage from './ReminderPage';
@@ -32,11 +33,19 @@ class ControlPanel extends Component {
 
 constructor(props) {super(props); }
 
+logoff ()
+{
+   auth()
+    .signOut()
+    .then(() => {console.log('User signed out!');});
+}
+
 render(){
    return (
         <View style = {styles.background}>
          <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('AboutPage')}}>{"Sound & Notifications"}</Text>
          <Text style = {styles.baseText_2} onPress = {()=>{this.props.navigate('ReminderPage')}}>{"About"}{'\n'}{"StayFocused"}</Text>
+         <Text style = {styles.baseText_3} onPress = {this.logoff}>{"Log Out"}</Text>
         </View>
       );
    }
@@ -59,6 +68,7 @@ render(){
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
+      textDecorationLine: 'underline',
     },
 
     baseText_2: {
@@ -68,6 +78,17 @@ render(){
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
+      textDecorationLine: 'underline',
+    },
+
+    baseText_3: {
+      fontSize: 18,
+      top: '70%',
+      fontFamily: "Cochin",
+      color: 'white',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      textDecorationLine: 'underline',
     },
 
   });

@@ -154,11 +154,6 @@ class HomePage extends Component {
          >
 
         <ScrollView contentContainerStyle = {styles.background}>
-        <TouchableOpacity
-                  style={{backgroundColor: "#28454B", borderRadius: 15,  padding: 10, top: '2%', right: '65%'}}
-                  onPress= {this.logoff}>
-                  <Text style = {{fontFamily: 'Cochin', color: 'white',}}>{'Log off'}</Text>
-        </TouchableOpacity>
         <View style = {{top: '20%', alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         </View>

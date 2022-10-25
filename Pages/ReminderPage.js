@@ -34,7 +34,7 @@ class ReminderPage extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        text_1: "Reminder",
+        text_1: "My Plan",
         text_2: "For each day, I plan to focus at least",
         text_3: "I want to be reminded at",
         typeShow: false,
@@ -149,6 +149,7 @@ class ReminderPage extends Component {
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
+      fontWeight: 'bold',
     },
 
     baseText_2: {

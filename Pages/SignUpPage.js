@@ -209,13 +209,7 @@ function SignUpPage({ navigation })
 
          <View style = {styles.container}>
            <Text style = {styles.helper}>{text_5}</Text>
-            <TouchableOpacity
-                      style={styles.buttonHelper}
-                      onPress={() => {
-                        navigation.navigate('LoginPage');
-                      }}>
-                      <Text style = {styles.buttonText}>{text_6}</Text>
-            </TouchableOpacity>
+           <Text style = {styles.helper_} onPress={()=>{navigation.navigate('LoginPage');}}> {"Log In"} </Text>
          </View>
             <TouchableOpacity
                       style={styles.button}
@@ -291,6 +285,14 @@ function SignUpPage({ navigation })
       color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
+    },
+
+    helper_: {
+      fontFamily: "Cochin",
+      color: '#B8C59E',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      textDecorationLine: 'underline',
     },
 
     buttonHelper: {

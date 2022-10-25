@@ -137,13 +137,7 @@
                      </View>
                       <View style = {styles.container}>
                         <Text style = {styles.helper}>{text_3}</Text>
-                         <TouchableOpacity
-                                   style={styles.buttonHelper}
-                                   onPress={() => {
-                                            navigation.navigate('SignUpPage');
-                                           }}>
-                                   <Text style = {styles.buttonText}>{text_4}</Text>
-                         </TouchableOpacity>
+                        <Text style = {styles.helper_} onPress={()=>{navigation.navigate('SignUpPage');}}> {"Sign Up"} </Text>
                       </View>
                          <TouchableOpacity
                                    style={styles.button}
@@ -203,6 +197,14 @@
       color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
+    },
+
+    helper_: {
+      fontFamily: "Cochin",
+      color: '#B8C59E',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      textDecorationLine: 'underline',
     },
 
     buttonHelper: {

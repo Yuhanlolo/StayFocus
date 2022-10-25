@@ -74,6 +74,7 @@ class AboutPage extends Component {
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
+      fontWeight: 'bold',
     },
 
 
