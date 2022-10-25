@@ -21,6 +21,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -38,7 +40,16 @@ class AboutPage extends Component {
     render() {
       return (
         <View style = {styles.background}>
-         <Text style = {styles.baseText_1}>{this.state.text_1}{'\n'}{this.state.text_2}</Text>
+         <View style = {styles.iconContainer}>
+           <Icon.Button
+            size={25}
+            name="arrow-left"
+            backgroundColor="506F4C"
+            color= "#B8C59E"
+            onPress={()=>{this.props.navigation.navigate('HomePage');}}
+           />
+         </View>
+         <Text style = {styles.baseText_1}>{this.state.text_1}{' '}{this.state.text_2}</Text>
          <Text style = {styles.baseText_2}>{this.state.text_3}</Text>
          <Text style = {styles.baseText_3}>{this.state.text_4}</Text>
         </View>
@@ -57,8 +68,8 @@ class AboutPage extends Component {
     },
 
     baseText_1: {
-      fontSize: 20,
-      top: '12%',
+      fontSize: 24,
+      top: '6%',
       fontFamily: "Cochin",
       color: 'white',
       textAlign: 'center',
@@ -69,7 +80,7 @@ class AboutPage extends Component {
 
     baseText_2: {
       fontSize: 20,
-      top: '22%',
+      top: '18%',
       fontFamily: "Cochin",
       color: 'white',
       textAlign: 'center',
@@ -78,13 +89,19 @@ class AboutPage extends Component {
 
     baseText_3: {
       fontSize: 20,
-      top: '45%',
+      top: '40%',
       fontFamily: "Cochin",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
     },
 
+    iconContainer: {
+     flexDirection: 'row',
+     top: '8%',
+     right: '18%'
+     //justifyContent: "start",
+    },
 
   });
 

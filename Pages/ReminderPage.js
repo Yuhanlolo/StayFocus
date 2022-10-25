@@ -26,6 +26,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import ModalDropdown from 'react-native-modal-dropdown';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const type=['25 Minutes', '50 Minutes', '75 Minutes','100 Minutes'];
 
@@ -38,6 +39,8 @@ class ReminderPage extends Component {
         text_3: "I want to be reminded at",
         typeShow: false,
         minSet: 0,
+        hour: 0,
+        min: 0,
       };
       }
 
@@ -71,6 +74,15 @@ class ReminderPage extends Component {
     render() {
       return (
         <View style = {styles.background}>
+        <View style = {styles.iconContainer}>
+           <Icon.Button
+            size={25}
+            name="arrow-left"
+            backgroundColor="black"
+            color= "#B8C59E"
+            onPress={()=>{this.props.navigation.navigate('HomePage');}}
+           />
+        </View>
          <Text style = {styles.baseText_1}>{this.state.text_1}</Text>
          <Text style = {styles.baseText_2}>{this.state.text_2}</Text>
          <TextInput
@@ -98,6 +110,23 @@ class ReminderPage extends Component {
                 defaultValue={'Select Time'}
                 />
          <Text style = {styles.baseText_3}>{this.state.text_3}</Text>
+         <View style = {styles.container}>
+         <TextInput
+          style={{ top: '5%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'25%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          onChangeText={(text) => {
+            this.setState({hour: text});
+          }}
+          //value = ' Input focusing time (e.g., 35mins)'
+         />
+         <Text style = {styles.mark}>{':'}</Text>
+         <TextInput
+          style={{ top: '5%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'25%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          onChangeText={(text) => {
+            this.setState({min: text});
+          }}
+          //value = ' Input focusing time (e.g., 35mins)'
+         />
+         </View>
         </View>
       );
     }
@@ -110,7 +139,7 @@ class ReminderPage extends Component {
      flexDirection: 'column',
      backgroundColor: 'black',
      alignItems: "center",
-     paddingHorizontal: 10
+     paddingHorizontal: 10,
     },
 
     baseText_1: {
@@ -157,6 +186,26 @@ class ReminderPage extends Component {
     dropdownText: {
      fontFamily: 'Cochin',
      color: 'black',
+    },
+
+    container: {
+      flexDirection: 'row',
+      top: '85%',
+      //left: '7.5%',
+    },
+
+    mark: {
+     fontFamily: 'Cochin',
+     color: 'white',
+     fontSize: 35,
+     top: '3.2%',
+    },
+
+    iconContainer: {
+     flexDirection: 'row',
+     top: '8%',
+     right: '18%'
+     //justifyContent: "start",
     },
 
   });
