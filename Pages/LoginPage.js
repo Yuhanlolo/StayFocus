@@ -41,7 +41,7 @@
           const [text_2, setText_2] = useState('Password :');
           const [text_3, setText_3] = useState('Not a user yet?  ');
           const [text_4, setText_4] = useState('Sign up');
-          const [text_5, setText_5] = useState('Start your focused time Now!');
+          const [text_5, setText_5] = useState('Log In');
           const [email, setEmail] = useState('');
           const [password, setPassword] = useState('');
 

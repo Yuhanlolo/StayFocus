@@ -45,7 +45,7 @@ function SignUpPage({ navigation })
      const [text_4, setText_4] = useState('Confirm Password :');
      const [text_5, setText_5] = useState('Already a user?  ');
      const [text_6, setText_6] = useState('Log in');
-     const [text_7, setText_7] = useState('Start your focused time Now!');
+     const [text_7, setText_7] = useState('Sign Up');
      const [email, setEmail] = useState('');
      const [userName, setUserName] = useState('');
      const [password, setPassword] = useState('');

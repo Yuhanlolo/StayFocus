@@ -187,7 +187,7 @@ class HomePage extends Component {
                   this.setState({flag:true});
                   this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
                   }}>
-                  <Text style = {styles.buttonText}>{'Start'}</Text>
+                  <Text style = {styles.buttonText}>{'Start Focusing'}</Text>
         </TouchableOpacity>
         </ScrollView>
       </Drawer>
@@ -230,7 +230,9 @@ class HomePage extends Component {
     buttonText: {
      color: 'white',
      fontFamily: 'Cochin',
-     left: '38%'
+     textAlign: 'center',
+     textAlignVertical: 'center',
+     left: '1%'
     },
 
     selectIcon: {
