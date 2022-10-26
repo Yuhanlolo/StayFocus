@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, View, Keyboard } from "react-native";
 
 import { createStyles } from "../helpers";
 import { SelectButton } from "../components/SelectButton";
@@ -22,7 +22,10 @@ function HomePage({ navigation }) {
     savePlan(plan);
     saveStartDatetime();
     saveSetTimeSeconds(minutes * 60);
-    navigation.navigate("TimerPage");
+    // Unfocus the input before changing page, so that the
+    // user sees if their input gets clamped to min or max
+    Keyboard.dismiss();
+    setTimeout(() => navigation.navigate("TimerPage"), 500);
   };
 
   return (
@@ -41,12 +44,8 @@ function HomePage({ navigation }) {
           min={10}
           max={120}
           step={5}
-          suffix="minutes"
           value={minutes}
-          onChange={(v) => {
-            console.log(typeof v);
-            setMinutes(v);
-          }}
+          onChange={(v) => setMinutes(v)}
           style={styles.prompt.select}
         />
         <Text style={styles.prompt.suffix}>minutes</Text>

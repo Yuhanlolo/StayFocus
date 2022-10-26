@@ -6,3 +6,8 @@ export function secondsToHHMMSS(seconds) {
 
   return [h, m, s];
 }
+
+export function clamp(min, val, max) {
+  console.log(val);
+  return Math.max(Math.min(val, max), min);
+}

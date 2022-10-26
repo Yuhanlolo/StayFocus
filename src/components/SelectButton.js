@@ -21,8 +21,6 @@ export function SelectButton(props) {
   };
 
   const onChangeText = (text) => {
-    const newValue = parseInt(text, 10);
-    console.log(newValue);
     props.onChange(text);
   };
 
@@ -30,10 +28,10 @@ export function SelectButton(props) {
     const newValue = parseInt(e.nativeEvent.text, 10);
     if (newValue >= props.min && newValue <= props.max) {
       props.onChange(e.nativeEvent.text);
-    } else if (newValue < props.min) {
-      props.onChange(props.min);
-    } else {
+    } else if (newValue > props.max) {
       props.onChange(props.max);
+    } else {
+      props.onChange(props.min);
     }
   };
 

@@ -1,3 +1,3 @@
 export * from "./create-styles";
 export * from "./ThemeContext";
-export * from "./time";
+export * from "./utilities";
