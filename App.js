@@ -2,6 +2,12 @@ import * as React from 'react';
 import { Text, View, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Menu, {
+  MenuProvider,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 import {connect} from 'react-redux';
 import HomePage from './Pages/HomePage';
 import TimerPage from './Pages/TimerPage';
@@ -17,6 +23,7 @@ const Stack = createNativeStackNavigator();
 
  function App() {
   return (
+  <MenuProvider>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="LoginPage" component={LoginPage} />
@@ -30,6 +37,7 @@ const Stack = createNativeStackNavigator();
         <Stack.Screen name="ControlPanel" component={ControlPanel} />
       </Stack.Navigator>
     </NavigationContainer>
+  </MenuProvider>
   );
 }
 

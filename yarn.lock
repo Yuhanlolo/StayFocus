@@ -5944,6 +5944,11 @@ react-native-notifications@^4.3.1:
   resolved "https://registry.npmmirror.com/react-native-notifications/-/react-native-notifications-4.3.1.tgz#ad9a8e6881bc17cf03ef16d4dfdaee9ec8bb721d"
   integrity sha512-A668d+Q0/VQRjmrh+LvDpc/REA8GXgwCijXDCIlDHGMK8enmrtdxY5OANQf1VM3hecf+fD0wYFw2uqL/ZR8jgg==
 
+react-native-popup-menu@^0.16.1:
+  version "0.16.1"
+  resolved "https://registry.npmmirror.com/react-native-popup-menu/-/react-native-popup-menu-0.16.1.tgz#b1bb56be5c0838bbc2f532af7b1f554b7ceef566"
+  integrity sha512-xRS7mRh0exwu7Iw8PPVHdM11d13A/KzYjy0/fZx3zVtxISxPkNaDGayau6oa7HqO3Nj0oS9ulFCYjcQfG6vahA==
+
 react-native-reanimated@^2.10.0:
   version "2.10.0"
   resolved "https://registry.npmmirror.com/react-native-reanimated/-/react-native-reanimated-2.10.0.tgz#ed53be66bbb553b5b5e93e93ef4217c87b8c73db"

@@ -13,7 +13,13 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import ModalDropdown from 'react-native-modal-dropdown';
+import Menu, {
+  MenuProvider,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import {
@@ -72,32 +78,6 @@ class HomePage extends Component {
     {
          this.userSetter();
     }
-
-        _selectType = (index,value) => {
-            console.log(index + '--' + value)
-            this.setState({
-                areaIndex: index
-            });
-            let time = value.substr(0);
-            time = time.replace(' Minutes','');
-            let num = Number(time);
-            this.setState({minSet: num});
-        }
-
-        _separator = () => {
-            return(
-                <Text style={{height:0}}></Text>
-            )
-        }
-
-        _adjustType = () => {
-            return({
-                justifyContent: "center",
-                top: '40%',
-                left: '29.6%',
-                width: '40%'
-            })
-        }
 
         logoff ()
         {
@@ -168,19 +148,20 @@ class HomePage extends Component {
           }}
           //value = 'enter xxmin'
         />
-        <ModalDropdown
-                options={type}    //下拉内容数组
-                style={styles.selectIcon}    //按钮样式
-                dropdownStyle={{top:'19.5%',left: '24%',height: '5.3%',color: 'white',backgroundColor:'white',justifyContent: "center",alignItems: "center",borderColor: 'white',borderWidth: 3,borderRadius: 10,height:32*type.length, width: '32%',}}    //下拉框样式
-                dropdownTextStyle={styles.dropdownText}    //下拉框文本样式
-                renderSeparator={this._separator}    //下拉框文本分隔样式
-                adjustFrame={this._adjustType}    //下拉框位置
-                dropdownTextHighlightStyle={{color:'rgba(42, 130, 228, 1)'}}    //下拉框选中颜色
-                onDropdownWillShow={() => {this.setState({typeShow:true})}}      //按下按钮显示按钮时触发
-                onDropdownWillHide={() => this.setState({typeShow:false})}    //当下拉按钮通过触摸按钮隐藏时触发
-                onSelect={this._selectType}    //当选项行与选定的index 和 value 接触时触发
-                defaultValue={'Select Time'}
-                />
+        <Menu style = {{top: '20.5%', left: '33%'}} onSelect={(value) => {this.setState({minSet: value});}}>
+          <MenuTrigger style = {{ width: '100%',}}>
+            <Text style={{color: '#B8C59E',  fontSize: 16,}}>{'▼'}</Text>
+              </MenuTrigger>
+          <MenuOptions customStyles={optionsCustomStyle}>
+            <MenuOption style = {{alignItems: 'center',}} value={25} ><Text style = {{color: 'black'}}>{"25 Minutes"}</Text></MenuOption>
+            <MenuOption style = {{alignItems: 'center',}} value={50} ><Text style = {{color: 'black'}}>{"50 Minutes"}</Text></MenuOption>
+            <MenuOption style = {{alignItems: 'center',}} value={75} ><Text style = {{color: 'black'}}>{"75 Minutes"}</Text></MenuOption>
+            <MenuOption style = {{alignItems: 'center',}} value={100}><Text style = {{color: 'black'}}>{"100 Minutes"}</Text></MenuOption>
+          </MenuOptions>
+        </Menu>
+        <View style = {{top: '48.5%'}}>
+        <Text style={{fontSize: 10, color: 'red'}}>{'*Please enter more than 25 minutes'}</Text>
+        </View>
         <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
@@ -214,13 +195,8 @@ class HomePage extends Component {
      color: 'white',
     },
 
-    dropdownText: {
-     fontFamily: 'Cochin',
-     color: 'black',
-    },
-
     button: {
-     top: '45%',
+     top: '50%',
      backgroundColor: "#506F4C",
      borderRadius: 15,
      width: '85%',
@@ -235,18 +211,32 @@ class HomePage extends Component {
      left: '1%'
     },
 
-    selectIcon: {
-    top:'19.5%',
-    left: '24.7%',
-    height: '5.3%',
-    color: '#506F4C',
-    backgroundColor:'#506F4C',
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: '#506F4C',
-    borderWidth: 3,
-    borderRadius: 10,
-    },
   });
+
+const triggerCustomStyle = {
+    triggerOuterWrapper: {
+        width: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1
+    }
+};
+const optionsCustomStyle = {
+    optionsContainer: {
+        backgroundColor: 'white',
+        marginTop: '15%',
+        marginLeft: '2.5%',
+        width: '45%',
+        height: '18%',
+        borderRadius: 10,
+    },
+    optionTouchable: {
+        underlayColor: 'gray',
+        activeOpacity: 40,
+    },
+    optionWrapper: {
+        margin: 5,
+    },
+};
 
 export default HomePage;

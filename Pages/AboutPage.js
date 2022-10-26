@@ -44,7 +44,7 @@ class AboutPage extends Component {
            <Icon.Button
             size={25}
             name="arrow-left"
-            backgroundColor="506F4C"
+            backgroundColor="#506F4C"
             color= "#B8C59E"
             onPress={()=>{this.props.navigation.navigate('HomePage');}}
            />

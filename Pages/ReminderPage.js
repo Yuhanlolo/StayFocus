@@ -22,10 +22,16 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import Menu, {
+  MenuProvider,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import ModalDropdown from 'react-native-modal-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const type=['25 Minutes', '50 Minutes', '75 Minutes','100 Minutes'];
@@ -78,7 +84,7 @@ class ReminderPage extends Component {
            <Icon.Button
             size={25}
             name="arrow-left"
-            backgroundColor="black"
+            backgroundColor="#506F4C"
             color= "#B8C59E"
             onPress={()=>{this.props.navigation.navigate('HomePage');}}
            />
@@ -86,7 +92,7 @@ class ReminderPage extends Component {
          <Text style = {styles.baseText_1}>{this.state.text_1}</Text>
          <Text style = {styles.baseText_2}>{this.state.text_2}</Text>
          <TextInput
-          style={{ top: '23%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          style={{ top: '23%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
             text = text.replace('m','');
             text = text.replace('i','');
@@ -96,23 +102,21 @@ class ReminderPage extends Component {
           }}
           //value = ' Input focusing time (e.g., 35mins)'
          />
-         <ModalDropdown
-                options={type}    //下拉内容数组
-                style={styles.selectIcon}    //按钮样式
-                dropdownStyle={{top:'15%',left: '24%',height: '5.3%',color: 'white',backgroundColor:'white',justifyContent: "center",alignItems: "center",borderColor: 'white',borderWidth: 3,borderRadius: 10,height:32*type.length, width: '32%',}}    //下拉框样式
-                dropdownTextStyle={styles.dropdownText}    //下拉框文本样式
-                renderSeparator={this._separator}    //下拉框文本分隔样式
-                adjustFrame={this._adjustType}    //下拉框位置
-                dropdownTextHighlightStyle={{color:'rgba(42, 130, 228, 1)'}}    //下拉框选中颜色
-                onDropdownWillShow={() => {this.setState({typeShow:true})}}      //按下按钮显示按钮时触发
-                onDropdownWillHide={() => this.setState({typeShow:false})}    //当下拉按钮通过触摸按钮隐藏时触发
-                onSelect={this._selectType}    //当选项行与选定的index 和 value 接触时触发
-                defaultValue={'Select Time'}
-                />
+        <Menu style = {{top: '18.5%', left: '18%'}} onSelect={(value) => {this.setState({minSet: value});}}>
+          <MenuTrigger style = {{ width: '100%',}}>
+            <Text style={{color: '#B8C59E',  fontSize: 16,}}>{'▼'}</Text>
+              </MenuTrigger>
+          <MenuOptions customStyles={optionsCustomStyle}>
+            <MenuOption style = {{alignItems: 'center',}} value={25} ><Text style = {{color: 'black'}}>{"25 Minutes"}</Text></MenuOption>
+            <MenuOption style = {{alignItems: 'center',}} value={50} ><Text style = {{color: 'black'}}>{"50 Minutes"}</Text></MenuOption>
+            <MenuOption style = {{alignItems: 'center',}} value={75} ><Text style = {{color: 'black'}}>{"75 Minutes"}</Text></MenuOption>
+            <MenuOption style = {{alignItems: 'center',}} value={100}><Text style = {{color: 'black'}}>{"100 Minutes"}</Text></MenuOption>
+          </MenuOptions>
+        </Menu>
          <Text style = {styles.baseText_3}>{this.state.text_3}</Text>
          <View style = {styles.container}>
          <TextInput
-          style={{ top: '5%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'25%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          style={{ top: '17%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'25%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
             this.setState({hour: text});
           }}
@@ -120,7 +124,7 @@ class ReminderPage extends Component {
          />
          <Text style = {styles.mark}>{':'}</Text>
          <TextInput
-          style={{ top: '5%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'25%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          style={{ top: '17%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'25%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
           onChangeText={(text) => {
             this.setState({min: text});
           }}
@@ -137,13 +141,13 @@ class ReminderPage extends Component {
     background: {
      flex: 1,
      flexDirection: 'column',
-     backgroundColor: 'black',
+     backgroundColor: '#506F4C',
      alignItems: "center",
      paddingHorizontal: 10,
     },
 
     baseText_1: {
-      fontSize: 21,
+      fontSize: 24,
       top: '12%',
       fontFamily: "Cochin",
       color: 'white',
@@ -163,30 +167,11 @@ class ReminderPage extends Component {
 
     baseText_3: {
       fontSize: 18,
-      top: '40%',
+      top: '47%',
       fontFamily: "Cochin",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
-    },
-
-    selectIcon: {
-    top:'17.5%',
-    left: '12%',
-    height: '5.3%',
-    color: '#506F4C',
-    backgroundColor:'#506F4C',
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: '#506F4C',
-    borderWidth: 3,
-    borderRadius: 10,
-    //borderBottomRightRadius: 10,
-    },
-
-    dropdownText: {
-     fontFamily: 'Cochin',
-     color: 'black',
     },
 
     container: {
@@ -199,7 +184,7 @@ class ReminderPage extends Component {
      fontFamily: 'Cochin',
      color: 'white',
      fontSize: 35,
-     top: '3.2%',
+     top: '14.5%',
     },
 
     iconContainer: {
@@ -210,5 +195,31 @@ class ReminderPage extends Component {
     },
 
   });
+
+const triggerCustomStyle = {
+    triggerOuterWrapper: {
+        width: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1
+    }
+};
+const optionsCustomStyle = {
+    optionsContainer: {
+        backgroundColor: 'white',
+        marginTop: '15%',
+        marginLeft: '4.7%',
+        width: '45%',
+        height: '18%',
+        borderRadius: 10,
+    },
+    optionTouchable: {
+        underlayColor: 'gray',
+        activeOpacity: 40,
+    },
+    optionWrapper: {
+        margin: 5,
+    },
+};
 
 export default ReminderPage;

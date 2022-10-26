@@ -43,8 +43,8 @@ logoff ()
 render(){
    return (
         <View style = {styles.background}>
-         <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('AboutPage')}}>{"Sound & Notifications"}</Text>
-         <Text style = {styles.baseText_2} onPress = {()=>{this.props.navigate('ReminderPage')}}>{"About"}{'\n'}{"StayFocused"}</Text>
+         <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('ReminderPage')}}>{"Sound & Notifications"}</Text>
+         <Text style = {styles.baseText_2} onPress = {()=>{this.props.navigate('AboutPage')}}>{"About"}{'\n'}{"StayFocused"}</Text>
          <Text style = {styles.baseText_3} onPress = {this.logoff}>{"Log Out"}</Text>
         </View>
       );
