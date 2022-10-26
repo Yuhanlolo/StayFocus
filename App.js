@@ -32,6 +32,6 @@ export default function App() {
 const useStyles = createStyles((theme) => ({
   container: {
     flex: 1,
-    backgroundColor: theme.primaryColor,
+    backgroundColor: theme.backgroundColor,
   },
 }));

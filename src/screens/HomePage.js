@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 
-import { createStyles, ThemeContext } from "../helpers";
+import { createStyles } from "../helpers";
 import { SelectButton } from "../components/SelectButton";
 import { CustomButton } from "../components/CustomButton";
 import { Screen } from "../components/Screen";
@@ -11,7 +11,6 @@ import { useLocalStore } from "../store";
 
 function HomePage({ navigation }) {
   const styles = useStyles();
-  const theme = useContext(ThemeContext);
   const [plan, setPlan] = useState("");
   const [minutes, setMinutes] = useState(10);
 
@@ -32,7 +31,7 @@ function HomePage({ navigation }) {
         style={styles.input}
         onChangeText={setPlan}
         placeholder={"My plan is..."}
-        placeholderTextColor={theme.muteColor}
+        placeholderTextColor={styles.input.placeholderTextColor}
         multiline={true}
         value={plan}
       />
@@ -50,6 +49,7 @@ function HomePage({ navigation }) {
           }}
           style={styles.prompt.select}
         />
+        <Text style={styles.prompt.suffix}>minutes</Text>
       </View>
       <CustomButton style={styles.button} onPress={onPress}>
         Start
@@ -66,43 +66,49 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.primaryColor,
   },
   input: {
-    width: "100%",
-    color: theme.secondaryColor,
+    width: "75%",
     marginTop: "30%",
     marginBottom: "30%",
-    fontFamily: "serif",
-    fontStyle: "italic",
+    paddingBottom: 12,
+    borderBottomWidth: 2,
+    borderBottomColor: theme.primaryColor,
+    color: theme.textColor,
+    placeholderTextColor: theme.primaryColor,
     fontWeight: "700",
-    fontSize: theme.fontSizes.huge,
+    fontSize: theme.fontSizes.lg,
     textAlign: "center",
     overflowWrap: "break-word",
   },
   prompt: {
-    marginBottom: 40,
+    justifyContent: "flex-start",
+    marginBottom: "30%",
+    alignItems: "center",
     text: {
       width: "100%",
-      color: theme.secondaryColor,
-      fontSize: theme.fontSizes.lg,
+      color: theme.textColor,
+      fontSize: theme.fontSizes.md,
       textAlign: "center",
     },
     select: {
       backgroundColor: "transparent",
-      color: theme.secondaryColor,
+      color: theme.textColor,
+      textAlign: "center",
       textInput: {
-        color: theme.secondaryColor,
-        fontSize: 2 * theme.fontSizes.xl,
+        width: 150,
+        color: theme.textColor,
+        fontSize: 1.5 * theme.fontSizes.xl,
         fontWeight: "700",
       },
     },
     suffix: {
-      color: theme.secondaryColor,
-      fontSize: theme.fontSizes.lg,
+      color: theme.textColor,
+      fontSize: theme.fontSizes.md,
     },
   },
   button: {
-    rippleColor: theme.primaryColor,
+    rippleColor: theme.backgroundColor,
     text: {
-      fontSize: theme.fontSizes.lg,
+      fontSize: theme.fontSizes.md,
     },
   },
 }));

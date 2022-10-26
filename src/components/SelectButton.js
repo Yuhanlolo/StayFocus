@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, TextInput, View } from "react-native";
 import { Svg, Path } from "react-native-svg";
 import { createStyles } from "../helpers";
 
@@ -95,7 +95,6 @@ export function SelectButton(props) {
           </Svg>
         </Pressable>
       </View>
-      <Text style={props.style.suffix}>{props.suffix}</Text>
     </View>
   );
 }
@@ -114,9 +113,8 @@ const useDefaultStyles = createStyles((theme) => ({
   button: {
     justifyContent: "center",
     alignItems: "center",
-    width: 3 * theme.fontSizes.huge,
-    height: 2 * theme.fontSizes.huge,
-    fill: theme.secondaryColor,
+    width: 2 * theme.fontSizes.xl,
+    fill: theme.primaryColor,
   },
   textInput: {
     textAlign: "center",

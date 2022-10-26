@@ -25,7 +25,7 @@ const useStyles = createStyles((theme) => ({
   backgroundColor: theme.secondaryColor,
   borderRadius: 12,
   text: {
-    color: theme.primaryColor,
+    color: theme.textColor,
     fontWeight: "500",
     textAlign: "center",
   },

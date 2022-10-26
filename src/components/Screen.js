@@ -24,9 +24,9 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     height: "100%",
     padding: theme.padding,
-    backgroundColor: theme.primaryColor,
+    backgroundColor: theme.backgroundColor,
   },
   statusBar: {
-    backgroundColor: theme.primaryColor,
+    backgroundColor: theme.backgroundColor,
   },
 }));

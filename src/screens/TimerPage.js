@@ -138,7 +138,7 @@ const useStyles = createStyles((theme) => ({
     width: "100%",
     color: theme.secondaryColor,
     fontWeight: "700",
-    fontSize: theme.fontSizes.huge * 2.25,
+    fontSize: theme.fontSizes.xl * 2.25,
     textAlign: "center",
   },
   modalHead: {

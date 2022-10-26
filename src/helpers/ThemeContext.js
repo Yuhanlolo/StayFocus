@@ -1,18 +1,19 @@
 import React, { createContext } from "react";
 
 const theme = {
-  primaryColor: "#19534f",
-  secondaryColor: "#f1fec9",
-  muteColor: "#f1fec980",
-  textColor: "#e0e3e2",
+  primaryColor: "#B8C59E",
+  secondaryColor: "#506F4C",
+  backgroundColor: "#1E1E1E",
+  muteColor: "#333333",
+  textColor: "#FFFFFF",
+  alertColor: "#FF5656",
   padding: 16,
   fontSizes: {
     xs: 12,
-    sm: 14,
-    md: 16,
-    lg: 20,
-    xl: 24,
-    huge: 30,
+    sm: 16,
+    md: 20,
+    lg: 24,
+    xl: 32,
   },
 };
 
