@@ -9,7 +9,7 @@ import { useLocalStore, saveSessionToFirestore } from "../store";
 
 function SuccessPage({ navigation }) {
   const minutes = Math.ceil(
-    useLocalStore((state) => state.elapsedTimeSeconds) / 60
+    useLocalStore((state) => state.elapsedSeconds) / 60
   );
   const plan = useLocalStore((state) => state.plan);
   const planLowerCase = plan[0].toLowerCase() + plan.slice(1);

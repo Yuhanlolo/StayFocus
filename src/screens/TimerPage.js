@@ -50,12 +50,10 @@ function TimerPage({ navigation }) {
   const [modal, setModal] = useState(false);
   const [input, setInput] = useState("");
 
-  const minutes = useLocalStore((state) => state.setTimeSeconds) / 60;
+  const minutes = useLocalStore((state) => state.setSeconds) / 60;
   const plan = useLocalStore((state) => state.plan);
-  const saveElapsedTimeSeconds = useLocalStore(
-    (state) => state.saveElapsedTimeSeconds
-  );
-  const saveGiveUpReason = useLocalStore((state) => state.saveGiveUpReason);
+  const saveElapsedSeconds = useLocalStore((state) => state.saveElapsedSeconds);
+  const saveGiveUpAttempt = useLocalStore((state) => state.saveGiveUpAttempts);
 
   const initialSeconds = minutes * 60;
 
@@ -64,12 +62,13 @@ function TimerPage({ navigation }) {
   const toggleTimerAndModal = () => {
     setPaused(!paused);
     setModal(!modal);
+    saveGiveUpAttempt(input, false);
   };
 
   const onPress = () => {
     setModal(false);
-    saveGiveUpReason(input);
-    saveElapsedTimeSeconds(elapsedSeconds);
+    saveGiveUpAttempt(input, true);
+    saveElapsedSeconds(elapsedSeconds);
     navigation.navigate("FailPage");
   };
 

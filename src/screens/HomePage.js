@@ -16,12 +16,12 @@ function HomePage({ navigation }) {
 
   const savePlan = useLocalStore((state) => state.savePlan);
   const saveStartDatetime = useLocalStore((state) => state.saveStartDatetime);
-  const saveSetTimeSeconds = useLocalStore((state) => state.saveSetTimeSeconds);
+  const saveSetSeconds = useLocalStore((state) => state.saveSetSeconds);
 
   const onPress = () => {
     savePlan(plan);
     saveStartDatetime();
-    saveSetTimeSeconds(minutes * 60);
+    saveSetSeconds(minutes * 60);
     // Unfocus the input before changing page, so that the
     // user sees if their input gets clamped to min or max
     Keyboard.dismiss();

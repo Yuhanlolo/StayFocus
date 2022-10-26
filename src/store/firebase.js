@@ -18,11 +18,10 @@ const db = getFirestore(app);
 export function saveSessionToFirestore() {
   const store = getStore();
   const session = {
-    plan: store.plan,
-    startDatetime: store.startDatetime,
-    setTimeSeconds: store.setTimeSeconds,
-    elapsedTimeSeconds: store.elapsedTimeSeconds,
-    giveUpReason: store.giveUpReason,
+    timestamp: store.startDatetime,
+    focusDurationMinutes: Math.floor(store.setSeconds / 60),
+    completedMinutes: Math.floor(store.elapsedSeconds / 60),
+    giveUpAttempts: store.giveUpAttempts,
     reflectionAnswers: store.reflectionAnswers,
   };
   console.log(session);

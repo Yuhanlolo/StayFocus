@@ -110,7 +110,7 @@ const useModalStyles = createStyles((theme) => ({
 }));
 
 function SuccessPage({ navigation }) {
-  const minutes = useLocalStore((state) => state.setTimeSeconds) / 60;
+  const minutes = useLocalStore((state) => state.setSeconds) / 60;
   const plan = useLocalStore((state) => state.plan);
   const planLowerCase = plan[0].toLowerCase() + plan.slice(1);
   const [modal, setModal] = useState(false);

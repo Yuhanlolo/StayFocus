@@ -4,24 +4,30 @@ import { clamp } from "../helpers";
 const defaultStates = {
   plan: "Doing stuff",
   startDatetime: "",
-  setTimeSeconds: -1,
-  elapsedTimeSeconds: -1,
-  minTimeSeconds: 10 * 60,
-  maxTimeSeconds: 120 * 60,
-  giveUpReason: "",
+  setSeconds: -1,
+  elapsedSeconds: -1,
+  minSeconds: 10 * 60,
+  maxSeconds: 120 * 60,
+  giveUpAttempts: [],
   reflectionAnswers: [],
 };
 
 export const useLocalStore = create((set) => ({
   ...defaultStates,
   savePlan: (str) => set((state) => ({ plan: str || state.plan })),
-  saveStartDatetime: () => set({ startDatetime: new Date().toJSON() }),
-  saveSetTimeSeconds: (num) =>
+  saveStartDatetime: () => set({ startDatetime: new Date().toString() }),
+  saveSetSeconds: (num) =>
     set((state) => ({
-      setTimeSeconds: clamp(state.minTimeSeconds, num, state.maxTimeSeconds),
+      setSeconds: clamp(state.minSeconds, num, state.maxSeconds),
     })),
-  saveElapsedTimeSeconds: (num) => set({ elapsedTimeSeconds: num }),
-  saveGiveUpReason: (str) => set({ giveUpReason: str }),
+  saveElapsedSeconds: (num) => set({ elapsedSeconds: num }),
+  saveGiveUpAttempts: (str, givenUp) =>
+    set((state) => ({
+      giveUpAttempts: [
+        ...state.giveUpAttempts,
+        { timestamp: new Date().toString(), reason: str, givenUp: givenUp },
+      ],
+    })),
   saveReflectionAnswer: (str) =>
     set((state) => ({ reflectionAnswers: [...state.reflectionAnswers, str] })),
 }));
