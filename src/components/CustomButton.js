@@ -23,10 +23,9 @@ const useStyles = createStyles((theme) => ({
   paddingLeft: 24,
   paddingRight: 24,
   backgroundColor: theme.secondaryColor,
-  borderRadius: 12,
+  borderRadius: 9999,
   text: {
     color: theme.textColor,
-    fontWeight: "500",
     textAlign: "center",
   },
 }));

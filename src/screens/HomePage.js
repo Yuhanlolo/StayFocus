@@ -93,9 +93,9 @@ const useStyles = createStyles((theme) => ({
       color: theme.textColor,
       textAlign: "center",
       textInput: {
-        width: 150,
+        width: 100,
         color: theme.textColor,
-        fontSize: 1.5 * theme.fontSizes.xl,
+        fontSize: theme.fontSizes.xl,
         fontWeight: "700",
       },
     },

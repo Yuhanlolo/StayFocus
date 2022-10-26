@@ -39,14 +39,13 @@ function SuccessPage({ navigation }) {
 const useStyles = createStyles((theme) => ({
   text: {
     marginTop: "70%",
-    marginBottom: "30%",
-    color: theme.secondaryColor,
-    fontFamily: "serif",
-    fontSize: theme.fontSizes.xl,
+    marginBottom: "10%",
+    color: theme.textColor,
+    fontSize: theme.fontSizes.lg,
     textAlign: "center",
   },
   button: {
-    rippleColor: theme.primaryColor,
+    rippleColor: theme.backgroundColor,
   },
 }));
 

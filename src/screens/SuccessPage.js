@@ -46,19 +46,25 @@ function ReflectionModal({ onRequestClose, onBackToHome }) {
   const styles = useModalStyles();
 
   return (
-    <CustomModal visible={true} onRequestClose={onRequestClose}>
-      <Text style={styles.modalHead}>My session</Text>
-      <Text style={styles.modalText}>{prompts[promptIndex]}</Text>
+    <CustomModal
+      style={styles.modal.container}
+      visible={true}
+      onRequestClose={onRequestClose}
+      title="Quick questions"
+    >
+      <Text style={styles.modal.text}>{prompts[promptIndex]}</Text>
       {promptIndex < prompts.length - 1 ? (
         <TextInput
-          style={styles.modalInput}
+          style={styles.modal.input}
           onChangeText={setInput}
           value={input}
           multiline={true}
+          placeholder={"Type your answer here"}
+          placeholderTextColor={styles.placeholderTextColor}
         />
       ) : null}
-      <View style={styles.modalButtons}>
-        <CustomButton onPress={next} style={styles.modalButton}>
+      <View style={styles.modal.buttonContainer}>
+        <CustomButton onPress={next} style={styles.modal.button}>
           {buttonText()}
         </CustomButton>
       </View>
@@ -67,42 +73,38 @@ function ReflectionModal({ onRequestClose, onBackToHome }) {
 }
 
 const useModalStyles = createStyles((theme) => ({
-  modalHead: {
-    marginBottom: 12,
-    color: "#e0e3e2",
-    fontSize: theme.fontSizes.xl,
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 12,
-    color: "#e0e3e2",
-    fontSize: theme.fontSizes.md,
-    textAlign: "center",
-  },
-  modalInput: {
-    marginBottom: 24,
-    padding: 12,
-    borderRadius: 12,
-    backgroundColor: theme.primaryColor,
-    fontSize: theme.fontSizes.md,
-    textAlignVertical: "top",
-    color: "#e0e3e2",
-  },
-  modalButtons: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-  },
-  modalButton: {
-    width: "100%",
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: 0,
-    paddingRight: 0,
-    backgroundColor: "transparent",
-    rippleColor: "transparent",
+  placeholderTextColor: theme.muteColor,
+  modal: {
+    container: {
+      top: "25%",
+    },
     text: {
-      color: theme.secondaryColor,
+      marginBottom: 16,
+      color: theme.muteColor,
+      fontSize: theme.fontSizes.sm,
       textAlign: "center",
+    },
+    input: {
+      marginBottom: 16,
+      height: 100,
+      padding: 12,
+      borderRadius: 10,
+      backgroundColor: theme.textColor,
+      fontSize: theme.fontSizes.sm,
+      textAlignVertical: "top",
+      color: theme.muteColor,
+      placeholderTextColor: theme.muteColor,
+    },
+    buttonContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    button: {
+      rippleColor: theme.primaryColor,
+      text: {
+        fontSize: theme.fontSizes.sm,
+      },
     },
   },
 }));
@@ -141,14 +143,13 @@ function SuccessPage({ navigation }) {
 const useStyles = createStyles((theme) => ({
   text: {
     marginTop: "70%",
-    marginBottom: "30%",
-    color: theme.secondaryColor,
-    fontFamily: "serif",
-    fontSize: theme.fontSizes.xl,
+    marginBottom: "10%",
+    color: theme.textColor,
+    fontSize: theme.fontSizes.lg,
     textAlign: "center",
   },
   button: {
-    rippleColor: theme.primaryColor,
+    rippleColor: theme.backgroundColor,
   },
 }));
 

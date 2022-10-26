@@ -75,11 +75,15 @@ function TimerPage({ navigation }) {
 
   const styles = useStyles();
 
+  const button = (
+    <CustomButton style={styles.button} onPress={toggleTimerAndModal}>
+      {modal ? "Back to focus mode" : "Give up"}
+    </CustomButton>
+  );
+
   return (
     <Screen>
-      <CustomButton style={styles.button} onPress={toggleTimerAndModal}>
-        Give up
-      </CustomButton>
+      {button}
       <Text style={styles.plan}>{plan}</Text>
       <Timer
         seconds={initialSeconds}
@@ -88,27 +92,28 @@ function TimerPage({ navigation }) {
         onComplete={() => navigation.navigate("SuccessPage")}
         style={styles.timer}
       />
-      <CustomModal visible={modal} onRequestClose={toggleTimerAndModal}>
-        <Text style={styles.modalHead}>Give up now?</Text>
-        <Text style={styles.modalText}>
+      <CustomModal
+        style={styles.modal.container}
+        visible={modal}
+        onRequestClose={toggleTimerAndModal}
+        title="Give up now?"
+        outside={button}
+      >
+        <Text style={styles.modal.text}>
           You have been focusing for {elapsedMinutes()} minutes. Why do you want
           to use your phone now?
         </Text>
         <TextInput
-          style={styles.modalInput}
+          style={styles.modal.input}
           onChangeText={setInput}
+          placeholder="Type your answer here"
+          placeholderTextColor={styles.modal.input.placeholderTextColor}
           value={input}
           multiline={true}
         />
-        <View style={styles.modalButtons}>
-          <CustomButton onPress={onPress} style={styles.modalButton}>
+        <View style={styles.modal.buttonContainer}>
+          <CustomButton onPress={onPress} style={styles.modal.button}>
             Give up
-          </CustomButton>
-          <CustomButton
-            onPress={toggleTimerAndModal}
-            style={styles.modalButton}
-          >
-            Continue
           </CustomButton>
         </View>
       </CustomModal>
@@ -118,64 +123,60 @@ function TimerPage({ navigation }) {
 
 const useStyles = createStyles((theme) => ({
   button: {
-    marginTop: "20%",
-    rippleColor: theme.primaryColor,
+    marginTop: "10%",
+    rippleColor: theme.backgroundColor,
+    borderRadius: 9999,
     text: {
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.sm,
     },
   },
   plan: {
-    marginTop: "50%",
+    marginTop: "25%",
+    marginBottom: 8,
     width: "100%",
-    color: theme.muteColor,
-    fontFamily: "serif",
-    fontStyle: "italic",
+    color: theme.textColor,
     fontSize: theme.fontSizes.lg,
     fontWeight: "400",
     textAlign: "center",
   },
   timer: {
     width: "100%",
-    color: theme.secondaryColor,
-    fontWeight: "700",
-    fontSize: theme.fontSizes.xl * 2.25,
+    color: theme.textColor,
+    fontSize: 2 * theme.fontSizes.xl,
     textAlign: "center",
   },
-  modalHead: {
-    marginBottom: 12,
-    color: theme.textColor,
-    fontSize: theme.fontSizes.xl,
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 12,
-    color: theme.textColor,
-    fontSize: theme.fontSizes.md,
-    textAlign: "center",
-  },
-  modalInput: {
-    marginBottom: 24,
-    padding: 12,
-    borderRadius: 12,
-    backgroundColor: theme.primaryColor,
-    fontSize: theme.fontSizes.md,
-    textAlignVertical: "top",
-    color: theme.textColor,
-  },
-  modalButtons: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-  },
-  modalButton: {
-    marginLeft: 24,
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: 0,
-    paddingRight: 0,
-    backgroundColor: "transparent",
+  modal: {
+    container: {
+      position: "absolute",
+      bottom: "8%",
+    },
     text: {
-      color: theme.secondaryColor,
-      textAlign: "right",
+      marginBottom: 16,
+      color: theme.muteColor,
+      fontSize: theme.fontSizes.sm,
+      textAlign: "center",
+    },
+    input: {
+      marginBottom: 16,
+      height: 100,
+      padding: 12,
+      borderRadius: 10,
+      backgroundColor: theme.textColor,
+      fontSize: theme.fontSizes.sm,
+      textAlignVertical: "top",
+      color: theme.muteColor,
+      placeholderTextColor: theme.muteColor,
+    },
+    buttonContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    button: {
+      rippleColor: theme.primaryColor,
+      text: {
+        fontSize: theme.fontSizes.sm,
+      },
     },
   },
 }));

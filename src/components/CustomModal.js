@@ -1,10 +1,18 @@
-import { Modal, View } from "react-native";
+import { Modal, Text, View } from "react-native";
 
 import { createStyles } from "../helpers";
 
-export function CustomModal({ visible, onRequestClose, children }) {
+export function CustomModal({
+  visible,
+  onRequestClose,
+  title,
+  style,
+  children,
+  outside,
+}) {
   const styles = useStyles();
 
+  // outside: hack to make button outside the modal clickable
   return (
     <Modal
       animationType="fade"
@@ -13,26 +21,45 @@ export function CustomModal({ visible, onRequestClose, children }) {
       onRequestClose={onRequestClose}
     >
       <View style={styles.centeredView}>
-        <View style={styles.modalView}>{children}</View>
+        {outside || null}
+        <View style={[styles.modalView, style]}>
+          <View style={styles.header}>
+            <Text style={styles.header.text}>{title}</Text>
+          </View>
+          <View style={{ padding: 16 }}>{children}</View>
+        </View>
       </View>
     </Modal>
   );
 }
 
-const useStyles = createStyles(() => ({
+const useStyles = createStyles((theme) => ({
   centeredView: {
     flex: 1,
-    padding: 24,
-    justifyContent: "center",
+    padding: theme.padding,
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.32)",
   },
   modalView: {
     width: "100%",
-    backgroundColor: "#006a65",
     borderRadius: 20,
-    padding: 24,
+    backgroundColor: theme.primaryColor,
     alignItems: "stretch",
     elevation: 3,
+  },
+  header: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: theme.secondaryColor,
+    width: "100%",
+    text: {
+      color: theme.textColor,
+      textAlign: "center",
+      fontSize: theme.fontSizes.sm,
+      fontWeight: "500",
+      paddingTop: 8,
+      paddingBottom: 8,
+    },
   },
 }));
