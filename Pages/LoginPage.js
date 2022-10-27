@@ -130,6 +130,7 @@
                       <TextInput
                        style={{top: '50%',height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
                        password={true}
+                       secureTextEntry={true}
                        onChangeText={(text) => {
                          setPassword(text);
                        }}

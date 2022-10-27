@@ -190,6 +190,7 @@ function SignUpPage({ navigation })
                  <TextInput
                   style={{top: '40%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
                   password={true}
+                  secureTextEntry={true}
                   onChangeText={(text) => {
                     setPassword(text);
                   }}
@@ -201,6 +202,7 @@ function SignUpPage({ navigation })
                   <TextInput
                    style={{top: '60%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
                    password={true}
+                   secureTextEntry={true}
                    onChangeText={(text) => {
                      setConfirmPassword(text);
                    }}
