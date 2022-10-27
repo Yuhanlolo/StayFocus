@@ -50,32 +50,6 @@ class ReminderPage extends Component {
       };
       }
 
-      _selectType = (index,value) => {
-            console.log(index + '--' + value)
-            this.setState({
-                areaIndex: index
-            });
-            let time = value.substr(0);
-            time = time.replace(' Minutes','');
-            let num = Number(time);
-            this.setState({minSet: num});
-        }
-
-      _separator = () => {
-            return(
-                <Text style={{height:0}}></Text>
-            )
-        }
-
-      _adjustType = () => {
-            return({
-                justifyContent: "center",
-                top: '37%',
-                left: '29.6%',
-                width: '40%'
-            })
-        }
-
 
     render() {
       return (
@@ -92,7 +66,7 @@ class ReminderPage extends Component {
          <Text style = {styles.baseText_1}>{this.state.text_1}</Text>
          <Text style = {styles.baseText_2}>{this.state.text_2}</Text>
          <TextInput
-          style={{ top: '23%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          style={{ top: '23%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           onChangeText={(text) => {
             text = text.replace('m','');
             text = text.replace('i','');
@@ -149,7 +123,7 @@ class ReminderPage extends Component {
     baseText_1: {
       fontSize: 24,
       top: '12%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -159,7 +133,7 @@ class ReminderPage extends Component {
     baseText_2: {
       fontSize: 18,
       top: '17%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -168,7 +142,7 @@ class ReminderPage extends Component {
     baseText_3: {
       fontSize: 18,
       top: '47%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -181,7 +155,7 @@ class ReminderPage extends Component {
     },
 
     mark: {
-     fontFamily: 'Cochin',
+     fontFamily: 'Roboto',
      color: 'white',
      fontSize: 35,
      top: '14.5%',

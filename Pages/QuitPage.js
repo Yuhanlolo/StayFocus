@@ -174,7 +174,7 @@ class QuitPage extends Component {
 
     baseText: {
       fontSize: 18,
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       top: '20%',
       color: 'black',
       textAlign: 'center',
@@ -182,7 +182,7 @@ class QuitPage extends Component {
     },
 
     buttonText: {
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',

@@ -169,7 +169,7 @@ function SignUpPage({ navigation })
          <Text style = {styles.comments_1}>{text_1}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           onChangeText={(text) => {
             setEmail(text);
           }}
@@ -178,7 +178,7 @@ function SignUpPage({ navigation })
          <Text style = {styles.comments_2}>{text_2}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{top: '20%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          style={{top: '20%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           onChangeText={(text) => {
             setUserName(text);
           }}
@@ -188,7 +188,7 @@ function SignUpPage({ navigation })
         <Text style = {styles.comments_3}>{text_3}</Text>
                  <View style = {styles.inputContainer}>
                  <TextInput
-                  style={{top: '40%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+                  style={{top: '40%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
                   password={true}
                   onChangeText={(text) => {
                     setPassword(text);
@@ -199,7 +199,7 @@ function SignUpPage({ navigation })
          <Text style = {styles.comments_4}>{text_4}</Text>
                   <View style = {styles.inputContainer}>
                   <TextInput
-                   style={{top: '60%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+                   style={{top: '60%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
                    password={true}
                    onChangeText={(text) => {
                      setConfirmPassword(text);
@@ -237,35 +237,35 @@ function SignUpPage({ navigation })
       fontSize: 30,
       top: '10%',
       left: "10%",
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: '#B8C59E',
     },
 
     comments_1: {
       top:'16%',
       left:'15%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
     },
 
     comments_2: {
       top:'17%',
       left:'15%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
     },
 
    comments_3: {
       top:'18%',
       left:'15%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
     },
 
    comments_4: {
       top:'19%',
       left:'15%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
     },
 
@@ -281,14 +281,14 @@ function SignUpPage({ navigation })
     },
 
     helper: {
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
     },
 
     helper_: {
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -314,7 +314,7 @@ function SignUpPage({ navigation })
     },
 
     buttonText: {
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',

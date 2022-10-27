@@ -64,7 +64,7 @@ render(){
     baseText_1: {
       fontSize: 18,
       top: '21%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -74,7 +74,7 @@ render(){
     baseText_2: {
       fontSize: 18,
       top: '30%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -84,7 +84,7 @@ render(){
     baseText_3: {
       fontSize: 18,
       top: '70%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',

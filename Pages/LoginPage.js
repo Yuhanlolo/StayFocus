@@ -163,21 +163,21 @@
       fontSize: 30,
       top: '10%',
       left: "10%",
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: '#B8C59E',
     },
 
     comments_1: {
       top:'19%',
       left:'15%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
     },
 
     comments_2: {
       top:'22%',
       left:'15%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
     },
 
@@ -193,14 +193,14 @@
     },
 
     helper: {
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
     },
 
     helper_: {
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -226,7 +226,7 @@
     },
 
     buttonText: {
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',

@@ -70,7 +70,7 @@ class AboutPage extends Component {
     baseText_1: {
       fontSize: 24,
       top: '6%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -82,7 +82,7 @@ class AboutPage extends Component {
     baseText_2: {
       fontSize: 20,
       top: '18%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -91,7 +91,7 @@ class AboutPage extends Component {
     baseText_3: {
       fontSize: 20,
       top: '40%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',

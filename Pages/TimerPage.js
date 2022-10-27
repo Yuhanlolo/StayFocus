@@ -292,7 +292,7 @@ class TimerPage extends Component {
           //    .catch(error=>{console.log(error)});
 
             }}>
-          <Text style={{fontFamily: "Cochin", color: 'white', textAlign: 'center', textAlignVertical: 'center', fontSize: 16, top:'15%'}}>{'Leave focus mode'}</Text>
+          <Text style={{fontFamily: "Roboto", color: 'white', textAlign: 'center', textAlignVertical: 'center', fontSize: 16, top:'15%'}}>{'Leave focus mode'}</Text>
          </TouchableOpacity>
          </View>
          <View style = {styles.timer}>
@@ -321,7 +321,7 @@ class TimerPage extends Component {
 
     baseText: {
       top: '45%',
-      fontFamily: "Cochin",
+      fontFamily: "Roboto",
       color: 'white',
     },
 

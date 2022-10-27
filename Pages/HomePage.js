@@ -138,7 +138,7 @@ class HomePage extends Component {
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         </View>
         <TextInput
-          style={{ top: '25%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'85%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+          style={{ top: '25%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'85%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           onChangeText={(text) => {
             text = text.replace('m','');
             text = text.replace('i','');
@@ -160,7 +160,7 @@ class HomePage extends Component {
           </MenuOptions>
         </Menu>
         <View style = {{top: '48.5%'}}>
-        <Text style={{fontSize: 10, color: 'red'}}>{'*Please enter more than 25 minutes'}</Text>
+        <Text style={{fontFamily: 'Roboto', fontSize: 10, color: 'red'}}>{'*Please enter more than 25 minutes'}</Text>
         </View>
         <TouchableOpacity
                   style={styles.button}
@@ -188,7 +188,7 @@ class HomePage extends Component {
     },
 
     textStyle: {
-     fontFamily: 'Cochin',
+     fontFamily: 'Roboto',
      fontSize: 17,
      top: '90%',
      width: '60%',
@@ -205,7 +205,7 @@ class HomePage extends Component {
 
     buttonText: {
      color: 'white',
-     fontFamily: 'Cochin',
+     fontFamily: 'Roboto',
      textAlign: 'center',
      textAlignVertical: 'center',
      left: '1%'
