@@ -28,6 +28,7 @@ import auth from '@react-native-firebase/auth';
 
 import AboutPage from './AboutPage';
 import ReminderPage from './ReminderPage';
+import LoginPage from './LoginPage';
 
 class ControlPanel extends Component {
 
@@ -37,15 +38,18 @@ logoff ()
 {
    auth()
     .signOut()
-    .then(() => {console.log('User signed out!');});
+    .then(() => {
+      console.log('User signed out!');
+      this.props.navigate('LoginPage');
+    });
 }
 
 render(){
    return (
         <View style = {styles.background}>
-         <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('ReminderPage')}}>{"Sound & Notifications"}</Text>
+         <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('ReminderPage')}}>{"My Plan"}</Text>
          <Text style = {styles.baseText_2} onPress = {()=>{this.props.navigate('AboutPage')}}>{"About"}{'\n'}{"StayFocused"}</Text>
-         <Text style = {styles.baseText_3} onPress = {this.logoff}>{"Log Out"}</Text>
+         <Text style = {styles.baseText_3} onPress = {()=>{auth().signOut().then(() => { console.log('User signed out!');this.props.navigate('LoginPage');});}}>{"Log Out"}</Text>
         </View>
       );
    }

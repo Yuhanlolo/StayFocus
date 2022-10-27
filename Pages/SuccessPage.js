@@ -33,7 +33,7 @@ class SuccessPage extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        text: "Well done! You have finished your focusing time!",
+        text: "Great job! You have finished your focusing goal!",
       };
       }
 

@@ -36,7 +36,7 @@ class QuitPage extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        text: "Are you sure you're leaving focus mode?",
+        text: "Confirm to leave the focus mode?",
         min: 0,
         sec_one: 0,
         sec_two: 0,
@@ -132,7 +132,7 @@ class QuitPage extends Component {
           onPress={() => {
           this.readData();
           }}>
-          <Text style = {styles.buttonText}>{'Leave'}</Text>
+          <Text style = {styles.buttonText}>{'Confirm'}</Text>
          </TouchableOpacity>
          <Text>{' '}</Text>
         <TouchableOpacity
@@ -141,7 +141,7 @@ class QuitPage extends Component {
            DeviceEventEmitter.emit('changeResult');
            this.props.navigation.navigate('TimerPage',{timeSet: this.state.min, second_1: this.state.sec_one, second_2: this.state.sec_two, tag: true, userId: this.state.userId, });
           }}>
-          <Text style = {styles.buttonText}>{'Keep focusing'}</Text>
+          <Text style = {styles.buttonText}>{'Cancel'}</Text>
          </TouchableOpacity>
          </View>
         </View>
