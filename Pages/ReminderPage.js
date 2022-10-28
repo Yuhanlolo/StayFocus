@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import type {Node} from 'react';
+import DatePicker from 'react-native-date-picker';
 import {
   SafeAreaView,
   ScrollView,
@@ -11,7 +12,8 @@ import {
   Button,
   Picker,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 
 import {
@@ -47,6 +49,7 @@ class ReminderPage extends Component {
         minSet: 0,
         hour: 0,
         min: 0,
+        date: new Date(),
       };
       }
 
@@ -66,7 +69,7 @@ class ReminderPage extends Component {
          <Text style = {styles.baseText_1}>{this.state.text_1}</Text>
          <Text style = {styles.baseText_2}>{this.state.text_2}</Text>
          <TextInput
-          style={{ top: '23%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          style={{ top: '15%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           onChangeText={(text) => {
             text = text.replace('m','');
             text = text.replace('i','');
@@ -76,7 +79,7 @@ class ReminderPage extends Component {
           }}
           //value = ' Input focusing time (e.g., 35mins)'
          />
-        <Menu style = {{top: '18.5%', left: '18%'}} onSelect={(value) => {this.setState({minSet: value});}}>
+        <Menu style = {{top: '10.5%', left: '18%'}} onSelect={(value) => {this.setState({minSet: value});}}>
           <MenuTrigger style = {{ width: '100%',}}>
             <Text style={{color: '#B8C59E',  fontSize: 16,}}>{'▼'}</Text>
               </MenuTrigger>
@@ -89,21 +92,24 @@ class ReminderPage extends Component {
         </Menu>
          <Text style = {styles.baseText_3}>{this.state.text_3}</Text>
          <View style = {styles.container}>
-         <TextInput
-          style={{ top: '17%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'25%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
-          onChangeText={(text) => {
-            this.setState({hour: text});
-          }}
-          //value = ' Input focusing time (e.g., 35mins)'
-         />
-         <Text style = {styles.mark}>{':'}</Text>
-         <TextInput
-          style={{ top: '17%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'25%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
-          onChangeText={(text) => {
-            this.setState({min: text});
-          }}
-          //value = ' Input focusing time (e.g., 35mins)'
-         />
+          <DatePicker date={this.state.date} mode = 'time' androidVariant = 'nativeAndroid' onDateChange={(text)=>
+          {this.setState({date:text});
+           console.log(JSON.stringify(text));
+           let time = JSON.stringify(text);
+           let hour = time.substring(12,14);
+           let min = time.substring(15,17);
+           let hourNum = Number(hour) + 8;
+           if(hourNum >= 24)
+           {
+             hourNum = hourNum - 24;
+           }
+           let minNum = Number(min);
+           this.setState({hour:hourNum});
+           this.setState({min:minNum});
+           console.log(JSON.stringify(hourNum));
+           console.log(JSON.stringify(minNum));
+          }
+          } textColor = '#ffffff' />
          </View>
         </View>
       );
@@ -122,7 +128,7 @@ class ReminderPage extends Component {
 
     baseText_1: {
       fontSize: 24,
-      top: '12%',
+      top: '7%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
@@ -132,7 +138,7 @@ class ReminderPage extends Component {
 
     baseText_2: {
       fontSize: 18,
-      top: '17%',
+      top: '12%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
@@ -141,7 +147,7 @@ class ReminderPage extends Component {
 
     baseText_3: {
       fontSize: 18,
-      top: '47%',
+      top: '37%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
@@ -150,7 +156,7 @@ class ReminderPage extends Component {
 
     container: {
       flexDirection: 'row',
-      top: '85%',
+      top: '75%',
       //left: '7.5%',
     },
 
@@ -181,7 +187,7 @@ const triggerCustomStyle = {
 const optionsCustomStyle = {
     optionsContainer: {
         backgroundColor: 'white',
-        marginTop: '15%',
+        marginTop: '11%',
         marginLeft: '4.7%',
         width: '45%',
         height: '18%',
