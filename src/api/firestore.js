@@ -5,12 +5,14 @@ import {
   addDoc,
   setDoc,
 } from "firebase/firestore";
+
 import { app } from "./firebase";
+import { getAppStore, getSessionStore, resetSessionStore } from "./store";
 
 const db = getFirestore(app);
 
 export function saveSessionToFirestore() {
-  const store = getStore();
+  const store = getSessionStore();
   const session = {
     timestamp: store.startDatetime,
     focusDurationMinutes: Math.floor(store.setSeconds / 60),
@@ -19,9 +21,11 @@ export function saveSessionToFirestore() {
     reflectionAnswers: store.reflectionAnswers,
   };
   console.log(session);
-  resetStore();
+  resetSessionStore();
 
-  addDoc(collection(db, "[test]sessions"), session);
+  const appStore = getAppStore();
+  const uid = appStore.uid;
+  addDoc(collection(db, "[test]db", uid, "log"), session);
 }
 
 export function saveUserToFireStore(uid, username) {

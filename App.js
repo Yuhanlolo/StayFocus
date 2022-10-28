@@ -12,7 +12,7 @@ import {
   TimerPage,
 } from "./src/screens";
 import { createStyles, ThemeProvider } from "./src/helpers";
-import { useAppStore } from "./src/store";
+import { useAppStore } from "./src/api";
 
 const Stack = createNativeStackNavigator();
 

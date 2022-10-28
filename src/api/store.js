@@ -6,6 +6,8 @@ import { clamp } from "../helpers";
 const defaultApp = {
   uid: null,
   username: null,
+  minSeconds: 10 * 60,
+  maxSeconds: 120 * 60,
   focusSessions: [],
 };
 
@@ -14,6 +16,8 @@ export const useAppStore = create(
     (set) => ({
       ...defaultApp,
       login: (uid) => set({ uid: uid }),
+      saveSession: (session) =>
+        set({ focusSessions: [...focusSessions, session] }),
     }),
     {
       name: "app-data",
@@ -21,6 +25,8 @@ export const useAppStore = create(
     }
   )
 );
+
+export const getAppStore = () => useAppStore.getState();
 
 export const saveUserInfo = (uid, username) =>
   useAppStore.setState({ uid: uid, username: username });
@@ -32,8 +38,6 @@ const defaultStates = {
   startDatetime: "",
   setSeconds: -1,
   elapsedSeconds: -1,
-  minSeconds: 10 * 60,
-  maxSeconds: 120 * 60,
   giveUpAttempts: [],
   reflectionAnswers: [],
 };
@@ -43,9 +47,9 @@ export const useSessionStore = create((set) => ({
   savePlan: (str) => set((state) => ({ plan: str || state.plan })),
   saveStartDatetime: () => set({ startDatetime: new Date().toString() }),
   saveSetSeconds: (num) =>
-    set((state) => ({
-      setSeconds: clamp(state.minSeconds, num, state.maxSeconds),
-    })),
+    set({
+      setSeconds: clamp(defaultApp.minSeconds, num, defaultApp.maxSeconds),
+    }),
   saveElapsedSeconds: (num) => set({ elapsedSeconds: num }),
   saveGiveUpAttempts: (str, givenUp) =>
     set((state) => ({
@@ -58,6 +62,9 @@ export const useSessionStore = create((set) => ({
     set((state) => ({ reflectionAnswers: [...state.reflectionAnswers, str] })),
 }));
 
-export const getStore = () => useSessionStore.getState();
+export const getSessionStore = () => useSessionStore.getState();
 
-export const resetStore = () => useSessionStore.setState(defaultStates);
+export const resetSessionStore = () => useSessionStore.setState(defaultStates);
+
+export const saveSessionToAppStore = () =>
+  useAppStore.getState().saveSession(getSessionStore());
