@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Text, TextInput, View, Keyboard } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 
 import { createStyles } from "../helpers";
-import { SelectButton } from "../components/SelectButton";
 import { CustomButton } from "../components/CustomButton";
 import { Screen } from "../components/Screen";
 import { useSessionStore } from "../api";
@@ -12,7 +12,16 @@ import { useSessionStore } from "../api";
 function HomePage({ navigation }) {
   const styles = useStyles();
   const [plan, setPlan] = useState("");
-  const [minutes, setMinutes] = useState(10);
+
+  const defaultItems = [
+    { label: "25 minutes", value: 25 },
+    { label: "50 minutes", value: 50 },
+    { label: "75 minutes", value: 75 },
+    { label: "100 minutes", value: 100 },
+  ];
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState(defaultItems);
 
   const savePlan = useSessionStore((state) => state.savePlan);
   const saveStartDatetime = useSessionStore((state) => state.saveStartDatetime);
@@ -21,34 +30,52 @@ function HomePage({ navigation }) {
   const onPress = () => {
     savePlan(plan);
     saveStartDatetime();
-    saveSetSeconds(minutes * 60);
+    saveSetSeconds(value * 60);
     // Unfocus the input before changing page, so that the
     // user sees if their input gets clamped to min or max
     Keyboard.dismiss();
     setTimeout(() => navigation.navigate("TimerPage"), 500);
   };
 
+  const insertItem = (text) =>
+    setItems([
+      ...defaultItems,
+      { label: `${text} minutes`, value: parseInt(text, 10) },
+    ]);
+
   return (
     <Screen>
-      <TextInput
-        style={styles.input}
-        onChangeText={setPlan}
-        placeholder={"My plan is..."}
-        placeholderTextColor={styles.input.placeholderTextColor}
-        multiline={true}
-        value={plan}
-      />
-      <View style={styles.prompt}>
-        <Text style={styles.prompt.text}>I want to focus for</Text>
-        <SelectButton
-          min={10}
-          max={120}
-          step={5}
-          value={minutes}
-          onChange={(v) => setMinutes(v)}
-          style={styles.prompt.select}
+      <View style={styles.section}>
+        <Text style={styles.text}>My plan for this focus time is</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={setPlan}
+          multiline={true}
+          value={plan}
         />
-        <Text style={styles.prompt.suffix}>minutes</Text>
+      </View>
+      <View style={styles.section}>
+        <Text style={styles.text}>I want to focus for</Text>
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          searchable={true}
+          searchTextInputProps={{ keyboardType: "numeric" }}
+          searchPlaceholder="Custom time..."
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          onChangeSearchText={insertItem}
+          showTickIcon={false}
+          containerStyle={styles.dropdown}
+          textStyle={styles.dropdown.text}
+          selectedItemLabelStyle={{
+            fontWeight: "bold",
+          }}
+          searchTextInputStyle={styles.dropdown.searchTextInput}
+          searchContainerStyle={styles.dropdown.searchContainer}
+        />
       </View>
       <CustomButton style={styles.button} onPress={onPress}>
         Start
@@ -64,47 +91,45 @@ const useStyles = createStyles((theme) => ({
     padding: theme.padding,
     backgroundColor: theme.primaryColor,
   },
-  input: {
-    width: "75%",
-    marginTop: "30%",
-    marginBottom: "30%",
-    paddingBottom: 12,
-    borderBottomWidth: 2,
-    borderBottomColor: theme.primaryColor,
+  section: {
+    justifyContent: "flex-start",
+    marginTop: 100,
+    alignItems: "stretch",
+  },
+  text: {
+    marginBottom: 4,
     color: theme.textColor,
-    placeholderTextColor: theme.primaryColor,
-    fontWeight: "700",
-    fontSize: theme.fontSizes.lg,
+    fontSize: theme.fontSizes.md,
+    textAlign: "center",
+  },
+  input: {
+    padding: 8,
+    backgroundColor: "white",
+    color: theme.muteColor,
+    fontSize: theme.fontSizes.md,
+    borderRadius: 8,
     textAlign: "center",
     overflowWrap: "break-word",
   },
-  prompt: {
-    justifyContent: "flex-start",
-    marginBottom: "30%",
-    alignItems: "center",
+  dropdown: {
+    width: 180,
+    overflow: "visible",
+    zIndex: 100,
     text: {
-      width: "100%",
-      color: theme.textColor,
-      fontSize: theme.fontSizes.md,
       textAlign: "center",
+      fontSize: theme.fontSizes.sm,
     },
-    select: {
-      backgroundColor: "transparent",
-      color: theme.textColor,
+    searchTextInput: {
       textAlign: "center",
-      textInput: {
-        width: 100,
-        color: theme.textColor,
-        fontSize: theme.fontSizes.xl,
-        fontWeight: "700",
-      },
+      borderRadius: 0,
+      borderWidth: 0,
     },
-    suffix: {
-      color: theme.textColor,
-      fontSize: theme.fontSizes.md,
+    searchContainer: {
+      padding: 0,
     },
   },
   button: {
+    marginTop: 40,
     rippleColor: theme.backgroundColor,
     text: {
       fontSize: theme.fontSizes.md,
