@@ -1,2 +1,3 @@
 export * from "./store";
-export * from "./firebase";
+export * from "./firestore";
+export * from "./auth";

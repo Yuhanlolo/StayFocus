@@ -3,13 +3,22 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import { HomePage, FailPage, SuccessPage, TimerPage } from "./src/screens";
+import {
+  LoginPage,
+  SignupPage,
+  HomePage,
+  FailPage,
+  SuccessPage,
+  TimerPage,
+} from "./src/screens";
 import { createStyles, ThemeProvider } from "./src/helpers";
+import { useAppStore } from "./src/store";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const styles = useStyles();
+  const user = useAppStore((state) => state.uid);
 
   return (
     <ThemeProvider>
@@ -17,10 +26,19 @@ export default function App() {
         <SafeAreaView style={styles.container}>
           <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="HomePage" component={HomePage} />
-              <Stack.Screen name="TimerPage" component={TimerPage} />
-              <Stack.Screen name="FailPage" component={FailPage} />
-              <Stack.Screen name="SuccessPage" component={SuccessPage} />
+              {user ? (
+                <>
+                  <Stack.Screen name="HomePage" component={HomePage} />
+                  <Stack.Screen name="TimerPage" component={TimerPage} />
+                  <Stack.Screen name="FailPage" component={FailPage} />
+                  <Stack.Screen name="SuccessPage" component={SuccessPage} />
+                </>
+              ) : (
+                <>
+                  <Stack.Screen name="LoginPage" component={LoginPage} />
+                  <Stack.Screen name="SignupPage" component={SignupPage} />
+                </>
+              )}
             </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>

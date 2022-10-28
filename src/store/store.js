@@ -1,5 +1,31 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import create from "zustand";
+import { persist } from "zustand/middleware";
 import { clamp } from "../helpers";
+
+const defaultApp = {
+  uid: null,
+  username: null,
+  focusSessions: [],
+};
+
+export const useAppStore = create(
+  persist(
+    (set) => ({
+      ...defaultApp,
+      login: (uid) => set({ uid: uid }),
+    }),
+    {
+      name: "app-data",
+      getStorage: () => AsyncStorage,
+    }
+  )
+);
+
+export const saveUserInfo = (uid, username) =>
+  useAppStore.setState({ uid: uid, username: username });
+
+export const resetUserInfo = () => useAppStore.setState(defaultApp);
 
 const defaultStates = {
   plan: "Doing stuff",
