@@ -3,15 +3,15 @@ import { Text } from "react-native";
 import { CustomButton } from "../components/CustomButton";
 import { Screen } from "../components/Screen";
 import { createStyles } from "../helpers";
-import { useLocalStore, saveSessionToFirestore } from "../store";
+import { useSessionStore, saveSessionToFirestore } from "../api";
 
 // When user gives up
 
 function SuccessPage({ navigation }) {
   const minutes = Math.ceil(
-    useLocalStore((state) => state.elapsedSeconds) / 60
+    useSessionStore((state) => state.elapsedSeconds) / 60
   );
-  const plan = useLocalStore((state) => state.plan);
+  const plan = useSessionStore((state) => state.plan);
   const planLowerCase = plan[0].toLowerCase() + plan.slice(1);
 
   const styles = useStyles();

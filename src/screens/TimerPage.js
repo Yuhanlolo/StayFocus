@@ -5,7 +5,7 @@ import { createStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton } from "../components/CustomButton";
 import { CustomModal } from "../components/CustomModal";
 import { Screen } from "../components/Screen";
-import { useLocalStore } from "../store";
+import { useSessionStore } from "../api";
 
 function Timer(props) {
   const [seconds, setSeconds] = useState(props.seconds);
@@ -50,10 +50,14 @@ function TimerPage({ navigation }) {
   const [modal, setModal] = useState(false);
   const [input, setInput] = useState("");
 
-  const minutes = useLocalStore((state) => state.setSeconds) / 60;
-  const plan = useLocalStore((state) => state.plan);
-  const saveElapsedSeconds = useLocalStore((state) => state.saveElapsedSeconds);
-  const saveGiveUpAttempt = useLocalStore((state) => state.saveGiveUpAttempts);
+  const minutes = useSessionStore((state) => state.setSeconds) / 60;
+  const plan = useSessionStore((state) => state.plan);
+  const saveElapsedSeconds = useSessionStore(
+    (state) => state.saveElapsedSeconds
+  );
+  const saveGiveUpAttempt = useSessionStore(
+    (state) => state.saveGiveUpAttempts
+  );
 
   const initialSeconds = minutes * 60;
 

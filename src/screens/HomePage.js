@@ -5,7 +5,7 @@ import { createStyles } from "../helpers";
 import { SelectButton } from "../components/SelectButton";
 import { CustomButton } from "../components/CustomButton";
 import { Screen } from "../components/Screen";
-import { useLocalStore } from "../store";
+import { useSessionStore } from "../api";
 
 //Home page to set focusing time
 
@@ -14,9 +14,9 @@ function HomePage({ navigation }) {
   const [plan, setPlan] = useState("");
   const [minutes, setMinutes] = useState(10);
 
-  const savePlan = useLocalStore((state) => state.savePlan);
-  const saveStartDatetime = useLocalStore((state) => state.saveStartDatetime);
-  const saveSetSeconds = useLocalStore((state) => state.saveSetSeconds);
+  const savePlan = useSessionStore((state) => state.savePlan);
+  const saveStartDatetime = useSessionStore((state) => state.saveStartDatetime);
+  const saveSetSeconds = useSessionStore((state) => state.saveSetSeconds);
 
   const onPress = () => {
     savePlan(plan);

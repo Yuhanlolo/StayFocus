@@ -38,7 +38,7 @@ const defaultStates = {
   reflectionAnswers: [],
 };
 
-export const useLocalStore = create((set) => ({
+export const useSessionStore = create((set) => ({
   ...defaultStates,
   savePlan: (str) => set((state) => ({ plan: str || state.plan })),
   saveStartDatetime: () => set({ startDatetime: new Date().toString() }),
@@ -58,6 +58,6 @@ export const useLocalStore = create((set) => ({
     set((state) => ({ reflectionAnswers: [...state.reflectionAnswers, str] })),
 }));
 
-export const getStore = () => useLocalStore.getState();
+export const getStore = () => useSessionStore.getState();
 
-export const resetStore = () => useLocalStore.setState(defaultStates);
+export const resetStore = () => useSessionStore.setState(defaultStates);

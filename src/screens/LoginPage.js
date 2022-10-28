@@ -4,7 +4,7 @@ import { Text, TextInput, View, Pressable } from "react-native";
 import { CustomButton } from "../components/CustomButton";
 import { Screen } from "../components/Screen";
 import { createStyles } from "../helpers";
-import { loginUser } from "../store";
+import { loginUser } from "../api";
 
 function LoginPage({ navigation }) {
   const [email, setEmail] = useState("");

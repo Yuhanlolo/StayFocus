@@ -4,7 +4,7 @@ import { Text, TextInput, View, Pressable } from "react-native";
 import { CustomButton } from "../components/CustomButton";
 import { Screen } from "../components/Screen";
 import { createStyles } from "../helpers";
-import { createUser } from "../store";
+import { createUser } from "../api";
 
 function SignupPage() {
   const [email, setEmail] = useState("");

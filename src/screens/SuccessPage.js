@@ -5,7 +5,7 @@ import { CustomModal } from "../components/CustomModal";
 import { CustomButton } from "../components/CustomButton";
 import { Screen } from "../components/Screen";
 import { createStyles } from "../helpers";
-import { useLocalStore, saveSessionToFirestore } from "../store";
+import { useSessionStore, saveSessionToFirestore } from "../api";
 
 //When finish the focusing task, this page come out for congrats.
 const prompts = [
@@ -19,7 +19,7 @@ function ReflectionModal({ onRequestClose, onBackToHome }) {
   const [promptIndex, setPromptIndex] = useState(0);
   const [input, setInput] = useState("");
 
-  const saveReflectionAnswer = useLocalStore(
+  const saveReflectionAnswer = useSessionStore(
     (state) => state.saveReflectionAnswer
   );
 
@@ -110,8 +110,8 @@ const useModalStyles = createStyles((theme) => ({
 }));
 
 function SuccessPage({ navigation }) {
-  const minutes = useLocalStore((state) => state.setSeconds) / 60;
-  const plan = useLocalStore((state) => state.plan);
+  const minutes = useSessionStore((state) => state.setSeconds) / 60;
+  const plan = useSessionStore((state) => state.plan);
   const planLowerCase = plan[0].toLowerCase() + plan.slice(1);
   const [modal, setModal] = useState(false);
 
