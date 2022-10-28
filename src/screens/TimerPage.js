@@ -78,15 +78,13 @@ function TimerPage({ navigation }) {
 
   const styles = useStyles();
 
-  const button = (
-    <CustomButton style={styles.button} onPress={toggleTimerAndModal}>
-      {modal ? "Back to focus mode" : "Give up"}
-    </CustomButton>
-  );
-
   return (
     <Screen>
-      {button}
+      {modal || (
+        <CustomButton style={styles.button} onPress={toggleTimerAndModal}>
+          Give up
+        </CustomButton>
+      )}
       <Text style={styles.plan}>{plan}</Text>
       <Timer
         seconds={initialSeconds}
@@ -100,7 +98,6 @@ function TimerPage({ navigation }) {
         visible={modal}
         onRequestClose={toggleTimerAndModal}
         title="Give up now?"
-        outside={button}
       >
         <Text style={styles.modal.text}>
           You have been focusing for {elapsedMinutes()} minutes. Why do you want
@@ -115,8 +112,14 @@ function TimerPage({ navigation }) {
           multiline={true}
         />
         <View style={styles.modal.buttonContainer}>
+          <CustomButton
+            style={styles.modal.button}
+            onPress={toggleTimerAndModal}
+          >
+            Back to focus
+          </CustomButton>
           <CustomButton onPress={onPress} style={styles.modal.button}>
-            Give up
+            Next question
           </CustomButton>
         </View>
       </CustomModal>
@@ -172,13 +175,13 @@ const useStyles = createStyles((theme) => ({
     },
     buttonContainer: {
       flexDirection: "row",
-      justifyContent: "center",
+      justifyContent: "space-around",
       alignItems: "center",
     },
     button: {
       rippleColor: theme.primaryColor,
       text: {
-        fontSize: theme.fontSizes.sm,
+        fontSize: theme.fontSizes.xs,
       },
     },
   },

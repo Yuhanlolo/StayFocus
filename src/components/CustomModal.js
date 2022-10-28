@@ -8,11 +8,9 @@ export function CustomModal({
   title,
   style,
   children,
-  outside,
 }) {
   const styles = useStyles();
 
-  // outside: hack to make button outside the modal clickable
   return (
     <Modal
       animationType="fade"
@@ -21,7 +19,6 @@ export function CustomModal({
       onRequestClose={onRequestClose}
     >
       <View style={styles.centeredView}>
-        {outside || null}
         <View style={[styles.modalView, style]}>
           <View style={styles.header}>
             <Text style={styles.header.text}>{title}</Text>
