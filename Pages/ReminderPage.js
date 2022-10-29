@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import type {Node} from 'react';
 import DatePicker from 'react-native-date-picker';
+import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 import {
   SafeAreaView,
   ScrollView,
@@ -53,6 +54,58 @@ class ReminderPage extends Component {
       };
       }
 
+    async onCreateTriggerNotification(date, hour, min) {
+    //const date = new Date(Date.now());
+    date.setHours(hour);
+    date.setMinutes(min);
+
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    // Create a time-based trigger
+    const trigger: TimestampTrigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: date.getTime(), // fire at 11:10am (10 minutes before meeting)
+    };
+
+    // Create a trigger notification
+    await notifee.createTriggerNotification(
+      {
+        title: 'Meeting with Jane',
+        body: 'Today at 11:20am',
+        android: {
+          channelId,
+          pressAction: {
+            id: 'default',
+          },
+        },
+      },
+      trigger,
+    );
+    }
+
+    createPlan(hour, min)
+    {
+      let today = new Date();
+      let date = new Date(today);
+      date_1 = date.setDate(today.getDate() + 1);
+      date_2 = date.setDate(today.getDate() + 2);
+      date_3 = date.setDate(today.getDate() + 3);
+      date_4 = date.setDate(today.getDate() + 4);
+      date_5 = date.setDate(today.getDate() + 5);
+      date_6 = date.setDate(today.getDate() + 6);
+      date_7 = date.setDate(today.getDate() + 7);
+      this.onCreateTriggerNotification(new Date(date_1), hour, min);
+      this.onCreateTriggerNotification(new Date(date_2), hour, min);
+      this.onCreateTriggerNotification(new Date(date_3), hour, min);
+      this.onCreateTriggerNotification(new Date(date_4), hour, min);
+      this.onCreateTriggerNotification(new Date(date_5), hour, min);
+      this.onCreateTriggerNotification(new Date(date_6), hour, min);
+      this.onCreateTriggerNotification(new Date(date_7), hour, min);
+    }
+
 
     render() {
       return (
@@ -69,7 +122,7 @@ class ReminderPage extends Component {
          <Text style = {styles.baseText_1}>{this.state.text_1}</Text>
          <Text style = {styles.baseText_2}>{this.state.text_2}</Text>
          <TextInput
-          style={{ top: '15%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          style={{ top: '12%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           placeholder="Enter a number"
           placeholderTextColor="black"
           clearTextOnFocus={true}
@@ -87,7 +140,7 @@ class ReminderPage extends Component {
             this.setState({minSet: num});
           }}
          />
-        <Menu style = {{top: '10.5%', left: '18%'}} onSelect={(value) => {this.setState({minSet: value});}}>
+        <Menu style = {{top: '7.5%', left: '18%'}} onSelect={(value) => {this.setState({minSet: value});}}>
           <MenuTrigger style = {{ width: '100%',}}>
             <Text style={{color: '#B8C59E',  fontSize: 16,}}>{'▼'}</Text>
               </MenuTrigger>
@@ -119,6 +172,13 @@ class ReminderPage extends Component {
           }
           } textColor = '#ffffff' />
          </View>
+         <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            this.createPlan(this.state.hour, this.state.min)
+         }>
+          <Text style = {styles.buttonText}>{'Confirm'}</Text>
+         </TouchableOpacity>
         </View>
       );
     }
@@ -136,7 +196,7 @@ class ReminderPage extends Component {
 
     baseText_1: {
       fontSize: 24,
-      top: '7%',
+      top: '5%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
@@ -146,7 +206,7 @@ class ReminderPage extends Component {
 
     baseText_2: {
       fontSize: 18,
-      top: '12%',
+      top: '9%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
@@ -155,7 +215,7 @@ class ReminderPage extends Component {
 
     baseText_3: {
       fontSize: 18,
-      top: '37%',
+      top: '34%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
@@ -164,7 +224,7 @@ class ReminderPage extends Component {
 
     container: {
       flexDirection: 'row',
-      top: '75%',
+      top: '68%',
       //left: '7.5%',
     },
 
@@ -182,6 +242,24 @@ class ReminderPage extends Component {
      //justifyContent: "start",
     },
 
+    button: {
+      backgroundColor: "#B8C59E",
+      alignItems: "center",
+      width: '40%',
+      top: '35%',
+      borderRadius: 15,
+      padding: 10,
+    },
+
+     baseText: {
+       fontSize: 20,
+       fontFamily: "Roboto",
+       top: '20%',
+       color: 'white',
+       textAlign: 'center',
+       textAlignVertical: 'center',
+     },
+
   });
 
 const triggerCustomStyle = {
@@ -195,7 +273,7 @@ const triggerCustomStyle = {
 const optionsCustomStyle = {
     optionsContainer: {
         backgroundColor: 'white',
-        marginTop: '11%',
+        marginTop: '10.5%',
         marginLeft: '4.7%',
         width: '45%',
         height: '18%',
