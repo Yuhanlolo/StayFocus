@@ -139,14 +139,22 @@ class HomePage extends Component {
         </View>
         <TextInput
           style={{ top: '25%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'85%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          placeholder="Enter a number"
+          placeholderTextColor="black"
+          clearTextOnFocus={true}
           onChangeText={(text) => {
-            text = text.replace('m','');
-            text = text.replace('i','');
-            text = text.replace('n','');
-            let num = Number(text);
+            const newText = text.replace(/[^\d]+/, '');
+            let num = Number(newText);
+            if(num > 120)
+            {
+              num = 120;
+            }
+            if(num < 10)
+            {
+              num = 10;
+            }
             this.setState({minSet: num});
           }}
-          //value = 'enter xxmin'
         />
         <Menu style = {{top: '20.5%', left: '33%'}} onSelect={(value) => {this.setState({minSet: value});}}>
           <MenuTrigger style = {{ width: '100%',}}>

@@ -70,14 +70,22 @@ class ReminderPage extends Component {
          <Text style = {styles.baseText_2}>{this.state.text_2}</Text>
          <TextInput
           style={{ top: '15%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          placeholder="Enter a number"
+          placeholderTextColor="black"
+          clearTextOnFocus={true}
           onChangeText={(text) => {
-            text = text.replace('m','');
-            text = text.replace('i','');
-            text = text.replace('n','');
-            let num = Number(text);
+            const newText = text.replace(/[^\d]+/, '');
+            let num = Number(newText);
+            if(num > 120)
+            {
+              num = 120;
+            }
+            if(num < 10)
+            {
+              num = 10;
+            }
             this.setState({minSet: num});
           }}
-          //value = ' Input focusing time (e.g., 35mins)'
          />
         <Menu style = {{top: '10.5%', left: '18%'}} onSelect={(value) => {this.setState({minSet: value});}}>
           <MenuTrigger style = {{ width: '100%',}}>
