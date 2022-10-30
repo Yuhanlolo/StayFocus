@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import create from "zustand";
 import { persist } from "zustand/middleware";
 import { clamp } from "../helpers";
+import { GiveUpAttempt } from "./types";
 
 interface AppStore {
   uid?: string
@@ -38,7 +39,7 @@ export const useAppStore = create<AppStore>()(
 
 export const getAppStore = () => useAppStore.getState();
 
-export const saveUserInfo = (uid, username) =>
+export const saveUserInfo = (uid: string, username: string) =>
   useAppStore.setState({ uid: uid, username: username });
 
 export const resetUserInfo = () => useAppStore.setState(defaultApp);
@@ -52,8 +53,14 @@ interface SessionStore {
   startDatetime: string
   setSeconds: number
   elapsedSeconds: number
-  giveUpAttempts: any[]
-  reflectionAnswers: any[]
+  giveUpAttempts: GiveUpAttempt[]
+  reflectionAnswers: string[]
+  savePlan: (plan: string) => void
+  saveStartDatetime: () => void
+  saveSetSeconds: (seconds: number) => void
+  saveElapsedSeconds: (seconds: number) => void
+  saveGiveUpAttempt: (answers: string[], givenUp: boolean) => void
+  saveReflectionAnswers: (answers: string[]) => void
 }
 
 const defaultSession = {
@@ -67,22 +74,22 @@ const defaultSession = {
 
 export const useSessionStore = create<SessionStore>()((set) => ({
   ...defaultSession,
-  savePlan: (str) => set((state) => ({ plan: str || state.plan })),
+  savePlan: (plan) => set((state) => ({ plan: plan || state.plan })),
   saveStartDatetime: () => set({ startDatetime: new Date().toString() }),
-  saveSetSeconds: (num) =>
+  saveSetSeconds: (seconds) =>
     set({
-      setSeconds: clamp(defaultApp.minSeconds, num, defaultApp.maxSeconds),
+      setSeconds: clamp(defaultApp.minSeconds, seconds, defaultApp.maxSeconds),
     }),
-  saveElapsedSeconds: (num) => set({ elapsedSeconds: num }),
-  saveGiveUpAttempts: (str, givenUp) =>
+  saveElapsedSeconds: (seconds) => set({ elapsedSeconds: seconds }),
+  saveGiveUpAttempt: (answers, givenUp) =>
     set((state) => ({
       giveUpAttempts: [
         ...state.giveUpAttempts,
-        { timestamp: new Date().toString(), reason: str, givenUp: givenUp },
+        { timestamp: new Date().toString(), answers: answers, givenUp: givenUp },
       ],
     })),
-  saveReflectionAnswer: (str) =>
-    set((state) => ({ reflectionAnswers: [...state.reflectionAnswers, str] })),
+  saveReflectionAnswers: (answers) =>
+    set({ reflectionAnswers: answers }),
 }));
 
 export const getSessionStore = () => useSessionStore.getState();

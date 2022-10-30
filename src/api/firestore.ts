@@ -8,12 +8,13 @@ import {
 
 import { app } from "./firebase";
 import { getAppStore, getSessionStore, resetSessionStore } from "./store";
+import { Session } from "./types";
 
 const db = getFirestore(app);
 
 export function saveSessionToFirestore() {
   const store = getSessionStore();
-  const session = {
+  const session: Session = {
     timestamp: store.startDatetime,
     focusDurationMinutes: Math.floor(store.setSeconds / 60),
     completedMinutes: Math.floor(store.elapsedSeconds / 60),
