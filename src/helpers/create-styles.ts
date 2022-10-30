@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Theme, ThemeContext } from "./ThemeContext";
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from "react-native";
 
-type CSSStyles = ViewStyle | TextStyle | ImageStyle;
+export type CSSStyles = ViewStyle | TextStyle | ImageStyle;
 
 export function createStyles<Key extends string = string, Params = void>(
   input:

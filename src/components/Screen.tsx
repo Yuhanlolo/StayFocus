@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { createStyles } from "../helpers";
 
-export function Screen(props) {
+export function Screen({ children }) {
   const styles = useStyles();
 
   return (
@@ -13,7 +13,7 @@ export function Screen(props) {
           barStyle="light-content"
           backgroundColor={styles.statusBar.backgroundColor}
         />
-        {props.children}
+        {children}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
