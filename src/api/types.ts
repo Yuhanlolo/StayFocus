@@ -1,10 +1,11 @@
-export interface GiveUpAttempt {
+interface GiveUpAttempt {
   timestamp: string;
   givenUp: boolean;
   answers: string[];
 }
 
 export interface Session {
+  plan: string;
   timestamp: string;
   focusDurationMinutes: number;
   completedMinutes: number;

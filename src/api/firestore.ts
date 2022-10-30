@@ -15,9 +15,10 @@ const db = getFirestore(app);
 export function saveSessionToFirestore() {
   const store = getSessionStore();
   const session: Session = {
-    timestamp: store.startDatetime,
-    focusDurationMinutes: Math.floor(store.setSeconds / 60),
-    completedMinutes: Math.floor(store.elapsedSeconds / 60),
+    plan: store.plan,
+    timestamp: store.timestamp,
+    focusDurationMinutes: store.focusDurationMinutes,
+    completedMinutes: store.completedMinutes,
     giveUpAttempts: store.giveUpAttempts,
     reflectionAnswers: store.reflectionAnswers,
   };
@@ -29,7 +30,7 @@ export function saveSessionToFirestore() {
   addDoc(collection(db, "[test]db", uid, "log"), session);
 }
 
-export function saveUserToFireStore(uid, username) {
+export function saveUserToFireStore(uid: string, username: string) {
   const userRef = doc(db, "[test]db", uid);
   setDoc(userRef, { username: username }, { merge: true });
 }

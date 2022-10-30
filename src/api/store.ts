@@ -2,13 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import create from "zustand";
 import { persist } from "zustand/middleware";
 import { clamp } from "../helpers";
-import { GiveUpAttempt } from "./types";
+import { Session } from "./types";
 
 interface AppStore {
   uid?: string;
   username?: string;
-  minSeconds: number;
-  maxSeconds: number;
+  minMinutes: number;
+  maxMinutes: number;
   focusSessions: any[];
   login: (uid: string) => void;
   saveSession: (session: any) => void;
@@ -17,8 +17,8 @@ interface AppStore {
 const defaultApp = {
   uid: null,
   username: null,
-  minSeconds: 10 * 60,
-  maxSeconds: 120 * 60,
+  minMinutes: 10,
+  maxMinutes: 120,
   focusSessions: [],
 };
 
@@ -47,13 +47,7 @@ export const resetUserInfo = () => useAppStore.setState(defaultApp);
 export const saveSessionToAppStore = () =>
   useAppStore.getState().saveSession(getSessionStore());
 
-interface SessionStore {
-  plan: string;
-  startDatetime: string;
-  setSeconds: number;
-  elapsedSeconds: number;
-  giveUpAttempts: GiveUpAttempt[];
-  reflectionAnswers: string[];
+interface SessionStore extends Session {
   savePlan: (plan: string) => void;
   saveStartDatetime: () => void;
   saveSetSeconds: (seconds: number) => void;
@@ -64,9 +58,9 @@ interface SessionStore {
 
 const defaultSession = {
   plan: "Doing stuff",
-  startDatetime: "",
-  setSeconds: -1,
-  elapsedSeconds: -1,
+  timestamp: "",
+  focusDurationMinutes: -1,
+  completedMinutes: -1,
   giveUpAttempts: [],
   reflectionAnswers: [],
 };
@@ -74,12 +68,16 @@ const defaultSession = {
 export const useSessionStore = create<SessionStore>()((set) => ({
   ...defaultSession,
   savePlan: (plan) => set((state) => ({ plan: plan || state.plan })),
-  saveStartDatetime: () => set({ startDatetime: new Date().toString() }),
-  saveSetSeconds: (seconds) =>
+  saveStartDatetime: () => set({ timestamp: new Date().toString() }),
+  saveSetSeconds: (minutes) =>
     set({
-      setSeconds: clamp(defaultApp.minSeconds, seconds, defaultApp.maxSeconds),
+      focusDurationMinutes: clamp(
+        defaultApp.minMinutes,
+        minutes,
+        defaultApp.maxMinutes
+      ),
     }),
-  saveElapsedSeconds: (seconds) => set({ elapsedSeconds: seconds }),
+  saveElapsedSeconds: (minutes) => set({ completedMinutes: minutes }),
   saveGiveUpAttempt: (answers, givenUp) =>
     set((state) => ({
       giveUpAttempts: [
