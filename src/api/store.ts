@@ -3,6 +3,16 @@ import create from "zustand";
 import { persist } from "zustand/middleware";
 import { clamp } from "../helpers";
 
+interface AppStore {
+  uid?: string
+  username?: string
+  minSeconds: number
+  maxSeconds: number
+  focusSessions: any[]
+  login: (uid: string) => void
+  saveSession: (session: any) => void
+}
+
 const defaultApp = {
   uid: null,
   username: null,
@@ -11,13 +21,13 @@ const defaultApp = {
   focusSessions: [],
 };
 
-export const useAppStore = create(
+export const useAppStore = create<AppStore>()(
   persist(
     (set) => ({
       ...defaultApp,
       login: (uid) => set({ uid: uid }),
       saveSession: (session) =>
-        set({ focusSessions: [...focusSessions, session] }),
+        set((state) => ({ focusSessions: [...state.focusSessions, session] })),
     }),
     {
       name: "app-data",
@@ -33,7 +43,20 @@ export const saveUserInfo = (uid, username) =>
 
 export const resetUserInfo = () => useAppStore.setState(defaultApp);
 
-const defaultStates = {
+export const saveSessionToAppStore = () =>
+  useAppStore.getState().saveSession(getSessionStore());
+
+
+interface SessionStore {
+  plan: string,
+  startDatetime: string
+  setSeconds: number
+  elapsedSeconds: number
+  giveUpAttempts: any[]
+  reflectionAnswers: any[]
+}
+
+const defaultSession = {
   plan: "Doing stuff",
   startDatetime: "",
   setSeconds: -1,
@@ -42,8 +65,8 @@ const defaultStates = {
   reflectionAnswers: [],
 };
 
-export const useSessionStore = create((set) => ({
-  ...defaultStates,
+export const useSessionStore = create<SessionStore>()((set) => ({
+  ...defaultSession,
   savePlan: (str) => set((state) => ({ plan: str || state.plan })),
   saveStartDatetime: () => set({ startDatetime: new Date().toString() }),
   saveSetSeconds: (num) =>
@@ -64,7 +87,4 @@ export const useSessionStore = create((set) => ({
 
 export const getSessionStore = () => useSessionStore.getState();
 
-export const resetSessionStore = () => useSessionStore.setState(defaultStates);
-
-export const saveSessionToAppStore = () =>
-  useAppStore.getState().saveSession(getSessionStore());
+export const resetSessionStore = () => useSessionStore.setState(defaultSession);
