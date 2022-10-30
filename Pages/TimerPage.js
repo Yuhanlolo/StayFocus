@@ -101,16 +101,16 @@ class TimerPage extends Component {
                     {
                         if(this.state.min_1==0 && this.state.min_2==0 && this.state.sec_1==0 && this.state.sec_2==0)
                         {
-                          this.setState({sec_2:0});
-                          this.setState({sec_1:0});
-                          this.setState({min_2:0});
-                          this.setState({min_1:0});
-                          //this.interval && clearInterval(this.interval);
                           if(this.state.set == true)
                           {
                             this.props.navigation.navigate('SuccessPage', {focusTime: this.state.temp, id: this.state.userId, thisTime: this.state.oneTimeId});
                           }
+                          this.setState({sec_2:0});
+                          this.setState({sec_1:0});
+                          this.setState({min_2:0});
+                          this.setState({min_1:0});
                           this.interval && clearInterval(this.interval);
+                          //this.interval && clearInterval(this.interval);
                         }
                         if(this.state.pause == false)
                         {

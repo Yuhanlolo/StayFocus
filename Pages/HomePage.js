@@ -10,7 +10,8 @@ import {
   View,
   Button,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import Menu, {
@@ -55,6 +56,7 @@ class HomePage extends Component {
       oneTimeId: '',
       drawerOpen: false,
       drawerDisabled: false,
+      select: false,
       };
       }
 
@@ -154,9 +156,10 @@ class HomePage extends Component {
               num = 10;
             }
             this.setState({minSet: num});
+            this.setState({select: true});
           }}
         />
-        <Menu style = {{top: '20.5%', left: '33%'}} onSelect={(value) => {this.setState({minSet: value});}}>
+        <Menu style = {{top: '20.5%', left: '33%'}} onSelect={(value) => {this.setState({minSet: value}); this.setState({select: true});}}>
           <MenuTrigger style = {{ width: '100%',}}>
             <Text style={{color: '#B8C59E',  fontSize: 16,}}>{'▼'}</Text>
               </MenuTrigger>
@@ -174,7 +177,14 @@ class HomePage extends Component {
                   style={styles.button}
                   onPress={() => {
                   this.setState({flag:true});
-                  this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
+                  if(this.state.select == false)
+                  {
+                    Alert.alert('Please select your focus time!');
+                  }
+                  if(this.state.select == true)
+                  {
+                    this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
+                  }
                   }}>
                   <Text style = {styles.buttonText}>{'Start Focusing'}</Text>
         </TouchableOpacity>
