@@ -5,13 +5,13 @@ import { clamp } from "../helpers";
 import { GiveUpAttempt } from "./types";
 
 interface AppStore {
-  uid?: string
-  username?: string
-  minSeconds: number
-  maxSeconds: number
-  focusSessions: any[]
-  login: (uid: string) => void
-  saveSession: (session: any) => void
+  uid?: string;
+  username?: string;
+  minSeconds: number;
+  maxSeconds: number;
+  focusSessions: any[];
+  login: (uid: string) => void;
+  saveSession: (session: any) => void;
 }
 
 const defaultApp = {
@@ -47,20 +47,19 @@ export const resetUserInfo = () => useAppStore.setState(defaultApp);
 export const saveSessionToAppStore = () =>
   useAppStore.getState().saveSession(getSessionStore());
 
-
 interface SessionStore {
-  plan: string,
-  startDatetime: string
-  setSeconds: number
-  elapsedSeconds: number
-  giveUpAttempts: GiveUpAttempt[]
-  reflectionAnswers: string[]
-  savePlan: (plan: string) => void
-  saveStartDatetime: () => void
-  saveSetSeconds: (seconds: number) => void
-  saveElapsedSeconds: (seconds: number) => void
-  saveGiveUpAttempt: (answers: string[], givenUp: boolean) => void
-  saveReflectionAnswers: (answers: string[]) => void
+  plan: string;
+  startDatetime: string;
+  setSeconds: number;
+  elapsedSeconds: number;
+  giveUpAttempts: GiveUpAttempt[];
+  reflectionAnswers: string[];
+  savePlan: (plan: string) => void;
+  saveStartDatetime: () => void;
+  saveSetSeconds: (seconds: number) => void;
+  saveElapsedSeconds: (seconds: number) => void;
+  saveGiveUpAttempt: (answers: string[], givenUp: boolean) => void;
+  saveReflectionAnswers: (answers: string[]) => void;
 }
 
 const defaultSession = {
@@ -85,11 +84,14 @@ export const useSessionStore = create<SessionStore>()((set) => ({
     set((state) => ({
       giveUpAttempts: [
         ...state.giveUpAttempts,
-        { timestamp: new Date().toString(), answers: answers, givenUp: givenUp },
+        {
+          timestamp: new Date().toString(),
+          answers: answers,
+          givenUp: givenUp,
+        },
       ],
     })),
-  saveReflectionAnswers: (answers) =>
-    set({ reflectionAnswers: answers }),
+  saveReflectionAnswers: (answers) => set({ reflectionAnswers: answers }),
 }));
 
 export const getSessionStore = () => useSessionStore.getState();
