@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View, Button, LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Menu, {
@@ -20,6 +20,8 @@ import ReminderPage from './Pages/ReminderPage';
 import ControlPanel from './Pages/ControlPanel';
 
 const Stack = createNativeStackNavigator();
+
+LogBox.ignoreAllLogs();
 
  function App() {
   return (
