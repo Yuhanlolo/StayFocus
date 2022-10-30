@@ -1,6 +1,14 @@
 import { Modal, Text, View } from "react-native";
 
-import { createStyles } from "../helpers";
+import { createStyles, CSSStyles } from "../helpers";
+
+interface CustomModalProps {
+  visible: boolean;
+  onRequestClose: () => void;
+  title: string;
+  style: CSSStyles;
+  children: React.ReactNode;
+}
 
 export function CustomModal({
   visible,
@@ -8,7 +16,7 @@ export function CustomModal({
   title,
   style,
   children,
-}) {
+}: CustomModalProps) {
   const styles = useStyles();
 
   return (
@@ -21,7 +29,7 @@ export function CustomModal({
       <View style={styles.centeredView}>
         <View style={[styles.modalView, style]}>
           <View style={styles.header}>
-            <Text style={styles.header.text}>{title}</Text>
+            <Text style={styles.headerText}>{title}</Text>
           </View>
           <View style={{ padding: 16 }}>{children}</View>
         </View>
@@ -50,13 +58,13 @@ const useStyles = createStyles((theme) => ({
     borderTopRightRadius: 20,
     backgroundColor: theme.secondaryColor,
     width: "100%",
-    text: {
-      color: theme.textColor,
-      textAlign: "center",
-      fontSize: theme.fontSizes.sm,
-      fontWeight: "500",
-      paddingTop: 8,
-      paddingBottom: 8,
-    },
+  },
+  headerText: {
+    color: theme.textColor,
+    textAlign: "center",
+    fontSize: theme.fontSizes.sm,
+    fontWeight: "500",
+    paddingTop: 8,
+    paddingBottom: 8,
   },
 }));
