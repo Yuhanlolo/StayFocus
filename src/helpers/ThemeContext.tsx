@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import { createContext } from "react";
 
 const theme = {
   primaryColor: "#B8C59E",
@@ -17,12 +17,14 @@ const theme = {
   },
 };
 
+export type Theme = typeof theme;
+
 export const ThemeContext = createContext(theme);
 
-export function ThemeProvider(props) {
+export function ThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={theme}>
-      {props.children}
+      {children}
     </ThemeContext.Provider>
   );
 }

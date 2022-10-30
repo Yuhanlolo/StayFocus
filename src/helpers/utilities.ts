@@ -1,4 +1,4 @@
-export function secondsToHHMMSS(seconds) {
+export function secondsToHHMMSS(seconds: number) {
   if (seconds < 0) seconds = 0;
   const h = Math.floor(seconds / (60 * 60));
   const m = Math.floor((seconds - h * 60 * 60) / 60);
@@ -7,7 +7,7 @@ export function secondsToHHMMSS(seconds) {
   return [h, m, s];
 }
 
-export function clamp(min, val, max) {
+export function clamp(min: number, val: number, max: number) {
   console.log(val);
   return Math.max(Math.min(val, max), min);
 }
