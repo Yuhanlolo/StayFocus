@@ -7,10 +7,8 @@ import { useSessionStore, saveSessionToFirestore } from "../api";
 
 // When user gives up
 
-function SuccessPage({ navigation }) {
-  const minutes = Math.ceil(
-    useSessionStore((state) => state.elapsedSeconds) / 60
-  );
+function FailPage({ navigation }) {
+  const minutes = useSessionStore((state) => state.completedMinutes);
   const plan = useSessionStore((state) => state.plan);
   const planLowerCase = plan[0].toLowerCase() + plan.slice(1);
 
@@ -24,7 +22,7 @@ function SuccessPage({ navigation }) {
         {minutes} minutes!
       </Text>
       <CustomButton
-        style={styles.button}
+        styles={{ button: styles.button }}
         onPress={() => {
           saveSessionToFirestore();
           navigation.navigate("HomePage");
@@ -49,4 +47,4 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default SuccessPage;
+export default FailPage;
