@@ -3,7 +3,7 @@ import { Text } from "react-native";
 
 import { createStyles, CSSStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton, Screen, ReflectionModal } from "../components";
-import { saveSessionToFirestore, useSessionStore } from "../api";
+import { saveSession, useSessionStore } from "../api";
 
 interface TimerProps {
   initialSeconds: number;
@@ -85,7 +85,7 @@ function TimerPage({ navigation }) {
   const onCompleteGiveUp = (answers: string[]) => {
     saveGiveUpAttempt(answers, true);
     saveCompletedMinutes(elapsedMinutes());
-    saveSessionToFirestore();
+    saveSession();
     navigation.navigate("HomePage");
   };
 

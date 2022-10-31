@@ -1,17 +1,21 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import create from "zustand";
 import { persist } from "zustand/middleware";
+
 import { clamp } from "../helpers";
+import { saveSessionToFirestore } from "./firestore";
 import { Session } from "./types";
 
+// AppStore: client-side persistent store for
+// authentication info and global app settings
 interface AppStore {
   uid?: string;
   username?: string;
   minMinutes: number;
   maxMinutes: number;
-  focusSessions: any[];
+  focusSessions: Session[];
   login: (uid: string) => void;
-  saveSession: (session: any) => void;
+  saveSession: (session: Session) => void;
 }
 
 const defaultApp = {
@@ -45,8 +49,16 @@ export const saveUserInfo = (uid: string, username: string) =>
 export const resetUserInfo = () => useAppStore.setState(defaultApp);
 
 export const saveSessionToAppStore = () =>
-  useAppStore.getState().saveSession(getSessionStore());
+  useAppStore.getState().saveSession(getSession());
 
+export const saveSession = () => {
+  saveSessionToAppStore();
+  saveSessionToFirestore();
+  resetSessionStore();
+};
+
+// SessionStore: client-side non-persistent store for
+// session info, reset after each focus session
 interface SessionStore extends Session {
   savePlan: (plan: string) => void;
   saveTimestamp: () => void;
@@ -92,6 +104,16 @@ export const useSessionStore = create<SessionStore>()((set) => ({
   saveReflectionAnswers: (answers) => set({ reflectionAnswers: answers }),
 }));
 
-export const getSessionStore = () => useSessionStore.getState();
+export function getSession(): Session {
+  const store = useSessionStore.getState();
+  return {
+    plan: store.plan,
+    timestamp: store.timestamp,
+    focusDurationMinutes: store.focusDurationMinutes,
+    completedMinutes: store.completedMinutes,
+    giveUpAttempts: store.giveUpAttempts,
+    reflectionAnswers: store.reflectionAnswers,
+  };
+}
 
 export const resetSessionStore = () => useSessionStore.setState(defaultSession);

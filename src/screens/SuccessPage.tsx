@@ -3,7 +3,7 @@ import { Text } from "react-native";
 
 import { CustomButton, ReflectionModal, Screen } from "../components";
 import { createStyles } from "../helpers";
-import { useSessionStore, saveSessionToFirestore } from "../api";
+import { useSessionStore, saveSession } from "../api";
 
 //When finish the focusing task, this page come out for congrats.
 const prompts = [
@@ -45,7 +45,7 @@ function SuccessPage({ navigation }) {
           onRequestClose={() => setModal(false)}
           onComplete={(answers) => {
             saveReflectionAnswers(answers);
-            saveSessionToFirestore();
+            saveSession();
             navigation.navigate("HomePage");
           }}
         />

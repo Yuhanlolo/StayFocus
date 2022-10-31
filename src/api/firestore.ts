@@ -7,21 +7,13 @@ import {
 } from "firebase/firestore";
 
 import { app } from "./firebase";
-import { getAppStore, getSessionStore, resetSessionStore } from "./store";
+import { getAppStore, getSession, resetSessionStore } from "./store";
 import { Session } from "./types";
 
 const db = getFirestore(app);
 
 export function saveSessionToFirestore() {
-  const store = getSessionStore();
-  const session: Session = {
-    plan: store.plan,
-    timestamp: store.timestamp,
-    focusDurationMinutes: store.focusDurationMinutes,
-    completedMinutes: store.completedMinutes,
-    giveUpAttempts: store.giveUpAttempts,
-    reflectionAnswers: store.reflectionAnswers,
-  };
+  const session: Session = getSession();
   console.log(session);
   resetSessionStore();
 

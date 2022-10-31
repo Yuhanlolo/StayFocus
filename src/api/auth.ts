@@ -19,6 +19,7 @@ onAuthStateChanged(auth, (user) => {
     // https://firebase.google.com/docs/reference/js/firebase.User
     console.log("$$", user.uid);
   } else {
+    // User is logged out, reset user states in AppStore
     resetUserInfo();
   }
 });
@@ -36,10 +37,12 @@ export async function createUser(
     );
     const user = userCredential.user;
     updateProfile(user, { displayName: username });
+    // updateProfile does not trigger auth state change, so these method calls
+    // cannot be done in the onAuthStateChanged observer, so we put them here
     saveUserInfo(user.uid, username);
     saveUserToFireStore(user.uid, username);
   } catch (error) {
-    console.log(error);
+    console.log(error.code);
   }
 }
 
