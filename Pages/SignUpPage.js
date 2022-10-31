@@ -166,6 +166,7 @@ function SignUpPage({ navigation })
        return (
         <View style = {styles.background}>
          <Text style = {styles.baseText}>{title}</Text>
+         <View style = {{top:'10%'}}>
          <Text style = {styles.comments_1}>{text_1}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
@@ -213,6 +214,7 @@ function SignUpPage({ navigation })
            <Text style = {styles.helper}>{text_5}</Text>
            <Text style = {styles.helper_} onPress={()=>{navigation.navigate('LoginPage');}}> {"Log In"} </Text>
          </View>
+         </View>
             <TouchableOpacity
                       style={styles.button}
                       onPress={
@@ -251,21 +253,21 @@ function SignUpPage({ navigation })
     },
 
     comments_2: {
-      top:'17%',
+      top:'19%',
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
     },
 
    comments_3: {
-      top:'18%',
+      top:'22%',
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
     },
 
    comments_4: {
-      top:'19%',
+      top:'25%',
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
@@ -273,8 +275,8 @@ function SignUpPage({ navigation })
 
     container: {
       flexDirection: 'row',
-      top: '42%',
-      left: '7.5%',
+      top: '20%',
+      left: '20%',
     },
 
     inputContainer: {
@@ -304,7 +306,7 @@ function SignUpPage({ navigation })
     },
 
     button: {
-      top: '25%',
+      top: '33%',
       left:'25%',
       backgroundColor: "#506F4C",
       alignItems: "center",

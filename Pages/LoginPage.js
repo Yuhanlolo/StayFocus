@@ -118,6 +118,7 @@
            return (
                      <View style = {styles.background}>
                       <Text style = {styles.baseText}>{title}</Text>
+                      <View style = {{top:'15%'}}>
                       <Text style = {styles.comments_1}>{text_1}</Text>
                       <View style = {styles.inputContainer}>
                       <TextInput
@@ -141,6 +142,7 @@
                       <View style = {styles.container}>
                         <Text style = {styles.helper}>{text_3}</Text>
                         <Text style = {styles.helper_} onPress={()=>{navigation.navigate('SignUpPage');}}> {"Sign Up"} </Text>
+                      </View>
                       </View>
                          <TouchableOpacity
                                    style={styles.button}
@@ -178,7 +180,7 @@
     },
 
     comments_2: {
-      top:'22%',
+      top:'30%',
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
@@ -186,8 +188,8 @@
 
     container: {
       flexDirection: 'row',
-      top: '50%',
-      left: '7.5%',
+      top: '15%',
+      left: '40%',
     },
 
     inputContainer: {

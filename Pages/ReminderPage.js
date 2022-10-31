@@ -73,8 +73,8 @@ class ReminderPage extends Component {
     // Create a trigger notification
     await notifee.createTriggerNotification(
       {
-        title: 'Meeting with Jane',
-        body: 'Today at 11:20am',
+        title: '<b>Stay Focused</b>',
+        body: "It's time to focus. Set your focusing goal now!",
         android: {
           channelId,
           pressAction: {
@@ -119,10 +119,13 @@ class ReminderPage extends Component {
             onPress={()=>{this.props.navigation.navigate('HomePage');}}
            />
         </View>
+         <View style = {{top: '5%'}}>
          <Text style = {styles.baseText_1}>{this.state.text_1}</Text>
          <Text style = {styles.baseText_2}>{this.state.text_2}</Text>
+         </View>
+         <View style = {{top: '10%', width: '50%', }}>
          <TextInput
-          style={{ top: '12%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'45%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          style={{ top: '50%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'100%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           placeholder="Enter a number"
           placeholderTextColor="black"
           clearTextOnFocus={true}
@@ -140,10 +143,10 @@ class ReminderPage extends Component {
             this.setState({minSet: num});
           }}
          />
-        <Menu style = {{top: '7.5%', left: '18%'}} onSelect={(value) => {this.setState({minSet: value});}}>
-          <MenuTrigger style = {{ width: '100%',}}>
+        <Menu style = {{left: '0%'}} onSelect={(value) => {this.setState({minSet: value});}}>
+          <MenuTrigger style = {{ width: '10%', left: '85%'}}>
             <Text style={{color: '#B8C59E',  fontSize: 16,}}>{'▼'}</Text>
-              </MenuTrigger>
+          </MenuTrigger>
           <MenuOptions customStyles={optionsCustomStyle}>
             <MenuOption style = {{alignItems: 'center',}} value={25} ><Text style = {{color: 'black'}}>{"25 Minutes"}</Text></MenuOption>
             <MenuOption style = {{alignItems: 'center',}} value={50} ><Text style = {{color: 'black'}}>{"50 Minutes"}</Text></MenuOption>
@@ -151,7 +154,10 @@ class ReminderPage extends Component {
             <MenuOption style = {{alignItems: 'center',}} value={100}><Text style = {{color: 'black'}}>{"100 Minutes"}</Text></MenuOption>
           </MenuOptions>
         </Menu>
+        </View>
+        <View style = {{top:'35%'}}>
          <Text style = {styles.baseText_3}>{this.state.text_3}</Text>
+        </View>
          <View style = {styles.container}>
           <DatePicker date={this.state.date} mode = 'time' androidVariant = 'nativeAndroid' onDateChange={(text)=>
           {this.setState({date:text});
@@ -196,7 +202,6 @@ class ReminderPage extends Component {
 
     baseText_1: {
       fontSize: 24,
-      top: '5%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
@@ -206,7 +211,7 @@ class ReminderPage extends Component {
 
     baseText_2: {
       fontSize: 18,
-      top: '9%',
+      top: '60%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
@@ -224,7 +229,7 @@ class ReminderPage extends Component {
 
     container: {
       flexDirection: 'row',
-      top: '68%',
+      top: '72%',
       //left: '7.5%',
     },
 
@@ -236,9 +241,9 @@ class ReminderPage extends Component {
     },
 
     iconContainer: {
-     flexDirection: 'row',
-     top: '8%',
-     right: '18%'
+     flexDirection: 'column',
+     top: '2%',
+     right: '40%',
      //justifyContent: "start",
     },
 
@@ -274,7 +279,7 @@ const optionsCustomStyle = {
     optionsContainer: {
         backgroundColor: 'white',
         marginTop: '10.5%',
-        marginLeft: '4.7%',
+        marginLeft: '1%',
         width: '45%',
         height: '18%',
         borderRadius: 10,

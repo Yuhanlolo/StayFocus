@@ -139,11 +139,13 @@ class HomePage extends Component {
         <View style = {{top: '20%', alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         </View>
+        <View style = {{top: '23%', width: '78%',}}>
         <TextInput
-          style={{ top: '25%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'85%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          style={{ top: '25%', height: 45, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'100%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           placeholder="Enter a number"
           placeholderTextColor="black"
           clearTextOnFocus={true}
+          autoFocus={true}
           onChangeText={(text) => {
             const newText = text.replace(/[^\d]+/, '');
             let num = Number(newText);
@@ -159,10 +161,10 @@ class HomePage extends Component {
             this.setState({select: true});
           }}
         />
-        <Menu style = {{top: '20.5%', left: '33%'}} onSelect={(value) => {this.setState({minSet: value}); this.setState({select: true});}}>
-          <MenuTrigger style = {{ width: '100%',}}>
+        <Menu style = {{top:'-20%', right:'2.1%'}} onSelect={(value) => {this.setState({minSet: value}); this.setState({select: true});}}>
+          <MenuTrigger style = {{ width: '10%',left:'85%',top:'-10%'}}>
             <Text style={{color: '#B8C59E',  fontSize: 16,}}>{'▼'}</Text>
-              </MenuTrigger>
+          </MenuTrigger>
           <MenuOptions customStyles={optionsCustomStyle}>
             <MenuOption style = {{alignItems: 'center',}} value={25} ><Text style = {{color: 'black'}}>{"25 Minutes"}</Text></MenuOption>
             <MenuOption style = {{alignItems: 'center',}} value={50} ><Text style = {{color: 'black'}}>{"50 Minutes"}</Text></MenuOption>
@@ -170,6 +172,7 @@ class HomePage extends Component {
             <MenuOption style = {{alignItems: 'center',}} value={100}><Text style = {{color: 'black'}}>{"100 Minutes"}</Text></MenuOption>
           </MenuOptions>
         </Menu>
+        </View>
         <View style = {{top: '48.5%'}}>
         <Text style={{fontFamily: 'Roboto', fontSize: 10, color: 'red'}}>{'*Please enter more than 25 minutes'}</Text>
         </View>
@@ -242,8 +245,7 @@ const triggerCustomStyle = {
 const optionsCustomStyle = {
     optionsContainer: {
         backgroundColor: 'white',
-        marginTop: '15%',
-        marginLeft: '2.5%',
+        marginTop: '10%',
         width: '45%',
         height: '18%',
         borderRadius: 10,

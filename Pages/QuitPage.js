@@ -125,7 +125,6 @@ class QuitPage extends Component {
         <View style = {styles.background}>
         <View style = {styles.container}>
         <Text style = {styles.baseText}>{this.state.text}</Text>
-        </View>
         <View style = {styles.buttonContainer}>
         <TouchableOpacity
           style={styles.buttonLeft}
@@ -143,6 +142,7 @@ class QuitPage extends Component {
           }}>
           <Text style = {styles.buttonText}>{'Cancel'}</Text>
          </TouchableOpacity>
+         </View>
          </View>
         </View>
       );
@@ -191,10 +191,10 @@ class QuitPage extends Component {
     buttonLeft: {
       backgroundColor: "#506F4C",
       alignItems: "center",
-      top: '35%',
+      top: '-6%',
       borderBottomStartRadius: 8.5,
       padding: 10,
-      width: '37.5%',
+      width: '53.5%',
       //borderWidth: 5,
       borderColor: '#B8C59E'
     },
@@ -202,10 +202,10 @@ class QuitPage extends Component {
     buttonRight: {
       backgroundColor: "#506F4C",
       alignItems: "center",
-      top: '35%',
+      top: '-6%',
       borderBottomEndRadius: 8.5,
       padding: 10,
-      width: '37.5%',
+      width: '53.5%',
       //borderWidth: 5,
       borderColor: '#B8C59E'
     },

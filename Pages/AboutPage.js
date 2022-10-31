@@ -99,8 +99,8 @@ class AboutPage extends Component {
 
     iconContainer: {
      flexDirection: 'row',
-     top: '8%',
-     right: '18%'
+     top: '6%',
+     right: '20%'
      //justifyContent: "start",
     },
 
