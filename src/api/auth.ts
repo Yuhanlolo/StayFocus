@@ -23,31 +23,38 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-export function createUser(email, username, password) {
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      updateProfile(user, { displayName: username });
-      saveUserInfo(user.uid, username);
-      saveUserToFireStore(user.uid, username);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-function errorCodeToMessage(code: string) {
-  const dict = {
-    "auth/user-not-found": "User not found",
-    "auth/wrong-password": "Wrong password",
-    "auth/invalid-email": "Invalid email",
-  };
-  return dict[code] || `Authentication error: ${code}`;
-}
-
-export async function loginUser(email, password): Promise<[boolean, string?]> {
+export async function createUser(
+  email: string,
+  username: string,
+  password: string
+) {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+    updateProfile(user, { displayName: username });
+    saveUserInfo(user.uid, username);
+    saveUserToFireStore(user.uid, username);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function loginUser(
+  email: string,
+  password: string
+): Promise<[boolean, string?]> {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+    saveUserInfo(user.uid, user.displayName);
     return [true];
   } catch (error) {
     const errorMsg = errorCodeToMessage(error.code);
@@ -59,4 +66,13 @@ export function logoutUser() {
   signOut(auth).catch((error) => {
     console.log(error.code);
   });
+}
+
+function errorCodeToMessage(code: string) {
+  const dict = {
+    "auth/user-not-found": "User not found",
+    "auth/wrong-password": "Wrong password",
+    "auth/invalid-email": "Invalid email",
+  };
+  return dict[code] || `Authentication error: ${code}`;
 }
