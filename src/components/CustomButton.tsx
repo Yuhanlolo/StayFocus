@@ -3,7 +3,7 @@ import { Pressable, PressableProps, Text } from "react-native";
 import { createStyles, CSSStyles } from "../helpers";
 
 interface CustomButtonProps extends PressableProps {
-  styles: {
+  styles?: {
     button?: CSSStyles;
     text?: CSSStyles;
   };
@@ -16,13 +16,13 @@ export function CustomButton(props: CustomButtonProps) {
   return (
     <Pressable
       android_ripple={{
-        color: props.styles.button.rippleColor,
+        color: props.styles?.button.rippleColor,
         borderless: true,
       }}
-      style={[defaultStyles.button, props.styles.button]}
+      style={[defaultStyles.button, props.styles?.button]}
       {...props}
     >
-      <Text style={[defaultStyles.text, props.styles.text]}>
+      <Text style={[defaultStyles.text, props.styles?.text]}>
         {props.children}
       </Text>
     </Pressable>

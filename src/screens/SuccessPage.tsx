@@ -40,6 +40,7 @@ function SuccessPage({ navigation }) {
       </CustomButton>
       {modal ? (
         <ReflectionModal
+          visible={true}
           prompts={prompts}
           onRequestClose={() => setModal(false)}
           onComplete={(answers) => {

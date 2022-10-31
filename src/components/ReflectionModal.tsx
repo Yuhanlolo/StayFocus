@@ -6,13 +6,17 @@ import { CustomModal } from "../components/CustomModal";
 import { CustomButton } from "../components/CustomButton";
 
 interface ReflectionModalProps {
+  visible: boolean;
   prompts: string[];
   onRequestClose: () => void;
+  onBack?: (answers: string[]) => void;
   onComplete: (answers: string[]) => void;
 }
 
 export function ReflectionModal({
+  visible,
   prompts,
+  onBack,
   onRequestClose,
   onComplete,
 }: ReflectionModalProps) {
@@ -47,7 +51,7 @@ export function ReflectionModal({
   return (
     <CustomModal
       style={styles.container}
-      visible={true}
+      visible={visible}
       onRequestClose={onRequestClose}
       title="Quick questions"
     >
@@ -63,6 +67,14 @@ export function ReflectionModal({
         />
       ) : null}
       <View style={styles.buttonContainer}>
+        {promptIndex < prompts.length - 1 && onBack ? (
+          <CustomButton
+            onPress={() => onBack(answers)}
+            styles={{ button: styles.button }}
+          >
+            Back to focus
+          </CustomButton>
+        ) : null}
         <CustomButton onPress={next} styles={{ button: styles.button }}>
           {buttonText()}
         </CustomButton>
@@ -94,7 +106,7 @@ const useModalStyles = createStyles((theme) => ({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
   },
   button: {

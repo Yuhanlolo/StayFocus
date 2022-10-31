@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import { TextInput, Text, View } from "react-native";
+import { Text } from "react-native";
 
 import { createStyles, CSSStyles, secondsToHHMMSS } from "../helpers";
-import { CustomButton, CustomModal, Screen } from "../components";
-import { useSessionStore } from "../api";
+import { CustomButton, Screen, ReflectionModal } from "../components";
+import { saveSessionToFirestore, useSessionStore } from "../api";
 
 interface TimerProps {
   initialSeconds: number;
@@ -56,7 +56,6 @@ function TimerPage({ navigation }) {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [paused, setPaused] = useState(false);
   const [modal, setModal] = useState(false);
-  const [input, setInput] = useState("");
 
   const minutes = useSessionStore((state) => state.focusDurationMinutes);
   const plan = useSessionStore((state) => state.plan);
@@ -66,20 +65,28 @@ function TimerPage({ navigation }) {
   const saveGiveUpAttempt = useSessionStore((state) => state.saveGiveUpAttempt);
 
   const initialSeconds = minutes * 60;
-
   const elapsedMinutes = () => Math.ceil(elapsedSeconds / 60);
+
+  const prompts = () => [
+    `You have been focusing for ${elapsedMinutes()} minutes`,
+    "Congrats! Try better next time",
+  ];
 
   const toggleTimerAndModal = () => {
     setPaused(!paused);
     setModal(!modal);
-    saveGiveUpAttempt([input], false);
   };
 
-  const onPress = () => {
-    setModal(false);
-    saveGiveUpAttempt([input], true);
-    saveCompletedMinutes(elapsedSeconds);
-    navigation.navigate("FailPage");
+  const onBackToFocus = (answers: string[]) => {
+    saveGiveUpAttempt(answers, false);
+    toggleTimerAndModal();
+  };
+
+  const onCompleteGiveUp = (answers: string[]) => {
+    saveGiveUpAttempt(answers, true);
+    saveCompletedMinutes(elapsedMinutes());
+    saveSessionToFirestore();
+    navigation.navigate("HomePage");
   };
 
   const onComplete = () => {
@@ -91,14 +98,12 @@ function TimerPage({ navigation }) {
 
   return (
     <Screen>
-      {modal || (
-        <CustomButton
-          styles={{ button: styles.button, text: styles.buttonText }}
-          onPress={toggleTimerAndModal}
-        >
-          Give up
-        </CustomButton>
-      )}
+      <CustomButton
+        styles={{ button: styles.button, text: styles.buttonText }}
+        onPress={toggleTimerAndModal}
+      >
+        Give up
+      </CustomButton>
       <Text style={styles.plan}>{plan}</Text>
       <Timer
         initialSeconds={initialSeconds}
@@ -107,45 +112,13 @@ function TimerPage({ navigation }) {
         onComplete={onComplete}
         styles={styles.timer}
       />
-      <CustomModal
-        style={styles.modalContainer}
+      <ReflectionModal
         visible={modal}
+        prompts={prompts()}
         onRequestClose={toggleTimerAndModal}
-        title="Give up now?"
-      >
-        <Text style={styles.modalText}>
-          You have been focusing for {elapsedMinutes()} minutes. Why do you want
-          to use your phone now?
-        </Text>
-        <TextInput
-          style={styles.modalInput}
-          onChangeText={setInput}
-          placeholder="Type your answer here"
-          placeholderTextColor={styles.modalInput.placeholderTextColor}
-          value={input}
-          multiline={true}
-        />
-        <View style={styles.modalButtons}>
-          <CustomButton
-            styles={{
-              button: styles.modalButton,
-              text: styles.modalButtonText,
-            }}
-            onPress={toggleTimerAndModal}
-          >
-            Back to focus
-          </CustomButton>
-          <CustomButton
-            styles={{
-              button: styles.modalButton,
-              text: styles.modalButtonText,
-            }}
-            onPress={onPress}
-          >
-            Next question
-          </CustomButton>
-        </View>
-      </CustomModal>
+        onComplete={onCompleteGiveUp}
+        onBack={onBackToFocus}
+      />
     </Screen>
   );
 }
@@ -173,38 +146,6 @@ const useStyles = createStyles((theme) => ({
     color: theme.textColor,
     fontSize: 2 * theme.fontSizes.xl,
     textAlign: "center",
-  },
-  modalContainer: {
-    position: "absolute",
-    bottom: "8%",
-  },
-  modalText: {
-    marginBottom: 16,
-    color: theme.muteColor,
-    fontSize: theme.fontSizes.sm,
-    textAlign: "center",
-  },
-  modalInput: {
-    marginBottom: 16,
-    height: 100,
-    padding: 12,
-    borderRadius: 10,
-    backgroundColor: theme.textColor,
-    fontSize: theme.fontSizes.sm,
-    textAlignVertical: "top",
-    color: theme.muteColor,
-    placeholderTextColor: theme.muteColor,
-  },
-  modalButtons: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-  modalButton: {
-    rippleColor: theme.primaryColor,
-  },
-  modalButtonText: {
-    fontSize: theme.fontSizes.xs,
   },
 }));
 

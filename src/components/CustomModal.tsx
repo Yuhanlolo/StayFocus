@@ -4,10 +4,10 @@ import { createStyles, CSSStyles } from "../helpers";
 
 interface CustomModalProps {
   visible: boolean;
-  onRequestClose: () => void;
   title: string;
-  style: CSSStyles;
+  style?: CSSStyles;
   children: React.ReactNode;
+  onRequestClose: () => void;
 }
 
 export function CustomModal({
