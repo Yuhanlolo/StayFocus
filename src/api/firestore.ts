@@ -1,10 +1,4 @@
-import {
-  getFirestore,
-  collection,
-  doc,
-  addDoc,
-  setDoc,
-} from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 import { app } from "./firebase";
 import { Session } from "./types";
