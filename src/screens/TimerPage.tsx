@@ -2,9 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { TextInput, Text, View } from "react-native";
 
 import { createStyles, CSSStyles, secondsToHHMMSS } from "../helpers";
-import { CustomButton } from "../components/CustomButton";
-import { CustomModal } from "../components/CustomModal";
-import { Screen } from "../components/Screen";
+import { CustomButton, CustomModal, Screen } from "../components";
 import { useSessionStore } from "../api";
 
 interface TimerProps {
@@ -31,7 +29,7 @@ function Timer({
       const interval = setInterval(() => {
         if (secondsRef.current <= 0) {
           clearInterval(interval);
-          typeof onComplete === "function" ? onComplete() : null;
+          if (typeof onComplete === "function") onComplete();
         } else {
           setSeconds((seconds) => seconds - 1);
         }

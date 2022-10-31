@@ -3,8 +3,7 @@ import { Text, TextInput, View, Keyboard } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { createStyles } from "../helpers";
-import { CustomButton } from "../components/CustomButton";
-import { Screen } from "../components/Screen";
+import { CustomButton, Screen } from "../components";
 import { useSessionStore } from "../api";
 
 //Home page to set focusing time

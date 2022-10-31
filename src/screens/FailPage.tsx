@@ -1,7 +1,6 @@
 import { Text } from "react-native";
 
-import { CustomButton } from "../components/CustomButton";
-import { Screen } from "../components/Screen";
+import { CustomButton, Screen } from "../components";
 import { createStyles } from "../helpers";
 import { useSessionStore, saveSessionToFirestore } from "../api";
 

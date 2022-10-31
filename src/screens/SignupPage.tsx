@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Text, TextInput, View, Pressable } from "react-native";
 
-import { CustomButton } from "../components/CustomButton";
-import { Screen } from "../components/Screen";
+import { CustomButton, Screen } from "../components";
 import { createStyles } from "../helpers";
 import { createUser } from "../api";
 

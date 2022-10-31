@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Text } from "react-native";
 
-import { CustomButton } from "../components/CustomButton";
-import { ReflectionModal } from "../components/ReflectionModal";
-import { Screen } from "../components/Screen";
+import { CustomButton, ReflectionModal, Screen } from "../components";
 import { createStyles } from "../helpers";
 import { useSessionStore, saveSessionToFirestore } from "../api";
 
