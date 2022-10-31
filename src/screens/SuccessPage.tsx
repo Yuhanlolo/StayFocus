@@ -18,17 +18,21 @@ const prompts = [
 function ReflectionModal({ onRequestClose, onBackToHome }) {
   const [promptIndex, setPromptIndex] = useState(0);
   const [input, setInput] = useState("");
+  const [answers, setAnswers] = useState([]);
 
-  const saveReflectionAnswer = useSessionStore(
-    (state) => state.saveReflectionAnswer
+  const saveReflectionAnswers = useSessionStore(
+    (state) => state.saveReflectionAnswers
   );
+
+  const addAnswer = (ans: string) => setAnswers([...answers, ans]);
 
   const next = () => {
     if (promptIndex < prompts.length - 1) {
-      saveReflectionAnswer(input);
+      addAnswer(input);
       setInput("");
       setPromptIndex(promptIndex + 1);
     } else if (promptIndex === prompts.length - 1) {
+      saveReflectionAnswers(answers);
       onBackToHome();
     }
   };
@@ -47,24 +51,24 @@ function ReflectionModal({ onRequestClose, onBackToHome }) {
 
   return (
     <CustomModal
-      style={styles.modal.container}
+      style={styles.container}
       visible={true}
       onRequestClose={onRequestClose}
       title="Quick questions"
     >
-      <Text style={styles.modal.text}>{prompts[promptIndex]}</Text>
+      <Text style={styles.text}>{prompts[promptIndex]}</Text>
       {promptIndex < prompts.length - 1 ? (
         <TextInput
-          style={styles.modal.input}
+          style={styles.input}
           onChangeText={setInput}
           value={input}
           multiline={true}
           placeholder={"Type your answer here"}
-          placeholderTextColor={styles.placeholderTextColor}
+          placeholderTextColor={styles.input.placeholderTextColor}
         />
       ) : null}
-      <View style={styles.modal.buttonContainer}>
-        <CustomButton onPress={next} style={styles.modal.button}>
+      <View style={styles.buttonContainer}>
+        <CustomButton onPress={next} styles={{ button: styles.button }}>
           {buttonText()}
         </CustomButton>
       </View>
@@ -73,44 +77,41 @@ function ReflectionModal({ onRequestClose, onBackToHome }) {
 }
 
 const useModalStyles = createStyles((theme) => ({
-  placeholderTextColor: theme.muteColor,
-  modal: {
-    container: {
-      top: "25%",
-    },
-    text: {
-      marginBottom: 16,
-      color: theme.muteColor,
-      fontSize: theme.fontSizes.sm,
-      textAlign: "center",
-    },
-    input: {
-      marginBottom: 16,
-      height: 100,
-      padding: 12,
-      borderRadius: 10,
-      backgroundColor: theme.textColor,
-      fontSize: theme.fontSizes.sm,
-      textAlignVertical: "top",
-      color: theme.muteColor,
-      placeholderTextColor: theme.muteColor,
-    },
-    buttonContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    button: {
-      rippleColor: theme.primaryColor,
-      text: {
-        fontSize: theme.fontSizes.sm,
-      },
-    },
+  container: {
+    top: "25%",
+  },
+  text: {
+    marginBottom: 16,
+    color: theme.muteColor,
+    fontSize: theme.fontSizes.sm,
+    textAlign: "center",
+  },
+  input: {
+    marginBottom: 16,
+    height: 100,
+    padding: 12,
+    borderRadius: 10,
+    backgroundColor: theme.textColor,
+    fontSize: theme.fontSizes.sm,
+    textAlignVertical: "top",
+    color: theme.muteColor,
+    placeholderTextColor: theme.muteColor,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    rippleColor: theme.primaryColor,
+  },
+  buttonText: {
+    fontSize: theme.fontSizes.sm,
   },
 }));
 
 function SuccessPage({ navigation }) {
-  const minutes = useSessionStore((state) => state.setSeconds) / 60;
+  const minutes = useSessionStore((state) => state.focusDurationMinutes);
   const plan = useSessionStore((state) => state.plan);
   const planLowerCase = plan[0].toLowerCase() + plan.slice(1);
   const [modal, setModal] = useState(false);
@@ -124,7 +125,10 @@ function SuccessPage({ navigation }) {
         <Text style={{ fontStyle: "italic" }}>{planLowerCase}</Text> for{" "}
         {minutes} minutes!
       </Text>
-      <CustomButton style={styles.button} onPress={() => setModal(true)}>
+      <CustomButton
+        styles={{ button: styles.button }}
+        onPress={() => setModal(true)}
+      >
         Start a quick recall
       </CustomButton>
       {modal ? (
