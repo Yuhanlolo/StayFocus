@@ -17,7 +17,7 @@ interface AppStore {
 const defaultApp = {
   uid: null,
   username: null,
-  minMinutes: 10,
+  minMinutes: 0,
   maxMinutes: 120,
   focusSessions: [],
 };
@@ -50,8 +50,8 @@ export const saveSessionToAppStore = () =>
 interface SessionStore extends Session {
   savePlan: (plan: string) => void;
   saveTimestamp: () => void;
-  saveFocusDurationMinutes: (seconds: number) => void;
-  saveCompletedMinutes: (seconds: number) => void;
+  saveFocusDurationMinutes: (minutes: number) => void;
+  saveCompletedMinutes: (minutes: number) => void;
   saveGiveUpAttempt: (answers: string[], givenUp: boolean) => void;
   saveReflectionAnswers: (answers: string[]) => void;
 }

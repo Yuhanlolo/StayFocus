@@ -84,6 +84,11 @@ function TimerPage({ navigation }) {
     navigation.navigate("FailPage");
   };
 
+  const onComplete = () => {
+    saveCompletedMinutes(minutes);
+    navigation.navigate("SuccessPage");
+  };
+
   const styles = useStyles();
 
   return (
@@ -101,7 +106,7 @@ function TimerPage({ navigation }) {
         initialSeconds={initialSeconds}
         paused={paused}
         onPaused={(left) => setElapsedSeconds(initialSeconds - left)}
-        onComplete={() => navigation.navigate("SuccessPage")}
+        onComplete={onComplete}
         styles={styles.timer}
       />
       <CustomModal
