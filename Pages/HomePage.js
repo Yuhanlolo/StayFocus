@@ -146,6 +146,7 @@ class HomePage extends Component {
           placeholderTextColor="black"
           clearTextOnFocus={true}
           autoFocus={true}
+          keyboardType="number-pad"
           onChangeText={(text) => {
             const newText = text.replace(/[^\d]+/, '');
             let num = Number(newText);

@@ -129,6 +129,8 @@ class ReminderPage extends Component {
           placeholder="Enter a number"
           placeholderTextColor="black"
           clearTextOnFocus={true}
+          autoFocus={true}
+          keyboardType="number-pad"
           onChangeText={(text) => {
             const newText = text.replace(/[^\d]+/, '');
             let num = Number(newText);
