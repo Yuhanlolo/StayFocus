@@ -135,6 +135,7 @@ const useStyles = createStyles((theme) => ({
   },
   button: {
     marginTop: 40,
+    rippleColor: theme.backgroundColor,
   },
   buttonText: {
     fontSize: theme.fontSizes.md,

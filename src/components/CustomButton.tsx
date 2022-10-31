@@ -14,7 +14,14 @@ export function CustomButton(props: CustomButtonProps) {
   const defaultStyles = useStyles();
 
   return (
-    <Pressable {...props} style={[defaultStyles.button, props.styles.button]}>
+    <Pressable
+      android_ripple={{
+        color: props.styles.button.rippleColor,
+        borderless: true,
+      }}
+      style={[defaultStyles.button, props.styles.button]}
+      {...props}
+    >
       <Text style={[defaultStyles.text, props.styles.text]}>
         {props.children}
       </Text>

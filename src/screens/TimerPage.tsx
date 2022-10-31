@@ -124,13 +124,19 @@ function TimerPage({ navigation }) {
         />
         <View style={styles.modalButtons}>
           <CustomButton
-            styles={{ text: styles.modalButtonText }}
+            styles={{
+              button: styles.modalButton,
+              text: styles.modalButtonText,
+            }}
             onPress={toggleTimerAndModal}
           >
             Back to focus
           </CustomButton>
           <CustomButton
-            styles={{ text: styles.modalButtonText }}
+            styles={{
+              button: styles.modalButton,
+              text: styles.modalButtonText,
+            }}
             onPress={onPress}
           >
             Next question
@@ -145,6 +151,7 @@ const useStyles = createStyles((theme) => ({
   button: {
     marginTop: "10%",
     borderRadius: 9999,
+    rippleColor: theme.backgroundColor,
   },
   buttonText: {
     fontSize: theme.fontSizes.sm,
@@ -189,6 +196,9 @@ const useStyles = createStyles((theme) => ({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+  },
+  modalButton: {
+    rippleColor: theme.primaryColor,
   },
   modalButtonText: {
     fontSize: theme.fontSizes.xs,
