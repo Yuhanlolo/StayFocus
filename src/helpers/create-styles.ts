@@ -2,7 +2,11 @@ import { useContext } from "react";
 import { Theme, ThemeContext } from "./ThemeContext";
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from "react-native";
 
-export type CSSStyles = ViewStyle | TextStyle | ImageStyle;
+export interface CSSStyles extends ViewStyle, TextStyle, ImageStyle {
+  overflow?: any;
+  rippleColor?: string;
+  placeholderTextColor?: string;
+}
 
 export function createStyles<Key extends string = string, Params = void>(
   input:

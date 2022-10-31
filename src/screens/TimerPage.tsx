@@ -1,23 +1,37 @@
 import { useEffect, useState, useRef } from "react";
 import { TextInput, Text, View } from "react-native";
 
-import { createStyles, secondsToHHMMSS } from "../helpers";
+import { createStyles, CSSStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton } from "../components/CustomButton";
 import { CustomModal } from "../components/CustomModal";
 import { Screen } from "../components/Screen";
 import { useSessionStore } from "../api";
 
-function Timer(props) {
-  const [seconds, setSeconds] = useState(props.seconds);
+interface TimerProps {
+  initialSeconds: number;
+  paused: boolean;
+  onComplete?: () => void;
+  onPaused: (seconds: number) => void;
+  styles: CSSStyles;
+}
+
+function Timer({
+  initialSeconds,
+  paused,
+  onComplete,
+  onPaused,
+  styles,
+}: TimerProps) {
+  const [seconds, setSeconds] = useState(initialSeconds);
   const secondsRef = useRef(null);
   secondsRef.current = seconds;
 
   useEffect(() => {
-    if (!props.paused) {
+    if (!paused) {
       const interval = setInterval(() => {
         if (secondsRef.current <= 0) {
           clearInterval(interval);
-          typeof props.onComplete === "function" ? props.onComplete() : null;
+          typeof onComplete === "function" ? onComplete() : null;
         } else {
           setSeconds((seconds) => seconds - 1);
         }
@@ -25,23 +39,19 @@ function Timer(props) {
 
       return () => clearInterval(interval);
     } else {
-      props.onPaused(seconds);
+      onPaused(seconds);
     }
-  }, [props.paused]);
+  }, [paused]);
 
-  const timeString = (secs, showHour) => {
+  const timeString = (secs: number) => {
     const [h, m, s] = secondsToHHMMSS(secs);
     const hh = h.toString().padStart(2, "0");
     const mm = m.toString().padStart(2, "0");
     const ss = s.toString().padStart(2, "0");
-    return showHour ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`;
+    return h > 0 ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`;
   };
 
-  return (
-    <Text style={props.style}>
-      {timeString(seconds, props.seconds >= 60 * 60)}
-    </Text>
-  );
+  return <Text style={styles}>{timeString(seconds)}</Text>;
 }
 
 function TimerPage({ navigation }) {
@@ -50,14 +60,12 @@ function TimerPage({ navigation }) {
   const [modal, setModal] = useState(false);
   const [input, setInput] = useState("");
 
-  const minutes = useSessionStore((state) => state.setSeconds) / 60;
+  const minutes = useSessionStore((state) => state.focusDurationMinutes);
   const plan = useSessionStore((state) => state.plan);
-  const saveElapsedSeconds = useSessionStore(
+  const saveCompletedMinutes = useSessionStore(
     (state) => state.saveCompletedMinutes
   );
-  const saveGiveUpAttempt = useSessionStore(
-    (state) => state.saveGiveUpAttempts
-  );
+  const saveGiveUpAttempt = useSessionStore((state) => state.saveGiveUpAttempt);
 
   const initialSeconds = minutes * 60;
 
@@ -66,13 +74,13 @@ function TimerPage({ navigation }) {
   const toggleTimerAndModal = () => {
     setPaused(!paused);
     setModal(!modal);
-    saveGiveUpAttempt(input, false);
+    saveGiveUpAttempt([input], false);
   };
 
   const onPress = () => {
     setModal(false);
-    saveGiveUpAttempt(input, true);
-    saveElapsedSeconds(elapsedSeconds);
+    saveGiveUpAttempt([input], true);
+    saveCompletedMinutes(elapsedSeconds);
     navigation.navigate("FailPage");
   };
 
@@ -81,44 +89,50 @@ function TimerPage({ navigation }) {
   return (
     <Screen>
       {modal || (
-        <CustomButton styles={styles.button} onPress={toggleTimerAndModal}>
+        <CustomButton
+          styles={{ button: styles.button, text: styles.buttonText }}
+          onPress={toggleTimerAndModal}
+        >
           Give up
         </CustomButton>
       )}
       <Text style={styles.plan}>{plan}</Text>
       <Timer
-        seconds={initialSeconds}
+        initialSeconds={initialSeconds}
         paused={paused}
         onPaused={(left) => setElapsedSeconds(initialSeconds - left)}
         onComplete={() => navigation.navigate("SuccessPage")}
-        style={styles.timer}
+        styles={styles.timer}
       />
       <CustomModal
-        style={styles.modal.container}
+        style={styles.modalContainer}
         visible={modal}
         onRequestClose={toggleTimerAndModal}
         title="Give up now?"
       >
-        <Text style={styles.modal.text}>
+        <Text style={styles.modalText}>
           You have been focusing for {elapsedMinutes()} minutes. Why do you want
           to use your phone now?
         </Text>
         <TextInput
-          style={styles.modal.input}
+          style={styles.modalInput}
           onChangeText={setInput}
           placeholder="Type your answer here"
-          placeholderTextColor={styles.modal.input.placeholderTextColor}
+          placeholderTextColor={styles.modalInput.placeholderTextColor}
           value={input}
           multiline={true}
         />
-        <View style={styles.modal.buttonContainer}>
+        <View style={styles.modalButtons}>
           <CustomButton
-            styles={styles.modal.button}
+            styles={{ text: styles.modalButtonText }}
             onPress={toggleTimerAndModal}
           >
             Back to focus
           </CustomButton>
-          <CustomButton onPress={onPress} styles={styles.modal.button}>
+          <CustomButton
+            styles={{ text: styles.modalButtonText }}
+            onPress={onPress}
+          >
             Next question
           </CustomButton>
         </View>
@@ -130,11 +144,10 @@ function TimerPage({ navigation }) {
 const useStyles = createStyles((theme) => ({
   button: {
     marginTop: "10%",
-    rippleColor: theme.backgroundColor,
     borderRadius: 9999,
-    text: {
-      fontSize: theme.fontSizes.sm,
-    },
+  },
+  buttonText: {
+    fontSize: theme.fontSizes.sm,
   },
   plan: {
     marginTop: "25%",
@@ -151,39 +164,34 @@ const useStyles = createStyles((theme) => ({
     fontSize: 2 * theme.fontSizes.xl,
     textAlign: "center",
   },
-  modal: {
-    container: {
-      position: "absolute",
-      bottom: "8%",
-    },
-    text: {
-      marginBottom: 16,
-      color: theme.muteColor,
-      fontSize: theme.fontSizes.sm,
-      textAlign: "center",
-    },
-    input: {
-      marginBottom: 16,
-      height: 100,
-      padding: 12,
-      borderRadius: 10,
-      backgroundColor: theme.textColor,
-      fontSize: theme.fontSizes.sm,
-      textAlignVertical: "top",
-      color: theme.muteColor,
-      placeholderTextColor: theme.muteColor,
-    },
-    buttonContainer: {
-      flexDirection: "row",
-      justifyContent: "space-around",
-      alignItems: "center",
-    },
-    button: {
-      rippleColor: theme.primaryColor,
-      text: {
-        fontSize: theme.fontSizes.xs,
-      },
-    },
+  modalContainer: {
+    position: "absolute",
+    bottom: "8%",
+  },
+  modalText: {
+    marginBottom: 16,
+    color: theme.muteColor,
+    fontSize: theme.fontSizes.sm,
+    textAlign: "center",
+  },
+  modalInput: {
+    marginBottom: 16,
+    height: 100,
+    padding: 12,
+    borderRadius: 10,
+    backgroundColor: theme.textColor,
+    fontSize: theme.fontSizes.sm,
+    textAlignVertical: "top",
+    color: theme.muteColor,
+    placeholderTextColor: theme.muteColor,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  modalButtonText: {
+    fontSize: theme.fontSizes.xs,
   },
 }));
 
