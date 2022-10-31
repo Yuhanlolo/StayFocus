@@ -2,26 +2,20 @@ import { Pressable, PressableProps, Text } from "react-native";
 
 import { createStyles, CSSStyles } from "../helpers";
 
-interface CustomButtonProps {
-  style: {
+interface CustomButtonProps extends PressableProps {
+  styles: {
     button?: CSSStyles;
     text?: CSSStyles;
-    rippleColor: string;
   };
   children: React.ReactNode;
-  buttonProps?: PressableProps;
 }
 
 export function CustomButton(props: CustomButtonProps) {
   const defaultStyles = useStyles();
 
   return (
-    <Pressable
-      android_ripple={{ color: props.style.rippleColor, borderless: true }}
-      {...props.buttonProps}
-      style={[defaultStyles.button, props.style.button]}
-    >
-      <Text style={[defaultStyles.text, props.style.text]}>
+    <Pressable {...props} style={[defaultStyles.button, props.styles.button]}>
+      <Text style={[defaultStyles.text, props.styles.text]}>
         {props.children}
       </Text>
     </Pressable>

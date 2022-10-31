@@ -24,20 +24,22 @@ function HomePage({ navigation }) {
   const [items, setItems] = useState(defaultItems);
 
   const savePlan = useSessionStore((state) => state.savePlan);
-  const saveStartDatetime = useSessionStore((state) => state.saveStartDatetime);
-  const saveSetSeconds = useSessionStore((state) => state.saveSetSeconds);
+  const saveTimestamp = useSessionStore((state) => state.saveTimestamp);
+  const saveFocusDurationMinutes = useSessionStore(
+    (state) => state.saveFocusDurationMinutes
+  );
 
   const onPress = () => {
     savePlan(plan);
-    saveStartDatetime();
-    saveSetSeconds(value * 60);
+    saveTimestamp();
+    saveFocusDurationMinutes(value);
     // Unfocus the input before changing page, so that the
     // user sees if their input gets clamped to min or max
     Keyboard.dismiss();
     setTimeout(() => navigation.navigate("TimerPage"), 500);
   };
 
-  const insertItem = (text) =>
+  const insertItem = (text: string) =>
     setItems([
       ...defaultItems,
       { label: `${text} minutes`, value: parseInt(text, 10) },
@@ -69,15 +71,18 @@ function HomePage({ navigation }) {
           onChangeSearchText={insertItem}
           showTickIcon={false}
           containerStyle={styles.dropdown}
-          textStyle={styles.dropdown.text}
+          textStyle={styles.dropdownText}
           selectedItemLabelStyle={{
             fontWeight: "bold",
           }}
-          searchTextInputStyle={styles.dropdown.searchTextInput}
-          searchContainerStyle={styles.dropdown.searchContainer}
+          searchTextInputStyle={styles.dropdownSearchTextInput}
+          searchContainerStyle={styles.dropdownSearchContainer}
         />
       </View>
-      <CustomButton style={styles.button} onPress={onPress}>
+      <CustomButton
+        styles={{ button: styles.button, text: styles.buttonText }}
+        onPress={onPress}
+      >
         Start
       </CustomButton>
     </Screen>
@@ -115,25 +120,24 @@ const useStyles = createStyles((theme) => ({
     width: 180,
     overflow: "visible",
     zIndex: 100,
-    text: {
-      textAlign: "center",
-      fontSize: theme.fontSizes.sm,
-    },
-    searchTextInput: {
-      textAlign: "center",
-      borderRadius: 0,
-      borderWidth: 0,
-    },
-    searchContainer: {
-      padding: 0,
-    },
+  },
+  dropdownText: {
+    textAlign: "center",
+    fontSize: theme.fontSizes.sm,
+  },
+  dropdownSearchTextInput: {
+    textAlign: "center",
+    borderRadius: 0,
+    borderWidth: 0,
+  },
+  dropdownSearchContainer: {
+    padding: 0,
   },
   button: {
     marginTop: 40,
-    rippleColor: theme.backgroundColor,
-    text: {
-      fontSize: theme.fontSizes.md,
-    },
+  },
+  buttonText: {
+    fontSize: theme.fontSizes.md,
   },
 }));
 

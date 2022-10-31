@@ -49,9 +49,9 @@ export const saveSessionToAppStore = () =>
 
 interface SessionStore extends Session {
   savePlan: (plan: string) => void;
-  saveStartDatetime: () => void;
-  saveSetSeconds: (seconds: number) => void;
-  saveElapsedSeconds: (seconds: number) => void;
+  saveTimestamp: () => void;
+  saveFocusDurationMinutes: (seconds: number) => void;
+  saveCompletedMinutes: (seconds: number) => void;
   saveGiveUpAttempt: (answers: string[], givenUp: boolean) => void;
   saveReflectionAnswers: (answers: string[]) => void;
 }
@@ -68,8 +68,8 @@ const defaultSession = {
 export const useSessionStore = create<SessionStore>()((set) => ({
   ...defaultSession,
   savePlan: (plan) => set((state) => ({ plan: plan || state.plan })),
-  saveStartDatetime: () => set({ timestamp: new Date().toString() }),
-  saveSetSeconds: (minutes) =>
+  saveTimestamp: () => set({ timestamp: new Date().toString() }),
+  saveFocusDurationMinutes: (minutes) =>
     set({
       focusDurationMinutes: clamp(
         defaultApp.minMinutes,
@@ -77,7 +77,7 @@ export const useSessionStore = create<SessionStore>()((set) => ({
         defaultApp.maxMinutes
       ),
     }),
-  saveElapsedSeconds: (minutes) => set({ completedMinutes: minutes }),
+  saveCompletedMinutes: (minutes) => set({ completedMinutes: minutes }),
   saveGiveUpAttempt: (answers, givenUp) =>
     set((state) => ({
       giveUpAttempts: [

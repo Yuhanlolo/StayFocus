@@ -53,7 +53,7 @@ function TimerPage({ navigation }) {
   const minutes = useSessionStore((state) => state.setSeconds) / 60;
   const plan = useSessionStore((state) => state.plan);
   const saveElapsedSeconds = useSessionStore(
-    (state) => state.saveElapsedSeconds
+    (state) => state.saveCompletedMinutes
   );
   const saveGiveUpAttempt = useSessionStore(
     (state) => state.saveGiveUpAttempts
@@ -81,7 +81,7 @@ function TimerPage({ navigation }) {
   return (
     <Screen>
       {modal || (
-        <CustomButton style={styles.button} onPress={toggleTimerAndModal}>
+        <CustomButton styles={styles.button} onPress={toggleTimerAndModal}>
           Give up
         </CustomButton>
       )}
@@ -113,12 +113,12 @@ function TimerPage({ navigation }) {
         />
         <View style={styles.modal.buttonContainer}>
           <CustomButton
-            style={styles.modal.button}
+            styles={styles.modal.button}
             onPress={toggleTimerAndModal}
           >
             Back to focus
           </CustomButton>
-          <CustomButton onPress={onPress} style={styles.modal.button}>
+          <CustomButton onPress={onPress} styles={styles.modal.button}>
             Next question
           </CustomButton>
         </View>
