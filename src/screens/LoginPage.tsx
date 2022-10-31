@@ -9,17 +9,15 @@ import { loginUser } from "../api";
 function LoginPage({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [validEmail, setValidEmail] = useState(true);
+  const [authError, setAuthError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const styles = useStyles();
 
-  const validate = () => {
-    // taken from https://stackoverflow.com/a/4964766
-    const cond1 = /^\S+@\S+\.\S+$/.test(email);
-    setValidEmail(cond1);
-    if (cond1) {
-      loginUser(email, password);
-    }
+  const login = async () => {
+    const [ok, _errorMsg] = await loginUser(email, password);
+    setAuthError(!ok);
+    if (!ok) setErrorMsg(_errorMsg);
   };
 
   return (
@@ -33,9 +31,6 @@ function LoginPage({ navigation }) {
           style={styles.input}
           keyboardType="email-address"
         />
-        {validEmail ? null : (
-          <Text style={styles.error}>Please enter a valid email</Text>
-        )}
         <Text style={styles.text}>Password</Text>
         <TextInput
           value={password}
@@ -44,13 +39,14 @@ function LoginPage({ navigation }) {
           style={styles.input}
         />
       </View>
-      <View style={styles.switchPrompt}>
-        <Text style={styles.switchPrompt.prompt}>Not a user yet?</Text>
+      {authError ? <Text style={styles.error}>{errorMsg}</Text> : null}
+      <View style={styles.switch}>
+        <Text style={styles.switchPrompt}>Not a user yet?</Text>
         <Pressable onPress={() => navigation.navigate("SignupPage")}>
-          <Text style={styles.switchPrompt.link}>Sign up</Text>
+          <Text style={styles.switchLink}>Sign up</Text>
         </Pressable>
       </View>
-      <CustomButton style={styles.button} onPress={validate}>
+      <CustomButton styles={{ button: styles.button }} onPress={login}>
         Log in
       </CustomButton>
     </Screen>
@@ -85,20 +81,20 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.textColor,
     color: theme.muteColor,
   },
-  switchPrompt: {
+  switch: {
     marginTop: 24,
     marginBottom: 48,
     flexDirection: "row",
-    prompt: {
-      color: theme.primaryColor,
-      fontSize: theme.fontSizes.sm,
-      marginRight: 4,
-    },
-    link: {
-      color: theme.primaryColor,
-      fontSize: theme.fontSizes.sm,
-      textDecorationLine: "underline",
-    },
+  },
+  switchPrompt: {
+    color: theme.primaryColor,
+    fontSize: theme.fontSizes.sm,
+    marginRight: 4,
+  },
+  switchLink: {
+    color: theme.primaryColor,
+    fontSize: theme.fontSizes.sm,
+    textDecorationLine: "underline",
   },
   error: {
     color: theme.alertColor,

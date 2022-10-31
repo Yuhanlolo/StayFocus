@@ -6,7 +6,7 @@ import { Screen } from "../components/Screen";
 import { createStyles } from "../helpers";
 import { createUser } from "../api";
 
-function SignupPage() {
+function SignupPage({ navigation }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -67,13 +67,13 @@ function SignupPage() {
           <Text style={styles.error}>Please enter at least 6 characters</Text>
         )}
       </View>
-      <View style={styles.switchPrompt}>
-        <Text style={styles.switchPrompt.prompt}>Already a user?</Text>
+      <View style={styles.switch}>
+        <Text style={styles.switchPrompt}>Already a user?</Text>
         <Pressable onPress={() => navigation.navigate("LoginPage")}>
-          <Text style={styles.switchPrompt.link}>Log in</Text>
+          <Text style={styles.switchLink}>Log in</Text>
         </Pressable>
       </View>
-      <CustomButton style={styles.button} onPress={validate}>
+      <CustomButton styles={{ button: styles.button }} onPress={validate}>
         Sign up
       </CustomButton>
     </Screen>
@@ -108,20 +108,20 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.textColor,
     color: theme.muteColor,
   },
-  switchPrompt: {
+  switch: {
     marginTop: 24,
     marginBottom: 48,
     flexDirection: "row",
-    prompt: {
-      color: theme.primaryColor,
-      fontSize: theme.fontSizes.sm,
-      marginRight: 8,
-    },
-    link: {
-      color: theme.primaryColor,
-      fontSize: theme.fontSizes.sm,
-      textDecorationLine: "underline",
-    },
+  },
+  switchPrompt: {
+    color: theme.primaryColor,
+    fontSize: theme.fontSizes.sm,
+    marginRight: 4,
+  },
+  switchLink: {
+    color: theme.primaryColor,
+    fontSize: theme.fontSizes.sm,
+    textDecorationLine: "underline",
   },
   error: {
     color: theme.alertColor,
