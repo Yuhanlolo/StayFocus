@@ -7,7 +7,6 @@ import {
   LoginPage,
   SignupPage,
   HomePage,
-  FailPage,
   SuccessPage,
   TimerPage,
 } from "./src/screens";
@@ -30,7 +29,6 @@ export default function App() {
                 <>
                   <Stack.Screen name="HomePage" component={HomePage} />
                   <Stack.Screen name="TimerPage" component={TimerPage} />
-                  <Stack.Screen name="FailPage" component={FailPage} />
                   <Stack.Screen name="SuccessPage" component={SuccessPage} />
                 </>
               ) : (
