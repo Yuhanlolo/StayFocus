@@ -3,7 +3,6 @@ import create from "zustand";
 import { persist } from "zustand/middleware";
 
 import { clamp } from "../helpers";
-import { saveSessionToFirestore } from "./firestore";
 import { Session } from "./types";
 
 // AppStore: client-side persistent store for
@@ -47,15 +46,6 @@ export const saveUserInfo = (uid: string, username: string) =>
   useAppStore.setState({ uid: uid, username: username });
 
 export const resetUserInfo = () => useAppStore.setState(defaultApp);
-
-export const saveSessionToAppStore = () =>
-  useAppStore.getState().saveSession(getSession());
-
-export const saveSession = () => {
-  saveSessionToAppStore();
-  saveSessionToFirestore();
-  resetSessionStore();
-};
 
 // SessionStore: client-side non-persistent store for
 // session info, reset after each focus session
