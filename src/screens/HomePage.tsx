@@ -42,6 +42,7 @@ function HomePage({ navigation }) {
 
   return (
     <Screen>
+      <CustomButton onPress={navigation.toggleDrawer}>Drawer</CustomButton>
       <View style={styles.section}>
         <Text style={styles.text}>My plan for this focus time is</Text>
         <TextInput

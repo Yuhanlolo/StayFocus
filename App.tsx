@@ -1,4 +1,4 @@
-import * as React from "react";
+import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -10,6 +10,7 @@ import {
   SuccessPage,
   TimerPage,
 } from "./src/screens";
+import DrawerNavigator from "./src/screens/DrawerNavigator";
 import { createStyles, ThemeProvider } from "./src/helpers";
 import { useAppStore } from "./src/api";
 
@@ -27,7 +28,7 @@ export default function App() {
             <Stack.Navigator screenOptions={{ headerShown: false }}>
               {user ? (
                 <>
-                  <Stack.Screen name="HomePage" component={HomePage} />
+                  <Stack.Screen name="HomePage" component={DrawerNavigator} />
                   <Stack.Screen name="TimerPage" component={TimerPage} />
                   <Stack.Screen name="SuccessPage" component={SuccessPage} />
                 </>
