@@ -50,9 +50,7 @@ export const resetUserInfo = () => useAppStore.setState(defaultApp);
 // SessionStore: client-side non-persistent store for
 // session info, reset after each focus session
 interface SessionStore extends Session {
-  savePlan: (plan: string) => void;
-  saveTimestamp: () => void;
-  saveFocusDurationMinutes: (minutes: number) => void;
+  newSession: (plan: string, minutes: number) => void;
   saveCompletedMinutes: (minutes: number) => void;
   saveGiveUpAttempt: (answers: string[], givenUp: boolean) => void;
   saveReflectionAnswers: (answers: string[]) => void;
@@ -69,10 +67,10 @@ const defaultSession = {
 
 export const useSessionStore = create<SessionStore>()((set) => ({
   ...defaultSession,
-  savePlan: (plan) => set((state) => ({ plan: plan || state.plan })),
-  saveTimestamp: () => set({ timestamp: new Date().toString() }),
-  saveFocusDurationMinutes: (minutes) =>
+  newSession: (plan, minutes) =>
     set({
+      plan: plan || defaultSession.plan,
+      timestamp: new Date().toString(),
       focusDurationMinutes: clamp(
         defaultApp.minMinutes,
         minutes,

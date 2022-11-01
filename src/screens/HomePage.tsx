@@ -9,7 +9,6 @@ import { useSessionStore } from "../api";
 //Home page to set focusing time
 
 function HomePage({ navigation }) {
-  const styles = useStyles();
   const [plan, setPlan] = useState("");
 
   const defaultItems = [
@@ -19,30 +18,27 @@ function HomePage({ navigation }) {
     { label: "100 minutes", value: 100 },
   ];
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(25);
   const [items, setItems] = useState(defaultItems);
 
-  const savePlan = useSessionStore((state) => state.savePlan);
-  const saveTimestamp = useSessionStore((state) => state.saveTimestamp);
-  const saveFocusDurationMinutes = useSessionStore(
-    (state) => state.saveFocusDurationMinutes
-  );
+  const newSession = useSessionStore((state) => state.newSession);
 
   const onPress = () => {
-    savePlan(plan);
-    saveTimestamp();
-    saveFocusDurationMinutes(value);
+    newSession(plan, value);
     // Unfocus the input before changing page, so that the
     // user sees if their input gets clamped to min or max
     Keyboard.dismiss();
     setTimeout(() => navigation.navigate("TimerPage"), 500);
   };
 
+  // Put the new item first in the dropdown list
   const insertItem = (text: string) =>
     setItems([
-      ...defaultItems,
       { label: `${text} minutes`, value: parseInt(text, 10) },
+      ...defaultItems,
     ]);
+
+  const styles = useStyles();
 
   return (
     <Screen>
@@ -96,8 +92,8 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.primaryColor,
   },
   section: {
-    justifyContent: "flex-start",
     marginTop: 100,
+    justifyContent: "flex-start",
     alignItems: "stretch",
   },
   text: {
