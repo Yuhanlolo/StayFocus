@@ -1,17 +1,24 @@
 import { StatusBar, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { createStyles } from "../helpers";
+import { createStyles, CSSStyles } from "../helpers";
 
-export function Screen({ children }) {
-  const styles = useStyles();
+interface ScreenProps {
+  styles?: CSSStyles;
+  children: React.ReactNode;
+}
+
+export function Screen({ styles, children }: ScreenProps) {
+  const defaultStyles = useStyles();
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[defaultStyles.container, styles]}>
         <StatusBar
           barStyle="light-content"
-          backgroundColor={styles.statusBar.backgroundColor}
+          backgroundColor={
+            styles?.backgroundColor || defaultStyles.container.backgroundColor
+          }
         />
         {children}
       </SafeAreaView>
@@ -24,9 +31,6 @@ const useStyles = createStyles((theme) => ({
     alignItems: "center",
     height: "100%",
     padding: theme.padding,
-    backgroundColor: theme.backgroundColor,
-  },
-  statusBar: {
     backgroundColor: theme.backgroundColor,
   },
 }));

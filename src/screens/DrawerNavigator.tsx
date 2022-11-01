@@ -8,18 +8,22 @@ import {
 } from "@react-navigation/drawer";
 
 import HomePage from "./HomePage";
-import { CustomButton, Screen } from "../components";
+import SettingsPage from "./settings/SettingsPage";
 import { logoutUser } from "../api";
 import { createStyles } from "../helpers";
 
 const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigator() {
+  const styles = useStyles();
   return (
     <Drawer.Navigator
       useLegacyImplementation
       initialRouteName="Home"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{
+        headerShown: false,
+        drawerStyle: styles.drawer,
+      }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="Home" component={HomePage} />
@@ -29,7 +33,7 @@ export default function DrawerNavigator() {
 }
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
-  const styles = useDrawerStyles();
+  const styles = useStyles();
   return (
     <DrawerContentScrollView
       {...props}
@@ -43,20 +47,13 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
   );
 }
 
-const useDrawerStyles = createStyles((theme) => ({
+const useStyles = createStyles((theme) => ({
+  drawer: {
+    width: 200,
+  },
   container: {
     flex: 1,
     justifyContent: "space-between",
     backgroundColor: theme.secondaryColor,
   },
 }));
-
-function SettingsPage({ navigation }) {
-  return (
-    <Screen>
-      <CustomButton onPress={() => navigation.navigate("Home")}>
-        Back to home
-      </CustomButton>
-    </Screen>
-  );
-}

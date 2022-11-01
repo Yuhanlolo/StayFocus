@@ -1,9 +1,13 @@
 import { useState } from "react";
-import { Text, TextInput, View, Keyboard } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import { Text, TextInput, Pressable, View, Keyboard } from "react-native";
 
 import { createStyles } from "../helpers";
-import { CustomButton, Screen } from "../components";
+import {
+  CustomButton,
+  Screen,
+  TimeDropdown,
+  HamburgerMenu,
+} from "../components";
 import { useSessionStore } from "../api";
 
 //Home page to set focusing time
@@ -11,15 +15,7 @@ import { useSessionStore } from "../api";
 function HomePage({ navigation }) {
   const [plan, setPlan] = useState("");
 
-  const defaultItems = [
-    { label: "25 minutes", value: 25 },
-    { label: "50 minutes", value: 50 },
-    { label: "75 minutes", value: 75 },
-    { label: "100 minutes", value: 100 },
-  ];
-  const [open, setOpen] = useState(false);
   const [value, setValue] = useState(25);
-  const [items, setItems] = useState(defaultItems);
 
   const newSession = useSessionStore((state) => state.newSession);
 
@@ -31,18 +27,13 @@ function HomePage({ navigation }) {
     setTimeout(() => navigation.navigate("TimerPage"), 500);
   };
 
-  // Put the new item first in the dropdown list
-  const insertItem = (text: string) =>
-    setItems([
-      { label: `${text} minutes`, value: parseInt(text, 10) },
-      ...defaultItems,
-    ]);
-
   const styles = useStyles();
 
   return (
     <Screen>
-      <CustomButton onPress={navigation.toggleDrawer}>Drawer</CustomButton>
+      <Pressable onPress={navigation.toggleDrawer}>
+        <HamburgerMenu size={32} color={styles.icon.color} />
+      </Pressable>
       <View style={styles.section}>
         <Text style={styles.text}>My plan for this focus time is</Text>
         <TextInput
@@ -54,26 +45,7 @@ function HomePage({ navigation }) {
       </View>
       <View style={styles.section}>
         <Text style={styles.text}>I want to focus for</Text>
-        <DropDownPicker
-          open={open}
-          value={value}
-          items={items}
-          searchable={true}
-          searchTextInputProps={{ keyboardType: "numeric" }}
-          searchPlaceholder="Custom time..."
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-          onChangeSearchText={insertItem}
-          showTickIcon={false}
-          containerStyle={styles.dropdown}
-          textStyle={styles.dropdownText}
-          selectedItemLabelStyle={{
-            fontWeight: "bold",
-          }}
-          searchTextInputStyle={styles.dropdownSearchTextInput}
-          searchContainerStyle={styles.dropdownSearchContainer}
-        />
+        <TimeDropdown value={value} setValue={setValue} />
       </View>
       <CustomButton
         styles={{ button: styles.button, text: styles.buttonText }}
@@ -112,29 +84,15 @@ const useStyles = createStyles((theme) => ({
     textAlign: "center",
     overflowWrap: "break-word",
   },
-  dropdown: {
-    width: 180,
-    overflow: "visible",
-    zIndex: 100,
-  },
-  dropdownText: {
-    textAlign: "center",
-    fontSize: theme.fontSizes.sm,
-  },
-  dropdownSearchTextInput: {
-    textAlign: "center",
-    borderRadius: 0,
-    borderWidth: 0,
-  },
-  dropdownSearchContainer: {
-    padding: 0,
-  },
   button: {
     marginTop: 40,
     rippleColor: theme.backgroundColor,
   },
   buttonText: {
     fontSize: theme.fontSizes.md,
+  },
+  icon: {
+    color: theme.primaryColor,
   },
 }));
 
