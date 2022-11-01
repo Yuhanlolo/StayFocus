@@ -8,7 +8,7 @@ import {
 } from "@react-navigation/drawer";
 
 import HomePage from "./HomePage";
-import SettingsPage from "./settings/SettingsPage";
+import { AboutPage, LogPage, SettingsPage } from "./settings";
 import { logoutUser } from "../api";
 import { createStyles } from "../helpers";
 
@@ -23,11 +23,19 @@ export default function DrawerNavigator() {
       screenOptions={{
         headerShown: false,
         drawerStyle: styles.drawer,
+        drawerItemStyle: styles.drawerItem,
+        drawerLabelStyle: styles.drawerLabel,
       }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Drawer.Screen name="Home" component={HomePage} />
+      <Drawer.Screen
+        name="Home"
+        component={HomePage}
+        options={{ drawerItemStyle: { display: "none" } }}
+      />
       <Drawer.Screen name="Settings" component={SettingsPage} />
+      <Drawer.Screen name="Log" component={LogPage} />
+      <Drawer.Screen name="About" component={AboutPage} />
     </Drawer.Navigator>
   );
 }
@@ -42,7 +50,13 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
       <View>
         <DrawerItemList {...props} />
       </View>
-      <DrawerItem label="Log out" onPress={logoutUser} {...props} />
+      <DrawerItem
+        label="Log out"
+        onPress={logoutUser}
+        {...props}
+        style={styles.drawerItem}
+        labelStyle={styles.drawerLabel}
+      />
     </DrawerContentScrollView>
   );
 }
@@ -55,5 +69,13 @@ const useStyles = createStyles((theme) => ({
     flex: 1,
     justifyContent: "space-between",
     backgroundColor: theme.secondaryColor,
+  },
+  drawerItem: {
+    width: "100%",
+  },
+  drawerLabel: {
+    color: theme.textColor,
+    textAlign: "center",
+    fontSize: theme.fontSizes.md,
   },
 }));
