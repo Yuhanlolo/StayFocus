@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 
 import { app } from "./firebase";
-import { saveUserToFireStore } from "./firestore";
+import { saveUserToFirestore } from "./firestore";
 import { saveUserInfo, resetUserInfo } from "./store";
 
 const auth = getAuth(app);
@@ -40,7 +40,7 @@ export async function createUser(
     // updateProfile does not trigger auth state change, so these method calls
     // cannot be done in the onAuthStateChanged observer, so we put them here
     saveUserInfo(user.uid, username);
-    saveUserToFireStore(user.uid, username);
+    saveUserToFirestore(user.uid, username);
   } catch (error) {
     console.log(error.code);
   }

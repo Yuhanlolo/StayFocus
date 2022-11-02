@@ -10,7 +10,7 @@ export function saveSessionToFirestore(uid: string, session: Session) {
   setDoc(sessionRef, session);
 }
 
-export function saveUserToFireStore(uid: string, username: string) {
+export function saveUserToFirestore(uid: string, username: string) {
   const userRef = doc(db, "[test]db", uid);
   setDoc(userRef, { username: username }, { merge: true });
 }
