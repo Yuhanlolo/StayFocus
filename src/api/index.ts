@@ -1,5 +1,9 @@
-import { saveSessionToFirestore } from "./firestore";
+import {
+  saveSessionToFirestore,
+  saveUserSettingsToFirestore,
+} from "./firestore";
 import { getSession, getAppStore, resetSessionStore } from "./store";
+import { UserSettings } from "./types";
 
 export * from "./store";
 export * from "./firestore";
@@ -15,4 +19,18 @@ export function saveSession() {
   console.log(session);
 
   resetSessionStore();
+}
+
+export function saveSettings(minutes: number, date: Date) {
+  const appStore = getAppStore();
+  const uid = appStore.uid;
+  const data: UserSettings = {
+    dailyMinMinutes: minutes,
+    reminderTime: {
+      hour: date.getHours(),
+      minute: date.getMinutes(),
+    },
+  };
+  appStore.saveSettings(data);
+  saveUserSettingsToFirestore(uid, data);
 }

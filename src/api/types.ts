@@ -12,3 +12,11 @@ export interface Session {
   giveUpAttempts: GiveUpAttempt[];
   reflectionAnswers: string[];
 }
+
+export interface UserSettings {
+  dailyMinMinutes: number;
+  reminderTime: {
+    hour: number;
+    minute: number;
+  };
+}

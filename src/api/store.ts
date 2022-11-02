@@ -3,11 +3,11 @@ import create from "zustand";
 import { persist } from "zustand/middleware";
 
 import { clamp } from "../helpers";
-import { Session } from "./types";
+import { Session, UserSettings } from "./types";
 
 // AppStore: client-side persistent store for
 // authentication info and global app settings
-interface AppStore {
+interface AppStore extends UserSettings {
   uid?: string;
   username?: string;
   dailyMinMinutes: number;
@@ -18,7 +18,7 @@ interface AppStore {
   minMinutes: number;
   maxMinutes: number;
   focusSessions: Session[];
-  saveSettings: (minutes: number, date: Date) => void;
+  saveSettings: (settings: UserSettings) => void;
   saveSession: (session: Session) => void;
 }
 
@@ -39,14 +39,7 @@ export const useAppStore = create<AppStore>()(
   persist(
     (set) => ({
       ...defaultApp,
-      saveSettings: (minutes, date) =>
-        set({
-          dailyMinMinutes: minutes,
-          reminderTime: {
-            hour: date.getHours(),
-            minute: date.getMinutes(),
-          },
-        }),
+      saveSettings: (settings) => set(settings),
       saveSession: (session) =>
         set((state) => ({ focusSessions: [...state.focusSessions, session] })),
     }),

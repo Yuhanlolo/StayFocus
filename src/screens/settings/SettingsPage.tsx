@@ -5,14 +5,12 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { TimeDropdown } from "../../components";
 import { createStyles, dateToHHMM } from "../../helpers";
 import SettingsScreen from "./SettingsScreen";
-import { useAppStore } from "../../api";
+import { saveSettings } from "../../api";
 
 export default function SettingsPage({ navigation }) {
   const [minutes, setMinutes] = useState(25);
   const [date, setDate] = useState(new Date(2000, 1, 1, 8, 0));
   const [show, setShow] = useState(false);
-
-  const saveSettings = useAppStore((state) => state.saveSettings);
 
   const onChangeMinutes = (action: (prevValue: number) => number) => {
     const newValue = action(minutes);
