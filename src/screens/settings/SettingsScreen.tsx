@@ -6,7 +6,7 @@ export default function SettingsPage({ title, onBack, children }) {
   const styles = useStyles();
   return (
     <Screen styles={styles.container}>
-      <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
+      <View style={styles.buttonContainer}>
         <Pressable onPress={onBack}>
           <LeftArrow size={32} color={styles.button.color} />
         </Pressable>
@@ -20,7 +20,12 @@ export default function SettingsPage({ title, onBack, children }) {
 const useStyles = createStyles((theme) => ({
   container: {
     backgroundColor: theme.secondaryColor,
-    alignItems: "stretch",
+    alignItems: "center",
+  },
+  buttonContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-start",
   },
   button: {
     color: theme.primaryColor,

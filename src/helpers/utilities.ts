@@ -7,6 +7,12 @@ export function secondsToHHMMSS(seconds: number) {
   return [h, m, s];
 }
 
+export function dateToHHMM(date: Date) {
+  const hh = date.getHours().toString(10).padStart(2, "0");
+  const mm = date.getMinutes().toString(10).padStart(2, "0");
+  return `${hh}:${mm}`;
+}
+
 export function clamp(min: number, val: number, max: number) {
   console.log(val);
   return Math.max(Math.min(val, max), min);
