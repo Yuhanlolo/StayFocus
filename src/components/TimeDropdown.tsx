@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
+import { useAppStore } from "../api";
 
 import { createStyles } from "../helpers";
 
@@ -13,13 +14,15 @@ export function TimeDropdown({ value, setValue }) {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(defaultItems);
 
+  const min = useAppStore((state) => state.minMinutes);
+  const max = useAppStore((state) => state.maxMinutes);
+
   // Put the new item first in the dropdown list
   const insertItem = (text: string) => {
     if (text.length > 0) {
-      setItems([
-        { label: `${text} minutes`, value: parseInt(text, 10) },
-        ...defaultItems,
-      ]);
+      const value = parseInt(text, 10);
+      if (min <= value && value <= max)
+        setItems([{ label: `${text} minutes`, value: value }, ...defaultItems]);
     } else {
       setItems(defaultItems);
     }
@@ -46,6 +49,9 @@ export function TimeDropdown({ value, setValue }) {
       }}
       searchTextInputStyle={styles.dropdownSearchTextInput}
       searchContainerStyle={styles.dropdownSearchContainer}
+      translation={{
+        NOTHING_TO_SHOW: `Enter between ${min} and ${max} minutes`,
+      }}
     />
   );
 }

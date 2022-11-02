@@ -65,7 +65,7 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.primaryColor,
   },
   section: {
-    marginTop: 100,
+    marginTop: 60,
     justifyContent: "flex-start",
     alignItems: "stretch",
   },
