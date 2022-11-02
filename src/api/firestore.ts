@@ -1,4 +1,12 @@
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 import { app } from "./firebase";
 import { Session, UserSettings } from "./types";
@@ -21,4 +29,10 @@ export function saveUserSettingsToFirestore(
 ) {
   const userRef = doc(db, "[test]db", uid);
   setDoc(userRef, settings, { merge: true });
+}
+
+export function getSessionsFromFirestore(uid: string) {
+  const sessionsRef = collection(db, "[test]db", uid, "log");
+  const todaySessions = query(sessionsRef);
+  return getDocs(todaySessions);
 }
