@@ -5,18 +5,27 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { TimeDropdown } from "../../components";
 import { createStyles, dateToHHMM } from "../../helpers";
 import SettingsScreen from "./SettingsScreen";
+import { useAppStore } from "../../api";
 
 export default function SettingsPage({ navigation }) {
-  const [value, setValue] = useState(25);
+  const [minutes, setMinutes] = useState(25);
   const [date, setDate] = useState(new Date(2000, 1, 1, 8, 0));
   const [show, setShow] = useState(false);
+
+  const saveSettings = useAppStore((state) => state.saveSettings);
+
+  const onChangeMinutes = (action: (prevValue: number) => number) => {
+    const newValue = action(minutes);
+    setMinutes(newValue);
+    saveSettings(newValue, date);
+  };
 
   // use {} for unused parameters, similar to _ in Rust
   // see https://github.com/Microsoft/TypeScript/issues/14154
   const onChange = ({}, selectedDate: Date) => {
-    const currentDate = selectedDate;
     setShow(false);
-    setDate(currentDate);
+    setDate(selectedDate);
+    saveSettings(minutes, selectedDate);
   };
 
   const styles = useStyles();
@@ -26,7 +35,7 @@ export default function SettingsPage({ navigation }) {
       <Text style={styles.text}>
         For each day, I plan to focus for at least
       </Text>
-      <TimeDropdown value={value} setValue={setValue} />
+      <TimeDropdown value={minutes} setValue={onChangeMinutes} />
       <Text style={styles.text}>I want to be reminded at</Text>
       <Pressable onPress={() => setShow(true)}>
         <Text style={styles.timeText}>{dateToHHMM(date)}</Text>

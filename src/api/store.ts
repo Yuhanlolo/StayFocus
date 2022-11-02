@@ -10,16 +10,26 @@ import { Session } from "./types";
 interface AppStore {
   uid?: string;
   username?: string;
+  dailyMinMinutes: number;
+  reminderTime: {
+    hour: number;
+    minute: number;
+  };
   minMinutes: number;
   maxMinutes: number;
   focusSessions: Session[];
-  login: (uid: string) => void;
+  saveSettings: (minutes: number, date: Date) => void;
   saveSession: (session: Session) => void;
 }
 
 const defaultApp = {
   uid: null,
   username: null,
+  dailyMinMinutes: 25,
+  reminderTime: {
+    hour: 8,
+    minute: 0,
+  },
   minMinutes: 0,
   maxMinutes: 120,
   focusSessions: [],
@@ -29,7 +39,14 @@ export const useAppStore = create<AppStore>()(
   persist(
     (set) => ({
       ...defaultApp,
-      login: (uid) => set({ uid: uid }),
+      saveSettings: (minutes, date) =>
+        set({
+          dailyMinMinutes: minutes,
+          reminderTime: {
+            hour: date.getHours(),
+            minute: date.getMinutes(),
+          },
+        }),
       saveSession: (session) =>
         set((state) => ({ focusSessions: [...state.focusSessions, session] })),
     }),

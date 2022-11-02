@@ -4,7 +4,12 @@ import { useAppStore } from "../api";
 
 import { createStyles } from "../helpers";
 
-export function TimeDropdown({ value, setValue }) {
+interface TimeDropdownProps {
+  value: number;
+  setValue: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export function TimeDropdown({ value, setValue }: TimeDropdownProps) {
   const defaultItems = [
     { label: "25 minutes", value: 25 },
     { label: "50 minutes", value: 50 },
