@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 
-import { createStyles } from "../helpers";
+import { createStyles, CSSStyles } from "../helpers";
 import { CustomModal } from "../components/CustomModal";
 import { CustomButton } from "../components/CustomButton";
 
 interface ReflectionModalProps {
   visible: boolean;
   prompts: string[];
+  styles?: CSSStyles;
   onRequestClose: () => void;
   onBack?: (answers: string[]) => void;
   onComplete: (answers: string[]) => void;
@@ -16,6 +17,7 @@ interface ReflectionModalProps {
 export function ReflectionModal({
   visible,
   prompts,
+  styles,
   onBack,
   onRequestClose,
   onComplete,
@@ -46,36 +48,36 @@ export function ReflectionModal({
     }
   };
 
-  const styles = useModalStyles();
+  const defaultStyles = useModalStyles();
 
   return (
     <CustomModal
-      style={styles.container}
+      styles={styles}
       visible={visible}
       onRequestClose={onRequestClose}
       title="Quick questions"
     >
-      <Text style={styles.text}>{prompts[promptIndex]}</Text>
+      <Text style={defaultStyles.text}>{prompts[promptIndex]}</Text>
       {promptIndex < prompts.length - 1 ? (
         <TextInput
-          style={styles.input}
+          style={defaultStyles.input}
           onChangeText={setInput}
           value={input}
           multiline={true}
           placeholder={"Type your answer here"}
-          placeholderTextColor={styles.input.placeholderTextColor}
+          placeholderTextColor={defaultStyles.input.placeholderTextColor}
         />
       ) : null}
-      <View style={styles.buttonContainer}>
+      <View style={defaultStyles.buttonContainer}>
         {promptIndex < prompts.length - 1 && onBack ? (
           <CustomButton
             onPress={() => onBack(answers)}
-            styles={{ button: styles.button }}
+            styles={{ button: defaultStyles.button }}
           >
             Back to focus
           </CustomButton>
         ) : null}
-        <CustomButton onPress={next} styles={{ button: styles.button }}>
+        <CustomButton onPress={next} styles={{ button: defaultStyles.button }}>
           {buttonText()}
         </CustomButton>
       </View>
@@ -84,9 +86,6 @@ export function ReflectionModal({
 }
 
 const useModalStyles = createStyles((theme) => ({
-  container: {
-    top: "25%",
-  },
   text: {
     marginBottom: 16,
     color: theme.muteColor,

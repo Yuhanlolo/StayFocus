@@ -120,6 +120,7 @@ function TimerPage({ navigation }) {
         onRequestClose={toggleTimerAndModal}
         onComplete={onCompleteGiveUp}
         onBack={onBackToFocus}
+        styles={styles.modal}
       />
     </Screen>
   );
@@ -138,7 +139,7 @@ const useStyles = createStyles((theme) => ({
     fontSize: theme.fontSizes.sm,
   },
   plan: {
-    marginTop: 120,
+    marginTop: 160,
     marginBottom: 8,
     color: theme.textColor,
     fontSize: theme.fontSizes.lg,
@@ -149,6 +150,10 @@ const useStyles = createStyles((theme) => ({
     color: theme.textColor,
     fontSize: 2 * theme.fontSizes.xl,
     textAlign: "center",
+  },
+  modal: {
+    justifyContent: "flex-end",
+    paddingBottom: 60,
   },
 }));
 

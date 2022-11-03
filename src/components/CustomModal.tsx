@@ -5,7 +5,7 @@ import { createStyles, CSSStyles } from "../helpers";
 interface CustomModalProps {
   visible: boolean;
   title: string;
-  style?: CSSStyles;
+  styles?: CSSStyles;
   children: React.ReactNode;
   onRequestClose: () => void;
 }
@@ -14,10 +14,10 @@ export function CustomModal({
   visible,
   onRequestClose,
   title,
-  style,
+  styles,
   children,
 }: CustomModalProps) {
-  const styles = useStyles();
+  const defaultStyles = useStyles();
 
   return (
     <Modal
@@ -26,10 +26,10 @@ export function CustomModal({
       visible={visible}
       onRequestClose={onRequestClose}
     >
-      <View style={styles.centeredView}>
-        <View style={[styles.modalView, style]}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>{title}</Text>
+      <View style={[defaultStyles.centeredView, styles]}>
+        <View style={defaultStyles.modalView}>
+          <View style={defaultStyles.header}>
+            <Text style={defaultStyles.headerText}>{title}</Text>
           </View>
           <View style={{ padding: 16 }}>{children}</View>
         </View>
