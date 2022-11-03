@@ -48,6 +48,7 @@ function SuccessPage({ navigation }) {
             saveSession();
             navigation.navigate("HomePage");
           }}
+          styles={styles.modal}
         />
       ) : null}
     </Screen>
@@ -64,6 +65,9 @@ const useStyles = createStyles((theme) => ({
   },
   button: {
     rippleColor: theme.backgroundColor,
+  },
+  modal: {
+    justifyContent: "center",
   },
 }));
 
