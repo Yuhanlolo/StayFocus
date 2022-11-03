@@ -20,8 +20,8 @@ function LoginPage({ navigation }) {
   };
 
   return (
-    <Screen>
-      <View style={styles.container}>
+    <Screen styles={styles.screen}>
+      <View>
         <Text style={styles.heading}>Log in</Text>
         <Text style={styles.text}>Email</Text>
         <TextInput
@@ -45,50 +45,52 @@ function LoginPage({ navigation }) {
           <Text style={styles.switchLink}>Sign up</Text>
         </Pressable>
       </View>
-      <CustomButton styles={{ button: styles.button }} onPress={login}>
-        Log in
-      </CustomButton>
+      <View style={styles.buttonContainer}>
+        <CustomButton
+          styles={{ button: styles.button, text: styles.buttonText }}
+          onPress={login}
+        >
+          Log in
+        </CustomButton>
+      </View>
     </Screen>
   );
 }
 
 const useStyles = createStyles((theme) => ({
-  container: {
-    width: "100%",
-    paddingLeft: 20,
-    paddingRight: 20,
-    alignItems: "flex-start",
+  screen: {
+    paddingLeft: 40,
+    paddingRight: 40,
+    alignItems: "stretch",
   },
   heading: {
-    marginTop: "10%",
-    marginBottom: "10%",
+    marginTop: 20,
+    marginBottom: 60,
     color: theme.primaryColor,
-    fontSize: theme.fontSizes.lg,
+    fontSize: theme.fontSizes.xl,
   },
   text: {
     color: theme.textColor,
-    fontSize: theme.fontSizes.sm,
-    marginBottom: 8,
-    marginTop: 24,
+    fontSize: theme.fontSizes.md,
+    marginBottom: 12,
   },
   input: {
-    width: "100%",
-    padding: theme.fontSizes.xs,
-    marginBottom: 8,
+    padding: 8,
+    marginBottom: 24,
     borderRadius: 8,
-    fontSize: theme.fontSizes.sm,
+    fontSize: theme.fontSizes.md,
     backgroundColor: theme.textColor,
     color: theme.muteColor,
   },
   switch: {
-    marginTop: 24,
-    marginBottom: 48,
+    marginTop: 12,
+    marginBottom: 80,
     flexDirection: "row",
   },
   switchPrompt: {
     color: theme.primaryColor,
     fontSize: theme.fontSizes.sm,
-    marginRight: 4,
+    marginRight: 6,
   },
   switchLink: {
     color: theme.primaryColor,
@@ -99,8 +101,16 @@ const useStyles = createStyles((theme) => ({
     color: theme.alertColor,
     fontSize: theme.fontSizes.xs,
   },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
   button: {
     rippleColor: theme.backgroundColor,
+    borderRadius: 12,
+  },
+  buttonText: {
+    fontSize: theme.fontSizes.md,
   },
 }));
 

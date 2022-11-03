@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 
 import { createStyles, CSSStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton, Screen, ReflectionModal } from "../components";
@@ -98,12 +98,14 @@ function TimerPage({ navigation }) {
 
   return (
     <Screen>
-      <CustomButton
-        styles={{ button: styles.button, text: styles.buttonText }}
-        onPress={toggleTimerAndModal}
-      >
-        Give up
-      </CustomButton>
+      <View style={styles.buttonContainer}>
+        <CustomButton
+          styles={{ button: styles.button, text: styles.buttonText }}
+          onPress={toggleTimerAndModal}
+        >
+          Leave focus mode
+        </CustomButton>
+      </View>
       <Text style={styles.plan}>{plan}</Text>
       <Timer
         initialSeconds={initialSeconds}
@@ -124,25 +126,26 @@ function TimerPage({ navigation }) {
 }
 
 const useStyles = createStyles((theme) => ({
+  buttonContainer: {
+    width: "100%",
+    flexDirection: "row",
+  },
   button: {
-    marginTop: "10%",
-    borderRadius: 9999,
+    borderRadius: 16,
     rippleColor: theme.backgroundColor,
   },
   buttonText: {
     fontSize: theme.fontSizes.sm,
   },
   plan: {
-    marginTop: "25%",
+    marginTop: 120,
     marginBottom: 8,
-    width: "100%",
     color: theme.textColor,
     fontSize: theme.fontSizes.lg,
     fontWeight: "400",
     textAlign: "center",
   },
   timer: {
-    width: "100%",
     color: theme.textColor,
     fontSize: 2 * theme.fontSizes.xl,
     textAlign: "center",

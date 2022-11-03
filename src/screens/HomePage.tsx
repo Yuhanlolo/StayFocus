@@ -2,12 +2,7 @@ import { useState } from "react";
 import { Text, TextInput, Pressable, View, Keyboard } from "react-native";
 
 import { createStyles } from "../helpers";
-import {
-  CustomButton,
-  Screen,
-  TimeDropdown,
-  HamburgerMenu,
-} from "../components";
+import { CustomButton, Screen, TimeDropdown, Gear } from "../components";
 import { useSessionStore } from "../api";
 
 //Home page to set focusing time
@@ -31,10 +26,16 @@ function HomePage({ navigation }) {
 
   return (
     <Screen>
-      <Pressable onPress={navigation.toggleDrawer}>
-        <HamburgerMenu size={32} color={styles.icon.color} />
-      </Pressable>
-      <View style={styles.section}>
+      <View style={styles.iconContainer}>
+        <Pressable onPress={navigation.toggleDrawer}>
+          <Gear size={32} color={styles.icon.color} />
+        </Pressable>
+      </View>
+      <View style={styles.section1}>
+        <Text style={styles.text}>I want to focus for</Text>
+        <TimeDropdown value={value} setValue={setValue} />
+      </View>
+      <View style={styles.section2}>
         <Text style={styles.text}>My plan for this focus time is</Text>
         <TextInput
           style={styles.input}
@@ -42,10 +43,6 @@ function HomePage({ navigation }) {
           multiline={true}
           value={plan}
         />
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.text}>I want to focus for</Text>
-        <TimeDropdown value={value} setValue={setValue} />
       </View>
       <CustomButton
         styles={{ button: styles.button, text: styles.buttonText }}
@@ -58,19 +55,31 @@ function HomePage({ navigation }) {
 }
 
 const useStyles = createStyles((theme) => ({
+  iconContainer: {
+    width: "100%",
+  },
+  icon: {
+    color: theme.primaryColor,
+  },
   container: {
     alignItems: "center",
     height: "100%",
     padding: theme.padding,
     backgroundColor: theme.primaryColor,
   },
-  section: {
-    marginTop: 60,
+  section1: {
+    marginTop: 40,
+    justifyContent: "flex-start",
+    alignItems: "stretch",
+  },
+  section2: {
+    marginTop: 220,
+    marginBottom: 20,
     justifyContent: "flex-start",
     alignItems: "stretch",
   },
   text: {
-    marginBottom: 4,
+    marginBottom: 20,
     color: theme.textColor,
     fontSize: theme.fontSizes.md,
     textAlign: "center",
@@ -79,20 +88,18 @@ const useStyles = createStyles((theme) => ({
     padding: 8,
     backgroundColor: "white",
     color: theme.muteColor,
-    fontSize: theme.fontSizes.md,
+    fontSize: theme.fontSizes.lg,
     borderRadius: 8,
     textAlign: "center",
     overflowWrap: "break-word",
   },
   button: {
-    marginTop: 40,
+    marginTop: 48,
     rippleColor: theme.backgroundColor,
+    borderRadius: theme.fontSizes.md / 2,
   },
   buttonText: {
     fontSize: theme.fontSizes.md,
-  },
-  icon: {
-    color: theme.primaryColor,
   },
 }));
 
