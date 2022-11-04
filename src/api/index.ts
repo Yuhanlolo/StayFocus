@@ -58,6 +58,7 @@ export async function getLastSessionEndTime() {
   const uid = getAppStore().uid;
   const sessions = (await getSessionsFromFirestore(uid)).docs;
 
+  if (sessions.length === 0) return "";
   const lastSession = sessions[sessions.length - 1].data();
   console.log(lastSession);
 

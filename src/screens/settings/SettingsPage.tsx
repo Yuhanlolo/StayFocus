@@ -1,29 +1,20 @@
 import { useState } from "react";
-import { Pressable, Text } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { Text } from "react-native";
+import DatePicker from "react-native-date-picker";
 
 import { TimeDropdown } from "../../components";
-import { createStyles, dateToHHMM } from "../../helpers";
+import { createStyles } from "../../helpers";
 import SettingsScreen from "./SettingsScreen";
 import { saveSettings } from "../../api";
 
 export default function SettingsPage({ navigation }) {
   const [minutes, setMinutes] = useState(25);
   const [date, setDate] = useState(new Date(2000, 1, 1, 8, 0));
-  const [show, setShow] = useState(false);
 
   const onChangeMinutes = (action: (prevValue: number) => number) => {
     const newValue = action(minutes);
     setMinutes(newValue);
     saveSettings(newValue, date);
-  };
-
-  // use {} for unused parameters, similar to _ in Rust
-  // see https://github.com/Microsoft/TypeScript/issues/14154
-  const onChange = ({}, selectedDate: Date) => {
-    setShow(false);
-    setDate(selectedDate);
-    saveSettings(minutes, selectedDate);
   };
 
   const styles = useStyles();
@@ -35,18 +26,13 @@ export default function SettingsPage({ navigation }) {
       </Text>
       <TimeDropdown value={minutes} setValue={onChangeMinutes} />
       <Text style={styles.text}>I want to be reminded at</Text>
-      <Pressable onPress={() => setShow(true)}>
-        <Text style={styles.timeText}>{dateToHHMM(date)}</Text>
-      </Pressable>
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode="time"
-          is24Hour={true}
-          onChange={onChange}
-        />
-      )}
+      <DatePicker
+        date={date}
+        onDateChange={setDate}
+        mode="time"
+        androidVariant="nativeAndroid"
+        textColor="#ffffff"
+      />
     </SettingsScreen>
   );
 }

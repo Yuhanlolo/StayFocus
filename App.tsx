@@ -1,4 +1,5 @@
 import "react-native-gesture-handler";
+import "expo-dev-client";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
