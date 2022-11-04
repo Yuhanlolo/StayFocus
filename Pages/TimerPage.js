@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import type {Node} from 'react';
 import {Notifications} from 'react-native-notifications';
 import notifee, { AndroidImportance } from '@notifee/react-native';
+import BackgroundTimer from 'react-native-background-timer';
 import {
   SafeAreaView,
   ScrollView,
@@ -74,7 +75,7 @@ class TimerPage extends Component {
         sec_2: 0,
         pause: true,
         temp: 0,
-
+        outTime: false,
       };
       }
 
@@ -89,6 +90,7 @@ class TimerPage extends Component {
         this.setState({min_2: timeSet-Math.floor(timeSet/10)*10});
         this.setState({userId: userId});
         this.setState({oneTimeId: oneTimeId});
+        this.setState({outTime: false});
       }
 
 //Timer
@@ -150,8 +152,9 @@ class TimerPage extends Component {
       }
 
       async onDisplayNotification() {
+        let countDown_2 = 10;
         // Request permissions (required for iOS)
-        await notifee.requestPermission()
+        await notifee.requestPermission();
 
         // Create a channel (required for Android)
         const channelId = await notifee.createChannel({
@@ -161,22 +164,38 @@ class TimerPage extends Component {
         });
 
         // Display a notification
-        await notifee.displayNotification({
+
+        const intervalId = BackgroundTimer.setInterval(() => {
+        if(countDown_2 == 0)
+        {
+          countDown_2 = 0;
+          BackgroundTimer.clearInterval(intervalId);
+          this.setState({outTime: true});
+        }
+        else
+        {
+          countDown_2 = countDown_2 - 1;
+          notifee.displayNotification({
+          id: '123',
           title: '<b>Stay Focused</b>',
-          body: "It's time to focus. Set your focusing goal now!",
+          body: "The focus mode will end in " + countDown_2.toString() + " seconds. Click here back to StayFocused",
           android: {
             channelId,
             smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
             // pressAction is needed if you want the notification to open the app when pressed
             importance: AndroidImportance.HIGH,
-            showChronometer: true,
-            chronometerDirection: 'down',
-            timestamp: Date.now() + 10000,
             pressAction: {
               id: 'default',
             },
           },
         });
+        }
+        },
+        1000);
+      }
+
+      async cancel(notificationId) {
+        await notifee.cancelNotification(notificationId);
       }
 
       _handleAppStateChange = (nextAppState) => {
@@ -191,6 +210,13 @@ class TimerPage extends Component {
 
             // Display a notification
             }
+          if (nextAppState === 'active')
+          {
+             if(this.state.outTime == true)
+             {
+                this.props.navigation.navigate('HomePage');
+             }
+          }
     }
 
 
