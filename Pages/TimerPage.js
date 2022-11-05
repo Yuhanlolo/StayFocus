@@ -39,6 +39,7 @@ global.countDown_1 = 10;
 global.outId = '1';
 global.display = false;
 global.back = true;
+global.timerId = '1';
 //This is a count-down timer.
 
 class TimerPage extends Component {
@@ -209,7 +210,9 @@ class TimerPage extends Component {
 
       _handleAppStateChange = (nextAppState) => {
         BackgroundTimer.clearInterval(outId);
-        var timerId;
+        BackgroundTimer.clearInterval(timerId);
+        countDown_1 = 10;
+        //var timerId;
         console.log("next time countDown_1: ", countDown_1)
         if (nextAppState === 'background') {
         display = true;
@@ -228,7 +231,7 @@ class TimerPage extends Component {
         1100);
 
         console.log('**********running background**********');
-        console.log('ifOnPage:', this.state.onPage);
+        //console.log('ifOnPage:', this.state.onPage);
         if(display == true && on == true)
         {
         console.log('out of control');
