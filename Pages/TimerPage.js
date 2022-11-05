@@ -211,10 +211,11 @@ class TimerPage extends Component {
       _handleAppStateChange = (nextAppState) => {
         BackgroundTimer.clearInterval(outId);
         BackgroundTimer.clearInterval(timerId);
-        countDown_1 = 10;
+
         //var timerId;
         console.log("next time countDown_1: ", countDown_1)
         if (nextAppState === 'background') {
+        countDown_1 = 10;
         display = true;
         back = false;
         outId = BackgroundTimer.setInterval(() => {
