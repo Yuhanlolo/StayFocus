@@ -104,6 +104,10 @@ function SignUpPage({ navigation })
            second = '0'+second;
          }
          let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+         if(password.length < 6)
+         {
+           Alert.alert('The password must contain more than 6 characters');
+         }
           auth()
          .createUserWithEmailAndPassword(email, password)
          .then((data) => {
@@ -170,7 +174,7 @@ function SignUpPage({ navigation })
          <Text style = {styles.comments_1}>{text_1}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          style={{height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           onChangeText={(text) => {
             setEmail(text);
           }}
@@ -179,7 +183,7 @@ function SignUpPage({ navigation })
          <Text style = {styles.comments_2}>{text_2}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{top: '20%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          style={{top: '40%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           onChangeText={(text) => {
             setUserName(text);
           }}
@@ -189,7 +193,7 @@ function SignUpPage({ navigation })
         <Text style = {styles.comments_3}>{text_3}</Text>
                  <View style = {styles.inputContainer}>
                  <TextInput
-                  style={{top: '40%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+                  style={{top: '80%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
                   password={true}
                   secureTextEntry={true}
                   onChangeText={(text) => {
@@ -197,11 +201,11 @@ function SignUpPage({ navigation })
                   }}
                 />
                 </View>
-
+         <Text style = {styles.errorMessage}>{'The pass word must contain at least 6 characters'}</Text>
          <Text style = {styles.comments_4}>{text_4}</Text>
                   <View style = {styles.inputContainer}>
                   <TextInput
-                   style={{top: '60%', height: 40, borderColor: '#28454B', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+                   style={{top: '120%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
                    password={true}
                    secureTextEntry={true}
                    onChangeText={(text) => {
@@ -253,21 +257,21 @@ function SignUpPage({ navigation })
     },
 
     comments_2: {
-      top:'19%',
-      left:'15%',
-      fontFamily: "Roboto",
-      color: 'white',
-    },
-
-   comments_3: {
       top:'22%',
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
     },
 
+   comments_3: {
+      top:'28%',
+      left:'15%',
+      fontFamily: "Roboto",
+      color: 'white',
+    },
+
    comments_4: {
-      top:'25%',
+      top:'34%',
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
@@ -275,13 +279,22 @@ function SignUpPage({ navigation })
 
     container: {
       flexDirection: 'row',
-      top: '20%',
+      top: '28%',
       left: '20%',
     },
 
     inputContainer: {
       alignItems: "center",
       top: '16%',
+    },
+
+    errorMessage: {
+      fontSize: 10.5,
+      top: '30%',
+      fontFamily: "Roboto",
+      color: '#B8C59E',
+      textAlign: 'center',
+      textAlignVertical: 'center',
     },
 
     helper: {

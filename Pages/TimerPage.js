@@ -35,6 +35,10 @@ import HomePage from './HomePage';
 import QuitPage from './QuitPage';
 import SuccessPage from './SuccessPage';
 
+global.countDown_1 = 10;
+global.outId = '1';
+global.display = false;
+global.back = true;
 //This is a count-down timer.
 
 class TimerPage extends Component {
@@ -91,6 +95,8 @@ class TimerPage extends Component {
         this.setState({userId: userId});
         this.setState({oneTimeId: oneTimeId});
         this.setState({outTime: false});
+        countDown_1 = 10;
+        display = true;
       }
 
 //Timer
@@ -171,10 +177,12 @@ class TimerPage extends Component {
           countDown_2 = 0;
           BackgroundTimer.clearInterval(intervalId);
           this.setState({outTime: true});
+          //read data
         }
         else
         {
           countDown_2 = countDown_2 - 1;
+          if(back == false){
           notifee.displayNotification({
           id: '123',
           title: '<b>Stay Focused</b>',
@@ -188,10 +196,11 @@ class TimerPage extends Component {
               id: 'default',
             },
           },
-        });
+        });}
         }
         },
         1000);
+        return intervalId;
       }
 
       async cancel(notificationId) {
@@ -199,23 +208,46 @@ class TimerPage extends Component {
       }
 
       _handleAppStateChange = (nextAppState) => {
-           if (nextAppState === 'background') {
-             	  console.log('**********running background**********');
-             	  this.onDisplayNotification();
-//                  Notifications.postLocalNotification({
-//                      title: "Stay Focused",
-//                      body: "Click here to continue your focus time!",
-//                      extra: "data"
-//                  });
+        BackgroundTimer.clearInterval(outId);
+        var timerId;
+        console.log("next time countDown_1: ", countDown_1)
+        if (nextAppState === 'background') {
+        display = true;
+        back = false;
+        outId = BackgroundTimer.setInterval(() => {
+        if(countDown_1 > 0)
+        {
+          countDown_1 = countDown_1 - 1;
+        }
+        if(countDown_1 == 0)
+        {
+          countDown_1 = 0;
+          BackgroundTimer.clearInterval(outId);
+        }
+        },
+        1100);
 
-            // Display a notification
-            }
-          if (nextAppState === 'active')
+        console.log('**********running background**********');
+        console.log('ifOnPage:', this.state.onPage);
+        if(display == true && on == true)
+        {
+        console.log('out of control');
+        timerId = this.onDisplayNotification();}
+        }
+        if (nextAppState === 'active')
           {
-             if(this.state.outTime == true)
-             {
-                this.props.navigation.navigate('HomePage');
-             }
+            display = false;
+            back = true;
+            console.log(countDown_1);
+            if(countDown_1 == 0)
+            {
+              this.props.navigation.navigate('HomePage');
+              countDown_1 = 10;
+            }
+             BackgroundTimer.clearInterval(outId);
+             BackgroundTimer.clearInterval(timerId);
+             this.cancel('123');
+             notifee.cancelAllNotifications(['123']);
           }
     }
 

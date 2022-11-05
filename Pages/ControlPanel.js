@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import type {Node} from 'react';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import {
   SafeAreaView,
   ScrollView,
@@ -40,6 +41,7 @@ logoff ()
     .signOut()
     .then(() => {
       console.log('User signed out!');
+      notifee.cancelNotification('123');
       this.props.navigate('LoginPage');
     });
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View, Button, LogBox } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer,useNavigationContainerRef, } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Menu, {
   MenuProvider,
@@ -23,10 +23,46 @@ const Stack = createNativeStackNavigator();
 
 LogBox.ignoreAllLogs();
 
+global.on = false;
+
  function App() {
+
+  const routeNameRef = React.useRef();
+  const navigationRef = React.useRef();
+
   return (
   <MenuProvider>
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() =>{
+        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+        }
+      }
+      onStateChange={() => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+        console.log('previousRouteName',previousRouteName);
+        console.log('currentRouteName',currentRouteName);
+        console.log('NameType:',typeof currentRouteName);
+        if(currentRouteName == 'TimerPage')
+        {
+          on = true;
+        }
+        if(currentRouteName != 'TimerPage')
+        {
+          on = false;
+        }
+
+  //      if (previousRouteName !== currentRouteName) {
+          // Replace the line below to add the tracker from a mobile analytics SDK
+  //        alert(`The route changed to ${currentRouteName}`);
+
+  //      }
+
+        // Save the current route name for later comparison
+        routeNameRef.current = currentRouteName;
+      }}
+    >
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="SignUpPage" component={SignUpPage} />

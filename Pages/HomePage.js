@@ -12,6 +12,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  AppState,
 } from 'react-native';
 
 import Menu, {
@@ -48,6 +49,7 @@ class HomePage extends Component {
       this.state = {
       text: 'I want to keep focus for',
       minSet: 0,
+      minTemp: '',
       areaIndex: '0',
       typeShow: false,
       flag: false,
@@ -57,6 +59,7 @@ class HomePage extends Component {
       drawerOpen: false,
       drawerDisabled: false,
       select: false,
+      mode: 'none',
       };
       }
 
@@ -73,16 +76,28 @@ class HomePage extends Component {
          this.setState({userId: id},()=>{console.log(this.state.userId)});
          let item = this.props.route.params.oneTimeId;
          this.setState({oneTimeId: item},()=>{console.log(this.state.oneTimeId)});
+         countDown_1 = 10;
+         display = false;
          //console.log(id);
+    }
+
+    _handleAppStateChange = (nextAppState) => {
+         if (nextAppState === 'background') {
+           	display = false;
+           	console.log('homeDisplay:', display);
+         }
     }
 
     componentDidMount()
     {
          this.userSetter();
+         console.log('display:', display);
+         AppState.addEventListener('change', this._handleAppStateChange);
     }
 
         logoff ()
         {
+           display = false;
            auth()
               .signOut()
               .then(() => {console.log('User signed out!');});
@@ -139,32 +154,23 @@ class HomePage extends Component {
         <View style = {{top: '20%', alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         </View>
-        <View style = {{top: '23%', width: '78%',}}>
+        <View style = {{top: '23%', width: '78%', alignItems: "center",}}>
         <TextInput
-          style={{ top: '25%', height: 45, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'100%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
-          placeholder="Enter a number"
+          style={{ top: '25%', height: 45, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'140%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          placeholder="Choose/enter your focus duration"
           placeholderTextColor="black"
           clearTextOnFocus={true}
-          autoFocus={true}
-          keyboardType="number-pad"
+         // autoFocus={true}
+         // keyboardType="number-pad"
           onChangeText={(text) => {
-            const newText = text.replace(/[^\d]+/, '');
-            let num = Number(newText);
-            if(num > 120)
-            {
-              num = 120;
-            }
-            if(num < 10)
-            {
-              num = 10;
-            }
-            this.setState({minSet: num});
+            this.setState({minTemp:text});
             this.setState({select: true});
+            this.setState({mode: 'enter'})
           }}
         />
-        <Menu style = {{top:'-20%', right:'2.1%'}} onSelect={(value) => {this.setState({minSet: value}); this.setState({select: true});}}>
-          <MenuTrigger style = {{ width: '10%',left:'85%',top:'-10%'}}>
-            <Text style={{color: '#B8C59E',  fontSize: 16,}}>{'▼'}</Text>
+        <Menu style = {{ left: '52%'}} onSelect={(value) => {this.setState({minSet: value}); this.setState({select: true}); this.setState({mode: 'selection'})}}>
+          <MenuTrigger style = {{ width: '100%',top:'-55%',left: '55%'}}>
+            <Text style={{color: '#B8C59E',  fontSize: 20,}}>{'▼'}</Text>
           </MenuTrigger>
           <MenuOptions customStyles={optionsCustomStyle}>
             <MenuOption style = {{alignItems: 'center',}} value={25} ><Text style = {{color: 'black'}}>{"25 Minutes"}</Text></MenuOption>
@@ -175,7 +181,7 @@ class HomePage extends Component {
         </Menu>
         </View>
         <View style = {{top: '48.5%'}}>
-        <Text style={{fontFamily: 'Roboto', fontSize: 10, color: 'red'}}>{'*Please enter more than 25 minutes'}</Text>
+        <Text style={{fontFamily: 'Roboto', fontSize: 10, color: 'red'}}>{'*Please enter more than 25 minutes'}{'\n'}{'         and less than 125 minutes'}</Text>
         </View>
         <TouchableOpacity
                   style={styles.button}
@@ -187,7 +193,37 @@ class HomePage extends Component {
                   }
                   if(this.state.select == true)
                   {
-                    this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
+                    if(this.state.mode == 'enter')
+                    {
+                    let inputs = this.state.minTemp;
+                    //console.log("time input: ", inputs);
+                    if(isNaN(Number(inputs, 10)))
+                    {
+                      Alert.alert('Please input Arabic numbers');
+                    }
+                    else
+                    {
+                      if(Number(inputs) > 125)
+                      {
+                        Alert.alert('Please enter less than 125 minutes');
+                      }
+                      if(Number(inputs) < 25)
+                      {
+                        Alert.alert('Please enter more than 25 minutes');
+                      }
+                      if(Number(inputs) >= 25 && Number(inputs) <= 125)
+                      {
+                        //console.log(Number(inputs));
+                        this.setState({minSet: Number(inputs)});
+                        let timeNum = Number(inputs);
+                        this.props.navigation.navigate('TimerPage',{timeSet: timeNum, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
+                      }
+                    }
+                    }
+                    if(this.state.mode == 'selection')
+                    {
+                      this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
+                    }
                   }
                   }}>
                   <Text style = {styles.buttonText}>{'Start Focusing'}</Text>
@@ -237,7 +273,7 @@ class HomePage extends Component {
 
 const triggerCustomStyle = {
     triggerOuterWrapper: {
-        width: 50,
+        width: '70%',
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1
@@ -247,7 +283,7 @@ const optionsCustomStyle = {
     optionsContainer: {
         backgroundColor: 'white',
         marginTop: '10%',
-        width: '45%',
+        width: '50%',
         height: '18%',
         borderRadius: 10,
     },
