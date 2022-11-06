@@ -19,6 +19,11 @@ export default function SettingsPage({ navigation }) {
     saveSettings(newValue, date);
   };
 
+  const onChangeDate = (date: Date) => {
+    setDate(date);
+    saveSettings(minutes, date);
+  };
+
   const onBack = () => {
     setReminder(date);
     navigation.navigate("Home");
@@ -35,7 +40,7 @@ export default function SettingsPage({ navigation }) {
       <Text style={styles.text}>I want to be reminded at</Text>
       <DatePicker
         date={date}
-        onDateChange={setDate}
+        onDateChange={onChangeDate}
         mode="time"
         androidVariant="nativeAndroid"
         textColor="#ffffff"

@@ -3,7 +3,6 @@ import notifee, {
   TimestampTrigger,
   TriggerType,
 } from "@notifee/react-native";
-import { getAppStore } from "./store";
 
 // Request permissions (required for iOS)
 notifee.requestPermission();
@@ -14,6 +13,7 @@ export function setReminder(date: Date) {
 }
 
 async function onReminderNotification(date: Date) {
+  if (date <= new Date()) date.setDate(date.getDate() + 1);
   console.log(date.toString());
 
   const channelId = await notifee.createChannel({
