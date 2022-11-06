@@ -7,6 +7,21 @@ export default () => ({
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
+    plugins: [
+      "@notifee/react-native",
+      [
+        "expo-build-properties",
+        {
+          android: {
+            compileSdkVersion: 33,
+            targetSdkVersion: 33,
+          },
+          ios: {
+            deploymentTarget: "13.0",
+          },
+        },
+      ],
+    ],
     splash: {
       image: "./assets/splash.png",
       resizeMode: "contain",

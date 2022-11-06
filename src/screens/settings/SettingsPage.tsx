@@ -5,11 +5,13 @@ import DatePicker from "react-native-date-picker";
 import { TimeDropdown } from "../../components";
 import { createStyles } from "../../helpers";
 import SettingsScreen from "./SettingsScreen";
-import { saveSettings } from "../../api";
+import { saveSettings, setReminder } from "../../api";
 
 export default function SettingsPage({ navigation }) {
   const [minutes, setMinutes] = useState(25);
-  const [date, setDate] = useState(new Date(2000, 1, 1, 8, 0));
+  const d = new Date();
+  d.setHours(8, 0, 0, 0);
+  const [date, setDate] = useState(d);
 
   const onChangeMinutes = (action: (prevValue: number) => number) => {
     const newValue = action(minutes);
@@ -17,10 +19,15 @@ export default function SettingsPage({ navigation }) {
     saveSettings(newValue, date);
   };
 
+  const onBack = () => {
+    setReminder(date);
+    navigation.navigate("Home");
+  };
+
   const styles = useStyles();
 
   return (
-    <SettingsScreen title="Settings" onBack={() => navigation.navigate("Home")}>
+    <SettingsScreen title="Settings" onBack={onBack}>
       <Text style={styles.text}>
         For each day, I plan to focus for at least
       </Text>

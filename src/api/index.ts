@@ -10,6 +10,7 @@ import { UserSettings } from "./types";
 export * from "./store";
 export * from "./firestore";
 export * from "./auth";
+export * from "./notification";
 
 export function saveSession() {
   const session = getSession();
