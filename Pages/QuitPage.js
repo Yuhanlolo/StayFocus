@@ -124,7 +124,9 @@ class QuitPage extends Component {
       return (
         <View style = {styles.background}>
         <View style = {styles.container}>
+        <View style = {{flex: 2}}>
         <Text style = {styles.baseText}>{this.state.text}</Text>
+        </View>
         <View style = {styles.buttonContainer}>
         <TouchableOpacity
           style={styles.buttonLeft}
@@ -175,7 +177,7 @@ class QuitPage extends Component {
     baseText: {
       fontSize: 18,
       fontFamily: "Roboto",
-      top: '20%',
+      top: '25%',
       color: 'black',
       textAlign: 'center',
       textAlignVertical: 'center',
@@ -191,7 +193,7 @@ class QuitPage extends Component {
     buttonLeft: {
       backgroundColor: "#506F4C",
       alignItems: "center",
-      top: '-6%',
+      //top: '-6%',
       borderBottomStartRadius: 8.5,
       padding: 10,
       width: '53.5%',
@@ -202,17 +204,20 @@ class QuitPage extends Component {
     buttonRight: {
       backgroundColor: "#506F4C",
       alignItems: "center",
-      top: '-6%',
+      //top: '-6%',
       borderBottomEndRadius: 8.5,
       padding: 10,
       width: '53.5%',
+      height: '100%',
       //borderWidth: 5,
       borderColor: '#B8C59E'
     },
 
     buttonContainer: {
+     flex: 1,
      flexDirection: 'row',
-     top: '24%',
+     height: '25%',
+     //top: '35%',
     }
   });
 

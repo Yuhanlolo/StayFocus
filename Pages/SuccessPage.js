@@ -103,7 +103,10 @@ class SuccessPage extends Component {
       return (
         <View style = {styles.background}>
          <View style = {styles.container}>
+         <View style = {{flex: 2}}>
          <Text style = {styles.baseText}>{this.state.text}</Text>
+         </View>
+         <View style = {{flex: 1, width: '100%', alignItems: "center",}}>
          <TouchableOpacity
           style={styles.buttonRight}
           onPress={() => {
@@ -111,6 +114,7 @@ class SuccessPage extends Component {
           }}>
           <Text style = {styles.buttonText}>{'Back to home'}</Text>
          </TouchableOpacity>
+         </View>
          </View>
         </View>
       );
@@ -152,7 +156,8 @@ class SuccessPage extends Component {
     buttonRight: {
       backgroundColor: "#506F4C",
       alignItems: "center",
-      top: '34%',
+      height: '100%',
+      //top: '34%',
       borderBottomEndRadius: 8.5,
       borderBottomStartRadius: 8.5,
       padding: 10,
