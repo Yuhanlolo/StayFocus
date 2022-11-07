@@ -22,13 +22,15 @@ import { Session, UserSettings } from "./types";
 */
 const db = initializeFirestore(app, { experimentalForceLongPolling: true });
 
+const dbName = "testdb";
+
 export function saveSessionToFirestore(uid: string, session: Session) {
-  const sessionRef = doc(db, "[test]db", uid, "log", new Date().toJSON());
+  const sessionRef = doc(db, dbName, uid, "log", new Date().toJSON());
   setDoc(sessionRef, session);
 }
 
 export function saveUserToFirestore(uid: string, username: string) {
-  const userRef = doc(db, "[test]db", uid);
+  const userRef = doc(db, dbName, uid);
   setDoc(userRef, { username: username }, { merge: true });
 }
 
@@ -36,12 +38,12 @@ export function saveUserSettingsToFirestore(
   uid: string,
   settings: UserSettings
 ) {
-  const userRef = doc(db, "[test]db", uid);
+  const userRef = doc(db, dbName, uid);
   setDoc(userRef, settings, { merge: true });
 }
 
 export function getSessionsFromFirestore(uid: string) {
-  const sessionsRef = collection(db, "[test]db", uid, "log");
+  const sessionsRef = collection(db, dbName, uid, "log");
   const todaySessions = query(sessionsRef);
   return getDocs(todaySessions);
 }
