@@ -77,5 +77,9 @@ const useStyles = createStyles((theme) => ({
     color: theme.textColor,
     textAlign: "center",
     fontSize: theme.fontSizes.md,
+    fontWeight: "300",
+    paddingBottom: 4,
+    borderBottomColor: theme.primaryColor,
+    borderBottomWidth: 1,
   },
 }));

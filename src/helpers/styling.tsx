@@ -8,7 +8,7 @@ const THEME = {
   muteColor: "#333333",
   textColor: "#FFFFFF",
   alertColor: "#FF5656",
-  padding: 32,
+  padding: 24,
   fontSizes: {
     xs: 12,
     sm: 16,
