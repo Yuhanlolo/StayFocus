@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import { Text, View } from "react-native";
+import { AppState, Text, View } from "react-native";
 
 import { createStyles, CSSStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton, Screen, ReflectionModal } from "../components";
-import { saveSession, useSessionStore } from "../api";
+import { onLeaveFocusNotification, saveSession, useSessionStore } from "../api";
 
 interface TimerProps {
   initialSeconds: number;
@@ -63,6 +63,18 @@ function TimerPage({ navigation }) {
     (state) => state.saveCompletedMinutes
   );
   const saveGiveUpAttempt = useSessionStore((state) => state.saveGiveUpAttempt);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (nextAppState.match(/inactive|background/)) {
+        onLeaveFocusNotification();
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   const initialSeconds = minutes * 60;
   const elapsedMinutes = () => Math.ceil(elapsedSeconds / 60);

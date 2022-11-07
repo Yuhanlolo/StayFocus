@@ -33,8 +33,8 @@ async function onReminderNotification(date: Date) {
   return await notifee.createTriggerNotification(
     {
       id: "123",
-      title: "Ready to focus?",
-      body: "Set your focusing goal now!",
+      title: "StayFocused",
+      body: "Ready to focus? Set your focusing goal now!",
       android: {
         channelId: channelId,
         pressAction: {
@@ -46,7 +46,7 @@ async function onReminderNotification(date: Date) {
   );
 }
 
-async function onLeaveFocusNotification() {
+export async function onLeaveFocusNotification() {
   // Create a channel (required for Android)
   const channelId = await notifee.createChannel({
     id: "default",
@@ -55,8 +55,8 @@ async function onLeaveFocusNotification() {
 
   // Display a notification
   await notifee.displayNotification({
-    title: "Focus mode will end in 10 seconds",
-    body: "Tap here to go back to StayFocus",
+    title: "StayFocused",
+    body: "Focus mode will end in 10 seconds. Tap here to go back to StayFocus",
     android: {
       channelId,
       pressAction: {
