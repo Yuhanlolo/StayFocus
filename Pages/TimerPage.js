@@ -15,6 +15,7 @@ import {
   Picker,
   DeviceEventEmitter,
   TouchableOpacity,
+  BackHandler,
   AppState,
 } from 'react-native';
 
@@ -266,7 +267,20 @@ class TimerPage extends Component {
           this.setState({ pause: true });
            });
        AppState.addEventListener('change', this._handleAppStateChange);
+       this.timeSetter();
+        this.backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          this.backAction
+        );
      }
+
+    backAction = () => {
+        return true;
+   };
+
+    componentWillUnmount() {
+        this.backHandler.remove();
+    }
 
      readData()
      {

@@ -11,6 +11,7 @@ import {
   Button,
   Picker,
   DeviceEventEmitter,
+  BackHandler,
   TouchableOpacity
 } from 'react-native';
 
@@ -51,7 +52,19 @@ class QuitPage extends Component {
      componentDidMount()
      {
        this.timeSetter();
+        this.backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          this.backAction
+        );
      }
+
+    backAction = () => {
+        return true;
+   };
+
+    componentWillUnmount() {
+        this.backHandler.remove();
+    }
 
 
 //Save the time before user want to give up

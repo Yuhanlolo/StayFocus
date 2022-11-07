@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   Alert,
   AppState,
+  BackHandler,
 } from 'react-native';
 
 import Menu, {
@@ -63,6 +64,10 @@ class HomePage extends Component {
       };
       }
 
+    backAction = () => {
+        return true;
+   };
+
     closeDrawer = () => {
         this._drawer.close()
     };
@@ -90,9 +95,17 @@ class HomePage extends Component {
 
     componentDidMount()
     {
-         this.userSetter();
-         console.log('display:', display);
-         AppState.addEventListener('change', this._handleAppStateChange);
+        this.userSetter();
+        console.log('display:', display);
+        AppState.addEventListener('change', this._handleAppStateChange);
+        this.backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          this.backAction
+        );
+    }
+
+    componentWillUnmount() {
+        this.backHandler.remove();
     }
 
         logoff ()

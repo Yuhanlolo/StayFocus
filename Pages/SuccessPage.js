@@ -10,6 +10,7 @@ import {
   View,
   Button,
   Picker,
+  BackHandler,
   TouchableOpacity
 } from 'react-native';
 
@@ -94,9 +95,21 @@ class SuccessPage extends Component {
            );
     }
 
+    backAction = () => {
+        return true;
+   };
+
+    componentWillUnmount() {
+        this.backHandler.remove();
+    }
+
      componentDidMount()
      {
        this.timeSetter();
+        this.backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          this.backAction
+        );
      }
 
     render() {

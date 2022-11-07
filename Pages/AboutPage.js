@@ -10,7 +10,8 @@ import {
   View,
   Button,
   Picker,
-  TouchableOpacity
+  TouchableOpacity,
+  BackHandler,
 } from 'react-native';
 
 import {
@@ -36,6 +37,22 @@ class AboutPage extends Component {
         text_4: "Privacy & Data Collection",
       };
       }
+
+    backAction = () => {
+        return true;
+   };
+
+    componentDidMount()
+    {
+        this.backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          this.backAction
+        );
+    }
+
+    componentWillUnmount() {
+        this.backHandler.remove();
+    }
 
     render() {
       return (

@@ -14,6 +14,7 @@ import {
   Picker,
   TextInput,
   TouchableOpacity,
+  BackHandler,
   Alert
 } from 'react-native';
 
@@ -53,6 +54,22 @@ class ReminderPage extends Component {
         date: new Date(),
       };
       }
+
+    backAction = () => {
+        return true;
+   };
+
+    componentWillUnmount() {
+        this.backHandler.remove();
+    }
+
+     componentDidMount()
+     {
+        this.backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          this.backAction
+        );
+     }
 
     async onCreateTriggerNotification(date, hour, min) {
     //const date = new Date(Date.now());

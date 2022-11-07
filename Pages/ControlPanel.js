@@ -13,6 +13,7 @@ import {
   Picker,
   TouchableOpacity,
   Alert,
+  BackHandler,
 } from 'react-native';
 
 import {
@@ -34,6 +35,22 @@ import LoginPage from './LoginPage';
 class ControlPanel extends Component {
 
 constructor(props) {super(props); }
+
+    backAction = () => {
+        return true;
+   };
+
+    componentDidMount()
+    {
+        this.backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          this.backAction
+        );
+    }
+
+    componentWillUnmount() {
+        this.backHandler.remove();
+    }
 
 logoff ()
 {
