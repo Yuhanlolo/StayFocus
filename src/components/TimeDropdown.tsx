@@ -1,8 +1,10 @@
 import { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
-import { useAppStore } from "../api";
+import { Pressable, Text, TextInput, View } from "react-native";
 
+import { CaretDown, CaretUp } from "./Icons";
 import { createStyles } from "../helpers";
+import { useAppStore } from "../api";
 
 interface TimeDropdownProps {
   value: number;
@@ -17,66 +19,111 @@ export function TimeDropdown({ value, setValue }: TimeDropdownProps) {
     { label: "100 minutes", value: 100 },
   ];
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState(defaultItems);
+  const [isFocus, setIsFocus] = useState(false);
 
   const min = useAppStore((state) => state.minMinutes);
   const max = useAppStore((state) => state.maxMinutes);
 
-  // Put the new item first in the dropdown list
-  const insertItem = (text: string) => {
-    if (text.length > 0) {
-      const value = parseInt(text, 10);
-      if (min <= value && value <= max)
-        setItems([{ label: `${text} minutes`, value: value }, ...defaultItems]);
-    } else {
-      setItems(defaultItems);
-    }
+  const display = (v: number) => `${v} minutes`;
+  const parse = (t: string) => parseInt(t.replace(" minutes", ""), 10) || 0;
+
+  const showError = () => {
+    return (value < min || value > max) && !open;
   };
+
   const styles = useStyles();
 
+  // We put a TextInput and the Icons to toggle the dropdown on top
+  // of the DropDownPicker to have complete control over the style of
+  // the box and implement the search function ourselves.
   return (
-    <DropDownPicker
-      open={open}
-      value={value}
-      items={items}
-      searchable={true}
-      searchTextInputProps={{ keyboardType: "numeric" }}
-      searchPlaceholder="Custom time..."
-      setOpen={setOpen}
-      setValue={setValue}
-      setItems={setItems}
-      onChangeSearchText={insertItem}
-      showTickIcon={false}
-      containerStyle={styles.dropdown}
-      textStyle={styles.dropdownText}
-      selectedItemLabelStyle={{
-        fontWeight: "bold",
-      }}
-      searchTextInputStyle={styles.dropdownSearchTextInput}
-      searchContainerStyle={styles.dropdownSearchContainer}
-      translation={{
-        NOTHING_TO_SHOW: `Enter between ${min} and ${max} minutes`,
-      }}
-    />
+    <View>
+      <View>
+        <TextInput
+          style={styles.input}
+          value={isFocus ? `${value}` : display(value)}
+          onChangeText={(t) => setValue(() => parse(t))}
+          onFocus={() => {
+            setIsFocus(true);
+            setOpen(false);
+          }}
+          onEndEditing={() => setIsFocus(false)}
+          keyboardType="numeric"
+          maxLength={30}
+        />
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={defaultItems}
+          setOpen={setOpen}
+          setValue={setValue}
+          showTickIcon={false}
+          containerStyle={styles.container}
+          dropDownContainerStyle={styles.dropDownContainer}
+          style={styles.dropDown}
+          textStyle={styles.dropDownText}
+          selectedItemLabelStyle={{
+            fontWeight: "bold",
+          }}
+        />
+        <Pressable style={styles.caret} onPress={() => setOpen(!open)}>
+          {open ? (
+            <CaretUp size={24} color={styles.caret.color} />
+          ) : (
+            <CaretDown size={24} color={styles.caret.color} />
+          )}
+        </Pressable>
+      </View>
+      {showError() ? (
+        <Text style={styles.error}>
+          Please enter between {min} and {max} minutes
+        </Text>
+      ) : null}
+    </View>
   );
 }
 
 const useStyles = createStyles((theme) => ({
-  dropdown: {
-    width: 180,
-    overflow: "visible",
+  input: {
+    position: "absolute",
+    width: 200,
+    height: 50,
+    borderRadius: 6,
+    backgroundColor: theme.textColor,
+    fontSize: theme.fontSizes.sm,
+    textAlign: "center",
+    padding: 8,
+    zIndex: 200,
+  },
+  container: {
+    width: 200,
     zIndex: 100,
   },
-  dropdownText: {
-    textAlign: "center",
-    fontSize: theme.fontSizes.sm,
-  },
-  dropdownSearchTextInput: {
-    textAlign: "center",
-    borderRadius: 0,
+  dropDownContainer: {
     borderWidth: 0,
   },
-  dropdownSearchContainer: {
-    padding: 0,
+  dropDown: {
+    borderWidth: 0,
+  },
+  dropDownText: {
+    textAlign: "center",
+    fontSize: theme.fontSizes.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.primaryColor,
+  },
+  caret: {
+    position: "absolute",
+    width: 32,
+    height: 50,
+    top: 13,
+    right: 0,
+    color: theme.primaryColor,
+    zIndex: 300,
+  },
+  error: {
+    paddingTop: 8,
+    width: 200,
+    fontSize: theme.fontSizes.xs,
+    color: theme.alertColor,
   },
 }));

@@ -76,3 +76,19 @@ export function Gear({ size, color }: IconProps) {
     </Svg>
   );
 }
+
+export function CaretDown({ size, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path d="M12 18L5 6H19Z" fill={color} />
+    </Svg>
+  );
+}
+
+export function CaretUp({ size, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="2 0 22 24" fill="none">
+      <Path d="M12 6L5 18H19Z" fill={color} />
+    </Svg>
+  );
+}

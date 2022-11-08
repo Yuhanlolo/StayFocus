@@ -23,7 +23,6 @@ function HomePage({ navigation }) {
   };
 
   const styles = useStyles();
-
   return (
     <Screen>
       <View style={styles.iconContainer}>
@@ -79,7 +78,7 @@ const useStyles = createStyles((theme) => ({
     alignItems: "stretch",
   },
   text: {
-    marginBottom: 20,
+    marginBottom: 12,
     color: theme.textColor,
     fontSize: theme.fontSizes.md,
     textAlign: "center",
