@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Text } from "react-native";
 import DatePicker from "react-native-date-picker";
 
-import { TimeDropdown } from "../../components";
+import { CustomButton, TimeDropdown } from "../../components";
 import { createStyles } from "../../helpers";
 import SettingsScreen from "./SettingsScreen";
 import { saveSettings, setReminder } from "../../api";
@@ -13,20 +13,13 @@ export default function SettingsPage({ navigation }) {
   d.setHours(8, 0, 0, 0);
   const [date, setDate] = useState(d);
 
-  const onChangeMinutes = (action: (prevValue: number) => number) => {
-    const newValue = action(minutes);
-    setMinutes(newValue);
-    saveSettings(newValue, date);
-  };
-
-  const onChangeDate = (date: Date) => {
-    setDate(date);
-    saveSettings(minutes, date);
-  };
-
   const onBack = () => {
-    setReminder(date);
     navigation.navigate("Home");
+  };
+
+  const onConfirm = () => {
+    saveSettings(minutes, date);
+    setReminder(date);
   };
 
   const styles = useStyles();
@@ -36,15 +29,21 @@ export default function SettingsPage({ navigation }) {
       <Text style={styles.text}>
         For each day, I plan to focus for at least
       </Text>
-      <TimeDropdown value={minutes} setValue={onChangeMinutes} />
-      <Text style={styles.text}>I want to be reminded at</Text>
+      <TimeDropdown value={minutes} setValue={setMinutes} />
+      <Text style={styles.text2}>I want to be reminded at</Text>
       <DatePicker
         date={date}
-        onDateChange={onChangeDate}
+        onDateChange={setDate}
         mode="time"
         androidVariant="nativeAndroid"
         textColor="#ffffff"
       />
+      <CustomButton
+        onPress={onConfirm}
+        styles={{ button: styles.button, text: styles.buttonText }}
+      >
+        Confirm
+      </CustomButton>
     </SettingsScreen>
   );
 }
@@ -52,15 +51,27 @@ export default function SettingsPage({ navigation }) {
 const useStyles = createStyles((theme) => ({
   text: {
     width: "80%",
-    marginTop: 60,
+    marginTop: 20,
     marginBottom: 8,
     color: theme.textColor,
     fontSize: theme.fontSizes.md,
     textAlign: "center",
   },
-  timeText: {
+  text2: {
+    width: "80%",
+    marginTop: 180,
+    marginBottom: 8,
     color: theme.textColor,
-    fontWeight: "700",
-    fontSize: theme.fontSizes.lg,
+    fontSize: theme.fontSizes.md,
+    textAlign: "center",
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: theme.primaryColor,
+    rippleColor: theme.secondaryColor,
+  },
+  buttonText: {
+    color: theme.muteColor,
+    fontSize: theme.fontSizes.sm,
   },
 }));

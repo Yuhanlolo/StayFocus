@@ -72,7 +72,7 @@ const useStyles = createStyles((theme) => ({
     alignItems: "stretch",
   },
   section2: {
-    marginTop: 220,
+    marginTop: 180,
     marginBottom: 20,
     justifyContent: "flex-start",
     alignItems: "stretch",
