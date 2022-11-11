@@ -14,6 +14,7 @@ import {
   Alert,
   AppState,
   BackHandler,
+  Pressable,
 } from 'react-native';
 
 import Menu, {
@@ -36,9 +37,11 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Drawer from 'react-native-drawer';
+import DropDownPicker from "react-native-dropdown-picker";
 
 import TimerPage from './TimerPage';
 import ControlPanel from './ControlPanel';
+import { CaretDown, CaretUp } from '../Icons/icons';
 
 const type=['25 Minutes', '50 Minutes', '75 Minutes','100 Minutes'];
 
@@ -61,8 +64,43 @@ class HomePage extends Component {
       drawerDisabled: false,
       select: false,
       mode: 'none',
+
+      open: false,
+      value: null,
+      items: [
+                 { label: "25 minutes", value: 25 },
+                 { label: "50 minutes", value: 50 },
+                 { label: "75 minutes", value: 75 },
+                 { label: "100 minutes", value: 100 },
+               ],
+      isFocus: false,
+      txt: '',
       };
+      this.setValue = this.setValue.bind(this);
       }
+
+  setOpen = (open) => {
+    this.setState({
+      open: open
+    });
+  }
+
+  setValue = (callback) =>{
+    this.setState(state => ({
+      value: callback(state.value)
+    }), ()=>{
+      console.log(this.state.value);
+      this.setState({minSet: this.state.value});
+    });
+    this.setState({select: true});
+    this.setState({mode: 'selection'});
+  }
+
+  setItems = (callback) =>{
+    this.setState(state => ({
+      items: callback(state.items)
+    }));
+  }
 
     backAction = () => {
         return true;
@@ -164,38 +202,55 @@ class HomePage extends Component {
          >
 
         <ScrollView contentContainerStyle = {styles.background}>
-        <View style = {{top: '20%', alignItems: "center",}}>
+        <View style = {{flexDirection: 'column',  alignItems: "center",}}>
+        <View style = {{top: '35%', alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         </View>
-        <View style = {{top: '23%', width: '78%', alignItems: "center",}}>
-        <TextInput
-          style={{ top: '25%', height: 45, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'140%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
-          placeholder="Choose/enter your focus duration"
-          placeholderTextColor="black"
-          clearTextOnFocus={true}
-         // autoFocus={true}
-         // keyboardType="number-pad"
-          onChangeText={(text) => {
-            this.setState({minTemp:text});
-            this.setState({select: true});
-            this.setState({mode: 'enter'})
-          }}
-        />
-        <Menu style = {{ left: '52%'}} onSelect={(value) => {this.setState({minSet: value}); this.setState({select: true}); this.setState({mode: 'selection'})}}>
-          <MenuTrigger style = {{ width: '100%',top:'-55%',left: '55%'}}>
-            <Text style={{color: '#B8C59E',  fontSize: 20,}}>{'▼'}</Text>
-          </MenuTrigger>
-          <MenuOptions customStyles={optionsCustomStyle}>
-            <MenuOption style = {{alignItems: 'center',}} value={25} ><Text style = {{color: 'black'}}>{"25 Minutes"}</Text></MenuOption>
-            <MenuOption style = {{alignItems: 'center',}} value={50} ><Text style = {{color: 'black'}}>{"50 Minutes"}</Text></MenuOption>
-            <MenuOption style = {{alignItems: 'center',}} value={75} ><Text style = {{color: 'black'}}>{"75 Minutes"}</Text></MenuOption>
-            <MenuOption style = {{alignItems: 'center',}} value={100}><Text style = {{color: 'black'}}>{"100 Minutes"}</Text></MenuOption>
-          </MenuOptions>
-        </Menu>
-        </View>
-        <View style = {{top: '48.5%'}}>
+              <View style = {{top: '30%'}}>
+                <DropDownPicker
+                open={this.state.open}
+                value={this.state.value}
+                items={this.state.items}
+                setOpen={this.setOpen}
+                setValue={this.setValue}
+                showTickIcon={false}
+                setItems={this.setItems}
+                containerStyle={styles.container}
+                dropDownContainerStyle={styles.dropDownContainer}
+                style={styles.dropDown}
+                textStyle={styles.dropDownText}
+                selectedItemLabelStyle={{
+                fontWeight: "bold",
+                 }}
+                />
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(text) => {this.setState({minTemp:text});
+                                        this.setState({select: true});
+                                        this.setState({mode: 'enter'})}}
+                  onFocus={() => {
+                    this.setState({open: false});
+                    this.setState({isFocus: true});
+                  }}
+                  onEndEditing={() => {this.setState({isFocus: false});}}
+                  keyboardType="numeric"
+                  autoFocus={true}
+                  placeholder="Choose/enter focus time"
+                  placeholderTextColor="black"
+                  maxLength={32}
+                />
+                <Pressable style={styles.caret} onPress={() => {this.setOpen(!this.state.open); }}>
+                  {this.state.open ? (
+                    <CaretUp size={24} color={styles.caret.color} />
+                  ) : (
+                    <CaretDown size={24} color={styles.caret.color} />
+                  )}
+                </Pressable>
+              </View>
+        <View style = {{top: '80%'}}>
         <Text style={{fontFamily: 'Roboto', fontSize: 10, color: 'red'}}>{'*Please enter more than 25 minutes'}{'\n'}{'         and less than 125 minutes'}</Text>
         </View>
+        <View style = {{top: '66%', width: '150%'}}>
         <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
@@ -241,6 +296,8 @@ class HomePage extends Component {
                   }}>
                   <Text style = {styles.buttonText}>{'Start Focusing'}</Text>
         </TouchableOpacity>
+        </View>
+        </View>
         </ScrollView>
       </Drawer>
       );
@@ -260,8 +317,7 @@ class HomePage extends Component {
 
     textStyle: {
      fontFamily: 'Roboto',
-     fontSize: 17,
-     top: '90%',
+     fontSize: 21,
      width: '60%',
      color: 'white',
     },
@@ -270,17 +326,60 @@ class HomePage extends Component {
      top: '50%',
      backgroundColor: "#506F4C",
      borderRadius: 15,
-     width: '85%',
+     width: '150%',
+     height: '35%',
      padding: 10
     },
 
     buttonText: {
      color: 'white',
+     fontSize: 19,
      fontFamily: 'Roboto',
      textAlign: 'center',
      textAlignVertical: 'center',
      left: '1%'
     },
+
+
+  input: {
+    position: "absolute",
+    width: '100%',
+    borderRadius: 6,
+    backgroundColor: 'white',
+    fontSize: 16,
+    color: 'black',
+    fontFamily: 'Roboto',
+    textAlign: "center",
+    padding: 8,
+    zIndex: 200,
+  },
+  container: {
+    width: 200,
+    zIndex: 100,
+  },
+  dropDownContainer: {
+    borderWidth: 0,
+    zIndex: 100,
+  },
+  dropDown: {
+    borderWidth: 0,
+    zIndex: 100,
+  },
+  caret: {
+    position: "absolute",
+    width: 32,
+    height: 50,
+    top: 13,
+    right: 0,
+    color: '#506F4C',
+    zIndex: 300,
+  },
+  dropDownText: {
+    textAlign: "center",
+    fontSize: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+  },
 
   });
 
