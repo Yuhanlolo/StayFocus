@@ -243,6 +243,7 @@ class TimerPage extends Component {
         {
           countDown_1 = 0;
           BackgroundTimer.clearInterval(outId);
+          this.timeOutData();
         }
         },
         1100);
@@ -376,6 +377,84 @@ class TimerPage extends Component {
              }
            );
          this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, userId: this.state.userId, oneTimeId: this.state.oneTimeId, endTime: focusTime});
+     }
+
+     timeOutData()
+     {
+          let focusBreaking = 0;
+          let oneTimeBreaking = 0;
+          let focusTime = this.state.temp - this.state.min_1 * 10 - this.state.min_2;
+          let focusSet = this.state.temp;
+
+          let date = new Date();
+          let year = date.getFullYear().toString();
+          let month = (date.getMonth()+1).toString();
+          let day = date.getDate().toString();
+          let hour =  date.getHours().toString();
+          let minute = date.getMinutes().toString();
+          let second =   date.getSeconds().toString();
+
+          if(Number(hour) <= 9)
+          {
+            hour = '0'+hour;
+          }
+          if(Number(minute) <= 9)
+          {
+            minute = '0'+minute;
+          }
+          if(Number(second) <= 9 )
+          {
+            second = '0'+second;
+          }
+
+          let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+
+          database()
+           .ref('users/' + this.state.userId)
+           .once('value')
+           .then(
+             snapshot => {
+             console.log('User data: ', snapshot.val());
+             //this.setState({focusBreaking: snapshot.val().focusBreak + 1});
+             focusQuiting = snapshot.val().focusQuit;
+             //console.log('original break：' + focusBreaking.toString());
+             focusQuiting = focusQuiting + 1;
+             //console.log('update:' + focusBreaking.toString());
+             database()
+              .ref('users/' + this.state.userId)
+              .update({focusQuit: focusQuiting,})
+              .then(snapshot => {console.log('Data updated');})
+              .catch(error=>{console.log(error)});
+           });
+
+          database()
+           .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
+           .once('value')
+           .then(
+             snapshot=>
+             {
+               console.log('passing data: ', this.state.oneTimeId);
+               console.log('User oneTime data: ', snapshot.val());
+               let meta = snapshot.val().metadata;
+               console.log('User meta: ', meta);
+               if(meta[0].timestamp == '0')
+               {
+                 meta.pop();
+               }
+               let record = {timestamp: timestamp, quit: 'yes'};
+               meta.push(record);
+               //oneTimeBreaking = snapshot.val().oneQuitTry;
+               //oneTimeBreaking = oneTimeBreaking + 1;
+
+
+               database()
+                  .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
+                  .update({focusDuration: focusSet.toString() + 'mins', metadata: meta})
+                  .then(snapshot => {console.log('Data updated oneTime');})
+                  .catch(error=>{console.log(error)});
+             }
+           );
+
      }
 
      updateData()
