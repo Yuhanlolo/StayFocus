@@ -159,7 +159,7 @@ class HomePage extends Component {
       <Drawer
                    ref={(ref) => this._drawer = ref}
                    // type: 一共是3种（displace,overlay,static）, 用static就好啦，static让人感觉更舒适一些
-                   type="static"
+                   type="overlay"
                    // Drawer 展开区域组件
                    content={
                        <ControlPanel navigate={this.props.navigation.navigate} closeDrawer={this.closeDrawer} />
