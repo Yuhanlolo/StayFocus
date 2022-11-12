@@ -66,6 +66,9 @@ function TimerPage({ navigation }) {
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextAppState) => {
+      // TODO: if the user locks the screen, then the notification is
+      // also created. This might be impossible to fix, even with
+      // custom native code.
       if (nextAppState.match(/inactive|background/)) {
         onLeaveFocusNotification();
       }
