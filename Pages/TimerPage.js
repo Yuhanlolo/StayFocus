@@ -180,6 +180,8 @@ class TimerPage extends Component {
           BackgroundTimer.clearInterval(intervalId);
           this.setState({outTime: true});
 
+          if(display == true && on == true)
+          {
           notifee.displayNotification({
           id: '123',
           title: '<b>Stay Focused</b>',
@@ -193,7 +195,7 @@ class TimerPage extends Component {
               id: 'default',
             },
           },
-        });
+        });}
           //read data
         }
         else
