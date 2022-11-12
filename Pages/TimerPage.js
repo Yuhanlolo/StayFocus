@@ -179,6 +179,21 @@ class TimerPage extends Component {
           countDown_2 = 0;
           BackgroundTimer.clearInterval(intervalId);
           this.setState({outTime: true});
+
+          notifee.displayNotification({
+          id: '123',
+          title: '<b>Stay Focused</b>',
+          body: "The focus mode has ended.",
+          android: {
+            channelId,
+            smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
+            // pressAction is needed if you want the notification to open the app when pressed
+            importance: AndroidImportance.HIGH,
+            pressAction: {
+              id: 'default',
+            },
+          },
+        });
           //read data
         }
         else
