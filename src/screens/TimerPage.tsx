@@ -1,9 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { AppState, Text, View } from "react-native";
+import notifee from "@notifee/react-native";
 
 import { createStyles, CSSStyles, secondsToHHMMSS } from "../helpers";
 import { CustomButton, Screen, ReflectionModal } from "../components";
-import { onLeaveFocusNotification, saveSession, useSessionStore } from "../api";
+import {
+  onLeaveFocusNotification,
+  notificationId,
+  saveSession,
+  useSessionStore,
+} from "../api";
 
 interface TimerProps {
   initialSeconds: number;
@@ -56,6 +62,7 @@ function TimerPage({ navigation }) {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [paused, setPaused] = useState(false);
   const [modal, setModal] = useState(false);
+  const [back, setBack] = useState(true);
 
   const minutes = useSessionStore((state) => state.focusDurationMinutes);
   const plan = useSessionStore((state) => state.plan);
@@ -63,21 +70,6 @@ function TimerPage({ navigation }) {
     (state) => state.saveCompletedMinutes
   );
   const saveGiveUpAttempt = useSessionStore((state) => state.saveGiveUpAttempt);
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener("change", (nextAppState) => {
-      // TODO: if the user locks the screen, then the notification is
-      // also created. This might be impossible to fix, even with
-      // custom native code.
-      if (nextAppState.match(/inactive|background/)) {
-        onLeaveFocusNotification();
-      }
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, []);
 
   const initialSeconds = minutes * 60;
   const elapsedMinutes = () => Math.ceil(elapsedSeconds / 60);
@@ -109,6 +101,43 @@ function TimerPage({ navigation }) {
     navigation.navigate("SuccessPage");
   };
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener(
+      "change",
+      async (nextAppState) => {
+        // TODO: if the user locks the screen, then the notification is
+        // also created. This might be impossible to fix, even with
+        // custom native code.
+        if (nextAppState.match(/inactive|background/)) {
+          onLeaveFocusNotification();
+        }
+        /*
+        If app is opened, check if the end-of-session trigger notification 
+        is still pending. If yes, then the session continues; if no, then 
+        the session has ended.
+
+        The correct way seems to be using notifee.onBackgroundEvent() event 
+        listener, but that method is super unreliable for some reasons. See 
+        https://github.com/invertase/notifee/issues/404 for more details.
+      */
+        if (nextAppState.match(/active/)) {
+          const pending = await notifee.getTriggerNotificationIds();
+          if (pending.includes(notificationId)) {
+            saveGiveUpAttempt([], false);
+            notifee.cancelNotification(notificationId);
+          } else {
+            toggleTimerAndModal();
+            setBack(false);
+          }
+        }
+      }
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   const styles = useStyles();
 
   return (
@@ -134,7 +163,7 @@ function TimerPage({ navigation }) {
         prompts={prompts()}
         onRequestClose={toggleTimerAndModal}
         onComplete={onCompleteGiveUp}
-        onBack={onBackToFocus}
+        onBack={back ? onBackToFocus : undefined}
         styles={styles.modal}
       />
     </Screen>
