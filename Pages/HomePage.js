@@ -41,7 +41,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 import TimerPage from './TimerPage';
 import ControlPanel from './ControlPanel';
-import { CaretDown, CaretUp } from '../Icons/icons';
+import { CaretDown, CaretUp, Gear } from '../Icons/icons';
 
 const type=['25 Minutes', '50 Minutes', '75 Minutes','100 Minutes'];
 
@@ -202,6 +202,9 @@ class HomePage extends Component {
          >
 
         <ScrollView contentContainerStyle = {styles.background}>
+        <Pressable onPress={()=>{this.openDrawer()}} style = {{top: '4%', right: '67%'}}>
+          <Gear size={32} color={styles.icon.color} />
+        </Pressable>
         <View style = {{flexDirection: 'column',  alignItems: "center",}}>
         <View style = {{top: '35%', alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
@@ -379,6 +382,10 @@ class HomePage extends Component {
     fontSize: 16,
     borderBottomWidth: 1,
     borderBottomColor: 'black',
+  },
+
+  icon: {
+    color: '#B8C59E',
   },
 
   });
