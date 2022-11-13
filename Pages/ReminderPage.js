@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import type {Node} from 'react';
 import DatePicker from 'react-native-date-picker';
+import DropDownPicker from "react-native-dropdown-picker";
 import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 import {
   SafeAreaView,
@@ -15,7 +16,8 @@ import {
   TextInput,
   TouchableOpacity,
   BackHandler,
-  Alert
+  Alert,
+  Pressable,
 } from 'react-native';
 
 import {
@@ -37,6 +39,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { CaretDown, CaretUp, Gear } from '../Icons/icons';
 
 const type=['25 Minutes', '50 Minutes', '75 Minutes','100 Minutes'];
 
@@ -48,12 +51,54 @@ class ReminderPage extends Component {
         text_2: "For each day, I plan to focus at least",
         text_3: "I want to be reminded at",
         typeShow: false,
+        flag: false,
+        temp:'0',
         minSet: 0,
         hour: 0,
         min: 0,
         date: new Date(),
+        dateChosen: false,
+
+        open: false,
+        value: null,
+        items: [
+                 { label: "25 minutes", value: 25 },
+                 { label: "50 minutes", value: 50 },
+                 { label: "75 minutes", value: 75 },
+                 { label: "100 minutes", value: 100 },
+               ],
+        isFocus: false,
+        txt: '',
+        minTemp: '',
+        select: false,
+        mode: 'none',
+
       };
+      this.setValue = this.setValue.bind(this);
       }
+
+  setOpen = (open) => {
+    this.setState({
+      open: open
+    });
+  }
+
+  setValue = (callback) =>{
+    this.setState(state => ({
+      value: callback(state.value)
+    }), ()=>{
+      console.log(this.state.value);
+      this.setState({minSet: this.state.value});
+    });
+    this.setState({select: true});
+    this.setState({mode: 'selection'});
+  }
+
+  setItems = (callback) =>{
+    this.setState(state => ({
+      items: callback(state.items)
+    }));
+  }
 
     backAction = () => {
         return true;
@@ -136,50 +181,60 @@ class ReminderPage extends Component {
             onPress={()=>{this.props.navigation.navigate('HomePage');}}
            />
         </View>
+        <View style = {{alignItems: "center"}}>
          <View style = {{top: '5%'}}>
          <Text style = {styles.baseText_1}>{this.state.text_1}</Text>
          <Text style = {styles.baseText_2}>{this.state.text_2}</Text>
          </View>
-         <View style = {{top: '10%', width: '50%', }}>
-         <TextInput
-          style={{ top: '50%', height: 40, borderColor: '#506F4C', backgroundColor:'white', borderWidth: 3, width:'100%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
-          placeholder="Enter a number"
-          placeholderTextColor="black"
-          clearTextOnFocus={true}
-          autoFocus={true}
-          keyboardType="number-pad"
-          onChangeText={(text) => {
-            const newText = text.replace(/[^\d]+/, '');
-            let num = Number(newText);
-            if(num > 120)
-            {
-              num = 120;
-            }
-            if(num < 10)
-            {
-              num = 10;
-            }
-            this.setState({minSet: num});
-          }}
-         />
-        <Menu style = {{left: '0%'}} onSelect={(value) => {this.setState({minSet: value});}}>
-          <MenuTrigger style = {{ width: '10%', left: '85%'}}>
-            <Text style={{color: '#B8C59E',  fontSize: 16,}}>{'▼'}</Text>
-          </MenuTrigger>
-          <MenuOptions customStyles={optionsCustomStyle}>
-            <MenuOption style = {{alignItems: 'center',}} value={25} ><Text style = {{color: 'black'}}>{"25 Minutes"}</Text></MenuOption>
-            <MenuOption style = {{alignItems: 'center',}} value={50} ><Text style = {{color: 'black'}}>{"50 Minutes"}</Text></MenuOption>
-            <MenuOption style = {{alignItems: 'center',}} value={75} ><Text style = {{color: 'black'}}>{"75 Minutes"}</Text></MenuOption>
-            <MenuOption style = {{alignItems: 'center',}} value={100}><Text style = {{color: 'black'}}>{"100 Minutes"}</Text></MenuOption>
-          </MenuOptions>
-        </Menu>
+         <View style = {{top: '20%', width: '50%', alignItems: "center", }}>
+                <DropDownPicker
+                open={this.state.open}
+                value={this.state.value}
+                items={this.state.items}
+                setOpen={this.setOpen}
+                setValue={this.setValue}
+                showTickIcon={false}
+                setItems={this.setItems}
+                containerStyle={styles.container}
+                dropDownContainerStyle={styles.dropDownContainer}
+                style={styles.dropDown}
+                textStyle={styles.dropDownText}
+                selectedItemLabelStyle={{
+                fontWeight: "bold",
+                 }}
+                />
+                <TextInput
+                  style={styles.input}
+                  onChangeText={(text) => {this.setState({minTemp:text});
+                                        this.setState({select: true});
+                                        this.setState({mode: 'enter'})}}
+                  onFocus={() => {
+                    this.setState({open: false});
+                    this.setState({isFocus: true});
+                  }}
+                  onEndEditing={() => {this.setState({isFocus: false});}}
+                  keyboardType="numeric"
+                  autoFocus={true}
+                  placeholder="Choose/enter focus time"
+                  placeholderTextColor="black"
+                  maxLength={32}
+                />
+                <Pressable style={styles.caret} onPress={() => {this.setOpen(!this.state.open); }}>
+                  {this.state.open ? (
+                    <CaretUp size={24} color={styles.caret.color} />
+                  ) : (
+                    <CaretDown size={24} color={styles.caret.color} />
+                  )}
+                </Pressable>
+
         </View>
-        <View style = {{top:'35%'}}>
+        <View style = {{top:'75%'}}>
          <Text style = {styles.baseText_3}>{this.state.text_3}</Text>
         </View>
-         <View style = {styles.container}>
+         <View style = {styles.dateContainer}>
           <DatePicker date={this.state.date} mode = 'time' androidVariant = 'nativeAndroid' onDateChange={(text)=>
           {this.setState({date:text});
+           this.setState({dateChosen: true});
            console.log(JSON.stringify(text));
            let time = JSON.stringify(text);
            let hour = time.substring(12,14);
@@ -197,11 +252,55 @@ class ReminderPage extends Component {
           }
           } textColor = '#ffffff' />
          </View>
+         </View>
          <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            this.createPlan(this.state.hour, this.state.min)
-         }>
+          onPress={() =>{
+            if(this.state.dateChosen == true)
+            {
+            this.createPlan(this.state.hour, this.state.min);
+            }
+            if(this.state.dateChosen == false)
+            {
+              Alert.alert('Please make your focus plan!');
+            }
+
+                  this.setState({flag:true});
+                  if(this.state.select == false)
+                  {
+                    Alert.alert('Please select your focus time!');
+                  }
+                  if(this.state.select == true)
+                  {
+                    if(this.state.mode == 'enter')
+                    {
+                    let inputs = this.state.minTemp;
+                    //console.log("time input: ", inputs);
+                    if(isNaN(Number(inputs, 10)))
+                    {
+                      Alert.alert('Please input Arabic numbers');
+                    }
+                    else
+                    {
+                      if(Number(inputs) > 125)
+                      {
+                        Alert.alert('Please enter less than 125 minutes');
+                      }
+                      if(Number(inputs) < 25)
+                      {
+                        Alert.alert('Please enter more than 25 minutes');
+                      }
+                      if(Number(inputs) >= 25 && Number(inputs) <= 125)
+                      {
+                        //console.log(Number(inputs));
+                        this.setState({minSet: Number(inputs)});
+                        let timeNum = Number(inputs);
+                      }
+                    }
+                    }
+
+          }
+         }}>
           <Text style = {styles.buttonText}>{'Confirm'}</Text>
          </TouchableOpacity>
         </View>
@@ -246,7 +345,7 @@ class ReminderPage extends Component {
       textAlignVertical: 'center',
     },
 
-    container: {
+    dateContainer: {
       flexDirection: 'row',
       top: '72%',
       //left: '7.5%',
@@ -283,6 +382,51 @@ class ReminderPage extends Component {
        textAlign: 'center',
        textAlignVertical: 'center',
      },
+
+     buttonText: {
+       fontSize: 20,
+       fontFamily: "Roboto",
+       color: 'white',
+       textAlign: 'center',
+       textAlignVertical: 'center',
+     },
+
+    input: {
+      position: "absolute",
+      width: 200,
+      height: 50,
+      borderRadius: 6,
+      backgroundColor: 'white',
+      fontSize: 16,
+      textAlign: "center",
+      padding: 8,
+      zIndex: 200,
+    },
+    container: {
+      width: 200,
+      zIndex: 100,
+    },
+    dropDownContainer: {
+      borderWidth: 0,
+    },
+    dropDown: {
+      borderWidth: 0,
+    },
+    dropDownText: {
+      textAlign: "center",
+      fontSize: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: 'black',
+    },
+    caret: {
+      position: "absolute",
+      width: 32,
+      height: 50,
+      top: 13,
+      right: 0,
+      color: '#506F4C',
+      zIndex: 300,
+    },
 
   });
 
