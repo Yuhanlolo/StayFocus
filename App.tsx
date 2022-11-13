@@ -7,11 +7,10 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   LoginPage,
   SignupPage,
-  HomePage,
   SuccessPage,
   TimerPage,
+  DrawerNavigator,
 } from "./src/screens";
-import DrawerNavigator from "./src/screens/DrawerNavigator";
 import { createStyles, ThemeProvider } from "./src/helpers";
 import { useAppStore } from "./src/api";
 
