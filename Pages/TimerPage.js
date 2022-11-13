@@ -201,7 +201,7 @@ class TimerPage extends Component {
         else
         {
           countDown_2 = countDown_2 - 1;
-          if(back == false){
+          if(back == false && on == true){
           notifee.displayNotification({
           id: '123',
           title: '<b>Stay Focused</b>',
