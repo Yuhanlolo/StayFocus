@@ -2,12 +2,6 @@ import * as React from 'react';
 import { Text, View, Button, LogBox } from 'react-native';
 import { NavigationContainer,useNavigationContainerRef, } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Menu, {
-  MenuProvider,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
 import {connect} from 'react-redux';
 import HomePage from './Pages/HomePage';
 import TimerPage from './Pages/TimerPage';
@@ -31,7 +25,6 @@ global.on = false;
   const navigationRef = React.useRef();
 
   return (
-  <MenuProvider>
     <NavigationContainer
       ref={navigationRef}
       onReady={() =>{
@@ -75,7 +68,6 @@ global.on = false;
         <Stack.Screen name="ControlPanel" component={ControlPanel} />
       </Stack.Navigator>
     </NavigationContainer>
-  </MenuProvider>
   );
 }
 

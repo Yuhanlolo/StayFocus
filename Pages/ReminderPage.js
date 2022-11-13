@@ -28,13 +28,6 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import Menu, {
-  MenuProvider,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -429,31 +422,5 @@ class ReminderPage extends Component {
     },
 
   });
-
-const triggerCustomStyle = {
-    triggerOuterWrapper: {
-        width: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1
-    }
-};
-const optionsCustomStyle = {
-    optionsContainer: {
-        backgroundColor: 'white',
-        marginTop: '10.5%',
-        marginLeft: '1%',
-        width: '45%',
-        height: '18%',
-        borderRadius: 10,
-    },
-    optionTouchable: {
-        underlayColor: 'gray',
-        activeOpacity: 40,
-    },
-    optionWrapper: {
-        margin: 5,
-    },
-};
 
 export default ReminderPage;

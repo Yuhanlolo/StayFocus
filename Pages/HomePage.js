@@ -17,13 +17,6 @@ import {
   Pressable,
 } from 'react-native';
 
-import Menu, {
-  MenuProvider,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from 'react-native-popup-menu';
-
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import {
@@ -389,30 +382,5 @@ class HomePage extends Component {
   },
 
   });
-
-const triggerCustomStyle = {
-    triggerOuterWrapper: {
-        width: '70%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1
-    }
-};
-const optionsCustomStyle = {
-    optionsContainer: {
-        backgroundColor: 'white',
-        marginTop: '10%',
-        width: '50%',
-        height: '18%',
-        borderRadius: 10,
-    },
-    optionTouchable: {
-        underlayColor: 'gray',
-        activeOpacity: 40,
-    },
-    optionWrapper: {
-        margin: 5,
-    },
-};
 
 export default HomePage;
