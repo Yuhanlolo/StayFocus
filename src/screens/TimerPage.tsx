@@ -2,7 +2,12 @@ import { useEffect, useState, useRef } from "react";
 import { AppState, Text, View } from "react-native";
 import notifee from "@notifee/react-native";
 
-import { createStyles, CSSStyles, secondsToHHMMSS } from "../helpers";
+import {
+  createStyles,
+  CSSStyles,
+  secondsToHHMMSS,
+  useStrings,
+} from "../helpers";
 import { CustomButton, Screen, ReflectionModal } from "../components";
 import {
   onLeaveFocusNotification,
@@ -74,10 +79,9 @@ function TimerPage({ navigation }) {
   const initialSeconds = minutes * 60;
   const elapsedMinutes = () => Math.ceil(elapsedSeconds / 60);
 
-  const prompts = () => [
-    `You have been focusing for ${elapsedMinutes()} minutes`,
-    "Congrats! Try better next time",
-  ];
+  const strings = useStrings("leaveFocusDialog", {
+    focusDurationMinutes: minutes,
+  });
 
   const toggleTimerAndModal = () => {
     setPaused(!paused);
@@ -158,14 +162,17 @@ function TimerPage({ navigation }) {
         onComplete={onComplete}
         styles={styles.timer}
       />
-      <ReflectionModal
-        visible={modal}
-        prompts={prompts()}
-        onRequestClose={toggleTimerAndModal}
-        onComplete={onCompleteGiveUp}
-        onBack={back ? onBackToFocus : undefined}
-        styles={styles.modal}
-      />
+      {modal && (
+        <ReflectionModal
+          visible={true}
+          title={strings.dialogTitle}
+          prompts={strings.questions.concat([strings.finalMessage])}
+          onRequestClose={toggleTimerAndModal}
+          onComplete={onCompleteGiveUp}
+          onBack={back ? onBackToFocus : undefined}
+          styles={styles.modal}
+        />
+      )}
     </Screen>
   );
 }

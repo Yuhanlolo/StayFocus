@@ -2,18 +2,14 @@ import { useState } from "react";
 import { Text } from "react-native";
 
 import { CustomButton, ReflectionModal, Screen } from "../components";
-import { createStyles } from "../helpers";
+import { createStyles, useStrings } from "../helpers";
 import { useSessionStore, saveSession } from "../api";
 
 //When finish the focusing task, this page come out for congrats.
-const prompts = [
-  "How productive do you think you was during the session?",
-  "How do you feel without the distraction from smartphone?",
-  "Any thoughts about focusing for a longer duration next time?",
-  "Great job! Hope you can do better next time!",
-];
 
 function SuccessPage({ navigation }) {
+  const [modal, setModal] = useState(false);
+
   const saveReflectionAnswers = useSessionStore(
     (state) => state.saveReflectionAnswers
   );
@@ -21,17 +17,16 @@ function SuccessPage({ navigation }) {
   const plan = useSessionStore((state) => state.plan);
   const planLowerCase = plan[0].toLowerCase() + plan.slice(1);
 
-  const [modal, setModal] = useState(false);
+  const strings = useStrings("completedDialog", {
+    completedMinutes: minutes,
+    plan: planLowerCase,
+  });
 
   const styles = useStyles();
 
   return (
     <Screen>
-      <Text style={styles.text}>
-        Congrats! You focused on{" "}
-        <Text style={{ fontStyle: "italic" }}>{planLowerCase}</Text> for{" "}
-        {minutes} minutes!
-      </Text>
+      <Text style={styles.text}>{strings.initialMessage}</Text>
       <CustomButton
         styles={{ button: styles.button }}
         onPress={() => setModal(true)}
@@ -41,7 +36,8 @@ function SuccessPage({ navigation }) {
       {modal ? (
         <ReflectionModal
           visible={true}
-          prompts={prompts}
+          title={strings.dialogTitle}
+          prompts={strings.questions.concat([strings.finalMessage])}
           onRequestClose={() => setModal(false)}
           onComplete={(answers) => {
             saveReflectionAnswers(answers);

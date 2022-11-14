@@ -7,6 +7,7 @@ import { CustomButton } from "../components/CustomButton";
 
 interface ReflectionModalProps {
   visible: boolean;
+  title: string;
   prompts: string[];
   styles?: CSSStyles;
   onRequestClose: () => void;
@@ -16,6 +17,7 @@ interface ReflectionModalProps {
 
 export function ReflectionModal({
   visible,
+  title,
   prompts,
   styles,
   onBack,
@@ -55,7 +57,7 @@ export function ReflectionModal({
       styles={styles}
       visible={visible}
       onRequestClose={onRequestClose}
-      title="Quick questions"
+      title={title}
     >
       <Text style={defaultStyles.text}>{prompts[promptIndex]}</Text>
       {promptIndex < prompts.length - 1 ? (
