@@ -34,7 +34,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CaretDown, CaretUp, Gear } from '../Icons/icons';
 
-const type=['25 Minutes', '50 Minutes', '75 Minutes','100 Minutes'];
+global.errorMessage_reminder = 'aaa';
 
 class ReminderPage extends Component {
     constructor(props) {
@@ -145,6 +145,13 @@ class ReminderPage extends Component {
     {
       let today = new Date();
       let date = new Date(today);
+      let date_1;
+      let date_2;
+      let date_3;
+      let date_4;
+      let date_5;
+      let date_6;
+      let date_7;
       date_1 = date.setDate(today.getDate() + 1);
       date_2 = date.setDate(today.getDate() + 2);
       date_3 = date.setDate(today.getDate() + 3);
@@ -246,6 +253,7 @@ class ReminderPage extends Component {
           } textColor = '#ffffff' />
          </View>
          </View>
+         <Text style={{fontFamily: 'Roboto', fontSize: 12, color: 'red', top: '34%'}}>{errorMessage_reminder}</Text>
          <TouchableOpacity
           style={styles.button}
           onPress={() =>{
@@ -255,13 +263,15 @@ class ReminderPage extends Component {
             }
             if(this.state.dateChosen == false)
             {
-              Alert.alert('Please make your focus plan!');
+              //Alert.alert('Please make your focus plan!');
+              errorMessage_reminder = 'Please make your focus plan!';
             }
 
                   this.setState({flag:true});
                   if(this.state.select == false)
                   {
-                    Alert.alert('Please select your focus time!');
+                    //Alert.alert('Please select your focus time!');
+                    errorMessage_reminder = 'Please select your focus time!';
                   }
                   if(this.state.select == true)
                   {
@@ -271,23 +281,27 @@ class ReminderPage extends Component {
                     //console.log("time input: ", inputs);
                     if(isNaN(Number(inputs, 10)))
                     {
-                      Alert.alert('Please input Arabic numbers');
+                      //Alert.alert('Please input Arabic numbers');
+                      errorMessage_reminder = 'Please input Arabic numbers.';
                     }
                     else
                     {
                       if(Number(inputs) > 125)
                       {
-                        Alert.alert('Please enter less than 125 minutes');
+                        //Alert.alert('Please enter less than 125 minutes');
+                        errorMessage_reminder = 'Please enter less than 125 minutes.';
                       }
                       if(Number(inputs) < 25)
                       {
-                        Alert.alert('Please enter more than 25 minutes');
+                        //Alert.alert('Please enter more than 25 minutes');
+                        errorMessage_reminder = 'Please enter more than 25 minutes.';
                       }
                       if(Number(inputs) >= 25 && Number(inputs) <= 125)
                       {
                         //console.log(Number(inputs));
                         this.setState({minSet: Number(inputs)});
                         let timeNum = Number(inputs);
+                        errorMessage_reminder = '';
                       }
                     }
                     }
@@ -390,6 +404,7 @@ class ReminderPage extends Component {
       height: 50,
       borderRadius: 6,
       backgroundColor: 'white',
+      color: 'black',
       fontSize: 16,
       textAlign: "center",
       padding: 8,

@@ -49,6 +49,10 @@ global.on = false;
         {
           errorMessage = '';
         }
+        if(currentRouteName != 'ReminderPage')
+        {
+          errorMessage_reminder = '';
+        }
 
   //      if (previousRouteName !== currentRouteName) {
           // Replace the line below to add the tracker from a mobile analytics SDK
