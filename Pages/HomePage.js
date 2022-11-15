@@ -36,7 +36,7 @@ import TimerPage from './TimerPage';
 import ControlPanel from './ControlPanel';
 import { CaretDown, CaretUp, Gear } from '../Icons/icons';
 
-const type=['25 Minutes', '50 Minutes', '75 Minutes','100 Minutes'];
+global.errorMessage = '';
 
 //Home page to set focusing time
 
@@ -114,6 +114,7 @@ class HomePage extends Component {
          this.setState({oneTimeId: item},()=>{console.log(this.state.oneTimeId)});
          countDown_1 = 10;
          display = false;
+         this.setState({errorMessage: ''});
          //console.log(id);
     }
 
@@ -244,7 +245,7 @@ class HomePage extends Component {
                 </Pressable>
               </View>
         <View style = {{top: '80%'}}>
-        <Text style={{fontFamily: 'Roboto', fontSize: 10, color: 'red'}}>{'*Please enter more than 25 minutes'}{'\n'}{'         and less than 125 minutes'}</Text>
+        <Text style={{fontFamily: 'Roboto', fontSize: 10, color: 'red'}}>{errorMessage}</Text>
         </View>
         <View style = {{top: '66%', width: '150%'}}>
         <TouchableOpacity
@@ -253,7 +254,8 @@ class HomePage extends Component {
                   this.setState({flag:true});
                   if(this.state.select == false)
                   {
-                    Alert.alert('Please select your focus time!');
+                    //Alert.alert('Please select your focus time!');
+                    errorMessage = 'Please select your focus time!';
                   }
                   if(this.state.select == true)
                   {
@@ -263,17 +265,20 @@ class HomePage extends Component {
                     //console.log("time input: ", inputs);
                     if(isNaN(Number(inputs, 10)))
                     {
-                      Alert.alert('Please input Arabic numbers');
+                      //Alert.alert('Please input Arabic numbers');
+                      errorMessage = 'Please input Arabic numbers.';
                     }
                     else
                     {
                       if(Number(inputs) > 125)
                       {
-                        Alert.alert('Please enter less than 125 minutes');
+                        //Alert.alert('Please enter less than 125 minutes');
+                        errorMessage = 'Please enter less than 125 minutes.';
                       }
                       if(Number(inputs) < 25)
                       {
-                        Alert.alert('Please enter more than 25 minutes');
+                        //Alert.alert('Please enter more than 25 minutes');
+                        errorMessage = 'Please enter more than 25 minutes.';
                       }
                       if(Number(inputs) >= 25 && Number(inputs) <= 125)
                       {

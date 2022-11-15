@@ -45,6 +45,10 @@ global.on = false;
         {
           on = false;
         }
+        if(currentRouteName != 'HomePage')
+        {
+          errorMessage = '';
+        }
 
   //      if (previousRouteName !== currentRouteName) {
           // Replace the line below to add the tracker from a mobile analytics SDK
