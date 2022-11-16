@@ -451,7 +451,7 @@ class TimerPage extends Component {
 
                database()
                   .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
-                  .update({focusDuration: focusSet.toString() + 'mins', metadata: meta})
+                  .update({focusDuration: focusSet.toString() + 'mins', metadata: meta, complete: focusTime.toString() + 'mins'})
                   .then(snapshot => {console.log('Data updated oneTime');})
                   .catch(error=>{console.log(error)});
              }
