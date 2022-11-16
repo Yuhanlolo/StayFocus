@@ -68,9 +68,15 @@ class HomePage extends Component {
                ],
       isFocus: false,
       txt: '',
+      input: '',
       };
       this.setValue = this.setValue.bind(this);
+      this.handleInput = this.handleInput.bind(this);
       }
+
+  handleInput(text) {
+     this.setState({input: text});
+  }
 
   setOpen = (open) => {
     this.setState({
@@ -84,6 +90,7 @@ class HomePage extends Component {
     }), ()=>{
       console.log(this.state.value);
       this.setState({minSet: this.state.value});
+      this.setState({input: this.state.value.toString() + 'Minutes'});
     });
     this.setState({select: true});
     this.setState({mode: 'selection'});
@@ -223,13 +230,15 @@ class HomePage extends Component {
                 <TextInput
                   style={styles.input}
                   onChangeText={(text) => {this.setState({minTemp:text});
+                                         this.setState({input: text});
                                         this.setState({select: true});
-                                        this.setState({mode: 'enter'})}}
+                                        this.setState({mode: 'enter'});}}
                   onFocus={() => {
                     this.setState({open: false});
                     this.setState({isFocus: true});
                   }}
                   onEndEditing={() => {this.setState({isFocus: false});}}
+                  value = {this.state.input}
                   keyboardType="numeric"
                   autoFocus={true}
                   placeholder="Choose/enter focus time"
@@ -286,6 +295,7 @@ class HomePage extends Component {
                         this.setState({minSet: Number(inputs)});
                         let timeNum = Number(inputs);
                         this.props.navigation.navigate('TimerPage',{timeSet: timeNum, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
+                        this.setState({input:''});
                       }
                     }
                     }

@@ -65,10 +65,16 @@ class ReminderPage extends Component {
         minTemp: '',
         select: false,
         mode: 'none',
+        input: '',
 
       };
       this.setValue = this.setValue.bind(this);
+      this.handleInput = this.handleInput.bind(this);
       }
+
+  handleInput(text) {
+     this.setState({input: text});
+  }
 
   setOpen = (open) => {
     this.setState({
@@ -82,6 +88,7 @@ class ReminderPage extends Component {
     }), ()=>{
       console.log(this.state.value);
       this.setState({minSet: this.state.value});
+      this.setState({input: this.state.value.toString() + 'Minutes'});
     });
     this.setState({select: true});
     this.setState({mode: 'selection'});
@@ -178,7 +185,8 @@ class ReminderPage extends Component {
             name="arrow-left"
             backgroundColor="#506F4C"
             color= "#B8C59E"
-            onPress={()=>{this.props.navigation.navigate('HomePage');}}
+            onPress={()=>{this.props.navigation.navigate('HomePage');
+            this.setState({input:''});}}
            />
         </View>
         <View style = {{alignItems: "center"}}>
@@ -206,6 +214,7 @@ class ReminderPage extends Component {
                 <TextInput
                   style={styles.input}
                   onChangeText={(text) => {this.setState({minTemp:text});
+                                        this.setState({input: text});
                                         this.setState({select: true});
                                         this.setState({mode: 'enter'})}}
                   onFocus={() => {
@@ -213,6 +222,7 @@ class ReminderPage extends Component {
                     this.setState({isFocus: true});
                   }}
                   onEndEditing={() => {this.setState({isFocus: false});}}
+                  value = {this.state.input}
                   keyboardType="numeric"
                   autoFocus={true}
                   placeholder="Choose/enter focus time"

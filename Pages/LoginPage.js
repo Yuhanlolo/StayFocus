@@ -29,6 +29,8 @@
   import HomePage from './HomePage';
   import SignUpPage from './SignUpPage';
 
+  //global.errorMessage_login = 'aa';
+
   function LoginPage({ navigation })
      {
           // Set an initializing state whilst Firebase connects
@@ -44,6 +46,7 @@
           const [text_5, setText_5] = useState('Log In');
           const [email, setEmail] = useState('');
           const [password, setPassword] = useState('');
+          const [errorMessage_login, setErrorMessage_login] = useState('');
 
 
 
@@ -87,12 +90,14 @@
                      .signInWithEmailAndPassword(email, password)
                      .then((data) => {
                        console.log('User account created & signed in!');
+                       setErrorMessage_login('');
                        const uid = data.user.uid;
                        database()
                          .ref('users/' + uid)
                          .once('value')
                          .then(snapshot=>{console.log(snapshot.val());});
 
+                       let item;
                        item = database()
                        .ref('users/' + uid + '/oneTimeBehavior')
                        .push();
@@ -107,11 +112,25 @@
                      .catch(error => {
                        if (error.code === 'auth/email-already-in-use') {
                          console.log('That email address is already in use!');
-                         Alert.alert('That email address is already in use!');
+                         //Alert.alert('That email address is already in use!');
+                         //errorMessage_login = 'That email address is already in use!';
+                         setErrorMessage_login('That email address is already in use!');
                        }
                        if (error.code === 'auth/invalid-email') {
                          console.log('That email address is invalid!');
-                         Alert.alert('That email address is invalid!');
+                         //Alert.alert('That email address is invalid!');
+                         //errorMessage_login = 'That email address is invalid!';
+                         setErrorMessage_login('That email address is invalid!');
+                       }
+                       if (error.code === 'auth/wrong-password') {
+                         console.log('That password is wrong!');
+                         //errorMessage_login = 'That password is wrong!';
+                         setErrorMessage_login('That password is wrong!');
+                       }
+                       if (error.code === 'auth/too-many-requests')
+                       {
+                         //errorMessage_login = 'please try again later!';
+                         setErrorMessage_login('please try again later!');
                        }
                        console.error(error);
                      });
@@ -145,6 +164,9 @@
                         <Text style = {styles.helper}>{text_3}</Text>
                         <Text style = {styles.helper_} onPress={()=>{navigation.navigate('SignUpPage');}}> {"Sign Up"} </Text>
                       </View>
+                      </View>
+                      <View style = {{alignItems: "center", top: '39%'}}>
+                      <Text style={{fontFamily: 'Roboto', fontSize: 12, color: 'red', top: '34%'}}>{errorMessage_login}</Text>
                       </View>
                          <TouchableOpacity
                                    style={styles.button}

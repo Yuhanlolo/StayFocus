@@ -50,6 +50,7 @@ function SignUpPage({ navigation })
      const [userName, setUserName] = useState('');
      const [password, setPassword] = useState('');
      const [confirmPassword, setConfirmPassword] = useState('');
+     const [errorMessage_signup, setErrorMessage_signup] = useState('');
 
     // Handle user state changes
      function onAuthStateChanged(user) {
@@ -106,12 +107,14 @@ function SignUpPage({ navigation })
          let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
          if(password.length < 6)
          {
-           Alert.alert('The password must contain more than 6 characters');
+           //Alert.alert('The password must contain more than 6 characters');
+           setErrorMessage_signup('The password must contain more than 6 characters!');
          }
           auth()
          .createUserWithEmailAndPassword(email, password)
          .then((data) => {
            //setId(data.user.uid);
+           setErrorMessage_signup('');
            const uid = data.user.uid;
 
            let dataToSave = {
@@ -127,6 +130,7 @@ function SignUpPage({ navigation })
                .update(dataToSave)
                .then(snapshot => {
                  console.log('Data updated');
+                 let item;
                  item = database()
                    .ref('users/' + uid + '/oneTimeBehavior')
                    .push();
@@ -156,11 +160,13 @@ function SignUpPage({ navigation })
          })
          .catch(error => {
            if (error.code === 'auth/email-already-in-use') {
-             Alert.alert('That email address is already in use!');
+             //Alert.alert('That email address is already in use!');
+             setErrorMessage_signup('That email address is already in use!');
            }
 
            if (error.code === 'auth/invalid-email') {
-             Alert.alert('That email address is invalid!');
+             //Alert.alert('That email address is invalid!');
+             setErrorMessage_signup('That email address is invalid!');
            }
            reject(error);
          });
@@ -202,22 +208,14 @@ function SignUpPage({ navigation })
                 />
                 </View>
          <Text style = {styles.errorMessage}>{'The pass word must contain at least 6 characters'}</Text>
-         <Text style = {styles.comments_4}>{text_4}</Text>
-                  <View style = {styles.inputContainer}>
-                  <TextInput
-                   style={{top: '120%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
-                   password={true}
-                   secureTextEntry={true}
-                   onChangeText={(text) => {
-                     setConfirmPassword(text);
-                   }}
-                 />
-                 </View>
 
          <View style = {styles.container}>
            <Text style = {styles.helper}>{text_5}</Text>
            <Text style = {styles.helper_} onPress={()=>{navigation.navigate('LoginPage');}}> {"Log In"} </Text>
          </View>
+         </View>
+         <View style = {{alignItems: "center", top: '33%'}}>
+           <Text style={{fontFamily: 'Roboto', fontSize: 12, color: 'red', }}>{errorMessage_signup}</Text>
          </View>
             <TouchableOpacity
                       style={styles.button}
@@ -280,7 +278,7 @@ function SignUpPage({ navigation })
     container: {
       flexDirection: 'row',
       top: '28%',
-      left: '20%',
+      left: '25%',
     },
 
     inputContainer: {
