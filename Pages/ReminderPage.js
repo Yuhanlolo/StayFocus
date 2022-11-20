@@ -88,7 +88,7 @@ class ReminderPage extends Component {
     }), ()=>{
       console.log(this.state.value);
       this.setState({minSet: this.state.value});
-      this.setState({input: this.state.value.toString() + 'Minutes'});
+      this.setState({input: this.state.value.toString() + ' mins'});
     });
     this.setState({select: true});
     this.setState({mode: 'selection'});
