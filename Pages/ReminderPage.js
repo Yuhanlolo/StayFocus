@@ -416,7 +416,6 @@ class ReminderPage extends Component {
       backgroundColor: 'white',
       color: 'black',
       fontSize: 16,
-      textAlign: "center",
       padding: 8,
       zIndex: 200,
     },

@@ -360,7 +360,6 @@ class HomePage extends Component {
     fontSize: 16,
     color: 'black',
     fontFamily: 'Roboto',
-    textAlign: "center",
     padding: 8,
     zIndex: 200,
   },
