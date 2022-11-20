@@ -233,9 +233,11 @@ class HomePage extends Component {
                                          this.setState({input: text});
                                         this.setState({select: true});
                                         this.setState({mode: 'enter'});}}
+                  clearTextOnFocus={true}
                   onFocus={() => {
                     this.setState({open: false});
                     this.setState({isFocus: true});
+                    this.setState({input: ''});
                   }}
                   onEndEditing={() => {this.setState({isFocus: false});}}
                   value = {this.state.input}

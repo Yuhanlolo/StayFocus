@@ -220,7 +220,9 @@ class ReminderPage extends Component {
                   onFocus={() => {
                     this.setState({open: false});
                     this.setState({isFocus: true});
+                    this.setState({input: ''});
                   }}
+                  clearTextOnFocus={true}
                   onEndEditing={() => {this.setState({isFocus: false});}}
                   value = {this.state.input}
                   keyboardType="numeric"
