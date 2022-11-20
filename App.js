@@ -5,7 +5,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {connect} from 'react-redux';
 import HomePage from './Pages/HomePage';
 import TimerPage from './Pages/TimerPage';
-import QuitPage from './Pages/QuitPage';
 import SuccessPage from './Pages/SuccessPage';
 import LoginPage from './Pages/LoginPage';
 import SignUpPage from './Pages/SignUpPage';
@@ -69,7 +68,6 @@ global.on = false;
         <Stack.Screen name="SignUpPage" component={SignUpPage} />
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="TimerPage" component={TimerPage} />
-        <Stack.Screen name="QuitPage" component={QuitPage} />
         <Stack.Screen name="SuccessPage" component={SuccessPage} />
         <Stack.Screen name="ReminderPage" component={ReminderPage} />
         <Stack.Screen name="AboutPage" component={AboutPage} />

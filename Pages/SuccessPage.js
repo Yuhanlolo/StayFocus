@@ -159,11 +159,19 @@ class SuccessPage extends Component {
      alignItems: "center",
      paddingHorizontal: 10,
      top: '35%',
-     height: '20%',
+     height: '22%',
      width: '80%',
      borderRadius: 15,
      borderWidth: 7,
      borderColor: 'black'
+    },
+
+    buttonText: {
+      fontFamily: "Roboto",
+      color: 'white',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      fontSize: 18,
     },
 
     buttonRight: {
