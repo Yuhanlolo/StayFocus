@@ -356,7 +356,8 @@ class HomePage extends Component {
 
   input: {
     position: "absolute",
-    width: '100%',
+    width: 200,
+    height: 50,
     borderRadius: 6,
     backgroundColor: 'white',
     fontSize: 16,

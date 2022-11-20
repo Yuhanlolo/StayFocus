@@ -416,6 +416,7 @@ class ReminderPage extends Component {
       height: 50,
       borderRadius: 6,
       backgroundColor: 'white',
+      fontFamily: 'Roboto',
       color: 'black',
       fontSize: 16,
       padding: 8,
