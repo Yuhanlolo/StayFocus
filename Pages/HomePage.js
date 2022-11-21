@@ -15,6 +15,8 @@ import {
   AppState,
   BackHandler,
   Pressable,
+  KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
@@ -206,7 +208,10 @@ class HomePage extends Component {
         <Pressable onPress={()=>{this.openDrawer()}} style = {{top: '4%', right: '67%'}}>
           <Gear size={32} color={styles.icon.color} />
         </Pressable>
-        <View style = {{flexDirection: 'column',  alignItems: "center",}}>
+        <KeyboardAvoidingView ref={'KeyboardAvoidingView'}
+                                                                    behavior={'position'}
+                                                                    keyboardVerticalOffset={10}
+                                                                    contentContainerStyle = {{flexDirection: 'column',  alignItems: "center",}}>
         <View style = {{top: '35%', alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         </View>
@@ -273,10 +278,10 @@ class HomePage extends Component {
                   )}
                 </Pressable>
               </View>
-        <View style = {{top: '80%'}}>
+        <View style = {{top: '82%'}}>
         <Text style={{fontFamily: 'Roboto', fontSize: 10, color: 'red'}}>{errorMessage}</Text>
         </View>
-        <View style = {{top: '66%', width: '150%'}}>
+        <View style = {{top: '65%', width: '70%'}}>
         <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
@@ -328,7 +333,7 @@ class HomePage extends Component {
                   <Text style = {styles.buttonText}>{'Start Focusing'}</Text>
         </TouchableOpacity>
         </View>
-        </View>
+        </KeyboardAvoidingView>
         </ScrollView>
       </Drawer>
       );
@@ -357,14 +362,14 @@ class HomePage extends Component {
      top: '50%',
      backgroundColor: "#506F4C",
      borderRadius: 15,
-     width: '150%',
-     height: '35%',
+     width: '100%',
+     height: '40%',
      padding: 10
     },
 
     buttonText: {
      color: 'white',
-     fontSize: 19,
+     fontSize: 17,
      fontFamily: 'Roboto',
      textAlign: 'center',
      textAlignVertical: 'center',
