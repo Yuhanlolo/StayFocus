@@ -271,7 +271,6 @@ class HomePage extends Component {
                   }}
                   value = {this.state.input}
                   keyboardType="numeric"
-                  autoFocus={true}
                   placeholder="Choose/enter focus time"
                   placeholderTextColor="black"
                   maxLength={32}
