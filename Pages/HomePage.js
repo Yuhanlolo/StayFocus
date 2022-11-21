@@ -229,15 +229,33 @@ class HomePage extends Component {
                 />
                 <TextInput
                   style={styles.input}
-                  onChangeText={(text) => {this.setState({minTemp:text});
-                                         this.setState({input: text});
-                                        this.setState({select: true});
-                                        this.setState({mode: 'enter'});}}
+                  onChangeText={(text) => {
+                  errorMessage = '';
+                  if(isNaN(Number(text, 10)))
+                    {
+                      //Alert.alert('Please input Arabic numbers');
+                      errorMessage = 'Please input Arabic numbers.';
+                      text = text.replace(/[^0-9]/g,'');
+                    }
+                  if(Number(text) > 125)
+                      {
+                        //Alert.alert('Please enter less than 125 minutes');
+                        errorMessage = 'Please enter less than 125 minutes.';
+                        text = text.replace(text,'125');
+                      }
+                  else
+                  {
+                  this.setState({minTemp:text});
+                  this.setState({input: text.toString() + ' mins'});
+                  this.setState({select: true});
+                  this.setState({mode: 'enter'});
+                  }}}
                   clearTextOnFocus={true}
                   onFocus={() => {
                     this.setState({open: false});
                     this.setState({isFocus: true});
                     this.setState({input: ''});
+                    errorMessage = '';
                   }}
                   onEndEditing={() => {this.setState({isFocus: false});}}
                   value = {this.state.input}
