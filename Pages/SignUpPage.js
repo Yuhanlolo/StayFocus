@@ -333,6 +333,7 @@ function SignUpPage({ navigation })
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
+      fontSize: 18,
     }
   });
 

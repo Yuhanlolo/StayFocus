@@ -256,6 +256,7 @@
 
     buttonText: {
       fontFamily: "Roboto",
+      fontSize: 18,
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',

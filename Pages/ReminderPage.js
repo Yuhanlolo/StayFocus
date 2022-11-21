@@ -51,7 +51,7 @@ class ReminderPage extends Component {
         min: 0,
         date: new Date(),
         dateChosen: false,
-
+        text_4 : 'Confirm',
         open: false,
         value: null,
         items: [
@@ -282,7 +282,8 @@ class ReminderPage extends Component {
         </View>
          <View style = {styles.dateContainer}>
           <DatePicker date={this.state.date} mode = 'time' androidVariant = 'nativeAndroid' onDateChange={(text)=>
-          {this.setState({date:text});
+          {this.setState({text_4: 'Confirm'});
+           this.setState({date:text});
            this.setState({dateChosen: true});
            console.log(JSON.stringify(text));
            let time = JSON.stringify(text);
@@ -313,51 +314,11 @@ class ReminderPage extends Component {
             if(this.state.dateChosen == false)
             {
               //Alert.alert('Please make your focus plan!');
-              errorMessage_reminder = 'Please make your focus plan!';
+              //errorMessage_reminder = 'Please make your focus plan!';
             }
-
-                  this.setState({flag:true});
-                  if(this.state.select == false)
-                  {
-                    //Alert.alert('Please select your focus time!');
-                    errorMessage_reminder = 'Please select your focus time!';
-                  }
-                  if(this.state.select == true)
-                  {
-                    if(this.state.mode == 'enter')
-                    {
-                    let inputs = this.state.minTemp;
-                    //console.log("time input: ", inputs);
-                    if(isNaN(Number(inputs, 10)))
-                    {
-                      //Alert.alert('Please input Arabic numbers');
-                      errorMessage_reminder = 'Please input Arabic numbers.';
-                    }
-                    else
-                    {
-                      if(Number(inputs) > 125)
-                      {
-                        //Alert.alert('Please enter less than 125 minutes');
-                        errorMessage_reminder = 'Please enter less than 125 minutes.';
-                      }
-                      if(Number(inputs) < 25)
-                      {
-                        //Alert.alert('Please enter more than 25 minutes');
-                        errorMessage_reminder = 'Please enter more than 25 minutes.';
-                      }
-                      if(Number(inputs) >= 25 && Number(inputs) <= 125)
-                      {
-                        //console.log(Number(inputs));
-                        this.setState({minSet: Number(inputs)});
-                        let timeNum = Number(inputs);
-                        errorMessage_reminder = '';
-                      }
-                    }
-                    }
-
-          }
+            this.setState({text_4: 'Confirmed'});
          }}>
-          <Text style = {styles.buttonText}>{'Confirm'}</Text>
+          <Text style = {styles.buttonText}>{this.state.text_4}</Text>
          </TouchableOpacity>
         </View>
       );
