@@ -246,12 +246,12 @@ class HomePage extends Component {
                       {
                         //Alert.alert('Please enter less than 125 minutes');
                         errorMessage = 'Please enter less than 125 minutes.';
-                        text = text.replace(text,'125');
+                        this.setState({input: '125'});
                       }
                   else
                   {
                   this.setState({minTemp:text});
-                  this.setState({input: text.toString() + ' mins'});
+                  this.setState({input: text.toString()});
                   this.setState({select: true});
                   this.setState({mode: 'enter'});
                   }}}
@@ -262,7 +262,13 @@ class HomePage extends Component {
                     this.setState({input: ''});
                     errorMessage = '';
                   }}
-                  onEndEditing={() => {this.setState({isFocus: false});}}
+                  onEndEditing={() => {this.setState({isFocus: false});
+                  if(Number(this.state.input) < 25)
+                  {
+                    errorMessage = 'Please enter more than 25 minutes.';
+                    this.setState({input: '25'});
+                  }
+                  }}
                   value = {this.state.input}
                   keyboardType="numeric"
                   autoFocus={true}

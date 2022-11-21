@@ -34,7 +34,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CaretDown, CaretUp, Gear } from '../Icons/icons';
 
-global.errorMessage_reminder = 'aaa';
+global.errorMessage_reminder = '';
 
 class ReminderPage extends Component {
     constructor(props) {
@@ -88,7 +88,7 @@ class ReminderPage extends Component {
     }), ()=>{
       console.log(this.state.value);
       this.setState({minSet: this.state.value});
-      this.setState({input: this.state.value.toString() + ' mins'});
+      this.setState({input: this.state.value.toString()});
     });
     this.setState({select: true});
     this.setState({mode: 'selection'});
@@ -213,17 +213,42 @@ class ReminderPage extends Component {
                 />
                 <TextInput
                   style={styles.input}
-                  onChangeText={(text) => {this.setState({minTemp:text});
-                                        this.setState({input: text});
-                                        this.setState({select: true});
-                                        this.setState({mode: 'enter'})}}
+                  onChangeText={(text) => {
+                  errorMessage_reminder = '';
+                  if(isNaN(Number(text, 10)))
+                    {
+                      //Alert.alert('Please input Arabic numbers');
+                      errorMessage_reminder = 'Please input Arabic numbers.';
+                      text = text.replace(/[^0-9]/g,'');
+                    }
+                  if(Number(text) > 125)
+                      {
+                        //Alert.alert('Please enter less than 125 minutes');
+                        errorMessage_reminder = 'Please enter less than 125 minutes.';
+                        this.setState({input: '125'});
+                      }
+                  else
+                  {
+                  this.setState({minTemp:text});
+                  this.setState({input: text.toString()});
+                  this.setState({select: true});
+                  this.setState({mode: 'enter'});
+                  }
+                                        }}
                   onFocus={() => {
                     this.setState({open: false});
                     this.setState({isFocus: true});
                     this.setState({input: ''});
+                    errorMessage_reminder = '';
                   }}
                   clearTextOnFocus={true}
-                  onEndEditing={() => {this.setState({isFocus: false});}}
+                  onEndEditing={() => {this.setState({isFocus: false});
+                  if(Number(this.state.input) < 25)
+                  {
+                    errorMessage_reminder = 'Please enter more than 25 minutes.';
+                    this.setState({input: '25'});
+                  }
+                  }}
                   value = {this.state.input}
                   keyboardType="numeric"
                   autoFocus={true}
