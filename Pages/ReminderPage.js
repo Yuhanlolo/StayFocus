@@ -152,6 +152,10 @@ class ReminderPage extends Component {
     {
       let today = new Date();
       let date = new Date(today);
+      let compareDate =  new Date(today);
+      compareDate.setHours(hour);
+      compareDate.setMinutes(min);
+      let date_0;
       let date_1;
       let date_2;
       let date_3;
@@ -159,6 +163,7 @@ class ReminderPage extends Component {
       let date_5;
       let date_6;
       let date_7;
+      date_0 = date.setDate(today.getDate());
       date_1 = date.setDate(today.getDate() + 1);
       date_2 = date.setDate(today.getDate() + 2);
       date_3 = date.setDate(today.getDate() + 3);
@@ -166,6 +171,14 @@ class ReminderPage extends Component {
       date_5 = date.setDate(today.getDate() + 5);
       date_6 = date.setDate(today.getDate() + 6);
       date_7 = date.setDate(today.getDate() + 7);
+      console.log('now:', today);
+      console.log('compare', compareDate);
+      console.log('res:',compareDate - today);
+      if(compareDate - today > 0)
+      {
+        this.onCreateTriggerNotification(new Date(date_0), hour, min);
+        console.log("it's in.");
+      }
       this.onCreateTriggerNotification(new Date(date_1), hour, min);
       this.onCreateTriggerNotification(new Date(date_2), hour, min);
       this.onCreateTriggerNotification(new Date(date_3), hour, min);
