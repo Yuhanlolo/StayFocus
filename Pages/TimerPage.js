@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import type {Node} from 'react';
-import {Notifications} from 'react-native-notifications';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import {
@@ -47,24 +46,6 @@ global.timerId = '1';
 class TimerPage extends Component {
     constructor(props) {
       super(props);
-
-    Notifications.registerRemoteNotifications();
-
-    Notifications.events().registerNotificationReceivedForeground((notification: Notification, completion) => {
-      console.log(`Notification received in foreground: ${notification.title} : ${notification.body}`);
-      completion({alert: false, sound: false, badge: false});
-    });
-
-    Notifications.events().registerNotificationOpened((notification: Notification, completion) => {
-      console.log(`Notification opened: ${notification.payload}`);
-      completion();
-    });
-
-
-    Notifications.events().registerNotificationReceivedBackground((notification: Notification, completion: (response: NotificationCompletion) => void) => {
-    console.log("Notification Received - Background", notification.payload);
-    completion({alert: true, sound: true, badge: false});
-            });
 
     this.state = {
         text_1: "Tap the clock",
