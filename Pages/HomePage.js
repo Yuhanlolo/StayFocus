@@ -63,10 +63,10 @@ class HomePage extends Component {
       open: false,
       value: null,
       items: [
-                 { label: "25 minutes", value: 25 },
-                 { label: "50 minutes", value: 50 },
-                 { label: "75 minutes", value: 75 },
-                 { label: "100 minutes", value: 100 },
+                 { label: "25 mins", value: 25 },
+                 { label: "50 mins", value: 50 },
+                 { label: "75 mins", value: 75 },
+                 { label: "100 mins", value: 100 },
                ],
       isFocus: false,
       txt: '',
@@ -239,19 +239,31 @@ class HomePage extends Component {
                   if(isNaN(Number(text, 10)))
                     {
                       //Alert.alert('Please input Arabic numbers');
-                      errorMessage = 'Please input Arabic numbers.';
+                      if(text.indexOf('mins') == -1)
+                      {
+                        errorMessage = 'Please input Arabic numbers.';
+                      }
+                      if(text.indexOf('mins') != -1)
+                      {
+                        let str = text.replace(' mins', '');
+                        if(isNaN(Number(str, 10)))
+                        {
+                          errorMessage = 'Please input Arabic numbers.';
+                        }
+                      }
                       text = text.replace(/[^0-9]/g,'');
                     }
                   if(Number(text) > 125)
                       {
                         //Alert.alert('Please enter less than 125 minutes');
                         errorMessage = 'Please enter less than 125 minutes.';
-                        this.setState({input: '125'});
+                        this.setState({input: '125 mins'});
+                        this.setState({minTemp: '125'});
                       }
                   else
                   {
                   this.setState({minTemp:text});
-                  this.setState({input: text.toString()});
+                  this.setState({input: text.toString() + ' mins'});
                   this.setState({select: true});
                   this.setState({mode: 'enter'});
                   }}}
@@ -266,7 +278,12 @@ class HomePage extends Component {
                   if(Number(this.state.input) < 25)
                   {
                     errorMessage = 'Please enter more than 25 minutes.';
-                    this.setState({input: '25'});
+                    this.setState({input: '25 mins'});
+                    this.setState({minTemp: '25'});
+                  }
+                  else
+                  {
+                    errorMessage = '';
                   }
                   }}
                   value = {this.state.input}
@@ -318,6 +335,7 @@ class HomePage extends Component {
                       {
                         //Alert.alert('Please enter more than 25 minutes');
                         errorMessage = 'Please enter more than 25 minutes.';
+                        this.setState({input: '25 mins'});
                       }
                       if(Number(inputs) >= 25 && Number(inputs) <= 125)
                       {

@@ -149,7 +149,7 @@ class TimerPage extends Component {
 
         // Create a channel (required for Android)
         const channelId = await notifee.createChannel({
-          id: 'default',
+          id: 'stone_fox',
           name: 'Default Channel',
           importance: AndroidImportance.HIGH,
         });
@@ -166,7 +166,7 @@ class TimerPage extends Component {
           if(display == true && on == true)
           {
           notifee.displayNotification({
-          id: '123',
+          id: 'stone_fox',
           title: '<b>Stay Focused</b>',
           body: "The focus mode has ended.",
           android: {
@@ -186,7 +186,7 @@ class TimerPage extends Component {
           countDown_2 = countDown_2 - 1;
           if(back == false && on == true){
           notifee.displayNotification({
-          id: '123',
+          id: 'stone_fox',
           title: '<b>Stay Focused</b>',
           body: "The focus mode will end in " + countDown_2.toString() + " seconds. Click here back to StayFocused",
           android: {
@@ -252,8 +252,8 @@ class TimerPage extends Component {
             }
              BackgroundTimer.clearInterval(outId);
              BackgroundTimer.clearInterval(timerId);
-             this.cancel('123');
-             notifee.cancelAllNotifications(['123']);
+             this.cancel('stone_fox');
+             notifee.cancelAllNotifications(['stone_fox']);
           }
     }
 
