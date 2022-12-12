@@ -236,6 +236,8 @@ class HomePage extends Component {
                   style={styles.input}
                   onChangeText={(text) => {
                   errorMessage = '';
+                  if(this.state.mode != 'selection')
+                  {
                   if(isNaN(Number(text, 10)))
                     {
                       //Alert.alert('Please input Arabic numbers');
@@ -266,7 +268,8 @@ class HomePage extends Component {
                   this.setState({input: text.toString() + ' mins'});
                   this.setState({select: true});
                   this.setState({mode: 'enter'});
-                  }}}
+                  }}
+                  }}
                   clearTextOnFocus={true}
                   onFocus={() => {
                     this.setState({open: false});
@@ -275,7 +278,7 @@ class HomePage extends Component {
                     errorMessage = '';
                   }}
                   onEndEditing={() => {this.setState({isFocus: false});
-                  if(Number(this.state.input) < 25)
+                  if(Number(this.state.input) < 25 && this.state.mode != 'selection')
                   {
                     errorMessage = 'Please enter more than 25 minutes.';
                     this.setState({input: '25 mins'});

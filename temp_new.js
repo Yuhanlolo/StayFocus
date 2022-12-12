@@ -125,15 +125,7 @@ class TimerPage extends Component {
                           this.setState({min_2:this.state.min_2});
                           this.setState({min_1:this.state.min_1});
                         }
-                        if(this.state.onLock == 'true')
-                        {
-                          this.setState({onLock: 'unk'});
-                          this.setState({sec_2:sec_l});
-                          this.setState({sec_1:sec_h});
-                          this.setState({min_2:min_l});
-                          this.setState({min_1:min_h});
-                        }
-                        if(this.state.onLock != 'true' && this.state.pause == true && !(this.state.min_1==0 && this.state.min_2==0 && this.state.sec_1==0 && this.state.sec_2==0))
+                        else
                         {
                           this.setState({set: true});
                           this.setState({sec_2:this.state.sec_2-1});
@@ -167,6 +159,7 @@ class TimerPage extends Component {
         const channelId = await notifee.createChannel({
           id: 'stone_fox',
           name: 'Default Channel',
+          importance: AndroidImportance.HIGH,
         });
 
         // Display a notification
@@ -187,6 +180,7 @@ class TimerPage extends Component {
             channelId,
             smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
             // pressAction is needed if you want the notification to open the app when pressed
+            importance: AndroidImportance.HIGH,
             pressAction: {
               id: 'default',
             },
@@ -206,6 +200,7 @@ class TimerPage extends Component {
             channelId,
             smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
             // pressAction is needed if you want the notification to open the app when pressed
+            importance: AndroidImportance.HIGH,
             pressAction: {
               id: 'default',
             },
@@ -245,10 +240,8 @@ class TimerPage extends Component {
                                         min_h = this.state.min_1;
                                         if(display == true && on == true && this.state.onLock=='false')
                                         {
-                                        this.setState({pause: false});
                                         console.log('out of control');
                                         timerId = this.onDisplayNotification();
-
                                         }
 
                                         if(display == true && on == true && this.state.onLock=='true')
@@ -296,8 +289,23 @@ class TimerPage extends Component {
         //console.log('ifOnPage:', this.state.onPage);
         if (nextAppState === 'active')
           {
-            this.setState({pause: true});
             BackgroundTimer.clearInterval(lockId);
+            if(sec_l != -2 && sec_h != -2 && min_l != -2 && min_h != -2)
+            {
+              this.setState({sec_2: sec_l}, ()=>{console.log('sec_2: ',this.state.sec_2);});
+              this.setState({sec_1: sec_h}, ()=>{console.log('sec_1: ',this.state.sec_1);});
+              this.setState({min_2: min_l}, ()=>{console.log('min_2: ',this.state.min_2);});
+              this.setState({min_1: min_h}, ()=>{console.log('min_1: ',this.state.min_1);});
+              console.log("it is in what I want.");
+              console.log('sec_l: ',sec_l);
+              console.log('sec_h: ',sec_h);
+              console.log('min_l: ',min_l);
+              console.log('min_h: ',min_h);
+              sec_l = -2;
+              sec_h = -2;
+              min_l = -2;
+              min_h = -2;
+            }
             display = false;
             back = true;
             console.log(countDown_1);
@@ -307,6 +315,7 @@ class TimerPage extends Component {
               countDown_1 = 11;
               this.timeOutData();
             }
+             this.setState({onLock: 'unk'});
              BackgroundTimer.clearInterval(outId);
              BackgroundTimer.clearInterval(timerId);
              this.cancel('stone_fox');
@@ -609,7 +618,6 @@ class TimerPage extends Component {
           onPress={() => {
           this.setState({modalVisible : true});
           this.readData();
-          this.setState({pause: false});
           //this.setState({pause:false});
           //this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, userId: this.state.userId});
           //console.log(this.state.userId);
