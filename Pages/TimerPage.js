@@ -167,6 +167,7 @@ class TimerPage extends Component {
         const channelId = await notifee.createChannel({
           id: 'stone_fox',
           name: 'Default Channel',
+          importance: AndroidImportance.HIGH,
         });
 
         // Display a notification
@@ -185,6 +186,7 @@ class TimerPage extends Component {
           body: "The focus mode has ended.",
           android: {
             channelId,
+            importance: AndroidImportance.HIGH,
             smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
             // pressAction is needed if you want the notification to open the app when pressed
             pressAction: {
@@ -205,6 +207,7 @@ class TimerPage extends Component {
           android: {
             channelId,
             smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
+            importance: AndroidImportance.HIGH,
             // pressAction is needed if you want the notification to open the app when pressed
             pressAction: {
               id: 'default',

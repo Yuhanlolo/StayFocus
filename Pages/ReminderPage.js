@@ -124,6 +124,7 @@ class ReminderPage extends Component {
     const channelId = await notifee.createChannel({
       id: 'stay_focus',
       name: 'Default Channel',
+      importance: AndroidImportance.HIGH,
     });
 
     // Create a time-based trigger
@@ -139,6 +140,7 @@ class ReminderPage extends Component {
         body: "It's time to focus. Set your focusing goal now!",
         android: {
           channelId,
+          importance: AndroidImportance.HIGH,
           pressAction: {
             id: 'default',
           },
