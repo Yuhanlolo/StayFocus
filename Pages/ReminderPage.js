@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import type {Node} from 'react';
 import DatePicker from 'react-native-date-picker';
 import DropDownPicker from "react-native-dropdown-picker";
-import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
+import notifee, { AndroidImportance, TimestampTrigger, TriggerType } from '@notifee/react-native';
 import {
   SafeAreaView,
   ScrollView,
