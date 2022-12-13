@@ -5974,6 +5974,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.npmmirror.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-background-timer-android@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmmirror.com/react-native-background-timer-android/-/react-native-background-timer-android-1.0.4.tgz#51d2e88acbe14932771dc8ee721f2723e3bae927"
+  integrity sha512-/wtSEdvCMoSqeKAg+0fIiXUD6UK/TdQcOXu49CyWT1BB1Xlidjryzixm+BmBEcyRqPT7/cvXlXUrGoij3JmMSA==
+
 react-native-background-timer@^2.4.1:
   version "2.4.1"
   resolved "https://registry.npmmirror.com/react-native-background-timer/-/react-native-background-timer-2.4.1.tgz#a3bc1cafa8c1e3aeefd0611de120298b67978a0f"

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import type {Node} from 'react';
 import notifee, { AndroidImportance } from '@notifee/react-native';
-import BackgroundTimer from 'react-native-background-timer';
+import Timer from "react-native-background-timer-android";
 import {
   SafeAreaView,
   ScrollView,
@@ -47,6 +47,12 @@ global.sec_h = -2;
 global.min_l = -2;
 global.min_h = -2;
 global.lockId = '1';
+global.hour_p = -2;
+global.min_p = -2;
+global.sec_p = -2;
+global.hour_c = -2;
+global.min_c = -2;
+global.sec_c = -2;
 //This is a count-down timer.
 
 class TimerPage extends Component {
@@ -128,10 +134,69 @@ class TimerPage extends Component {
                         if(this.state.onLock == 'true')
                         {
                           this.setState({onLock: 'unk'});
-                          this.setState({sec_2:sec_l});
-                          this.setState({sec_1:sec_h});
-                          this.setState({min_2:min_l});
-                          this.setState({min_1:min_h});
+                          let min_g = 0;
+                          let sec_g = 0;
+
+                          let today_ = new Date();
+                          let current = new Date(today_);
+                          let time_c = JSON.stringify(current);
+                          hour_c = Number(time_c.substring(12,14)) + 8;
+                          min_c = Number(time_c.substring(15,17));
+                          sec_c = Number(time_c.substring(18,20));
+                          console.log('now:', time_c);
+                          console.log('type:', typeof time_c);
+                          console.log('h,m,s:', hour_c, min_c, sec_c);
+                          if(sec_c >= sec_p)
+                          {
+                            sec_g = sec_c - sec_p;
+                          }
+                          if(sec_c < sec_p)
+                          {
+                            sec_g = sec_c + 60 - sec_p;
+                            if(min_c >= 1)
+                            {
+                              min_c = min_c - 1;
+                            }
+                            if(min_c == 0)
+                            {
+                              min_c = 59;
+                              hour_c = hour_c - 1;
+                            }
+                          }
+                          if(min_c >= min_p)
+                          {
+                            min_g = min_c - min_p;
+                          }
+                          if(min_c < min_p)
+                          {
+                            min_g = min_c + 60 - min_p;
+                            if(hour_c >= 1)
+                            {
+                              hour_c = hour_c - 1;
+                            }
+                            if(hour_c == 0)
+                            {
+                              hour_c = 23;
+                            }
+                          }
+                          if(hour_c >= hour_p)
+                          {
+                            hour_g = hour_c - hour_p;
+                          }
+                          if(hour_c < hour_p)
+                          {
+                            hour_g = hour_c + 24 - hour_p;
+                          }
+                          console.log('h_g, m_g, s_g:', hour_g, min_g, sec_g);
+                          let min_high = Math.floor((hour_g * 60 + min_g)/10);
+                          let min_low = hour_g * 60 + min_g - 10 * Math.floor((hour_g * 60 + min_g)/10);
+                          let sec_high = Math.floor(sec_g/10);
+                          let sec_low = sec_g - 10 * Math.floor(sec_g/10);
+
+                          this.setState({sec_2: this.state.sec_2 - sec_low});
+                          this.setState({sec_1: this.state.sec_1 - sec_high});
+                          this.setState({min_2: this.state.min_2 - min_low});
+                          this.setState({min_1: this.state.min_1 - min_high});
                         }
                         if(this.state.onLock != 'true' && this.state.pause == true && !(this.state.min_1==0 && this.state.min_2==0 && this.state.sec_1==0 && this.state.sec_2==0))
                         {
@@ -172,11 +237,11 @@ class TimerPage extends Component {
 
         // Display a notification
 
-        const intervalId = BackgroundTimer.setInterval(() => {
+        const intervalId = Timer.setInterval(() => {
         if(countDown_2 == 0)
         {
           countDown_2 = 0;
-          BackgroundTimer.clearInterval(intervalId);
+          Timer.clearInterval(intervalId);
           this.setState({outTime: true});
           if(display == true && on == true)
           {
@@ -225,8 +290,8 @@ class TimerPage extends Component {
       }
 
       _handleAppStateChange = (nextAppState) => {
-        BackgroundTimer.clearInterval(outId);
-        BackgroundTimer.clearInterval(timerId);
+        Timer.clearInterval(outId);
+        Timer.clearInterval(timerId);
 
         //var timerId;
         console.log("next time countDown_1: ", countDown_1);
@@ -234,7 +299,7 @@ class TimerPage extends Component {
         countDown_1 = 11;
         display = true;
         back = false;
-        outId = BackgroundTimer.setInterval(() => {
+        outId = Timer.setInterval(() => {
         if(countDown_1 > 0)
         {
           countDown_1 = countDown_1 - 1;
@@ -256,14 +321,24 @@ class TimerPage extends Component {
 
                                         if(display == true && on == true && this.state.onLock=='true')
                                         {
-                                            lockId = BackgroundTimer.setInterval(()=>{
+                                            let today = new Date();
+                                            let present = new Date(today);
+                                            let time_p = JSON.stringify(present);
+                                            hour_p = Number(time_p.substring(12,14)) + 8;
+                                            min_p = Number(time_p.substring(15,17));
+                                            sec_p = Number(time_p.substring(18,20));
+                                            console.log('now:', time_p);
+                                            console.log('type:', typeof time_p);
+                                            console.log('h,m,s:', hour_p, min_p, sec_p);
+
+                                            lockId = Timer.setInterval(()=>{
                                             if(min_h==0 && min_l==0 && sec_h==0 && sec_l==0)
                                             {
                                                min_h = 0;
                                                min_l = 0;
                                                sec_h = 0;
                                                sec_l = 0;
-                                               BackgroundTimer.clearInterval(lockId);
+                                               Timer.clearInterval(lockId);
                                             }
                                             else{
                                                 sec_l = sec_l -1;
@@ -291,7 +366,7 @@ class TimerPage extends Component {
         if(countDown_1 == 0)
         {
           countDown_1 = 0;
-          BackgroundTimer.clearInterval(outId);
+          Timer.clearInterval(outId);
         }
         },
         1100);
@@ -300,7 +375,7 @@ class TimerPage extends Component {
         if (nextAppState === 'active')
           {
             this.setState({pause: true});
-            BackgroundTimer.clearInterval(lockId);
+            Timer.clearInterval(lockId);
             display = false;
             back = true;
             console.log(countDown_1);
@@ -310,8 +385,8 @@ class TimerPage extends Component {
               countDown_1 = 11;
               this.timeOutData();
             }
-             BackgroundTimer.clearInterval(outId);
-             BackgroundTimer.clearInterval(timerId);
+             Timer.clearInterval(outId);
+             Timer.clearInterval(timerId);
              this.cancel('stone_fox');
              notifee.cancelAllNotifications(['stone_fox']);
           }

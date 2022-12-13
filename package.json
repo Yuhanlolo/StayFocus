@@ -25,6 +25,7 @@
     "react": "18.0.0",
     "react-native": "0.69.5",
     "react-native-background-timer": "^2.4.1",
+    "react-native-background-timer-android": "^1.0.4",
     "react-native-date-picker": "^4.2.5",
     "react-native-drawer": "^2.5.1",
     "react-native-dropdown-picker": "^5.4.2",
