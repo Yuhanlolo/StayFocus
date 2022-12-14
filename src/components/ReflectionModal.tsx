@@ -71,14 +71,14 @@ export function ReflectionModal({
         />
       ) : null}
       <View style={defaultStyles.buttonContainer}>
-        {promptIndex < prompts.length - 1 && onBack ? (
+        {promptIndex < prompts.length - 1 && onBack && (
           <CustomButton
             onPress={() => onBack(answers)}
             styles={{ button: defaultStyles.button }}
           >
             Back to focus
           </CustomButton>
-        ) : null}
+        )}
         <CustomButton onPress={next} styles={{ button: defaultStyles.button }}>
           {buttonText()}
         </CustomButton>
@@ -107,7 +107,7 @@ const useModalStyles = createStyles((theme) => ({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   button: {
