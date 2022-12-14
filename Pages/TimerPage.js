@@ -53,6 +53,7 @@ global.sec_p = -2;
 global.hour_c = -2;
 global.min_c = -2;
 global.sec_c = -2;
+global.detect = false;
 //This is a count-down timer.
 
 class TimerPage extends Component {
@@ -321,17 +322,26 @@ class TimerPage extends Component {
         //var timerId;
         console.log("next time countDown_1: ", countDown_1);
         if (nextAppState === 'background') {
-        countDown_1 = 11;
+        countDown_1 = 15;
         display = true;
         back = false;
         outId = BackgroundTimer.setInterval(() => {
         if(countDown_1 > 0)
         {
           countDown_1 = countDown_1 - 1;
+          if(countDown_1 > 10)
+          {
+            NativeModules.LockDetectionModule.getScreenStatus().then((map)=> {
+                                this.setState({onLock:map['flag']}, ()=>{console.log('status: ',this.state.onLock);}
+                                );
+                                }, (code, message)=> {});
+          }
           if(countDown_1 == 10)
           {
                       NativeModules.LockDetectionModule.getScreenStatus().then((map)=> {
                                 this.setState({onLock:map['flag']}, ()=>{console.log('status: ',this.state.onLock);
+                                        detect = this.state.onLock;
+                                        console.log('detect:', detect);
                                         sec_l = this.state.sec_2;
                                         sec_h = this.state.sec_1;
                                         min_l = this.state.min_2;
