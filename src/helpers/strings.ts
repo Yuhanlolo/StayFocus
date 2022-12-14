@@ -19,7 +19,7 @@ function getStrings({
         ],
         [`Placeholder for ${focusDurationMinutes}`],
       ],
-      finalMessage: "Great! You've done this focusing session.",
+      finalMessage: "Your session has ended.",
     },
     completedDialog: {
       dialogTitle: "Quick questions",

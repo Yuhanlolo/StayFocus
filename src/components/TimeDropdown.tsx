@@ -24,12 +24,13 @@ export function TimeDropdown({ value, setValue }: TimeDropdownProps) {
   const min = useAppStore((state) => state.minMinutes);
   const max = useAppStore((state) => state.maxMinutes);
 
-  const display = (v: number) => `${v} minutes`;
+  const numToString = (v: number) => {
+    return v <= 0 ? "" : `${v}`;
+  };
+  const display = (v: number) => numToString(v) + " minutes";
   const parse = (t: string) => parseInt(t.replace(" minutes", ""), 10) || 0;
 
-  const showError = () => {
-    return (value < min || value > max) && !open;
-  };
+  const showError = () => (value < min || value > max) && !open;
 
   const styles = useStyles();
 
@@ -41,13 +42,17 @@ export function TimeDropdown({ value, setValue }: TimeDropdownProps) {
       <View>
         <TextInput
           style={styles.input}
-          value={isFocus ? `${value}` : display(value)}
+          value={isFocus ? numToString(value) : display(value)}
           onChangeText={(t) => setValue(() => parse(t))}
           onFocus={() => {
+            setValue(0);
             setIsFocus(true);
             setOpen(false);
           }}
-          onEndEditing={() => setIsFocus(false)}
+          onEndEditing={() => {
+            setIsFocus(false);
+            if (value <= 0) setValue(25);
+          }}
           keyboardType="numeric"
           maxLength={30}
         />
