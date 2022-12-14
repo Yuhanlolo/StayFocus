@@ -10,6 +10,7 @@ import {
   SuccessPage,
   TimerPage,
   DrawerNavigator,
+  FocusEndedPage,
 } from "./src/screens";
 import { createStyles, ThemeProvider } from "./src/helpers";
 import { useAppStore } from "./src/api";
@@ -31,6 +32,10 @@ export default function App() {
                   <Stack.Screen name="HomePage" component={DrawerNavigator} />
                   <Stack.Screen name="TimerPage" component={TimerPage} />
                   <Stack.Screen name="SuccessPage" component={SuccessPage} />
+                  <Stack.Screen
+                    name="FocusEndedPage"
+                    component={FocusEndedPage}
+                  />
                 </>
               ) : (
                 <>

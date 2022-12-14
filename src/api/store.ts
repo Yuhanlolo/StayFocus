@@ -64,6 +64,7 @@ interface SessionStore extends Session {
   saveCompletedMinutes: (minutes: number) => void;
   saveGiveUpAttempt: (answers: string[], givenUp: boolean) => void;
   saveReflectionAnswers: (answers: string[]) => void;
+  saveLastGiveUpAttempt: (answers: string[]) => void;
 }
 
 const defaultSession = {
@@ -100,6 +101,18 @@ export const useSessionStore = create<SessionStore>()((set) => ({
       ],
     })),
   saveReflectionAnswers: (answers) => set({ reflectionAnswers: answers }),
+  saveLastGiveUpAttempt: (answers) =>
+    set((state) => ({
+      giveUpAttempts: state.giveUpAttempts.map((v, i) => {
+        return i === state.giveUpAttempts.length - 1
+          ? {
+              ...v,
+              answers: answers,
+              givenUp: true,
+            }
+          : v;
+      }),
+    })),
 }));
 
 export function getSession(): Session {
