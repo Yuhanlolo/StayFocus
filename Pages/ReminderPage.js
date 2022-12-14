@@ -274,16 +274,17 @@ class ReminderPage extends Component {
                   clearTextOnFocus={true}
                   onEndEditing={() => {this.setState({isFocus: false});
                   console.log('num: ', this.state.input);
-                  if(Number(this.state.input.replace(' mins', '')) < 25 && this.state.mode != 'selection')
+                  if(Number(this.state.input.replace(' mins', '')) < 25 && this.state.mode != 'selection' && this.state.mode != 'none')
                   {
                     errorMessage_reminder = 'Please enter more than 25 minutes.';
-                    this.setState({input: '25 mins'});
-                    this.setState({minTemp: '25'});
+                    //this.setState({input: '25 mins'});
+                    //this.setState({minTemp: '25'});
                   }
                   else
                   {
                     errorMessage_reminder = '';
                   }
+                  this.setState({mode: 'none'});
                   }}
                   value = {this.state.input}
                   keyboardType="numeric"

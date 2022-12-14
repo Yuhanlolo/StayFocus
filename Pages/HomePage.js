@@ -278,11 +278,11 @@ class HomePage extends Component {
                     errorMessage = '';
                   }}
                   onEndEditing={() => {this.setState({isFocus: false});
-                  if(Number(this.state.input) < 25 && this.state.mode != 'selection')
+                  if(Number(this.state.input) < 25 && this.state.mode != 'selection' && this.state.mode != 'none')
                   {
                     errorMessage = 'Please enter more than 25 minutes.';
-                    this.setState({input: '25 mins'});
-                    this.setState({minTemp: '25'});
+                    //this.setState({input: '25 mins'});
+                    //this.setState({minTemp: '25'});
                   }
                   else
                   {
@@ -334,11 +334,11 @@ class HomePage extends Component {
                         //Alert.alert('Please enter less than 125 minutes');
                         errorMessage = 'Please enter less than 125 minutes.';
                       }
-                      if(Number(inputs) < 25)
+                      if(Number(inputs) < 25 && this.state.mode == 'enter')
                       {
                         //Alert.alert('Please enter more than 25 minutes');
                         errorMessage = 'Please enter more than 25 minutes.';
-                        this.setState({input: '25 mins'});
+                        //this.setState({input: '25 mins'});
                       }
                       if(Number(inputs) >= 25 && Number(inputs) <= 125)
                       {
@@ -346,13 +346,15 @@ class HomePage extends Component {
                         this.setState({minSet: Number(inputs)});
                         let timeNum = Number(inputs);
                         this.props.navigation.navigate('TimerPage',{timeSet: timeNum, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
-                        this.setState({input:''});
                       }
                     }
+                     this.setState({mode: 'none'});
+                     this.setState({input: ''});
                     }
                     if(this.state.mode == 'selection')
                     {
                       this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
+                       this.setState({mode: 'none'});
                     }
                   }
                   }}>
