@@ -188,15 +188,27 @@ class TimerPage extends Component {
                             hour_g = hour_c + 24 - hour_p;
                           }
                           console.log('h_g, m_g, s_g:', hour_g, min_g, sec_g);
-                          let min_high = Math.floor((hour_g * 60 + min_g)/10);
-                          let min_low = hour_g * 60 + min_g - 10 * Math.floor((hour_g * 60 + min_g)/10);
-                          let sec_high = Math.floor(sec_g/10);
-                          let sec_low = sec_g - 10 * Math.floor(sec_g/10);
 
-                          this.setState({sec_2: this.state.sec_2 - sec_low});
-                          this.setState({sec_1: this.state.sec_1 - sec_high});
-                          this.setState({min_2: this.state.min_2 - min_low});
-                          this.setState({min_1: this.state.min_1 - min_high});
+                          let min_past = hour_g * 60 + min_g;
+                          let sec_past = sec_g;
+
+                          let min_pre = this.state.min_1 * 10 + this.state.min_2;
+                          let sec_pre = this.state.sec_1 * 10 + this.state.sec_2;
+
+                          if(sec_pre >= sec_past)
+                          {
+                            this.setState({sec_2: (sec_pre - sec_past) - 10*Math.floor((sec_pre - sec_past)/10)});
+                            this.setState({sec_1: Math.floor((sec_pre - sec_past)/10)});
+                          }
+                          if(sec_pre < sec_past)
+                          {
+                            min_pre = min_pre - 1;
+                            this.setState({sec_2: (sec_pre + 60 - sec_past) - 10*Math.floor((sec_pre + 60 - sec_past)/10)});
+                            this.setState({sec_1: Math.floor((sec_pre + 60 - sec_past)/10)});
+                          }
+
+                          this.setState({min_2: (min_pre - min_past) - 10*Math.floor((min_pre - min_past)/10)});
+                          this.setState({min_1: Math.floor((min_pre - min_past)/10)});
                         }
                         if(this.state.onLock != 'true' && this.state.pause == true && !(this.state.min_1==0 && this.state.min_2==0 && this.state.sec_1==0 && this.state.sec_2==0))
                         {
