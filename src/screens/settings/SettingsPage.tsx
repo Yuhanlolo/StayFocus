@@ -12,6 +12,7 @@ export default function SettingsPage({ navigation }) {
   const d = new Date();
   d.setHours(8, 0, 0, 0);
   const [date, setDate] = useState(d);
+  const [saved, setSaved] = useState(false);
 
   const onBack = () => {
     navigation.navigate("Home");
@@ -20,6 +21,9 @@ export default function SettingsPage({ navigation }) {
   const onConfirm = () => {
     saveSettings(minutes, date);
     setReminder(date);
+    setSaved(true);
+    // pretty sure this is a race condition somehow
+    setTimeout(() => setSaved(false), 3000);
   };
 
   const styles = useStyles();
@@ -44,6 +48,9 @@ export default function SettingsPage({ navigation }) {
       >
         Confirm
       </CustomButton>
+      {saved && (
+        <Text style={styles.textSaved}>Your settings have been saved</Text>
+      )}
     </SettingsScreen>
   );
 }
@@ -73,5 +80,11 @@ const useStyles = createStyles((theme) => ({
   buttonText: {
     color: theme.muteColor,
     fontSize: theme.fontSizes.sm,
+  },
+  textSaved: {
+    fontSize: theme.fontSizes.xs,
+    textAlign: "center",
+    marginTop: 12,
+    color: theme.textColor,
   },
 }));
