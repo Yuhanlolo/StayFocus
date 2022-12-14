@@ -21,6 +21,22 @@ function getStrings({
       ],
       finalMessage: "Your session has ended.",
     },
+    focusEndedDialog: {
+      dialogTitle: "Quick reflection questions",
+      initialMessage: `Your focus session has ended. You focused on ${plan} for ${completedMinutes}.`,
+      numberOfQuestions: 3,
+      fixedQuestions: [["Why do you want to check your phone now?"]],
+      randomizedQuestions: [
+        ["How do you feel without smartphone's distraction?"],
+        ["Any thoughts about focusing for a longer duration next time?"],
+        [
+          "Lorem ipsum morbi molestie augue tincidunt purus ultrices",
+          "A wealth of information creates a poverty of attention",
+        ],
+        [`Placeholder for ${focusDurationMinutes}`],
+      ],
+      finalMessage: "Thank you.",
+    },
     completedDialog: {
       dialogTitle: "Quick questions",
       initialMessage: `Congrats! You focused on ${plan} for ${completedMinutes}.`,

@@ -19,7 +19,7 @@ function FocusEndedPage({ route, navigation }) {
   const elapsedMinutes = route.params.elapsedMinutes;
 
   saveCompletedMinutes(elapsedMinutes);
-  const strings = useStrings("leaveFocusDialog", {
+  const strings = useStrings("focusEndedDialog", {
     completedMinutes: elapsedMinutes,
     plan: planLowerCase,
   });
