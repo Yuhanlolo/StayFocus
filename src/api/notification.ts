@@ -7,6 +7,11 @@ import notifee, {
 // Request permissions (required for iOS)
 notifee.requestPermission();
 
+// Default reminder (08:00)
+const d = new Date();
+d.setHours(8, 0, 0, 0);
+setReminder(d);
+
 export function setReminder(date: Date) {
   notifee.cancelAllNotifications();
   onReminderNotification(date);
