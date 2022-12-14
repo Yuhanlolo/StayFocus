@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import type {Node} from 'react';
 import notifee, { AndroidImportance } from '@notifee/react-native';
-import Timer from "react-native-background-timer-android";
+import BackgroundTimer from 'react-native-background-timer';
 import {
   SafeAreaView,
   ScrollView,
@@ -237,11 +237,11 @@ class TimerPage extends Component {
 
         // Display a notification
 
-        const intervalId = Timer.setInterval(() => {
+        const intervalId = BackgroundTimer.setInterval(() => {
         if(countDown_2 == 0)
         {
           countDown_2 = 0;
-          Timer.clearInterval(intervalId);
+          BackgroundTimer.clearInterval(intervalId);
           this.setState({outTime: true});
           if(display == true && on == true)
           {
@@ -290,8 +290,8 @@ class TimerPage extends Component {
       }
 
       _handleAppStateChange = (nextAppState) => {
-        Timer.clearInterval(outId);
-        Timer.clearInterval(timerId);
+        BackgroundTimer.clearInterval(outId);
+        BackgroundTimer.clearInterval(timerId);
 
         //var timerId;
         console.log("next time countDown_1: ", countDown_1);
@@ -299,7 +299,7 @@ class TimerPage extends Component {
         countDown_1 = 11;
         display = true;
         back = false;
-        outId = Timer.setInterval(() => {
+        outId = BackgroundTimer.setInterval(() => {
         if(countDown_1 > 0)
         {
           countDown_1 = countDown_1 - 1;
@@ -331,14 +331,14 @@ class TimerPage extends Component {
                                             console.log('type:', typeof time_p);
                                             console.log('h,m,s:', hour_p, min_p, sec_p);
 
-                                            lockId = Timer.setInterval(()=>{
+                                            lockId = BackgroundTimer.setInterval(()=>{
                                             if(min_h==0 && min_l==0 && sec_h==0 && sec_l==0)
                                             {
                                                min_h = 0;
                                                min_l = 0;
                                                sec_h = 0;
                                                sec_l = 0;
-                                               Timer.clearInterval(lockId);
+                                               BackgroundTimer.clearInterval(lockId);
                                             }
                                             else{
                                                 sec_l = sec_l -1;
@@ -366,7 +366,8 @@ class TimerPage extends Component {
         if(countDown_1 == 0)
         {
           countDown_1 = 0;
-          Timer.clearInterval(outId);
+          BackgroundTimer.clearInterval(outId);
+          BackgroundTimer.clearInterval(timerId);
         }
         },
         1100);
@@ -375,7 +376,7 @@ class TimerPage extends Component {
         if (nextAppState === 'active')
           {
             this.setState({pause: true});
-            Timer.clearInterval(lockId);
+            BackgroundTimer.clearInterval(lockId);
             display = false;
             back = true;
             console.log(countDown_1);
@@ -385,8 +386,8 @@ class TimerPage extends Component {
               countDown_1 = 11;
               this.timeOutData();
             }
-             Timer.clearInterval(outId);
-             Timer.clearInterval(timerId);
+             BackgroundTimer.clearInterval(outId);
+             BackgroundTimer.clearInterval(timerId);
              this.cancel('stone_fox');
              notifee.cancelAllNotifications(['stone_fox']);
           }
