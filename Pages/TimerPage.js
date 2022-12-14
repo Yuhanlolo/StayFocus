@@ -42,10 +42,6 @@ global.outId = '1';
 global.display = false;
 global.back = true;
 global.timerId = '1';
-global.sec_l = -2;
-global.sec_h = -2;
-global.min_l = -2;
-global.min_h = -2;
 global.lockId = '1';
 global.hour_p = -2;
 global.min_p = -2;
@@ -53,7 +49,6 @@ global.sec_p = -2;
 global.hour_c = -2;
 global.min_c = -2;
 global.sec_c = -2;
-global.detect = false;
 //This is a count-down timer.
 
 class TimerPage extends Component {
@@ -137,7 +132,6 @@ class TimerPage extends Component {
                           this.setState({onLock: 'unk'});
                           let min_g = 0;
                           let sec_g = 0;
-
                           let today_ = new Date();
                           let current = new Date(today_);
                           let time_c = JSON.stringify(current);
@@ -341,11 +335,7 @@ class TimerPage extends Component {
                       NativeModules.LockDetectionModule.getScreenStatus().then((map)=> {
                                 this.setState({onLock:map['flag']}, ()=>{console.log('status: ',this.state.onLock);
                                         detect = this.state.onLock;
-                                        console.log('detect:', detect);
-                                        sec_l = this.state.sec_2;
-                                        sec_h = this.state.sec_1;
-                                        min_l = this.state.min_2;
-                                        min_h = this.state.min_1;
+
                                         if(display == true && on == true && this.state.onLock=='false')
                                         {
                                         this.setState({pause: false});
@@ -365,34 +355,6 @@ class TimerPage extends Component {
                                             console.log('now:', time_p);
                                             console.log('type:', typeof time_p);
                                             console.log('h,m,s:', hour_p, min_p, sec_p);
-
-                                            lockId = BackgroundTimer.setInterval(()=>{
-                                            if(min_h==0 && min_l==0 && sec_h==0 && sec_l==0)
-                                            {
-                                               min_h = 0;
-                                               min_l = 0;
-                                               sec_h = 0;
-                                               sec_l = 0;
-                                               BackgroundTimer.clearInterval(lockId);
-                                            }
-                                            else{
-                                                sec_l = sec_l -1;
-                                                if(sec_l == -1)
-                                                {
-                                                  sec_l = 9;
-                                                  sec_h = sec_h - 1;
-                                                  if(sec_h == -1)
-                                                  {
-                                                    sec_h = 5;
-                                                    min_l = min_l - 1;
-                                                    if(min_l == -1)
-                                                    {
-                                                      min_l = 9;
-                                                      min_h = min_h - 1;
-                                                    }
-                                                  }
-                                                }}
-                                            },1000);
                                         }}
                                 );
                                 }, (code, message)=> {});
@@ -662,21 +624,6 @@ class TimerPage extends Component {
                    );
           }
 
-     updateData()
-     {
-           database()
-              .ref('users/' + this.state.userId)
-              .update({focusBreak: this.state.focusBreaking,})
-              .then(snapshot => {console.log('Data updated');})
-              .catch(error=>{console.log(error)});
-     }
-
-     setData()
-     {
-        var promise = Promise.resolve();
-        promise .then(this.readData()).then(this.updateData());
-     }
-
     render() {
       return (
         <View style = {styles.background}>
@@ -724,27 +671,6 @@ class TimerPage extends Component {
           this.setState({modalVisible : true});
           this.readData();
           this.setState({pause: false});
-          //this.setState({pause:false});
-          //this.props.navigation.navigate('QuitPage',{timeBreak:this.state.min_1*10+this.state.min_2, secBreak_1: this.state.sec_1, secBreak_2: this.state.sec_2, userId: this.state.userId});
-          //console.log(this.state.userId);
-          //database()
-          // .ref('users/' + this.state.userId)
-          // .on('value', snapshot => {
-          //   console.log('User data: ', snapshot.val());
-          //   focusBreaking = snapshot.val().focusBreak;
-          //   console.log('original break：' + focusBreaking.toString());
-          //   focusBreaking = focusBreaking + 1;
-          //   console.log('update:' + focusBreaking.toString());
-          // });
-
-           //console.log('update:' + focusBreaking.toString());
-
-          // database()
-          //    .ref('users/' + this.state.userId)
-          //    .update({focusBreak: focusBreaking,})
-          //    .then(snapshot => {console.log('Data updated');})
-          //    .catch(error=>{console.log(error)});
-
             }}>
           <Text style={{fontFamily: "Roboto", color: 'white', textAlign: 'center', textAlignVertical: 'center', fontSize: 18, top:'15%'}}>{'Leave focus mode'}</Text>
          </TouchableOpacity>
