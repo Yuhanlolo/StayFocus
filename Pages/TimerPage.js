@@ -195,6 +195,18 @@ class TimerPage extends Component {
                           let min_pre = this.state.min_1 * 10 + this.state.min_2;
                           let sec_pre = this.state.sec_1 * 10 + this.state.sec_2;
 
+                          if(min_past * 60 + sec_past >= min_pre * 60 + sec_pre)
+                          {
+                              this.setState({sec_2:0});
+                              this.setState({sec_1:0});
+                              this.setState({min_2:0});
+                              this.setState({min_1:0});
+                              this.interval && clearInterval(this.interval);
+                              this.props.navigation.navigate('SuccessPage', {focusTime: this.state.temp, id: this.state.userId, thisTime: this.state.oneTimeId});
+                          }
+
+                          if(min_past * 60 + sec_past < min_pre * 60 + sec_pre)
+                          {
                           if(sec_pre >= sec_past)
                           {
                             this.setState({sec_2: (sec_pre - sec_past) - 10*Math.floor((sec_pre - sec_past)/10)});
@@ -209,6 +221,7 @@ class TimerPage extends Component {
 
                           this.setState({min_2: (min_pre - min_past) - 10*Math.floor((min_pre - min_past)/10)});
                           this.setState({min_1: Math.floor((min_pre - min_past)/10)});
+                          }
                         }
                         if(this.state.onLock != 'true' && this.state.pause == true && !(this.state.min_1==0 && this.state.min_2==0 && this.state.sec_1==0 && this.state.sec_2==0))
                         {
