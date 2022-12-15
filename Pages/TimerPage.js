@@ -37,7 +37,7 @@ import HomePage from './HomePage';
 import QuitPage from './QuitPage';
 import SuccessPage from './SuccessPage';
 
-global.countDown_1 = 11;
+global.countDown_1 = 15;
 global.outId = '1';
 global.display = false;
 global.back = true;
@@ -49,7 +49,6 @@ global.sec_p = -2;
 global.hour_c = -2;
 global.min_c = -2;
 global.sec_c = -2;
-global.detect = false;
 //This is a count-down timer.
 
 class TimerPage extends Component {
@@ -327,7 +326,21 @@ class TimerPage extends Component {
           if(countDown_1 > 10)
           {
             NativeModules.LockDetectionModule.getScreenStatus().then((map)=> {
-            detect = map['flag'];
+                                            this.setState({onLock:map['flag']}, ()=>{console.log('status: ',this.state.onLock);
+                                                    if(display == true && on == true && this.state.onLock=='true' && countDown_1 == 14)
+                                                    {
+                                                        let today = new Date();
+                                                        let present = new Date(today);
+                                                        let time_p = JSON.stringify(present);
+                                                        hour_p = Number(time_p.substring(12,14)) + 8;
+                                                        min_p = Number(time_p.substring(15,17));
+                                                        sec_p = Number(time_p.substring(18,20));
+                                                        console.log('now:', time_p);
+                                                        console.log('type:', typeof time_p);
+                                                        console.log('h,m,s:', hour_p, min_p, sec_p);
+                                                    }
+                                            }
+                                            );
                                 }, (code, message)=> {});
           }
           if(countDown_1 == 10)
@@ -340,19 +353,6 @@ class TimerPage extends Component {
                                         this.setState({pause: false});
                                         console.log('out of control');
                                         timerId = this.onDisplayNotification();
-                                        }
-
-                                        if(display == true && on == true && this.state.onLock=='true')
-                                        {
-                                            let today = new Date();
-                                            let present = new Date(today);
-                                            let time_p = JSON.stringify(present);
-                                            hour_p = Number(time_p.substring(12,14)) + 8;
-                                            min_p = Number(time_p.substring(15,17));
-                                            sec_p = Number(time_p.substring(18,20));
-                                            console.log('now:', time_p);
-                                            console.log('type:', typeof time_p);
-                                            console.log('h,m,s:', hour_p, min_p, sec_p);
                                         }}
                                 );
                                 }, (code, message)=> {});
@@ -378,7 +378,7 @@ class TimerPage extends Component {
             if(countDown_1 == 0 && this.state.onLock=='false')
             {
               this.props.navigation.navigate('HomePage');
-              countDown_1 = 11;
+              countDown_1 = 15;
               this.timeOutData();
             }
              BackgroundTimer.clearInterval(outId);
