@@ -336,6 +336,7 @@ class HomePage extends Component {
                         //console.log(Number(inputs));
                         this.setState({minSet: Number(inputs)});
                         let timeNum = Number(inputs);
+                        this.setState({input: ''});
                         this.props.navigation.navigate('TimerPage',{timeSet: timeNum, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
                       }
                     }
@@ -344,6 +345,7 @@ class HomePage extends Component {
                     }
                     if(this.state.mode == 'selection')
                     {
+                      this.setState({input: ''});
                       this.props.navigation.navigate('TimerPage',{timeSet: this.state.minSet, second_1: 0, second_2: 0, tag: true, userId: this.state.userId, oneTimeId: this.state.oneTimeId});
                        this.setState({mode: 'none'});
                     }
