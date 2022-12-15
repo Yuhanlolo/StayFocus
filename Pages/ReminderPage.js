@@ -88,7 +88,7 @@ class ReminderPage extends Component {
     }), ()=>{
       console.log(this.state.value);
       this.setState({minSet: this.state.value});
-      this.setState({input: this.state.value.toString()});
+      this.setState({input: this.state.value.toString() + ' mins'});
     });
     this.setState({select: true});
     this.setState({mode: 'selection'});
@@ -230,26 +230,24 @@ class ReminderPage extends Component {
                   style={styles.input}
                   onChangeText={(text) => {
                   errorMessage_reminder = '';
-                  if(this.state.mode != 'selection')
-                  {
                   if(isNaN(Number(text, 10)))
                     {
                       //Alert.alert('Please input Arabic numbers');
-                      if(text.indexOf('mins') == -1)
+                      if(text.indexOf('mins') == -1 && this.state.mode != 'selection')
                       {
                         errorMessage_reminder = 'Please input Arabic numbers.';
                       }
                       if(text.indexOf('mins') != -1)
                       {
                         let str = text.replace(' mins', '');
-                        if(isNaN(Number(str, 10)))
+                        if(isNaN(Number(str, 10)) && this.state.mode != 'selection')
                         {
                           errorMessage_reminder = 'Please input Arabic numbers.';
                         }
                       }
                       text = text.replace(/[^0-9]/g,'');
                     }
-                  if(Number(text) > 125)
+                  if(Number(text) > 125 && this.state.mode != 'selection')
                       {
                         //Alert.alert('Please enter less than 125 minutes');
                         errorMessage_reminder = 'Please enter less than 125 minutes.';
@@ -263,7 +261,7 @@ class ReminderPage extends Component {
                   this.setState({select: true});
                   this.setState({mode: 'enter'});
                   }
-                  }
+
                                         }}
                   onFocus={() => {
                     this.setState({open: false});
@@ -273,12 +271,9 @@ class ReminderPage extends Component {
                   }}
                   clearTextOnFocus={true}
                   onEndEditing={() => {this.setState({isFocus: false});
-                  console.log('num: ', this.state.input);
                   if(Number(this.state.input.replace(' mins', '')) < 25 && this.state.mode != 'selection' && this.state.mode != 'none')
                   {
                     errorMessage_reminder = 'Please enter more than 25 minutes.';
-                    //this.setState({input: '25 mins'});
-                    //this.setState({minTemp: '25'});
                   }
                   else
                   {

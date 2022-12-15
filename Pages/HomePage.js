@@ -236,26 +236,25 @@ class HomePage extends Component {
                   style={styles.input}
                   onChangeText={(text) => {
                   errorMessage = '';
-                  if(this.state.mode != 'selection')
-                  {
+                  console.log('mode:', this.state.mode);
                   if(isNaN(Number(text, 10)))
                     {
                       //Alert.alert('Please input Arabic numbers');
-                      if(text.indexOf('mins') == -1)
+                      if(text.indexOf('mins') == -1 && this.state.mode != 'selection')
                       {
                         errorMessage = 'Please input Arabic numbers.';
                       }
                       if(text.indexOf('mins') != -1)
                       {
                         let str = text.replace(' mins', '');
-                        if(isNaN(Number(str, 10)))
+                        if(isNaN(Number(str, 10)) && this.state.mode != 'selection')
                         {
                           errorMessage = 'Please input Arabic numbers.';
                         }
                       }
                       text = text.replace(/[^0-9]/g,'');
                     }
-                  if(Number(text) > 125)
+                  if(Number(text) > 125 && this.state.mode != 'selection')
                       {
                         //Alert.alert('Please enter less than 125 minutes');
                         errorMessage = 'Please enter less than 125 minutes.';
@@ -268,7 +267,7 @@ class HomePage extends Component {
                   this.setState({input: text.toString() + ' mins'});
                   this.setState({select: true});
                   this.setState({mode: 'enter'});
-                  }}
+                  }
                   }}
                   clearTextOnFocus={true}
                   onFocus={() => {
@@ -278,16 +277,8 @@ class HomePage extends Component {
                     errorMessage = '';
                   }}
                   onEndEditing={() => {this.setState({isFocus: false});
-                  if(Number(this.state.input) < 25 && this.state.mode != 'selection' && this.state.mode != 'none')
-                  {
-                    errorMessage = 'Please enter more than 25 minutes.';
-                    //this.setState({input: '25 mins'});
-                    //this.setState({minTemp: '25'});
-                  }
-                  else
-                  {
+
                     errorMessage = '';
-                  }
                   }}
                   value = {this.state.input}
                   keyboardType="numeric"

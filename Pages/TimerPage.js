@@ -49,6 +49,7 @@ global.sec_p = -2;
 global.hour_c = -2;
 global.min_c = -2;
 global.sec_c = -2;
+global.detect = false;
 //This is a count-down timer.
 
 class TimerPage extends Component {
@@ -326,22 +327,19 @@ class TimerPage extends Component {
           if(countDown_1 > 10)
           {
             NativeModules.LockDetectionModule.getScreenStatus().then((map)=> {
-                                this.setState({onLock:map['flag']}, ()=>{console.log('status: ',this.state.onLock);}
-                                );
+            detect = map['flag'];
                                 }, (code, message)=> {});
           }
           if(countDown_1 == 10)
           {
                       NativeModules.LockDetectionModule.getScreenStatus().then((map)=> {
                                 this.setState({onLock:map['flag']}, ()=>{console.log('status: ',this.state.onLock);
-                                        detect = this.state.onLock;
 
                                         if(display == true && on == true && this.state.onLock=='false')
                                         {
                                         this.setState({pause: false});
                                         console.log('out of control');
                                         timerId = this.onDisplayNotification();
-
                                         }
 
                                         if(display == true && on == true && this.state.onLock=='true')
