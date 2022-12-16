@@ -139,20 +139,20 @@
            return (
                      <View style = {styles.background}>
                       <Text style = {styles.baseText}>{title}</Text>
-                      <View style = {{top:'15%'}}>
+                      <View style = {{top:'13%'}}>
                       <Text style = {styles.comments_1}>{text_1}</Text>
                       <View style = {styles.inputContainer}>
                       <TextInput
-                       style={{height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+                       style={{height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
                        onChangeText={(text) => {
                          setEmail(text);
                        }}
                      />
                       </View>
                       <Text style = {styles.comments_2}>{text_2}</Text>
-                      <View style = {styles.inputContainer}>
+                      <View style = {styles.inputContainer_}>
                       <TextInput
-                       style={{top: '50%',height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
+                       style={{top: '40%',height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Cochin'}}
                        password={true}
                        secureTextEntry={true}
                        onChangeText={(text) => {
@@ -165,8 +165,8 @@
                         <Text style = {styles.helper_} onPress={()=>{navigation.navigate('SignUpPage');}}> {"Sign Up"} </Text>
                       </View>
                       </View>
-                      <View style = {{alignItems: "center", top: '39%'}}>
-                      <Text style={{fontFamily: 'Roboto', fontSize: 12, color: 'red', top: '34%'}}>{errorMessage_login}</Text>
+                      <View style = {{alignItems: "center", top: '35%'}}>
+                      <Text style={{fontFamily: 'Roboto', fontSize: 16, color: 'red',}}>{errorMessage_login}</Text>
                       </View>
                          <TouchableOpacity
                                    style={styles.button}
@@ -189,7 +189,7 @@
     },
 
     baseText: {
-      fontSize: 30,
+      fontSize: 35,
       top: '10%',
       left: "10%",
       fontFamily: "Roboto",
@@ -201,19 +201,21 @@
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
+      fontSize: 19,
     },
 
     comments_2: {
-      top:'30%',
+      top:'36%',
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
+      fontSize: 19,
     },
 
     container: {
       flexDirection: 'row',
-      top: '15%',
-      left: '40%',
+      top: '25%',
+      left: '33%',
     },
 
     inputContainer: {
@@ -221,11 +223,17 @@
       top: '20%',
     },
 
+    inputContainer_: {
+      alignItems: "center",
+      top: '27%',
+    },
+
     helper: {
       fontFamily: "Roboto",
       color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
+      fontSize: 16,
     },
 
     helper_: {
@@ -234,6 +242,7 @@
       textAlign: 'center',
       textAlignVertical: 'center',
       textDecorationLine: 'underline',
+      fontSize: 16,
     },
 
     buttonHelper: {
@@ -243,7 +252,7 @@
     },
 
     button: {
-      top: '40%',
+      top: '35%',
       left:'25%',
       backgroundColor: "#506F4C",
       alignItems: "center",
@@ -251,12 +260,13 @@
       padding: 10,
       width: '50%',
       borderWidth: 7,
-      borderColor: 'black'
+      borderColor: 'black',
+      height: '9%',
     },
 
     buttonText: {
       fontFamily: "Roboto",
-      fontSize: 18,
+      fontSize: 22,
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',

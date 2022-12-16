@@ -180,7 +180,7 @@ function SignUpPage({ navigation })
          <Text style = {styles.comments_1}>{text_1}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          style={{height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           onChangeText={(text) => {
             setEmail(text);
           }}
@@ -189,7 +189,7 @@ function SignUpPage({ navigation })
          <Text style = {styles.comments_2}>{text_2}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{top: '40%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+          style={{top: '40%', height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
           onChangeText={(text) => {
             setUserName(text);
           }}
@@ -199,7 +199,7 @@ function SignUpPage({ navigation })
         <Text style = {styles.comments_3}>{text_3}</Text>
                  <View style = {styles.inputContainer}>
                  <TextInput
-                  style={{top: '80%', height: 40, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
+                  style={{top: '80%', height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto'}}
                   password={true}
                   secureTextEntry={true}
                   onChangeText={(text) => {
@@ -215,7 +215,7 @@ function SignUpPage({ navigation })
          </View>
          </View>
          <View style = {{alignItems: "center", top: '33%'}}>
-           <Text style={{fontFamily: 'Roboto', fontSize: 12, color: 'red', }}>{errorMessage_signup}</Text>
+           <Text style={{fontFamily: 'Roboto', fontSize: 16, color: 'red', }}>{errorMessage_signup}</Text>
          </View>
             <TouchableOpacity
                       style={styles.button}
@@ -240,7 +240,7 @@ function SignUpPage({ navigation })
     },
 
     baseText: {
-      fontSize: 30,
+      fontSize: 35,
       top: '10%',
       left: "10%",
       fontFamily: "Roboto",
@@ -252,43 +252,39 @@ function SignUpPage({ navigation })
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
+      fontSize: 19,
     },
 
     comments_2: {
-      top:'22%',
+      top:'23%',
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
+      fontSize: 19,
     },
 
    comments_3: {
-      top:'28%',
+      top:'30%',
       left:'15%',
       fontFamily: "Roboto",
       color: 'white',
-    },
-
-   comments_4: {
-      top:'34%',
-      left:'15%',
-      fontFamily: "Roboto",
-      color: 'white',
+      fontSize: 19,
     },
 
     container: {
       flexDirection: 'row',
-      top: '28%',
-      left: '25%',
+      top: '31%',
+      left: '21%',
     },
 
     inputContainer: {
       alignItems: "center",
-      top: '16%',
+      top: '18%',
     },
 
     errorMessage: {
       fontSize: 10.5,
-      top: '30%',
+      top: '32%',
       fontFamily: "Roboto",
       color: '#B8C59E',
       textAlign: 'center',
@@ -300,6 +296,7 @@ function SignUpPage({ navigation })
       color: '#B8C59E',
       textAlign: 'center',
       textAlignVertical: 'center',
+      fontSize: 16,
     },
 
     helper_: {
@@ -308,6 +305,7 @@ function SignUpPage({ navigation })
       textAlign: 'center',
       textAlignVertical: 'center',
       textDecorationLine: 'underline',
+      fontSize: 16,
     },
 
     buttonHelper: {
@@ -325,7 +323,8 @@ function SignUpPage({ navigation })
       padding: 10,
       width: '50%',
       borderWidth: 7,
-      borderColor: 'black'
+      borderColor: 'black',
+      height: '9%',
     },
 
     buttonText: {
@@ -333,7 +332,7 @@ function SignUpPage({ navigation })
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
-      fontSize: 18,
+      fontSize: 22,
     }
   });
 
