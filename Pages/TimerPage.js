@@ -325,20 +325,20 @@ class TimerPage extends Component {
           countDown_1 = countDown_1 - 1;
           if(countDown_1 > 10)
           {
+            if(countDown_1 == 14)
+            {
+              let today = new Date();
+              let present = new Date(today);
+              let time_p = JSON.stringify(present);
+              hour_p = Number(time_p.substring(12,14)) + 8;
+              min_p = Number(time_p.substring(15,17));
+              sec_p = Number(time_p.substring(18,20));
+              console.log('now:', time_p);
+              console.log('type:', typeof time_p);
+              console.log('h,m,s:', hour_p, min_p, sec_p);
+            }
             NativeModules.LockDetectionModule.getScreenStatus().then((map)=> {
                                             this.setState({onLock:map['flag']}, ()=>{console.log('status: ',this.state.onLock);
-                                                    if(display == true && on == true && this.state.onLock=='true' && countDown_1 == 14)
-                                                    {
-                                                        let today = new Date();
-                                                        let present = new Date(today);
-                                                        let time_p = JSON.stringify(present);
-                                                        hour_p = Number(time_p.substring(12,14)) + 8;
-                                                        min_p = Number(time_p.substring(15,17));
-                                                        sec_p = Number(time_p.substring(18,20));
-                                                        console.log('now:', time_p);
-                                                        console.log('type:', typeof time_p);
-                                                        console.log('h,m,s:', hour_p, min_p, sec_p);
-                                                    }
                                             }
                                             );
                                 }, (code, message)=> {});
@@ -353,7 +353,8 @@ class TimerPage extends Component {
                                         this.setState({pause: false});
                                         console.log('out of control');
                                         timerId = this.onDisplayNotification();
-                                        }}
+                                        }
+                                        }
                                 );
                                 }, (code, message)=> {});
           }
