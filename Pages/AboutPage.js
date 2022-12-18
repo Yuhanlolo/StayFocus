@@ -85,7 +85,7 @@ class AboutPage extends Component {
     },
 
     baseText_1: {
-      fontSize: 24,
+      fontSize: 26,
       top: '6%',
       fontFamily: "Roboto",
       color: 'white',

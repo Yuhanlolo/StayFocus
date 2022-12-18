@@ -356,7 +356,7 @@ class ReminderPage extends Component {
     },
 
     baseText_1: {
-      fontSize: 24,
+      fontSize: 26,
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
@@ -436,7 +436,7 @@ class ReminderPage extends Component {
       backgroundColor: 'white',
       fontFamily: 'Roboto',
       color: 'black',
-      fontSize: 14,
+      fontSize: 15,
       textAlign: "center",
       padding: 8,
       zIndex: 200,

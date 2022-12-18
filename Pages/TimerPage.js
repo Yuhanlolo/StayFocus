@@ -703,7 +703,7 @@ class TimerPage extends Component {
     },
 
     timeText: {
-      fontSize: 60,
+      fontSize: 65,
     },
 
     container: {
