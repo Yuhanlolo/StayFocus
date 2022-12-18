@@ -404,7 +404,7 @@ class HomePage extends Component {
     height: 50,
     borderRadius: 6,
     backgroundColor: 'white',
-    fontSize: 15,
+    fontSize: 16,
     textAlign: "center",
     color: 'black',
     fontFamily: 'Roboto',

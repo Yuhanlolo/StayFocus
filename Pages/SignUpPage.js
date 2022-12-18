@@ -180,7 +180,7 @@ function SignUpPage({ navigation })
          <Text style = {styles.comments_1}>{text_1}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto',fontSize: 15,}}
+          style={{height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto',fontSize: 16,}}
           onChangeText={(text) => {
             setEmail(text);
           }}
@@ -189,7 +189,7 @@ function SignUpPage({ navigation })
          <Text style = {styles.comments_2}>{text_2}</Text>
          <View style = {styles.inputContainer}>
          <TextInput
-          style={{top: '40%', height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto',fontSize: 15,}}
+          style={{top: '40%', height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto',fontSize: 16,}}
           onChangeText={(text) => {
             setUserName(text);
           }}
@@ -199,7 +199,7 @@ function SignUpPage({ navigation })
         <Text style = {styles.comments_3}>{text_3}</Text>
                  <View style = {styles.inputContainer}>
                  <TextInput
-                  style={{top: '80%', height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto',fontSize: 15,}}
+                  style={{top: '80%', height: 48, borderColor: 'black', backgroundColor:'white', borderWidth: 3, width:'70%', borderRadius: 10, color: 'black', fontFamily: 'Roboto',fontSize: 16,}}
                   password={true}
                   secureTextEntry={true}
                   onChangeText={(text) => {
