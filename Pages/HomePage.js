@@ -351,7 +351,7 @@ class HomePage extends Component {
                     }
                   }
                   }}>
-                  <Text style = {styles.buttonText}>{'Start Focusing'}</Text>
+                  <Text style = {styles.buttonText}>{'Start'}</Text>
         </TouchableOpacity>
         </View>
         </KeyboardAvoidingView>
@@ -374,7 +374,7 @@ class HomePage extends Component {
 
     textStyle: {
      fontFamily: 'Roboto',
-     fontSize: 21,
+     fontSize: 23,
      width: '60%',
      color: 'white',
     },
@@ -390,7 +390,7 @@ class HomePage extends Component {
 
     buttonText: {
      color: 'white',
-     fontSize: 17,
+     fontSize: 22,
      fontFamily: 'Roboto',
      textAlign: 'center',
      textAlignVertical: 'center',
