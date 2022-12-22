@@ -295,7 +295,7 @@ class HomePage extends Component {
                 </Pressable>
               </View>
         <View style = {{top: '82%'}}>
-        <Text style={{fontFamily: 'Roboto', fontSize: 10, color: 'red'}}>{errorMessage}</Text>
+        <Text style={{fontFamily: 'Roboto', fontSize: 13, color: 'red'}}>{errorMessage}</Text>
         </View>
         <View style = {{top: '65%', width: '70%'}}>
         <TouchableOpacity
@@ -404,7 +404,7 @@ class HomePage extends Component {
     height: 50,
     borderRadius: 6,
     backgroundColor: 'white',
-    fontSize: 16,
+    fontSize: 14,
     textAlign: "center",
     color: 'black',
     fontFamily: 'Roboto',

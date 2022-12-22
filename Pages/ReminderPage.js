@@ -323,7 +323,7 @@ class ReminderPage extends Component {
           } textColor = '#ffffff' />
          </View>
          </View>
-         <Text style={{fontFamily: 'Roboto', fontSize: 12, color: 'red', top: '34%'}}>{errorMessage_reminder}</Text>
+         <Text style={{fontFamily: 'Roboto', fontSize: 13, color: 'red', top: '34%'}}>{errorMessage_reminder}</Text>
          <TouchableOpacity
           style={styles.button}
           onPress={() =>{
@@ -436,7 +436,7 @@ class ReminderPage extends Component {
       backgroundColor: 'white',
       fontFamily: 'Roboto',
       color: 'black',
-      fontSize: 16,
+      fontSize: 14,
       textAlign: "center",
       padding: 8,
       zIndex: 200,

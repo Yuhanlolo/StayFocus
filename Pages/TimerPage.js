@@ -41,6 +41,7 @@ global.countDown_1 = 15;
 global.outId = '1';
 global.display = false;
 global.back = true;
+global.permit = false;
 global.timerId = '1';
 global.lockId = '1';
 global.hour_p = -2;
@@ -244,6 +245,8 @@ class TimerPage extends Component {
       }
 
       async onDisplayNotification() {
+        console.log('just a test');
+        permit = true;
         let countDown_2 = 10;
         // Request permissions (required for iOS)
         await notifee.requestPermission();
@@ -263,7 +266,7 @@ class TimerPage extends Component {
           countDown_2 = 0;
           BackgroundTimer.clearInterval(intervalId);
           this.setState({outTime: true});
-          if(display == true && on == true)
+          if(display == true && on == true && permit == true)
           {
           notifee.displayNotification({
           id: 'stone_fox',
@@ -284,7 +287,7 @@ class TimerPage extends Component {
         else
         {
           countDown_2 = countDown_2 - 1;
-          if(back == false && on == true){
+          if(back == false && on == true && permit == true){
           notifee.displayNotification({
           id: 'stone_fox',
           title: '<b>Stay Focused</b>',
@@ -374,6 +377,7 @@ class TimerPage extends Component {
             this.setState({pause: true});
             BackgroundTimer.clearInterval(lockId);
             display = false;
+            permit = false;
             back = true;
             console.log(countDown_1);
             if(countDown_1 == 0 && this.state.onLock=='false')
