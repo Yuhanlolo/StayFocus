@@ -118,9 +118,9 @@ class HomePage extends Component {
     userSetter()
     {
          let id = this.props.route.params.userId;
-         this.setState({userId: id},()=>{console.log(this.state.userId)});
+         this.setState({userId: id});
          let item = this.props.route.params.oneTimeId;
-         this.setState({oneTimeId: item},()=>{console.log(this.state.oneTimeId)});
+         this.setState({oneTimeId: item});
          countDown_1 = 10;
          display = false;
          this.setState({errorMessage: ''});
@@ -130,14 +130,12 @@ class HomePage extends Component {
     _handleAppStateChange = (nextAppState) => {
          if (nextAppState === 'background') {
            	display = false;
-           	console.log('homeDisplay:', display);
          }
     }
 
     componentDidMount()
     {
         this.userSetter();
-        console.log('display:', display);
         AppState.addEventListener('change', this._handleAppStateChange);
         this.backHandler = BackHandler.addEventListener(
           "hardwareBackPress",
