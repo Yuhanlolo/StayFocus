@@ -66,9 +66,9 @@ logoff ()
 render(){
    return (
         <View style = {styles.background}>
-         <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('ReminderPage')}}>{"My Plan"}</Text>
-         <Text style = {styles.baseText_2} onPress = {()=>{this.props.navigate('AboutPage')}}>{"About"}{'\n'}{"StayFocused"}</Text>
-         <Text style = {styles.baseText_3} onPress = {()=>{auth().signOut().then(() => { console.log('User signed out!');this.props.navigate('LoginPage');});}}>{"Log Out"}</Text>
+         <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('ReminderPage')}}>{"      My Plan      "}</Text>
+         <Text style = {styles.baseText_2} onPress = {()=>{this.props.navigate('AboutPage')}}>{"        About        "}</Text>
+         <Text style = {styles.baseText_3} onPress = {()=>{auth().signOut().then(() => { console.log('User signed out!');this.props.navigate('LoginPage');});}}>{"      Log Out      "}</Text>
         </View>
       );
    }
@@ -85,33 +85,36 @@ render(){
     },
 
     baseText_1: {
-      fontSize: 18,
-      top: '21%',
+      fontSize: 22,
+      top: '5%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
-      textDecorationLine: 'underline',
+      borderBottomColor: '#B8C59E',
+      borderBottomWidth: 2,
     },
 
     baseText_2: {
-      fontSize: 18,
-      top: '30%',
+      fontSize: 22,
+      top: '12%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
-      textDecorationLine: 'underline',
+      borderBottomColor: '#B8C59E',
+      borderBottomWidth: 2,
     },
 
     baseText_3: {
-      fontSize: 18,
-      top: '70%',
+      fontSize: 22,
+      top: '80%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
-      textDecorationLine: 'underline',
+      borderBottomColor: '#B8C59E',
+      borderBottomWidth: 2,
     },
 
   });
