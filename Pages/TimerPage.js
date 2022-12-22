@@ -110,7 +110,6 @@ class TimerPage extends Component {
                           this.setState({min_2:0});
                           this.setState({min_1:0});
                           this.interval && clearInterval(this.interval);
-                          //this.interval && clearInterval(this.interval);
                           if(this.state.set == true)
                           {
                             this.setState({sec_2:0});
@@ -282,7 +281,6 @@ class TimerPage extends Component {
             },
           },
         });}
-          //read data
         }
         else
         {
@@ -371,7 +369,6 @@ class TimerPage extends Component {
         },
         1100);
         console.log('**********running background**********');}
-        //console.log('ifOnPage:', this.state.onPage);
         if (nextAppState === 'active')
           {
             this.setState({pause: true});
@@ -458,11 +455,11 @@ class TimerPage extends Component {
            .then(
              snapshot => {
              console.log('User data: ', snapshot.val());
-             //this.setState({focusBreaking: snapshot.val().focusBreak + 1});
+
              focusBreaking = snapshot.val().focusBreak;
-             //console.log('original break：' + focusBreaking.toString());
+
              focusBreaking = focusBreaking + 1;
-             //console.log('update:' + focusBreaking.toString());
+
              database()
               .ref('users/' + this.state.userId)
               .update({focusBreak: focusBreaking,})
@@ -486,8 +483,7 @@ class TimerPage extends Component {
                }
                let record = {timestamp: timestamp, quit: 'no'};
                meta.push(record);
-               //oneTimeBreaking = snapshot.val().oneQuitTry;
-               //oneTimeBreaking = oneTimeBreaking + 1;
+
 
 
                database()
@@ -536,11 +532,11 @@ class TimerPage extends Component {
            .then(
              snapshot => {
              console.log('User data: ', snapshot.val());
-             //this.setState({focusBreaking: snapshot.val().focusBreak + 1});
+
              focusQuiting = snapshot.val().focusQuit;
-             //console.log('original break：' + focusBreaking.toString());
+
              focusQuiting = focusQuiting + 1;
-             //console.log('update:' + focusBreaking.toString());
+
              database()
               .ref('users/' + this.state.userId)
               .update({focusQuit: focusQuiting,})
@@ -564,8 +560,7 @@ class TimerPage extends Component {
                }
                let record = {timestamp: timestamp, quit: 'yes'};
                meta.push(record);
-               //oneTimeBreaking = snapshot.val().oneQuitTry;
-               //oneTimeBreaking = oneTimeBreaking + 1;
+
 
 
                database()

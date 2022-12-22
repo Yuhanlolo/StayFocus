@@ -90,7 +90,6 @@ class HomePage extends Component {
     this.setState(state => ({
       value: callback(state.value)
     }), ()=>{
-      console.log(this.state.value);
       this.setState({minSet: this.state.value});
       this.setState({input: this.state.value.toString() + ' mins'});
     });
