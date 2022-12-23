@@ -205,14 +205,10 @@ class HomePage extends Component {
         <Pressable onPress={()=>{this.openDrawer()}} style = {{top: '4%', right: '67%'}}>
           <Gear size={32} color={styles.icon.color} />
         </Pressable>
-        <KeyboardAvoidingView ref={'KeyboardAvoidingView'}
-                                                                    behavior={'position'}
-                                                                    keyboardVerticalOffset={10}
-                                                                    contentContainerStyle = {{flexDirection: 'column',  alignItems: "center",}}>
-        <View style = {{top: '35%', alignItems: "center",}}>
+        <View style = {{top: '13%', alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         </View>
-              <View style = {{top: '30%'}}>
+              <View style = {{top: '9%'}}>
                 <DropDownPicker
                 open={this.state.open}
                 value={this.state.value}
@@ -291,10 +287,10 @@ class HomePage extends Component {
                   )}
                 </Pressable>
               </View>
-        <View style = {{top: '82%'}}>
-        <Text style={{fontFamily: 'Roboto', fontSize: 13, color: 'red'}}>{errorMessage}</Text>
+        <View style = {{top: '36.5%'}}>
+        <Text style={{fontFamily: 'Roboto', fontSize: 14, color: 'red', width: '100%'}}>{errorMessage}</Text>
         </View>
-        <View style = {{top: '65%', width: '70%'}}>
+        <View style = {{top: '18%', width: '70%'}}>
         <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
@@ -351,7 +347,6 @@ class HomePage extends Component {
                   <Text style = {styles.buttonText}>{'Start'}</Text>
         </TouchableOpacity>
         </View>
-        </KeyboardAvoidingView>
         </ScrollView>
       </Drawer>
       );
@@ -377,11 +372,11 @@ class HomePage extends Component {
     },
 
     button: {
-     top: '50%',
+     top: '70%',
      backgroundColor: "#506F4C",
      borderRadius: 15,
      width: '100%',
-     height: '40%',
+     height: '27%',
      padding: 10
     },
 
