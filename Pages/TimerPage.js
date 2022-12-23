@@ -139,7 +139,6 @@ class TimerPage extends Component {
                           min_c = Number(time_c.substring(15,17));
                           sec_c = Number(time_c.substring(18,20));
                           console.log('now:', time_c);
-                          console.log('type:', typeof time_c);
                           console.log('h,m,s:', hour_c, min_c, sec_c);
                           if(sec_c >= sec_p)
                           {
@@ -244,7 +243,6 @@ class TimerPage extends Component {
       }
 
       async onDisplayNotification() {
-        console.log('just a test');
         permit = true;
         let countDown_2 = 10;
         // Request permissions (required for iOS)
@@ -335,7 +333,6 @@ class TimerPage extends Component {
               min_p = Number(time_p.substring(15,17));
               sec_p = Number(time_p.substring(18,20));
               console.log('now:', time_p);
-              console.log('type:', typeof time_p);
               console.log('h,m,s:', hour_p, min_p, sec_p);
             }
             NativeModules.LockDetectionModule.getScreenStatus().then((map)=> {
@@ -379,7 +376,7 @@ class TimerPage extends Component {
             console.log(countDown_1);
             if(countDown_1 == 0 && this.state.onLock=='false')
             {
-              this.props.navigation.navigate('HomePage');
+              this.props.navigation.navigate('HomePage',{userId: this.state.userId});
               countDown_1 = 15;
               this.timeOutData();
             }
@@ -454,7 +451,6 @@ class TimerPage extends Component {
            .once('value')
            .then(
              snapshot => {
-             console.log('User data: ', snapshot.val());
 
              focusBreaking = snapshot.val().focusBreak;
 
@@ -473,10 +469,7 @@ class TimerPage extends Component {
            .then(
              snapshot=>
              {
-               console.log('passing data: ', this.state.oneTimeId);
-               console.log('User oneTime data: ', snapshot.val());
                let meta = snapshot.val().metadata;
-               console.log('User meta: ', meta);
                if(meta[0].timestamp == '0')
                {
                  meta.pop();
@@ -531,7 +524,6 @@ class TimerPage extends Component {
            .once('value')
            .then(
              snapshot => {
-             console.log('User data: ', snapshot.val());
 
              focusQuiting = snapshot.val().focusQuit;
 
@@ -550,10 +542,7 @@ class TimerPage extends Component {
            .then(
              snapshot=>
              {
-               console.log('passing data: ', this.state.oneTimeId);
-               console.log('User oneTime data: ', snapshot.val());
                let meta = snapshot.val().metadata;
-               console.log('User meta: ', meta);
                if(meta[0].timestamp == '0')
                {
                  meta.pop();
@@ -586,7 +575,6 @@ class TimerPage extends Component {
                 .once('value')
                 .then(
                   snapshot => {
-                  console.log('User data: ', snapshot.val());
                   //this.setState({focusBreaking: snapshot.val().focusBreak + 1});
                   focusQuiting = snapshot.val().focusQuit;
                   //console.log('original break：' + focusBreaking.toString());
@@ -605,7 +593,6 @@ class TimerPage extends Component {
                    .then(
                      snapshot=>
                      {
-                       console.log('User oneTime data: ', snapshot.val());
                        let meta = snapshot.val().metadata;
                        let temp = meta.pop();
                        temp.quit = 'yes';

@@ -33,9 +33,6 @@ global.on = false;
       onStateChange={() => {
         const previousRouteName = routeNameRef.current;
         const currentRouteName = navigationRef.current.getCurrentRoute().name;
-        console.log('previousRouteName',previousRouteName);
-        console.log('currentRouteName',currentRouteName);
-        console.log('NameType:',typeof currentRouteName);
         if(currentRouteName == 'TimerPage')
         {
           on = true;

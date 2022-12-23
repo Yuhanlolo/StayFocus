@@ -75,9 +75,7 @@ class SuccessPage extends Component {
              snapshot=>
              {
                //console.log('passing data: ', this.state.oneTimeId);
-               console.log('User oneTime data: ', snapshot.val());
                let meta = snapshot.val().metadata;
-               console.log('User meta: ', meta);
                if(meta[0].timestamp == '0')
                {
                  meta.pop();
