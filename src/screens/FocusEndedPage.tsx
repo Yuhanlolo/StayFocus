@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Text } from "react-native";
 
 import { CustomButton, ReflectionModal, Screen } from "../components";
 import { createStyles, useStrings } from "../helpers";
 import { useSessionStore, saveSession } from "../api";
-import React from "react";
 
 function FocusEndedPage({ route, navigation }) {
   const [modal, setModal] = useState(false);
+  const completed = useRef(false);
 
   const saveLastGiveUpAttempt = useSessionStore(
     (state) => state.saveLastGiveUpAttempt
@@ -27,17 +27,15 @@ function FocusEndedPage({ route, navigation }) {
 
   const styles = useStyles();
 
-  /*
   // Prevent going back to timer screen
   // Taken from https://reactnavigation.org/docs/preventing-going-back
-  React.useEffect(
+  useEffect(
     () =>
-      navigation.addListener('beforeRemove', (e) => {
-        if (!modal) e.preventDefault();
+      navigation.addListener("beforeRemove", (e) => {
+        if (!completed.current) e.preventDefault();
       }),
-    [navigation]
+    [navigation, completed]
   );
-  */
 
   return (
     <Screen>
@@ -57,6 +55,7 @@ function FocusEndedPage({ route, navigation }) {
           onComplete={(answers) => {
             saveLastGiveUpAttempt(answers);
             saveSession();
+            completed.current = true;
             navigation.navigate("HomePage");
           }}
           styles={styles.modal}
