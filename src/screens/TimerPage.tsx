@@ -104,7 +104,6 @@ function TimerPage({ navigation }) {
           if (pending.includes(notificationId)) {
             notifee.cancelNotification(notificationId);
           } else {
-            setPaused(true);
             navigation.navigate("FocusEndedPage", {
               elapsedMinutes: elapsedMinutes(),
             });

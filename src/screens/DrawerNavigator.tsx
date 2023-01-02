@@ -33,7 +33,11 @@ export default function DrawerNavigator() {
         component={HomePage}
         options={{ drawerItemStyle: { display: "none" } }}
       />
-      <Drawer.Screen name="Settings" component={SettingsPage} />
+      <Drawer.Screen
+        name="Settings"
+        component={SettingsPage}
+        options={{ drawerLabel: "My plan" }}
+      />
       <Drawer.Screen name="Log" component={LogPage} />
       <Drawer.Screen name="About" component={AboutPage} />
     </Drawer.Navigator>

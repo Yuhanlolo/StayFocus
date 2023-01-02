@@ -4,6 +4,7 @@ import { Text } from "react-native";
 import { CustomButton, ReflectionModal, Screen } from "../components";
 import { createStyles, useStrings } from "../helpers";
 import { useSessionStore, saveSession } from "../api";
+import React from "react";
 
 function FocusEndedPage({ route, navigation }) {
   const [modal, setModal] = useState(false);
@@ -25,6 +26,18 @@ function FocusEndedPage({ route, navigation }) {
   });
 
   const styles = useStyles();
+
+  /*
+  // Prevent going back to timer screen
+  // Taken from https://reactnavigation.org/docs/preventing-going-back
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        if (!modal) e.preventDefault();
+      }),
+    [navigation]
+  );
+  */
 
   return (
     <Screen>

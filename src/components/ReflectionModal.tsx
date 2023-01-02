@@ -30,8 +30,11 @@ export function ReflectionModal({
 
   const addAnswer = (ans: string) => setAnswers([...answers, ans]);
 
+  const emptyFirstAnswer = () => promptIndex === 0 && input === "";
+
   const next = () => {
     if (promptIndex < prompts.length - 1) {
+      if (emptyFirstAnswer()) return;
       addAnswer(input);
       setInput("");
       setPromptIndex(promptIndex + 1);
@@ -50,7 +53,7 @@ export function ReflectionModal({
     }
   };
 
-  const defaultStyles = useModalStyles();
+  const defaultStyles = useModalStyles(emptyFirstAnswer());
 
   return (
     <CustomModal
@@ -79,7 +82,15 @@ export function ReflectionModal({
             Back to focus
           </CustomButton>
         )}
-        <CustomButton onPress={next} styles={{ button: defaultStyles.button }}>
+        <CustomButton
+          onPress={next}
+          styles={{
+            button: {
+              ...defaultStyles.button,
+              ...defaultStyles.nextButton,
+            },
+          }}
+        >
           {buttonText()}
         </CustomButton>
       </View>
@@ -87,7 +98,7 @@ export function ReflectionModal({
   );
 }
 
-const useModalStyles = createStyles((theme) => ({
+const useModalStyles = createStyles((theme, disabledButton: boolean) => ({
   text: {
     marginBottom: 16,
     color: theme.muteColor,
@@ -107,7 +118,7 @@ const useModalStyles = createStyles((theme) => ({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
   },
   button: {
@@ -115,5 +126,8 @@ const useModalStyles = createStyles((theme) => ({
   },
   buttonText: {
     fontSize: theme.fontSizes.sm,
+  },
+  nextButton: {
+    backgroundColor: disabledButton ? theme.muteColor : theme.secondaryColor,
   },
 }));
