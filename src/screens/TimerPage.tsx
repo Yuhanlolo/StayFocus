@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { AppState, Text, View } from "react-native";
 import notifee from "@notifee/react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { createStyles, secondsToHHMMSS, useStrings } from "../helpers";
 import { CustomButton, Screen, ReflectionModal } from "../components";
@@ -23,6 +24,7 @@ const timeString = (secs: number) => {
 function TimerPage({ navigation }) {
   const [paused, setPaused] = useState(false);
   const [modal, setModal] = useState(false);
+  const enableNotification = useRef(true);
 
   const minutes = useSessionStore((state) => state.focusDurationMinutes);
   const plan = useSessionStore((state) => state.plan);
@@ -79,43 +81,46 @@ function TimerPage({ navigation }) {
     }
   }, [paused]);
 
-  useEffect(() => {
-    const subscription = AppState.addEventListener(
-      "change",
-      async (nextAppState) => {
-        // TODO: if the user locks the screen, then the notification is
-        // also created. This might be impossible to fix, even with
-        // custom native code.
-        if (nextAppState.match(/inactive|background/)) {
-          saveGiveUpAttempt([], false);
-          onLeaveFocusNotification();
-        }
-        /*
-        If app is opened, check if the end-of-session trigger notification 
-        is still pending. If yes, then the session continues; if no, then 
-        the session has ended.
-
-        The correct way seems to be using notifee.onBackgroundEvent() event 
-        listener, but that method is super unreliable for some reasons. See 
-        https://github.com/invertase/notifee/issues/404 for more details.
-      */
-        if (nextAppState.match(/active/)) {
-          const pending = await notifee.getTriggerNotificationIds();
-          if (pending.includes(notificationId)) {
-            notifee.cancelNotification(notificationId);
-          } else {
-            navigation.navigate("FocusEndedPage", {
-              elapsedMinutes: elapsedMinutes(),
-            });
+  useFocusEffect(
+    React.useCallback(() => {
+      const subscription = AppState.addEventListener(
+        "change",
+        async (nextAppState) => {
+          // TODO: if the user locks the screen, then the notification is
+          // also created. This might be impossible to fix, even with
+          // custom native code.
+          if (nextAppState.match(/inactive|background/)) {
+            enableNotification.current = true;
+            saveGiveUpAttempt([], false);
+            onLeaveFocusNotification(enableNotification);
+          } else if (nextAppState === "active") {
+          /*
+          If app is opened, check if the end-of-session trigger notification 
+          is still pending. If yes, then the session continues; if no, then 
+          the session has ended.
+  
+          The correct way seems to be using notifee.onBackgroundEvent() event 
+          listener, but that method is super unreliable for some reasons. See 
+          https://github.com/invertase/notifee/issues/404 for more details.
+        */
+            const pending = await notifee.getTriggerNotificationIds();
+            if (pending.includes(notificationId)) {
+              enableNotification.current = false;
+              notifee.cancelNotification(notificationId);
+            } else {
+              navigation.navigate("FocusEndedPage", {
+                elapsedMinutes: elapsedMinutes(),
+              });
+            }
           }
         }
-      }
-    );
+      );
 
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+      return () => {
+        subscription.remove();
+      };
+    }, [])
+  );
 
   const styles = useStyles();
 

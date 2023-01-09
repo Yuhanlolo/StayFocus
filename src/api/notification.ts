@@ -3,6 +3,7 @@ import notifee, {
   TimestampTrigger,
   TriggerType,
 } from "@notifee/react-native";
+import BackgroundTimer from "react-native-background-timer";
 
 // Request permissions (required for iOS)
 notifee.requestPermission();
@@ -53,7 +54,9 @@ async function onReminderNotification(date: Date) {
 
 export const notificationId = "184594917";
 
-export async function onLeaveFocusNotification() {
+export async function onLeaveFocusNotification(
+  enable: React.MutableRefObject<boolean>
+) {
   // Create a channel (required for Android)
   const channelId = await notifee.createChannel({
     id: "default",
@@ -64,23 +67,33 @@ export async function onLeaveFocusNotification() {
 
   // Display a notification immediately and create a trigger
   // notification, set to be displayed 10 seconds from this moment.
-  notifee.displayNotification({
-    id: notificationId,
-    title: "StayFocused",
-    body: `Focus mode will end in ${timeoutSecond} seconds. Tap here to go back to StayFocus`,
-    data: {
-      focusStatus: "ongoing",
-    },
-    android: {
-      channelId,
-      pressAction: {
-        id: "default",
-      },
-      showChronometer: true,
-      chronometerDirection: "down",
-      timestamp: Date.now() + timeoutMillisecond,
-    },
-  });
+  // BackgroundTimer.start();
+  let t = timeoutSecond;
+  BackgroundTimer.start();
+  const intervalId: string = BackgroundTimer.setInterval(() => {
+    console.log(`timeout ${t}`);
+    if (t > 0) {
+      if (enable.current) {
+        notifee.displayNotification({
+          id: notificationId,
+          title: "StayFocused",
+          body: `Focus mode will end in ${t} seconds. Tap here to go back to StayFocus`,
+          data: {
+            focusStatus: "ongoing",
+          },
+          android: {
+            channelId,
+            pressAction: {
+              id: "default",
+            },
+          },
+        });
+      }
+      t = t - 1;
+    } else {
+      BackgroundTimer.clearInterval(intervalId);
+    }
+  }, 1000);
 
   const trigger: TimestampTrigger = {
     type: TriggerType.TIMESTAMP,
