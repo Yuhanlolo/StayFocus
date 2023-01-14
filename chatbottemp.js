@@ -7,8 +7,8 @@ import TimerPage from './ChatPages/ChatTimer';
 import SuccessPage from './ChatPages/ChatCongrats';
 import LoginPage from './ChatPages/ChatLogin';
 import SignUpPage from './ChatPages/ChatSignup';
-import AboutPage from './ChatPages/ChatAbout';
-import ChatReminder from './ChatPages/ChatReminder';
+import AboutPage from './Pages/AboutPage';
+import ReminderPage from './Pages/ReminderPage';
 import ControlPanel from './ChatPages/ChatPanel';
 import QuitPage from './ChatPages/ChatQuit_new';
 import SetTimePage from './ChatPages/SetTimePage';
@@ -56,7 +56,7 @@ global.on = false;
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="TimerPage" component={TimerPage} />
         <Stack.Screen name="SuccessPage" component={SuccessPage} />
-        <Stack.Screen name="ChatReminder" component={ChatReminder} />
+        <Stack.Screen name="ReminderPage" component={ReminderPage} />
         <Stack.Screen name="AboutPage" component={AboutPage} />
         <Stack.Screen name="ControlPanel" component={ControlPanel} />
         <Stack.Screen name="QuitPage" component={QuitPage} />

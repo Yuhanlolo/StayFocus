@@ -1,26 +1,11 @@
-import React, { Component, useState, useEffect} from 'react';
-import type {Node} from 'react';
+import React, { useState, useEffect} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Button,
   TextInput,
   TouchableOpacity,
-  Alert
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,12 +13,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
-import HomePage from './HomePage';
-import LoginPage from './LoginPage';
+import HomePage from './ChatHome';
+import LoginPage from './ChatLogin';
 
 function SignUpPage({ navigation })
   {
-    // Set an initializing state whilst Firebase connects
      const [initializing, setInitializing] = useState(true);
      const [user, setUser] = useState();
      const [title, setTitle] = useState('Sign up');
@@ -52,7 +36,6 @@ function SignUpPage({ navigation })
      const [confirmPassword, setConfirmPassword] = useState('');
      const [errorMessage_signup, setErrorMessage_signup] = useState('');
 
-    // Handle user state changes
      function onAuthStateChanged(user) {
         setUser(user);
         if (initializing) setInitializing(false);
@@ -60,27 +43,8 @@ function SignUpPage({ navigation })
 
      useEffect(() => {
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber; // unsubscribe on unmount
+        return subscriber; 
           }, []);
-
-     function storeInfo ()
-     {
-       return new Promise(function(resolve,reject)
-       {
-          let dataToSave = {
-          id: user.uid,
-          email: user.email,
-          password: password,
-          focusBreak: 0,
-          focusQuit: 0,
-          };
-       database()
-          .ref('users/' + user.uid)
-          .update(dataToSave)
-          .then(snapshot => {console.log('Data updated');})
-          .catch(error=>{reject(error);});
-       })
-     }
 
      createUser = () =>
      {
@@ -107,20 +71,17 @@ function SignUpPage({ navigation })
          let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
          if(password.length < 6)
          {
-           //Alert.alert('The password must contain more than 6 characters');
            setErrorMessage_signup('The password must contain more than 6 characters!');
          }
           auth()
          .createUserWithEmailAndPassword(email, password)
          .then((data) => {
-           //setId(data.user.uid);
            setErrorMessage_signup('');
            const uid = data.user.uid;
 
            let dataToSave = {
                id: uid,
                email: email,
-               //password: password,
                oneTimeBehavior: 'oneTimeBehavior',
                focusBreak: 0,
                focusQuit: 0,
@@ -134,38 +95,23 @@ function SignUpPage({ navigation })
                  item = database()
                    .ref('users/' + uid + '/oneTimeBehavior')
                    .push();
-                 itemId = item.key;
+                 let itemId = item.key;
                  let meta = [{timestamp: '0', quit: 'no'}];
                  console.log(itemId);
                   item
                    .set({timestamp: timestamp, focusDuration: '0', metadata: meta, complete: ''})
                    .then(()=>{console.log('Data updated twice');});
                    navigation.navigate('HomePage', {userId: uid, oneTimeId: itemId});
-                   //
-                 //  .update({time: timeSet})
-                 //  .then(snapshot =>
-                 //  {
-                 //    database()
-                 //    .ref('users/' +uid + '/oneTimeBehavior/' + timeSet)
-                 //    .update({oneFocusTime: 0, oneQuitTry: 0, oneQuit: 0,})
-                 //    .then(snapshot => {console.log('Data updated twice');});
-                 //  }
-                 //  );
-                 //  .update({oneFocusTime: 0, oneQuitTry: 0, oneQuit: 0,})
-                 //  .then(snapshot => {console.log('Data updated twice');})
                })
                .catch(error=>{reject(error);});
-           //console.log(uid);
            resolve('User account created & signed in!');
          })
          .catch(error => {
            if (error.code === 'auth/email-already-in-use') {
-             //Alert.alert('That email address is already in use!');
              setErrorMessage_signup('That email address is already in use!');
            }
 
            if (error.code === 'auth/invalid-email') {
-             //Alert.alert('That email address is invalid!');
              setErrorMessage_signup('That email address is invalid!');
            }
            reject(error);
@@ -221,7 +167,6 @@ function SignUpPage({ navigation })
                       style={styles.button}
                       onPress={
                         createUser
-                        //()=>{navigation.navigate('HomePage',{userId: 'a'});}
                        }>
                       <Text style = {styles.buttonText}>{text_7}</Text>
             </TouchableOpacity>

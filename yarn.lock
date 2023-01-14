@@ -1367,6 +1367,11 @@
   resolved "https://registry.npmmirror.com/@react-native-firebase/database/-/database-15.7.0.tgz#f4af53eab4a119a64bc3103190b4b9f34793ebe7"
   integrity sha512-eOdJ+J/9MuJBqanzzsrqJzspM9jto4Zu/UrWu2/qatey6FXRfeQIn9nJr2TbaiP0M5qVEISmA9suIFyfY7bCDw==
 
+"@react-native-firebase/firestore@15.7.0":
+  version "15.7.0"
+  resolved "https://registry.npmmirror.com/@react-native-firebase/firestore/-/firestore-15.7.0.tgz#9396d3cfcdf54aec3c10bb5c45d08d292a990abb"
+  integrity sha512-lcMApKFIo4k9GqOUuK03WBDs3JP0pa94jTmy+hZQLAqyeA78GYC57CzGGKCkR0qtwCzMtE8HXqICY9FKv4rxpg==
+
 "@react-native-firebase/messaging@^15.7.0":
   version "15.7.0"
   resolved "https://registry.npmmirror.com/@react-native-firebase/messaging/-/messaging-15.7.0.tgz#fa81872ceb202125652678ebf310ae5e22107d2a"
