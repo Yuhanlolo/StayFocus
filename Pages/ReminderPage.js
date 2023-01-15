@@ -1,38 +1,22 @@
 import React, { Component } from 'react';
-import type {Node} from 'react';
 import DatePicker from 'react-native-date-picker';
 import DropDownPicker from "react-native-dropdown-picker";
 import notifee, { AndroidImportance, TimestampTrigger, TriggerType } from '@notifee/react-native';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Button,
-  Picker,
   TextInput,
   TouchableOpacity,
   BackHandler,
-  Alert,
   Pressable,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { CaretDown, CaretUp, Gear } from '../Icons/icons';
+import { CaretDown, CaretUp } from '../Icons/icons';
 
 global.errorMessage_reminder = '';
 
@@ -61,12 +45,14 @@ class ReminderPage extends Component {
                  { label: "100 mins", value: 100 },
                ],
         isFocus: false,
-        txt: '',
         minTemp: '',
         select: false,
         mode: 'none',
         input: '',
-
+        userId: '',
+        oneTimeId: '',
+        focusNum: '',
+        planNum: '',
       };
       this.setValue = this.setValue.bind(this);
       this.handleInput = this.handleInput.bind(this);
@@ -89,6 +75,7 @@ class ReminderPage extends Component {
       console.log(this.state.value);
       this.setState({minSet: this.state.value});
       this.setState({input: this.state.value.toString() + ' mins'});
+      this.setState({focusNum: this.state.value.toString() + ' mins'});
     });
     this.setState({select: true});
     this.setState({mode: 'selection'});
@@ -114,10 +101,14 @@ class ReminderPage extends Component {
           "hardwareBackPress",
           this.backAction
         );
+
+        let id = this.props.route.params.userId;
+        this.setState({userId: id});
+        let item = this.props.route.params.oneTimeId;
+        this.setState({oneTimeId: item});
      }
 
     async onCreateTriggerNotification(date, hour, min) {
-    //const date = new Date(Date.now());
     date.setHours(hour);
     date.setMinutes(min);
 
@@ -127,13 +118,11 @@ class ReminderPage extends Component {
       importance: AndroidImportance.HIGH,
     });
 
-    // Create a time-based trigger
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
-      timestamp: date.getTime(), // fire at 11:10am (10 minutes before meeting)
+      timestamp: date.getTime(), 
     };
 
-    // Create a trigger notification
     await notifee.createTriggerNotification(
       {
         title: '<b>Stay Focused</b>',
@@ -200,7 +189,7 @@ class ReminderPage extends Component {
             name="arrow-left"
             backgroundColor="#506F4C"
             color= "#B8C59E"
-            onPress={()=>{this.props.navigation.navigate('HomePage');
+            onPress={()=>{this.props.navigation.navigate('HomePage', {userId: this.state.userId, oneTimeId: this.state.oneTimeId});
             this.setState({input:''});}}
            />
         </View>
@@ -208,6 +197,7 @@ class ReminderPage extends Component {
          <View style = {{top: '5%'}}>
          <Text style = {styles.baseText_1}>{this.state.text_1}</Text>
          <Text style = {styles.baseText_2}>{this.state.text_2}</Text>
+         <Text style = {styles.baseText_2_bold}>{this.state.focusNum}</Text>
          </View>
          <View style = {{top: '20%', width: '50%', alignItems: "center", }}>
                 <DropDownPicker
@@ -232,7 +222,6 @@ class ReminderPage extends Component {
                   errorMessage_reminder = '';
                   if(isNaN(Number(text, 10)))
                     {
-                      //Alert.alert('Please input Arabic numbers');
                       if(text.indexOf('mins') == -1 && this.state.mode != 'selection')
                       {
                         errorMessage_reminder = 'Please input Arabic numbers.';
@@ -249,7 +238,6 @@ class ReminderPage extends Component {
                     }
                   if(Number(text) > 125 && this.state.mode != 'selection')
                       {
-                        //Alert.alert('Please enter less than 125 minutes');
                         errorMessage_reminder = 'Please enter less than 125 minutes.';
                         this.setState({input: '125 mins'});
                         this.setState({minTemp: '125'});
@@ -297,7 +285,7 @@ class ReminderPage extends Component {
 
         </View>
         <View style = {{top:'75%'}}>
-         <Text style = {styles.baseText_3}>{this.state.text_3}</Text>
+         <Text style = {styles.baseText_3}>{this.state.text_3}<Text style = {styles.baseText_3_bold}>{' ' + this.state.planNum}</Text></Text>
         </View>
          <View style = {styles.dateContainer}>
           <DatePicker date={this.state.date} mode = 'time' androidVariant = 'nativeAndroid' onDateChange={(text)=>
@@ -315,6 +303,14 @@ class ReminderPage extends Component {
              hourNum = hourNum - 24;
            }
            let minNum = Number(min);
+           if(minNum < 10)
+           {
+            this.setState({planNum: hourNum.toString() + ' : 0' + minNum.toString()});
+           }
+           if(minNum >= 10)
+           {
+            this.setState({planNum: hourNum.toString() + ' : ' + minNum.toString()});
+           }
            this.setState({hour:hourNum});
            this.setState({min:minNum});
            console.log(JSON.stringify(hourNum));
@@ -366,47 +362,56 @@ class ReminderPage extends Component {
 
     baseText_2: {
       fontSize: 18,
-      top: '60%',
+      top: '40%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
     },
 
-    baseText_3: {
+    baseText_2_bold: {
       fontSize: 18,
-      top: '34%',
+      top: '40%',
       fontFamily: "Roboto",
       color: 'white',
       textAlign: 'center',
       textAlignVertical: 'center',
+      fontWeight: 'bold',
+    },
+
+    baseText_3: {
+      fontSize: 18,
+      fontFamily: "Roboto",
+      color: 'white',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+    },
+
+    baseText_3_bold: {
+      fontSize: 18,
+      fontFamily: "Roboto",
+      color: 'white',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      fontWeight: 'bold',
     },
 
     dateContainer: {
       flexDirection: 'row',
       top: '72%',
-      //left: '7.5%',
-    },
-
-    mark: {
-     fontFamily: 'Roboto',
-     color: 'white',
-     fontSize: 35,
-     top: '14.5%',
     },
 
     iconContainer: {
      flexDirection: 'column',
      top: '2%',
      right: '40%',
-     //justifyContent: "start",
     },
 
     button: {
       backgroundColor: "#B8C59E",
       alignItems: "center",
       width: '40%',
-      top: '35%',
+      top: '32%',
       borderRadius: 15,
       padding: 10,
     },

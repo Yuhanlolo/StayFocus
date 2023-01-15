@@ -1,39 +1,24 @@
-  import React, { useState, useEffect, Component } from 'react';
+  import React, { useState, useEffect } from 'react';
   import auth from '@react-native-firebase/auth';
   import database from '@react-native-firebase/database';
   import {
-      SafeAreaView,
-      ScrollView,
-      StatusBar,
       StyleSheet,
       Text,
-      useColorScheme,
       View,
-      Button,
       TextInput,
       TouchableOpacity,
-      Alert,
     } from 'react-native';
-
-  import {
-      Colors,
-      DebugInstructions,
-      Header,
-      LearnMoreLinks,
-      ReloadInstructions,
-    } from 'react-native/Libraries/NewAppScreen';
 
   import { NavigationContainer } from '@react-navigation/native';
   import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
   import HomePage from './HomePage';
   import SignUpPage from './SignUpPage';
+import calcuTimestamp from '../projectWidgets/timestampCauculate';
 
-  //global.errorMessage_login = 'aa';
 
   function LoginPage({ navigation })
      {
-          // Set an initializing state whilst Firebase connects
           const [initializing, setInitializing] = useState(true);
           const [user, setUser] = useState();
           const [title, setTitle] = useState('Log In');
@@ -49,8 +34,6 @@
           const [errorMessage_login, setErrorMessage_login] = useState('');
 
 
-
-          // Handle user state changes
           function onAuthStateChanged(user) {
             setUser(user);
             if (initializing) setInitializing(false);
@@ -60,31 +43,12 @@
             const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
             display = false;
             console.log('display:', display);
-            return subscriber; // unsubscribe on unmount
+            return subscriber; 
           }, []);
 
            function signIn ()
                  {
-                    let date = new Date();
-                    let year = date.getFullYear().toString();
-                    let month = (date.getMonth()+1).toString();
-                    let day = date.getDate().toString();
-                    let hour =  date.getHours().toString();
-                    let minute = date.getMinutes().toString();
-                    let second =   date.getSeconds().toString();
-                    if(Number(hour) <= 9)
-                    {
-                      hour = '0'+hour;
-                    }
-                    if(Number(minute) <= 9)
-                    {
-                      minute = '0'+minute;
-                    }
-                    if(Number(second) <= 9 )
-                    {
-                      second = '0'+second;
-                    }
-                    let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+                    let timestamp = calcuTimestamp();
 
                     auth()
                      .signInWithEmailAndPassword(email, password)
@@ -95,12 +59,13 @@
                        database()
                          .ref('users/' + uid)
                          .once('value')
-                         .then(snapshot=>{console.log(snapshot.val());});
+                         .then(snapshot=>{console.log('OK');});
 
                        let item;
                        item = database()
                        .ref('users/' + uid + '/oneTimeBehavior')
                        .push();
+                       let itemId;
                        itemId = item.key;
                        let meta = [{timestamp: '0', quit: 'no'}];
                        console.log(itemId);
@@ -112,24 +77,18 @@
                      .catch(error => {
                        if (error.code === 'auth/email-already-in-use') {
                          console.log('That email address is already in use!');
-                         //Alert.alert('That email address is already in use!');
-                         //errorMessage_login = 'That email address is already in use!';
                          setErrorMessage_login('That email address is already in use!');
                        }
                        if (error.code === 'auth/invalid-email') {
                          console.log('That email address is invalid!');
-                         //Alert.alert('That email address is invalid!');
-                         //errorMessage_login = 'That email address is invalid!';
                          setErrorMessage_login('That email address is invalid!');
                        }
                        if (error.code === 'auth/wrong-password') {
                          console.log('That password is wrong!');
-                         //errorMessage_login = 'That password is wrong!';
                          setErrorMessage_login('That password is wrong!');
                        }
                        if (error.code === 'auth/too-many-requests')
                        {
-                         //errorMessage_login = 'please try again later!';
                          setErrorMessage_login('please try again later!');
                        }
                        console.error(error);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, Button, LogBox } from 'react-native';
+import { LogBox } from 'react-native';
 import { NavigationContainer,useNavigationContainerRef, } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {connect} from 'react-redux';
@@ -15,6 +15,7 @@ import ControlPanel from './Pages/ControlPanel';
 const Stack = createNativeStackNavigator();
 
 LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 global.on = false;
 
@@ -49,14 +50,6 @@ global.on = false;
         {
           errorMessage_reminder = '';
         }
-
-  //      if (previousRouteName !== currentRouteName) {
-          // Replace the line below to add the tracker from a mobile analytics SDK
-  //        alert(`The route changed to ${currentRouteName}`);
-
-  //      }
-
-        // Save the current route name for later comparison
         routeNameRef.current = currentRouteName;
       }}
     >

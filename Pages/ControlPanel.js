@@ -1,28 +1,11 @@
 import React, { Component } from 'react';
-import type {Node} from 'react';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Button,
-  Picker,
-  TouchableOpacity,
-  Alert,
   BackHandler,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -52,27 +35,27 @@ constructor(props) {super(props); }
         this.backHandler.remove();
     }
 
-logoff ()
-{
-   auth()
-    .signOut()
-    .then(() => {
-      console.log('User signed out!');
-      notifee.cancelNotification('123');
-      this.props.navigate('LoginPage');
-    });
-}
+  logoff ()
+  {
+    auth()
+      .signOut()
+      .then(() => {
+        console.log('User signed out!');
+        notifee.cancelNotification('123');
+        this.props.navigate('LoginPage');
+      });
+  }
 
-render(){
-   return (
-        <View style = {styles.background}>
-         <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('ReminderPage')}}>{"      My Plan      "}</Text>
-         <Text style = {styles.baseText_2} onPress = {()=>{this.props.navigate('AboutPage')}}>{"        About        "}</Text>
-         <Text style = {styles.baseText_3} onPress = {()=>{auth().signOut().then(() => { console.log('User signed out!');this.props.navigate('LoginPage');});}}>{"      Log Out      "}</Text>
-        </View>
-      );
-   }
-}
+  render(){
+    return (
+          <View style = {styles.background}>
+          <Text style = {styles.baseText_1} onPress = {()=>{this.props.navigate('ReminderPage', {userId: this.props.uid, oneTimeId: this.props.oneTime})}}>{"      My Plan      "}</Text>
+          <Text style = {styles.baseText_2} onPress = {()=>{this.props.navigate('AboutPage', {userId: this.props.uid, oneTimeId: this.props.oneTime})}}>{"        About        "}</Text>
+          <Text style = {styles.baseText_3} onPress = {()=>{auth().signOut().then(() => { console.log('User signed out!');this.props.navigate('LoginPage');});}}>{"      Log Out      "}</Text>
+          </View>
+        );
+    }
+  }
 
   const styles = StyleSheet.create({
 

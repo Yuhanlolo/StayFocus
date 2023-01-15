@@ -1,26 +1,10 @@
 import React, { Component } from 'react';
-import type {Node} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Button,
-  Picker,
-  TouchableOpacity,
   BackHandler,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -35,6 +19,8 @@ class AboutPage extends Component {
         text_2: "StayFocus",
         text_3: "Instruction",
         text_4: "Privacy & Data Collection",
+        userId: "",
+        oneTimeId: "",
       };
       }
 
@@ -48,6 +34,11 @@ class AboutPage extends Component {
           "hardwareBackPress",
           this.backAction
         );
+
+        let id = this.props.route.params.userId;
+        this.setState({userId: id});
+        let item = this.props.route.params.oneTimeId;
+        this.setState({oneTimeId: item});
     }
 
     componentWillUnmount() {
@@ -63,7 +54,7 @@ class AboutPage extends Component {
             name="arrow-left"
             backgroundColor="#506F4C"
             color= "#B8C59E"
-            onPress={()=>{this.props.navigation.navigate('HomePage');}}
+            onPress={()=>{this.props.navigation.navigate('HomePage', {userId: this.state.userId, oneTimeId: this.state.oneTimeId});}}
            />
          </View>
          <Text style = {styles.baseText_1}>{this.state.text_1}{' '}{this.state.text_2}</Text>
@@ -117,8 +108,7 @@ class AboutPage extends Component {
     iconContainer: {
      flexDirection: 'row',
      top: '6%',
-     right: '20%'
-     //justifyContent: "start",
+     right: '20%',
     },
 
   });

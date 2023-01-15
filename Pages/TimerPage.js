@@ -22,13 +22,17 @@ import HomePage from './HomePage';
 import QuitPage from './QuitPage';
 import SuccessPage from './SuccessPage';
 
+import onDisplayNotification from '../projectWidgets/notification';
+import lockTime from '../projectWidgets/lockTime';
+import pastTime from '../projectWidgets/pastTime';
+import calcuTimestamp from '../projectWidgets/timestampCauculate';
+
 global.countDown_1 = 15;
 global.outId = '1';
 global.display = false;
 global.back = true;
 global.permit = false;
 global.timerId = '1';
-global.lockId = '1';
 global.hour_p = -2;
 global.min_p = -2;
 global.sec_p = -2;
@@ -47,7 +51,6 @@ class TimerPage extends Component {
         set: false,
         userId: '',
         oneTimeId: '',
-        //focusBreaking: 0,
         min_1: 0,
         min_2: 0,
         minSet_1: 0,
@@ -56,13 +59,11 @@ class TimerPage extends Component {
         sec_2: 0,
         pause: true,
         temp: 0,
-        outTime: false,
         modalVisible: false,
         onLock: 'unk',
       };
       }
 
-//Receive the params from HomePage and QuitPage to set timer
 
       timeSetter()
       {
@@ -73,13 +74,11 @@ class TimerPage extends Component {
         this.setState({min_2: timeSet-Math.floor(timeSet/10)*10});
         this.setState({userId: userId});
         this.setState({oneTimeId: oneTimeId});
-        this.setState({outTime: false});
         this.setState({onLock: 'unk'});
         countDown_1 = 10;
         display = true;
       }
 
-//Timer
 
       timeCounter()
       {
@@ -114,61 +113,10 @@ class TimerPage extends Component {
                         if(this.state.onLock == 'true')
                         {
                           this.setState({onLock: 'unk'});
-                          let min_g = 0;
-                          let sec_g = 0;
-                          let today_ = new Date();
-                          let current = new Date(today_);
-                          let time_c = JSON.stringify(current);
-                          hour_c = Number(time_c.substring(12,14)) + 8;
-                          min_c = Number(time_c.substring(15,17));
-                          sec_c = Number(time_c.substring(18,20));
-                          console.log('now:', time_c);
-                          console.log('h,m,s:', hour_c, min_c, sec_c);
-                          if(sec_c >= sec_p)
-                          {
-                            sec_g = sec_c - sec_p;
-                          }
-                          if(sec_c < sec_p)
-                          {
-                            sec_g = sec_c + 60 - sec_p;
-                            if(min_c >= 1)
-                            {
-                              min_c = min_c - 1;
-                            }
-                            if(min_c == 0)
-                            {
-                              min_c = 59;
-                              hour_c = hour_c - 1;
-                            }
-                          }
-                          if(min_c >= min_p)
-                          {
-                            min_g = min_c - min_p;
-                          }
-                          if(min_c < min_p)
-                          {
-                            min_g = min_c + 60 - min_p;
-                            if(hour_c >= 1)
-                            {
-                              hour_c = hour_c - 1;
-                            }
-                            if(hour_c == 0)
-                            {
-                              hour_c = 23;
-                            }
-                          }
-                          if(hour_c >= hour_p)
-                          {
-                            hour_g = hour_c - hour_p;
-                          }
-                          if(hour_c < hour_p)
-                          {
-                            hour_g = hour_c + 24 - hour_p;
-                          }
-                          console.log('h_g, m_g, s_g:', hour_g, min_g, sec_g);
+                          let min_past = 0;
+                          let sec_past = 0;
 
-                          let min_past = hour_g * 60 + min_g;
-                          let sec_past = sec_g;
+                          min_past, sec_past = pastTime();
 
                           let min_pre = this.state.min_1 * 10 + this.state.min_2;
                           let sec_pre = this.state.sec_1 * 10 + this.state.sec_2;
@@ -226,77 +174,11 @@ class TimerPage extends Component {
         }
       }
 
-      async onDisplayNotification() {
-        permit = true;
-        let countDown_2 = 10;
-        // Request permissions (required for iOS)
-        await notifee.requestPermission();
-
-        // Create a channel (required for Android)
-        const channelId = await notifee.createChannel({
-          id: 'stone_fox',
-          name: 'Default Channel',
-          importance: AndroidImportance.HIGH,
-        });
-
-        // Display a notification
-
-        const intervalId = BackgroundTimer.setInterval(() => {
-        if(countDown_2 == 0)
-        {
-          countDown_2 = 0;
-          BackgroundTimer.clearInterval(intervalId);
-          this.setState({outTime: true});
-          if(display == true && on == true && permit == true)
-          {
-          notifee.displayNotification({
-          id: 'stone_fox',
-          title: '<b>Stay Focused</b>',
-          body: "The focus mode has ended.",
-          android: {
-            channelId,
-            importance: AndroidImportance.HIGH,
-            smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
-            // pressAction is needed if you want the notification to open the app when pressed
-            pressAction: {
-              id: 'default',
-            },
-          },
-        });}
-        }
-        else
-        {
-          countDown_2 = countDown_2 - 1;
-          if(back == false && on == true && permit == true){
-          notifee.displayNotification({
-          id: 'stone_fox',
-          title: '<b>Stay Focused</b>',
-          body: "The focus mode will end in " + countDown_2.toString() + " seconds. Click here back to StayFocused",
-          android: {
-            channelId,
-            smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
-            importance: AndroidImportance.HIGH,
-            // pressAction is needed if you want the notification to open the app when pressed
-            pressAction: {
-              id: 'default',
-            },
-          },
-        });}
-        }
-        },
-        1000);
-        return intervalId;
-      }
-
-      async cancel(notificationId) {
-        await notifee.cancelNotification(notificationId);
-      }
-
       _handleAppStateChange = (nextAppState) => {
         BackgroundTimer.clearInterval(outId);
         BackgroundTimer.clearInterval(timerId);
 
-        //var timerId;
+      
         console.log("next time countDown_1: ", countDown_1);
         if (nextAppState === 'background') {
         countDown_1 = 15;
@@ -310,14 +192,7 @@ class TimerPage extends Component {
           {
             if(countDown_1 == 14)
             {
-              let today = new Date();
-              let present = new Date(today);
-              let time_p = JSON.stringify(present);
-              hour_p = Number(time_p.substring(12,14)) + 8;
-              min_p = Number(time_p.substring(15,17));
-              sec_p = Number(time_p.substring(18,20));
-              console.log('now:', time_p);
-              console.log('h,m,s:', hour_p, min_p, sec_p);
+              lockTime();
             }
             NativeModules.LockDetectionModule.getScreenStatus().then((map)=> {
                                             this.setState({onLock:map['flag']}, ()=>{console.log('status: ',this.state.onLock);
@@ -334,7 +209,7 @@ class TimerPage extends Component {
                                         {
                                         this.setState({pause: false});
                                         console.log('out of control');
-                                        timerId = this.onDisplayNotification();
+                                        timerId = onDisplayNotification();
                                         }
                                         }
                                 );
@@ -353,26 +228,20 @@ class TimerPage extends Component {
         if (nextAppState === 'active')
           {
             this.setState({pause: true});
-            BackgroundTimer.clearInterval(lockId);
             display = false;
             permit = false;
             back = true;
             console.log(countDown_1);
             if(countDown_1 == 0 && this.state.onLock=='false')
             {
-              this.props.navigation.navigate('HomePage',{userId: this.state.userId});
+              this.props.navigation.navigate('HomePage',{userId: this.state.userId, oneTimeId: this.state.oneTimeId});
               countDown_1 = 15;
               this.timeOutData();
             }
              BackgroundTimer.clearInterval(outId);
              BackgroundTimer.clearInterval(timerId);
-             this.cancel('stone_fox');
-             notifee.cancelAllNotifications(['stone_fox']);
           }
     }
-
-
-//Make timeSetter method execute without binding to events
 
      componentDidMount()
      {
@@ -407,28 +276,7 @@ class TimerPage extends Component {
           let focusTime = this.state.temp - this.state.min_1 * 10 - this.state.min_2;
           let focusSet = this.state.temp;
 
-          let date = new Date();
-          let year = date.getFullYear().toString();
-          let month = (date.getMonth()+1).toString();
-          let day = date.getDate().toString();
-          let hour =  date.getHours().toString();
-          let minute = date.getMinutes().toString();
-          let second =   date.getSeconds().toString();
-
-          if(Number(hour) <= 9)
-          {
-            hour = '0'+hour;
-          }
-          if(Number(minute) <= 9)
-          {
-            minute = '0'+minute;
-          }
-          if(Number(second) <= 9 )
-          {
-            second = '0'+second;
-          }
-
-          let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+          let timestamp = calcuTimestamp();
 
           database()
            .ref('users/' + this.state.userId)
@@ -480,28 +328,7 @@ class TimerPage extends Component {
           let focusTime = this.state.temp - this.state.min_1 * 10 - this.state.min_2;
           let focusSet = this.state.temp;
 
-          let date = new Date();
-          let year = date.getFullYear().toString();
-          let month = (date.getMonth()+1).toString();
-          let day = date.getDate().toString();
-          let hour =  date.getHours().toString();
-          let minute = date.getMinutes().toString();
-          let second =   date.getSeconds().toString();
-
-          if(Number(hour) <= 9)
-          {
-            hour = '0'+hour;
-          }
-          if(Number(minute) <= 9)
-          {
-            minute = '0'+minute;
-          }
-          if(Number(second) <= 9 )
-          {
-            second = '0'+second;
-          }
-
-          let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+          let timestamp = calcuTimestamp();
 
           database()
            .ref('users/' + this.state.userId)
@@ -549,8 +376,8 @@ class TimerPage extends Component {
      confirmData()
           {
                this.setState({pause:false});
-               this.props.navigation.navigate('HomePage', {userId: this.state.userId});
-               //console.log(this.state.userId);
+               this.props.navigation.navigate('HomePage', {userId: this.state.userId, oneTimeId: this.state.oneTimeId});
+
                let focusQuiting = 0;
                let oneTimeQuit = 0;
                let focusTime = this.state.temp - this.state.min_1 * 10 - this.state.min_2;
@@ -559,11 +386,11 @@ class TimerPage extends Component {
                 .once('value')
                 .then(
                   snapshot => {
-                  //this.setState({focusBreaking: snapshot.val().focusBreak + 1});
+
                   focusQuiting = snapshot.val().focusQuit;
-                  //console.log('original break：' + focusBreaking.toString());
+
                   focusQuiting = focusQuiting + 1;
-                  //console.log('update:' + focusBreaking.toString());
+
                   database()
                    .ref('users/' + this.state.userId)
                    .update({focusQuit: focusQuiting,})
@@ -581,8 +408,7 @@ class TimerPage extends Component {
                        let temp = meta.pop();
                        temp.quit = 'yes';
                        meta.push(temp);
-                       //oneTimeQuit = snapshot.val().oneQuit;
-                       //oneTimeQuit = oneTimeQuit + 1;
+
 
                        database()
                           .ref('users/' + this.state.userId + '/oneTimeBehavior/' + this.state.oneTimeId)
@@ -710,23 +536,19 @@ class TimerPage extends Component {
     buttonLeft: {
       backgroundColor: "#506F4C",
       alignItems: "center",
-      //top: '-6%',
       borderBottomStartRadius: 8.5,
       padding: 10,
       width: '53.5%',
-      //borderWidth: 5,
       borderColor: '#B8C59E'
     },
 
     buttonRight: {
       backgroundColor: "#506F4C",
       alignItems: "center",
-      //top: '-6%',
       borderBottomEndRadius: 8.5,
       padding: 10,
       width: '53.5%',
       height: '100%',
-      //borderWidth: 5,
       borderColor: '#B8C59E'
     },
 
@@ -734,7 +556,6 @@ class TimerPage extends Component {
      flex: 1,
      flexDirection: 'row',
      height: '25%',
-     //top: '35%',
     }
   });
 

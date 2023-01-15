@@ -1,33 +1,18 @@
 import React, { Component } from 'react';
-import type {Node} from 'react';
 import {
-  SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Button,
   TextInput,
   TouchableOpacity,
-  Alert,
   AppState,
   BackHandler,
   Pressable,
-  KeyboardAvoidingView,
-  Keyboard,
 } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -39,8 +24,6 @@ import ControlPanel from './ControlPanel';
 import { CaretDown, CaretUp, Gear } from '../Icons/icons';
 
 global.errorMessage = '';
-
-//Home page to set focusing time
 
 class HomePage extends Component {
     constructor(props) {
@@ -69,7 +52,6 @@ class HomePage extends Component {
                  { label: "100 mins", value: 100 },
                ],
       isFocus: false,
-      txt: '',
       input: '',
       };
       this.setValue = this.setValue.bind(this);
@@ -120,16 +102,12 @@ class HomePage extends Component {
          this.setState({userId: id});
          let item = this.props.route.params.oneTimeId;
          this.setState({oneTimeId: item});
-         countDown_1 = 10;
-         display = false;
-         this.setState({errorMessage: ''});
-         //console.log(id);
     }
 
     _handleAppStateChange = (nextAppState) => {
-         if (nextAppState === 'background') {
-           	display = false;
-         }
+      if (nextAppState === 'background') {
+        display = false;
+      }
     }
 
     componentDidMount()
@@ -146,27 +124,15 @@ class HomePage extends Component {
         this.backHandler.remove();
     }
 
-        logoff ()
-        {
-           display = false;
-           auth()
-              .signOut()
-              .then(() => {console.log('User signed out!');});
-        }
-
     render() {
       return (
       <Drawer
                    ref={(ref) => this._drawer = ref}
-                   // type: 一共是3种（displace,overlay,static）, 用static就好啦，static让人感觉更舒适一些
                    type="overlay"
-                   // Drawer 展开区域组件
                    content={
-                       <ControlPanel navigate={this.props.navigation.navigate} closeDrawer={this.closeDrawer} />
+                       <ControlPanel navigate={this.props.navigation.navigate} closeDrawer={this.closeDrawer} uid={this.state.userId}  oneTime={this.state.oneTimeId}/>
                    }
-                   // 响应区域双击可以打开抽屉
                    acceptDoubleTap
-                   // styles 和 tweenHandler是设置向左拉后主内容区的颜色，相当于给主内容区加了一个遮罩
                    styles={{
                        mainOverlay: {
                            backgroundColor: 'black',
@@ -178,26 +144,19 @@ class HomePage extends Component {
                            opacity: ratio / 2,
                        }
                    })}
-                   // drawer打开后调用的函数
                    onOpen={() => {
                        this.setState({drawerOpen: true});
                    }}
-                   // drawer关闭后调用的函数
                    onClose={() => {
                        this.setState({drawerOpen: false});
                    }}
 
                    captureGestures={false}
-                   // 打开/关闭 Drawer所需要的时间
                    tweenDuration={100}
-                   // 触发抽屉打开/关闭必须经过的屏幕宽度比例
                    panThreshold={0.08}
                    disabled={this.state.drawerDisabled}
-                   // Drawer打开后有边界距离屏幕右边界的距离
                    openDrawerOffset={0.5}
-                   // 拉开抽屉的响应区域
                    panOpenMask={0.2}
-                   // 如果为true, 则尝试仅处理水平滑动
                    negotiatePan
          >
 
@@ -208,7 +167,7 @@ class HomePage extends Component {
         <View style = {{top: '13%', alignItems: "center",}}>
         <Text style = {styles.textStyle}>{this.state.text}</Text>
         </View>
-              <View style = {{top: '9%'}}>
+              <View style = {{top: '12%'}}>
                 <DropDownPicker
                 open={this.state.open}
                 value={this.state.value}
@@ -232,7 +191,6 @@ class HomePage extends Component {
                   console.log('mode:', this.state.mode);
                   if(isNaN(Number(text, 10)))
                     {
-                      //Alert.alert('Please input Arabic numbers');
                       if(text.indexOf('mins') == -1 && this.state.mode != 'selection')
                       {
                         errorMessage = 'Please input Arabic numbers.';
@@ -249,7 +207,6 @@ class HomePage extends Component {
                     }
                   if(Number(text) > 125 && this.state.mode != 'selection')
                       {
-                        //Alert.alert('Please enter less than 125 minutes');
                         errorMessage = 'Please enter less than 125 minutes.';
                         this.setState({input: '125 mins'});
                         this.setState({minTemp: '125'});
@@ -290,14 +247,13 @@ class HomePage extends Component {
         <View style = {{top: '36.5%'}}>
         <Text style={{fontFamily: 'Roboto', fontSize: 14, color: 'red', width: '100%'}}>{errorMessage}</Text>
         </View>
-        <View style = {{top: '18%', width: '70%'}}>
+        <View style = {{top: '22%', width: '70%'}}>
         <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
                   this.setState({flag:true});
                   if(this.state.select == false)
                   {
-                    //Alert.alert('Please select your focus time!');
                     errorMessage = 'Please select your focus time!';
                   }
                   if(this.state.select == true)
@@ -305,28 +261,22 @@ class HomePage extends Component {
                     if(this.state.mode == 'enter')
                     {
                     let inputs = this.state.minTemp;
-                    //console.log("time input: ", inputs);
                     if(isNaN(Number(inputs, 10)))
                     {
-                      //Alert.alert('Please input Arabic numbers');
                       errorMessage = 'Please input Arabic numbers.';
                     }
                     else
                     {
                       if(Number(inputs) > 125)
                       {
-                        //Alert.alert('Please enter less than 125 minutes');
                         errorMessage = 'Please enter less than 125 minutes.';
                       }
                       if(Number(inputs) < 25 && this.state.mode == 'enter')
                       {
-                        //Alert.alert('Please enter more than 25 minutes');
                         errorMessage = 'Please enter more than 25 minutes.';
-                        //this.setState({input: '25 mins'});
                       }
                       if(Number(inputs) >= 25 && Number(inputs) <= 125)
                       {
-                        //console.log(Number(inputs));
                         this.setState({minSet: Number(inputs)});
                         let timeNum = Number(inputs);
                         this.setState({input: ''});

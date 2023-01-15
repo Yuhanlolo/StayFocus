@@ -1,26 +1,11 @@
 import React, { Component } from 'react';
-import type {Node} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Button,
-  Picker,
   BackHandler,
   TouchableOpacity
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,13 +13,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import database from '@react-native-firebase/database';
 
 import HomePage from './HomePage';
-//When finish the focusing task, this page come out for congrats.
+import calcuTimestamp from '../projectWidgets/timestampCauculate';
 
 class SuccessPage extends Component {
     constructor(props) {
       super(props);
       this.state = {
         text: "Great job! You have finished your focusing goal!",
+        userId: '',
+        oneTimeId: '',
       };
       }
 
@@ -44,29 +31,10 @@ class SuccessPage extends Component {
         let userId = this.props.route.params.id;
         let oneTimeId = this.props.route.params.thisTime;
 
-        console.log("userId:", userId);
-        console.log("oneTime:", oneTimeId);
+        this.setState({userId: userId});
+        this.setState({oneTimeId: oneTimeId});
 
-        let date = new Date();
-        let year = date.getFullYear().toString();
-        let month = (date.getMonth()+1).toString();
-        let day = date.getDate().toString();
-        let hour =  date.getHours().toString();
-        let minute = date.getMinutes().toString();
-        let second =   date.getSeconds().toString();
-        if(Number(hour) <= 9)
-         {
-           hour = '0'+hour;
-         }
-        if(Number(minute) <= 9)
-         {
-           minute = '0'+minute;
-         }
-        if(Number(second) <= 9 )
-         {
-           second = '0'+second;
-         }
-        let timestamp = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        let timestamp = calcuTimestamp();
 
         database()
            .ref('users/' + userId + '/oneTimeBehavior/' + oneTimeId)
@@ -74,7 +42,6 @@ class SuccessPage extends Component {
            .then(
              snapshot=>
              {
-               //console.log('passing data: ', this.state.oneTimeId);
                let meta = snapshot.val().metadata;
                if(meta[0].timestamp == '0')
                {
@@ -82,8 +49,6 @@ class SuccessPage extends Component {
                }
                let record = {timestamp: timestamp, quit: 'no'};
                meta.push(record);
-               //oneTimeBreaking = snapshot.val().oneQuitTry;
-               //oneTimeBreaking = oneTimeBreaking + 1;
                database()
                   .ref('users/' + userId + '/oneTimeBehavior/' + oneTimeId)
                   .update({focusDuration: time.toString() + 'mins', metadata: meta, complete: time.toString() + 'mins'})
