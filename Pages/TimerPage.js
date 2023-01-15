@@ -19,7 +19,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import database from '@react-native-firebase/database';
 
 import HomePage from './HomePage';
-import QuitPage from './QuitPage';
 import SuccessPage from './SuccessPage';
 
 import onDisplayNotification from '../projectWidgets/notification';
