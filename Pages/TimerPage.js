@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import type {Node} from 'react';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import BackgroundTimer from 'react-native-background-timer';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Button,
-  Picker,
   DeviceEventEmitter,
   TouchableOpacity,
   BackHandler,
@@ -19,14 +12,6 @@ import {
   Modal,
   NativeModules,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -50,7 +35,6 @@ global.sec_p = -2;
 global.hour_c = -2;
 global.min_c = -2;
 global.sec_c = -2;
-//This is a count-down timer.
 
 class TimerPage extends Component {
     constructor(props) {
