@@ -1,0 +1,144 @@
+import { useState } from "react";
+import { Text, TextInput, View, Pressable } from "react-native";
+
+import { CustomButton, Screen } from "../components";
+import { createStyles } from "../helpers";
+import { createUser } from "../api";
+
+function SignupPage({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [validation, setValidation] = useState({
+    email: true,
+    username: true,
+    password: true,
+  });
+
+  const styles = useStyles();
+
+  const validate = () => {
+    // taken from https://stackoverflow.com/a/4964766
+    const validEmail = /^\S+@\S+\.\S+$/.test(email);
+    const validUsername = password.length > 0;
+    const validPassword = password.length >= 6;
+    setValidation({
+      email: validEmail,
+      username: validUsername,
+      password: validPassword,
+    });
+    if (validEmail && validUsername && validPassword) {
+      createUser(email, username, password);
+    }
+  };
+
+  return (
+    <Screen styles={styles.screen}>
+      <View>
+        <Text style={styles.heading}>Sign up</Text>
+        <Text style={styles.text}>Email</Text>
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          style={styles.input}
+          keyboardType="email-address"
+        />
+        {validation.email ? null : (
+          <Text style={styles.error}>Please enter a valid email</Text>
+        )}
+        <Text style={styles.text}>Username</Text>
+        <TextInput
+          value={username}
+          onChangeText={setUsername}
+          style={styles.input}
+        />
+        {validation.username ? null : (
+          <Text style={styles.error}>Please enter at least 1 character</Text>
+        )}
+        <Text style={styles.text}>Password</Text>
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={true}
+          style={styles.input}
+        />
+        {validation.password ? null : (
+          <Text style={styles.error}>Please enter at least 6 characters</Text>
+        )}
+      </View>
+      <View style={styles.switch}>
+        <Text style={styles.switchPrompt}>Already a user?</Text>
+        <Pressable onPress={() => navigation.navigate("LoginPage")}>
+          <Text style={styles.switchLink}>Log in</Text>
+        </Pressable>
+      </View>
+      <View style={styles.buttonContainer}>
+        <CustomButton
+          styles={{ button: styles.button, text: styles.buttonText }}
+          onPress={validate}
+        >
+          Sign up
+        </CustomButton>
+      </View>
+    </Screen>
+  );
+}
+
+const useStyles = createStyles((theme) => ({
+  screen: {
+    paddingLeft: 40,
+    paddingRight: 40,
+    alignItems: "stretch",
+  },
+  heading: {
+    marginTop: 20,
+    marginBottom: 40,
+    color: theme.primaryColor,
+    fontSize: theme.fontSizes.xl,
+  },
+  text: {
+    color: theme.textColor,
+    fontSize: theme.fontSizes.md,
+    marginBottom: 12,
+  },
+  input: {
+    padding: 8,
+    marginBottom: 24,
+    borderRadius: 8,
+    fontSize: theme.fontSizes.md,
+    backgroundColor: theme.textColor,
+    color: theme.muteColor,
+  },
+  switch: {
+    marginTop: 12,
+    marginBottom: 80,
+    flexDirection: "row",
+  },
+  switchPrompt: {
+    color: theme.primaryColor,
+    fontSize: theme.fontSizes.sm,
+    marginRight: 6,
+  },
+  switchLink: {
+    color: theme.primaryColor,
+    fontSize: theme.fontSizes.sm,
+    textDecorationLine: "underline",
+  },
+  error: {
+    color: theme.alertColor,
+    fontSize: theme.fontSizes.xs,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  button: {
+    rippleColor: theme.backgroundColor,
+    borderRadius: 12,
+  },
+  buttonText: {
+    fontSize: theme.fontSizes.md,
+  },
+}));
+
+export default SignupPage;
