@@ -2,6 +2,7 @@
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {LogBox } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import SignupPage from "./src/screens/SignupPage";
@@ -12,6 +13,8 @@ import DrawerNavigator from "./src/screens/DrawerNavigator";
 import FocusEndedPage from "./src/screens/FocusEndedPage";
 import { createStyles, ThemeProvider } from "./src/helpers";
 import { useAppStore } from "./src/api";
+
+LogBox.ignoreAllLogs();
 
 const Stack = createNativeStackNavigator();
 
