@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Text, TextInput, View } from "react-native";
+import {useState} from 'react';
+import {Text, TextInput, View} from 'react-native';
 
-import { createStyles, CSSStyles } from "../helpers";
-import { CustomModal } from "../components/CustomModal";
-import { CustomButton } from "../components/CustomButton";
+import {createStyles, CSSStyles} from '../helpers';
+import {CustomModal} from '../components/CustomModal';
+import {CustomButton} from '../components/CustomButton';
 
 interface ReflectionModalProps {
   visible: boolean;
@@ -25,18 +25,18 @@ export function ReflectionModal({
   onComplete,
 }: ReflectionModalProps) {
   const [promptIndex, setPromptIndex] = useState(0);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [answers, setAnswers] = useState<string[]>([]);
 
   const addAnswer = (ans: string) => setAnswers([...answers, ans]);
 
-  const emptyFirstAnswer = () => promptIndex === 0 && input === "";
+  const emptyFirstAnswer = () => promptIndex === 0 && input === '';
 
   const next = () => {
     if (promptIndex < prompts.length - 1) {
       if (emptyFirstAnswer()) return;
       addAnswer(input);
-      setInput("");
+      setInput('');
       setPromptIndex(promptIndex + 1);
     } else if (promptIndex === prompts.length - 1) {
       onComplete(answers);
@@ -45,11 +45,11 @@ export function ReflectionModal({
 
   const buttonText = () => {
     if (promptIndex < prompts.length - 2) {
-      return "Next";
+      return 'Next';
     } else if (promptIndex === prompts.length - 2) {
-      return "Finish";
+      return 'Finish';
     } else {
-      return "Back to home";
+      return 'Back to home';
     }
   };
 
@@ -60,8 +60,7 @@ export function ReflectionModal({
       styles={styles}
       visible={visible}
       onRequestClose={onRequestClose}
-      title={title}
-    >
+      title={title}>
       <Text style={defaultStyles.text}>{prompts[promptIndex]}</Text>
       {promptIndex < prompts.length - 1 ? (
         <TextInput
@@ -69,7 +68,7 @@ export function ReflectionModal({
           onChangeText={setInput}
           value={input}
           multiline={true}
-          placeholder={"Type your answer here"}
+          placeholder={'Type your answer here'}
           placeholderTextColor={defaultStyles.input.placeholderTextColor}
         />
       ) : null}
@@ -77,8 +76,7 @@ export function ReflectionModal({
         {promptIndex < prompts.length - 1 && onBack && (
           <CustomButton
             onPress={() => onBack(answers)}
-            styles={{ button: defaultStyles.button }}
-          >
+            styles={{button: defaultStyles.button}}>
             Back to focus
           </CustomButton>
         )}
@@ -89,8 +87,7 @@ export function ReflectionModal({
               ...defaultStyles.button,
               ...defaultStyles.nextButton,
             },
-          }}
-        >
+          }}>
           {buttonText()}
         </CustomButton>
       </View>
@@ -103,7 +100,7 @@ const useModalStyles = createStyles((theme, disabledButton: boolean) => ({
     marginBottom: 16,
     color: theme.muteColor,
     fontSize: theme.fontSizes.sm,
-    textAlign: "center",
+    textAlign: 'center',
   },
   input: {
     marginBottom: 16,
@@ -112,14 +109,14 @@ const useModalStyles = createStyles((theme, disabledButton: boolean) => ({
     borderRadius: 10,
     backgroundColor: theme.textColor,
     fontSize: theme.fontSizes.sm,
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
     color: theme.muteColor,
     placeholderTextColor: theme.muteColor,
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   button: {
     rippleColor: theme.primaryColor,

@@ -1,18 +1,18 @@
 //import { GestureHandlerRootView } from "react-native-gesture-handler";
-import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { LogBox } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {LogBox} from 'react-native';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
-import SignupPage from "./src/screens/SignupPage";
-import LoginPage from "./src/screens/LoginPage";
-import SuccessPage from "./src/screens/SuccessPage";
-import TimerPage from "./src/screens/TimerPage";
-import DrawerNavigator from "./src/screens/DrawerNavigator";
-import FocusEndedPage from "./src/screens/FocusEndedPage";
-import { createStyles, ThemeProvider } from "./src/helpers";
-import { useAppStore } from "./src/api";
+import SignupPage from './src/screens/SignupPage';
+import LoginPage from './src/screens/LoginPage';
+import SuccessPage from './src/screens/SuccessPage';
+import TimerPage from './src/screens/TimerPage';
+import DrawerNavigator from './src/screens/DrawerNavigator';
+import FocusEndedPage from './src/screens/FocusEndedPage';
+import {createStyles, ThemeProvider} from './src/helpers';
+import {useAppStore} from './src/api';
 
 LogBox.ignoreAllLogs();
 
@@ -20,14 +20,14 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const styles = useStyles();
-  const user = useAppStore((state) => state.uid);
+  const user = useAppStore(state => state.uid);
 
   return (
     <ThemeProvider>
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
           <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Navigator screenOptions={{headerShown: false}}>
               {user ? (
                 <>
                   <Stack.Screen name="HomePage" component={DrawerNavigator} />
@@ -52,7 +52,7 @@ export default function App() {
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   container: {
     flex: 1,
     backgroundColor: theme.backgroundColor,

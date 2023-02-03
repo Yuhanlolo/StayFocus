@@ -1,9 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import create from "zustand";
-import { persist } from "zustand/middleware";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import create from 'zustand';
+import {persist} from 'zustand/middleware';
 
-import { clamp } from "../helpers";
-import { Session, UserSettings } from "./types";
+import {clamp} from '../helpers';
+import {Session, UserSettings} from './types';
 
 // AppStore: client-side persistent store for
 // authentication info and global app settings
@@ -37,23 +37,23 @@ const defaultApp = {
 
 export const useAppStore = create<AppStore>()(
   persist(
-    (set) => ({
+    set => ({
       ...defaultApp,
-      saveSettings: (settings) => set(settings),
-      saveSession: (session) =>
-        set((state) => ({ focusSessions: [...state.focusSessions, session] })),
+      saveSettings: settings => set(settings),
+      saveSession: session =>
+        set(state => ({focusSessions: [...state.focusSessions, session]})),
     }),
     {
-      name: "app-data",
+      name: 'app-data',
       getStorage: () => AsyncStorage,
-    }
-  )
+    },
+  ),
 );
 
 export const getAppStore = () => useAppStore.getState();
 
 export const saveUserInfo = (uid: string, username: string) =>
-  useAppStore.setState({ uid: uid, username: username });
+  useAppStore.setState({uid: uid, username: username});
 
 export const resetUserInfo = () => useAppStore.setState(defaultApp);
 
@@ -68,15 +68,15 @@ interface SessionStore extends Session {
 }
 
 const defaultSession = {
-  plan: "Doing stuff",
-  timestamp: "",
+  plan: 'Doing stuff',
+  timestamp: '',
   focusDurationMinutes: -1,
   completedMinutes: -1,
   giveUpAttempts: [],
   reflectionAnswers: [],
 };
 
-export const useSessionStore = create<SessionStore>()((set) => ({
+export const useSessionStore = create<SessionStore>()(set => ({
   ...defaultSession,
   newSession: (plan, minutes) =>
     set({
@@ -85,12 +85,12 @@ export const useSessionStore = create<SessionStore>()((set) => ({
       focusDurationMinutes: clamp(
         defaultApp.minMinutes,
         minutes,
-        defaultApp.maxMinutes
+        defaultApp.maxMinutes,
       ),
     }),
-  saveCompletedMinutes: (minutes) => set({ completedMinutes: minutes }),
+  saveCompletedMinutes: minutes => set({completedMinutes: minutes}),
   saveGiveUpAttempt: (answers, givenUp) =>
-    set((state) => ({
+    set(state => ({
       giveUpAttempts: [
         ...state.giveUpAttempts,
         {
@@ -100,9 +100,9 @@ export const useSessionStore = create<SessionStore>()((set) => ({
         },
       ],
     })),
-  saveReflectionAnswers: (answers) => set({ reflectionAnswers: answers }),
-  saveLastGiveUpAttempt: (answers) =>
-    set((state) => ({
+  saveReflectionAnswers: answers => set({reflectionAnswers: answers}),
+  saveLastGiveUpAttempt: answers =>
+    set(state => ({
       giveUpAttempts: state.giveUpAttempts.map((v, i) => {
         return i === state.giveUpAttempts.length - 1
           ? {

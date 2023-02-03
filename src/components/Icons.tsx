@@ -1,12 +1,12 @@
-import Svg, { Circle, Path } from "react-native-svg";
-import { ColorValue } from "react-native";
+import Svg, {Circle, Path} from 'react-native-svg';
+import {ColorValue} from 'react-native';
 
 interface IconProps {
   size: number;
   color: ColorValue;
 }
 
-export function LeftArrow({ size, color }: IconProps) {
+export function LeftArrow({size, color}: IconProps) {
   return (
     <Svg width={size} height={size} fill={color} viewBox="0 0 256 256">
       <Path fill="none" d="M0 0h256v256H0z" />
@@ -22,7 +22,7 @@ export function LeftArrow({ size, color }: IconProps) {
   );
 }
 
-export function HamburgerMenu({ size, color }: IconProps) {
+export function HamburgerMenu({size, color}: IconProps) {
   return (
     <Svg width={size} height={size} fill={color} viewBox="0 0 256 256">
       <Path fill="none" d="M0 0H256V256H0z" />
@@ -51,7 +51,7 @@ export function HamburgerMenu({ size, color }: IconProps) {
   );
 }
 
-export function Gear({ size, color }: IconProps) {
+export function Gear({size, color}: IconProps) {
   return (
     <Svg width={size} height={size} fill={color} viewBox="0 0 256 256">
       <Path fill="none" d="M0 0H256V256H0z" />
@@ -77,7 +77,7 @@ export function Gear({ size, color }: IconProps) {
   );
 }
 
-export function CaretDown({ size, color }: IconProps) {
+export function CaretDown({size, color}: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path d="M12 18L5 6H19Z" fill={color} />
@@ -85,7 +85,7 @@ export function CaretDown({ size, color }: IconProps) {
   );
 }
 
-export function CaretUp({ size, color }: IconProps) {
+export function CaretUp({size, color}: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="2 0 22 24" fill="none">
       <Path d="M12 6L5 18H19Z" fill={color} />

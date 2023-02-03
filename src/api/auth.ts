@@ -5,19 +5,19 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   signOut,
-} from "firebase/auth";
+} from 'firebase/auth';
 
-import { app } from "./firebase";
-import { saveUserToFirestore } from "./firestore";
-import { saveUserInfo, resetUserInfo } from "./store";
+import {app} from './firebase';
+import {saveUserToFirestore} from './firestore';
+import {saveUserInfo, resetUserInfo} from './store';
 
 const auth = getAuth(app);
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, user => {
   if (user) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
-    console.log("$$", user.uid);
+    console.log('$$', user.uid);
   } else {
     // User is logged out, reset user states in AppStore
     resetUserInfo();
@@ -27,16 +27,16 @@ onAuthStateChanged(auth, (user) => {
 export async function createUser(
   email: string,
   username: string,
-  password: string
+  password: string,
 ) {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const user = userCredential.user;
-    updateProfile(user, { displayName: username });
+    updateProfile(user, {displayName: username});
     // updateProfile does not trigger auth state change, so these method calls
     // cannot be done in the onAuthStateChanged observer, so we put them here
     saveUserInfo(user.uid, username);
@@ -48,13 +48,13 @@ export async function createUser(
 
 export async function loginUser(
   email: string,
-  password: string
+  password: string,
 ): Promise<[true] | [false, string]> {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const user = userCredential.user;
     saveUserInfo(user.uid, user.displayName);
@@ -66,16 +66,16 @@ export async function loginUser(
 }
 
 export function logoutUser() {
-  signOut(auth).catch((error) => {
+  signOut(auth).catch(error => {
     console.log(error.code);
   });
 }
 
 const dict = {
-  "auth/user-not-found": "User not found",
-  "auth/wrong-password": "Wrong password",
-  "auth/invalid-email": "Invalid email",
+  'auth/user-not-found': 'User not found',
+  'auth/wrong-password': 'Wrong password',
+  'auth/invalid-email': 'Invalid email',
 };
-function errorCodeToMessage(code: keyof (typeof dict)) {
+function errorCodeToMessage(code: keyof typeof dict) {
   return dict[code] || `Authentication error: ${code}`;
 }

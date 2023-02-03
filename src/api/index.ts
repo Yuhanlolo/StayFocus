@@ -1,17 +1,17 @@
-import { dateToHHMM } from "../helpers";
+import {dateToHHMM} from '../helpers';
 import {
   getSessionsFromFirestore,
   saveSessionToFirestore,
   saveUserSettingsToFirestore,
-} from "./firestore";
-import { getSession, getAppStore, resetSessionStore } from "./store";
-import { UserSettings } from "./types";
+} from './firestore';
+import {getSession, getAppStore, resetSessionStore} from './store';
+import {UserSettings} from './types';
 
-export * from "./store";
-export * from "./firestore";
-export * from "./auth";
-export * from "./notification";
-export * from "./isLocked";
+export * from './store';
+export * from './firestore';
+export * from './auth';
+export * from './notification';
+export * from './isLocked';
 
 export function saveSession() {
   const session = getSession();
@@ -48,7 +48,7 @@ export async function getSessionsCountToday() {
   const todayString = today.toJSON();
 
   let countToday = 0;
-  sessions.forEach((doc) => {
+  sessions.forEach(doc => {
     countToday += doc.id >= todayString ? 1 : 0;
     console.log(doc.id);
   });
@@ -60,7 +60,7 @@ export async function getLastSessionEndTime() {
   const uid = getAppStore().uid!;
   const sessions = (await getSessionsFromFirestore(uid)).docs;
 
-  if (sessions.length === 0) return "";
+  if (sessions.length === 0) return '';
   const lastSession = sessions[sessions.length - 1].data();
   console.log(lastSession);
 

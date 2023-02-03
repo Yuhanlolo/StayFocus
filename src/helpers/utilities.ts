@@ -8,8 +8,8 @@ export function secondsToHHMMSS(seconds: number) {
 }
 
 export function dateToHHMM(date: Date) {
-  const hh = date.getHours().toString(10).padStart(2, "0");
-  const mm = date.getMinutes().toString(10).padStart(2, "0");
+  const hh = date.getHours().toString(10).padStart(2, '0');
+  const mm = date.getMinutes().toString(10).padStart(2, '0');
   return `${hh}:${mm}`;
 }
 

@@ -1,15 +1,15 @@
-import { StatusBar, Keyboard, TouchableWithoutFeedback } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {StatusBar, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-import { createStyles, CSSStyles } from "../helpers";
+import {createStyles, CSSStyles} from '../helpers';
 
 interface ScreenProps {
   styles?: CSSStyles;
   children: React.ReactNode;
 }
 
-export function Screen({ styles, children }: ScreenProps) {
+export function Screen({styles, children}: ScreenProps) {
   const isFocused = useIsFocused();
 
   const defaultStyles = useStyles();
@@ -31,10 +31,10 @@ export function Screen({ styles, children }: ScreenProps) {
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   container: {
-    alignItems: "center",
-    height: "100%",
+    alignItems: 'center',
+    height: '100%',
     padding: theme.padding,
     backgroundColor: theme.backgroundColor,
   },

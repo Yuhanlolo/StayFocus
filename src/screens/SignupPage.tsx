@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { Text, TextInput, View, Pressable } from "react-native";
+import {useState} from 'react';
+import {Text, TextInput, View, Pressable} from 'react-native';
 
-import { CustomButton, Screen } from "../components";
-import { createStyles } from "../helpers";
-import { createUser } from "../api";
+import {CustomButton, Screen} from '../components';
+import {createStyles} from '../helpers';
+import {createUser} from '../api';
 
-function SignupPage({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+function SignupPage({navigation}) {
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [validation, setValidation] = useState({
     email: true,
     username: true,
@@ -68,15 +68,14 @@ function SignupPage({ navigation }) {
       </View>
       <View style={styles.switch}>
         <Text style={styles.switchPrompt}>Already a user?</Text>
-        <Pressable onPress={() => navigation.navigate("LoginPage")}>
+        <Pressable onPress={() => navigation.navigate('LoginPage')}>
           <Text style={styles.switchLink}>Log in</Text>
         </Pressable>
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
-          styles={{ button: styles.button, text: styles.buttonText }}
-          onPress={validate}
-        >
+          styles={{button: styles.button, text: styles.buttonText}}
+          onPress={validate}>
           Sign up
         </CustomButton>
       </View>
@@ -84,11 +83,11 @@ function SignupPage({ navigation }) {
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   screen: {
     paddingLeft: 40,
     paddingRight: 40,
-    alignItems: "stretch",
+    alignItems: 'stretch',
   },
   heading: {
     marginTop: 20,
@@ -112,7 +111,7 @@ const useStyles = createStyles((theme) => ({
   switch: {
     marginTop: 12,
     marginBottom: 80,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   switchPrompt: {
     color: theme.primaryColor,
@@ -122,15 +121,15 @@ const useStyles = createStyles((theme) => ({
   switchLink: {
     color: theme.primaryColor,
     fontSize: theme.fontSizes.sm,
-    textDecorationLine: "underline",
+    textDecorationLine: 'underline',
   },
   error: {
     color: theme.alertColor,
     fontSize: theme.fontSizes.xs,
   },
   buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   button: {
     rippleColor: theme.backgroundColor,

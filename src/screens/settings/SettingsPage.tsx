@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { Text } from "react-native";
-import DatePicker from "react-native-date-picker";
+import {useState} from 'react';
+import {Text} from 'react-native';
+import DatePicker from 'react-native-date-picker';
 
-import { CustomButton, TimeDropdown } from "../../components";
-import { createStyles } from "../../helpers";
-import SettingsScreen from "./SettingsScreen";
-import { saveSettings, setReminder } from "../../api";
+import {CustomButton, TimeDropdown} from '../../components';
+import {createStyles} from '../../helpers';
+import SettingsScreen from './SettingsScreen';
+import {saveSettings, setReminder} from '../../api';
 
-export default function SettingsPage({ navigation }) {
+export default function SettingsPage({navigation}) {
   const [minutes, setMinutes] = useState(25);
   const d = new Date();
   d.setHours(8, 0, 0, 0);
@@ -15,7 +15,7 @@ export default function SettingsPage({ navigation }) {
   const [saved, setSaved] = useState(false);
 
   const onBack = () => {
-    navigation.navigate("Home");
+    navigation.navigate('Home');
   };
 
   const onConfirm = () => {
@@ -44,8 +44,7 @@ export default function SettingsPage({ navigation }) {
       />
       <CustomButton
         onPress={onConfirm}
-        styles={{ button: styles.button, text: styles.buttonText }}
-      >
+        styles={{button: styles.button, text: styles.buttonText}}>
         Confirm
       </CustomButton>
       {saved && (
@@ -55,22 +54,22 @@ export default function SettingsPage({ navigation }) {
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   text: {
-    width: "80%",
+    width: '80%',
     marginTop: 20,
     marginBottom: 8,
     color: theme.textColor,
     fontSize: theme.fontSizes.md,
-    textAlign: "center",
+    textAlign: 'center',
   },
   text2: {
-    width: "80%",
+    width: '80%',
     marginTop: 180,
     marginBottom: 8,
     color: theme.textColor,
     fontSize: theme.fontSizes.md,
-    textAlign: "center",
+    textAlign: 'center',
   },
   button: {
     marginTop: 20,
@@ -83,7 +82,7 @@ const useStyles = createStyles((theme) => ({
   },
   textSaved: {
     fontSize: theme.fontSizes.xs,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 12,
     color: theme.textColor,
   },

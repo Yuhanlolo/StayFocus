@@ -1,4 +1,4 @@
-import { shuffleArray } from "./utilities";
+import {shuffleArray} from './utilities';
 
 function getStrings({
   plan,
@@ -7,38 +7,38 @@ function getStrings({
 }: StringsInput) {
   return {
     leaveFocusDialog: {
-      dialogTitle: "Quick questions before you leave",
+      dialogTitle: 'Quick questions before you leave',
       numberOfQuestions: 2,
-      fixedQuestions: [["Why do you want to check your phone now?"]],
+      fixedQuestions: [['Why do you want to check your phone now?']],
       randomizedQuestions: [
         ["How do you feel without smartphone's distraction?"],
-        ["Any thoughts about focusing for a longer duration next time?"],
+        ['Any thoughts about focusing for a longer duration next time?'],
         [
-          "Lorem ipsum morbi molestie augue tincidunt purus ultrices",
-          "A wealth of information creates a poverty of attention",
+          'Lorem ipsum morbi molestie augue tincidunt purus ultrices',
+          'A wealth of information creates a poverty of attention',
         ],
         [`Placeholder for ${focusDurationMinutes}`],
       ],
-      finalMessage: "Your session has ended.",
+      finalMessage: 'Your session has ended.',
     },
     focusEndedDialog: {
-      dialogTitle: "Quick reflection questions",
+      dialogTitle: 'Quick reflection questions',
       initialMessage: `Your focus session has ended. You focused on ${plan} for ${completedMinutes}.`,
       numberOfQuestions: 3,
-      fixedQuestions: [["Why do you want to check your phone now?"]],
+      fixedQuestions: [['Why do you want to check your phone now?']],
       randomizedQuestions: [
         ["How do you feel without smartphone's distraction?"],
-        ["Any thoughts about focusing for a longer duration next time?"],
+        ['Any thoughts about focusing for a longer duration next time?'],
         [
-          "Lorem ipsum morbi molestie augue tincidunt purus ultrices",
-          "A wealth of information creates a poverty of attention",
+          'Lorem ipsum morbi molestie augue tincidunt purus ultrices',
+          'A wealth of information creates a poverty of attention',
         ],
         [`Placeholder for ${focusDurationMinutes}`],
       ],
-      finalMessage: "Thank you.",
+      finalMessage: 'Thank you.',
     },
     completedDialog: {
-      dialogTitle: "Quick questions",
+      dialogTitle: 'Quick questions',
       initialMessage: `Congrats! You focused on ${plan} for ${completedMinutes}.`,
       numberOfQuestions: 3,
       fixedQuestions: [
@@ -48,11 +48,11 @@ function getStrings({
       ],
       randomizedQuestions: [
         ["How do you feel without smartphone's distraction?"],
-        ["Any thoughts about focusing for a longer duration next time?"],
-        ["A wealth of information creates a poverty of attention"],
-        ["If they killed him tonight, at least he would die alive."],
+        ['Any thoughts about focusing for a longer duration next time?'],
+        ['A wealth of information creates a poverty of attention'],
+        ['If they killed him tonight, at least he would die alive.'],
         [
-          "Give every man thy ear, but few thy voice;",
+          'Give every man thy ear, but few thy voice;',
           "Take each man's censure, but reserve thy judgment.",
         ],
       ],
@@ -71,12 +71,12 @@ type StringsKey = keyof ReturnType<typeof getStrings>;
 
 type StringsDialog<k extends StringsKey> = Omit<
   ReturnType<typeof getStrings>[k],
-  "numberOfQuestions" | "fixedQuestions" | "randomizedQuestions"
-> & { questions: string[] };
+  'numberOfQuestions' | 'fixedQuestions' | 'randomizedQuestions'
+> & {questions: string[]};
 
 export function useStrings<Key extends StringsKey>(
   key: Key,
-  params: StringsInput
+  params: StringsInput,
 ): StringsDialog<Key> {
   const obj = getStrings(params)[key];
   const num = obj.numberOfQuestions;

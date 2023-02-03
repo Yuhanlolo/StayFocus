@@ -1,23 +1,23 @@
-import { useState } from "react";
-import { Text, Pressable, View, Keyboard } from "react-native";
+import {useState} from 'react';
+import {Text, Pressable, View, Keyboard} from 'react-native';
 
-import { createStyles } from "../helpers";
-import { CustomButton, Screen, TimeDropdown, Gear } from "../components";
-import { useSessionStore } from "../api";
+import {createStyles} from '../helpers';
+import {CustomButton, Screen, TimeDropdown, Gear} from '../components';
+import {useSessionStore} from '../api';
 
 //Home page to set focusing time
 
-function HomePage({ navigation }) {
+function HomePage({navigation}) {
   const [value, setValue] = useState(25);
 
-  const newSession = useSessionStore((state) => state.newSession);
+  const newSession = useSessionStore(state => state.newSession);
 
   const onPress = () => {
-    newSession("Focusing", value);
+    newSession('Focusing', value);
     // Unfocus the input before changing page, so that the
     // user sees if their input gets clamped to min or max
     Keyboard.dismiss();
-    setTimeout(() => navigation.navigate("TimerPage"), 500);
+    setTimeout(() => navigation.navigate('TimerPage'), 500);
   };
 
   const styles = useStyles();
@@ -33,38 +33,37 @@ function HomePage({ navigation }) {
         <TimeDropdown value={value} setValue={setValue} />
       </View>
       <CustomButton
-        styles={{ button: styles.button, text: styles.buttonText }}
-        onPress={onPress}
-      >
+        styles={{button: styles.button, text: styles.buttonText}}
+        onPress={onPress}>
         Start
       </CustomButton>
     </Screen>
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   iconContainer: {
-    width: "100%",
+    width: '100%',
   },
   icon: {
     color: theme.primaryColor,
   },
   container: {
-    alignItems: "center",
-    height: "100%",
+    alignItems: 'center',
+    height: '100%',
     padding: theme.padding,
     backgroundColor: theme.primaryColor,
   },
   section1: {
     marginTop: 40,
-    justifyContent: "flex-start",
-    alignItems: "stretch",
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
   },
   text: {
     marginBottom: 12,
     color: theme.textColor,
     fontSize: theme.fontSizes.md,
-    textAlign: "center",
+    textAlign: 'center',
   },
   button: {
     marginTop: 180,

@@ -1,6 +1,6 @@
-import { Pressable, PressableProps, Text } from "react-native";
+import {Pressable, PressableProps, Text} from 'react-native';
 
-import { createStyles, CSSStyles } from "../helpers";
+import {createStyles, CSSStyles} from '../helpers';
 
 interface CustomButtonProps extends PressableProps {
   styles?: {
@@ -20,8 +20,7 @@ export function CustomButton(props: CustomButtonProps) {
         borderless: true,
       }}
       style={[defaultStyles.button, props.styles?.button]}
-      {...props}
-    >
+      {...props}>
       <Text style={[defaultStyles.text, props.styles?.text]}>
         {props.children}
       </Text>
@@ -29,7 +28,7 @@ export function CustomButton(props: CustomButtonProps) {
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   button: {
     padding: 12,
     paddingLeft: 24,
@@ -39,6 +38,6 @@ const useStyles = createStyles((theme) => ({
   },
   text: {
     color: theme.textColor,
-    textAlign: "center",
+    textAlign: 'center',
   },
 }));

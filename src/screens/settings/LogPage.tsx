@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Text } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
-import { getLastSessionEndTime, getSessionsCountToday } from "../../api";
+import React, {useState} from 'react';
+import {Text} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import {getLastSessionEndTime, getSessionsCountToday} from '../../api';
 
-import { createStyles } from "../../helpers";
-import SettingsScreen from "./SettingsScreen";
+import {createStyles} from '../../helpers';
+import SettingsScreen from './SettingsScreen';
 
-export default function LogPage({ navigation }) {
+export default function LogPage({navigation}) {
   const styles = useStyles();
   const [count, setCount] = useState(0);
-  const [endTime, setEndTime] = useState("");
+  const [endTime, setEndTime] = useState('');
 
   // Changing a screen does not necessarily mean componentWillUnmount
   // will be called, so if user returns to HomePage then go back to
@@ -30,33 +30,32 @@ export default function LogPage({ navigation }) {
       }
 
       callback();
-    }, [])
+    }, []),
   );
 
   return (
     <SettingsScreen
       title="Focusing Log"
-      onBack={() => navigation.navigate("Home")}
-    >
+      onBack={() => navigation.navigate('Home')}>
       <Text style={styles.text}>
-        You have started <Text style={{ fontWeight: "700" }}>{count}</Text>{" "}
+        You have started <Text style={{fontWeight: '700'}}>{count}</Text>{' '}
         focusing sessions today.
       </Text>
       <Text style={styles.text}>
-        The last focus session ended at{" "}
-        <Text style={{ fontWeight: "700" }}>{endTime}</Text>.
+        The last focus session ended at{' '}
+        <Text style={{fontWeight: '700'}}>{endTime}</Text>.
       </Text>
     </SettingsScreen>
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   text: {
-    width: "80%",
+    width: '80%',
     marginTop: 60,
     marginBottom: 8,
     color: theme.textColor,
     fontSize: theme.fontSizes.md,
-    textAlign: "center",
+    textAlign: 'center',
   },
 }));

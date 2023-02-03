@@ -1,8 +1,8 @@
-import { Pressable, Text, View } from "react-native";
-import { LeftArrow, Screen } from "../../components";
-import { createStyles } from "../../helpers";
+import {Pressable, Text, View} from 'react-native';
+import {LeftArrow, Screen} from '../../components';
+import {createStyles} from '../../helpers';
 
-export default function SettingsPage({ title, onBack, children }) {
+export default function SettingsPage({title, onBack, children}) {
   const styles = useStyles();
   return (
     <Screen styles={styles.container}>
@@ -17,23 +17,23 @@ export default function SettingsPage({ title, onBack, children }) {
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   container: {
     backgroundColor: theme.secondaryColor,
-    alignItems: "center",
+    alignItems: 'center',
   },
   buttonContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
   button: {
     color: theme.primaryColor,
   },
   title: {
     fontSize: theme.fontSizes.lg,
-    fontWeight: "700",
-    textAlign: "center",
+    fontWeight: '700',
+    textAlign: 'center',
     color: theme.textColor,
   },
 }));

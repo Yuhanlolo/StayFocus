@@ -2,8 +2,8 @@ import notifee, {
   RepeatFrequency,
   TimestampTrigger,
   TriggerType,
-} from "@notifee/react-native";
-import BackgroundTimer from "react-native-background-timer";
+} from '@notifee/react-native';
+import BackgroundTimer from 'react-native-background-timer';
 
 // Request permissions (required for iOS)
 notifee.requestPermission();
@@ -23,8 +23,8 @@ async function onReminderNotification(date: Date) {
   console.log(date.toString());
 
   const channelId = await notifee.createChannel({
-    id: "default",
-    name: "Default Channel",
+    id: 'default',
+    name: 'Default Channel',
   });
 
   const trigger: TimestampTrigger = {
@@ -38,29 +38,29 @@ async function onReminderNotification(date: Date) {
 
   await notifee.createTriggerNotification(
     {
-      id: "123",
-      title: "StayFocused",
-      body: "Ready to focus? Set your focusing goal now!",
+      id: '123',
+      title: 'StayFocused',
+      body: 'Ready to focus? Set your focusing goal now!',
       android: {
         channelId: channelId,
         pressAction: {
-          id: "default",
+          id: 'default',
         },
       },
     },
-    trigger
+    trigger,
   );
 }
 
-export const notificationId = "184594917";
+export const notificationId = '184594917';
 
 export async function onLeaveFocusNotification(
-  enable: React.MutableRefObject<boolean>
+  enable: React.MutableRefObject<boolean>,
 ) {
   // Create a channel (required for Android)
   const channelId = await notifee.createChannel({
-    id: "default",
-    name: "Default Channel",
+    id: 'default',
+    name: 'Default Channel',
   });
   const timeoutSecond = 10;
   const timeoutMillisecond = timeoutSecond * 1000 + 500;
@@ -76,15 +76,15 @@ export async function onLeaveFocusNotification(
       if (enable.current) {
         notifee.displayNotification({
           id: notificationId,
-          title: "StayFocused",
+          title: 'StayFocused',
           body: `Focus mode will end in ${t} seconds. Tap here to go back to StayFocus`,
           data: {
-            focusStatus: "ongoing",
+            focusStatus: 'ongoing',
           },
           android: {
             channelId,
             pressAction: {
-              id: "default",
+              id: 'default',
             },
           },
         });
@@ -106,19 +106,19 @@ export async function onLeaveFocusNotification(
   await notifee.createTriggerNotification(
     {
       id: notificationId,
-      title: "StayFocused",
-      body: "Focus mode has ended. Tap here to go back to StayFocus",
+      title: 'StayFocused',
+      body: 'Focus mode has ended. Tap here to go back to StayFocus',
       data: {
-        focusStatus: "ended",
+        focusStatus: 'ended',
       },
       android: {
         channelId: channelId,
         pressAction: {
-          id: "default",
+          id: 'default',
         },
       },
     },
-    trigger
+    trigger,
   );
 }
 

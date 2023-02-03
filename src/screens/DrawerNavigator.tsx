@@ -1,16 +1,16 @@
-import { View } from "react-native";
+import {View} from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
-} from "@react-navigation/drawer";
+} from '@react-navigation/drawer';
 
-import HomePage from "./HomePage";
-import { AboutPage, LogPage, SettingsPage } from "./settings";
-import { logoutUser } from "../api";
-import { createStyles } from "../helpers";
+import HomePage from './HomePage';
+import {AboutPage, LogPage, SettingsPage} from './settings';
+import {logoutUser} from '../api';
+import {createStyles} from '../helpers';
 
 const Drawer = createDrawerNavigator();
 
@@ -26,17 +26,16 @@ export default function DrawerNavigator() {
         drawerItemStyle: styles.drawerItem,
         drawerLabelStyle: styles.drawerLabel,
       }}
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
-    >
+      drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen
         name="Home"
         component={HomePage}
-        options={{ drawerItemStyle: { display: "none" } }}
+        options={{drawerItemStyle: {display: 'none'}}}
       />
       <Drawer.Screen
         name="Settings"
         component={SettingsPage}
-        options={{ drawerLabel: "My plan" }}
+        options={{drawerLabel: 'My plan'}}
       />
       <Drawer.Screen name="Log" component={LogPage} />
       <Drawer.Screen name="About" component={AboutPage} />
@@ -49,8 +48,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
   return (
     <DrawerContentScrollView
       {...props}
-      contentContainerStyle={styles.container}
-    >
+      contentContainerStyle={styles.container}>
       <View>
         <DrawerItemList {...props} />
       </View>
@@ -65,23 +63,23 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(theme => ({
   drawer: {
     width: 200,
   },
   container: {
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     backgroundColor: theme.secondaryColor,
   },
   drawerItem: {
-    width: "100%",
+    width: '100%',
   },
   drawerLabel: {
     color: theme.textColor,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: theme.fontSizes.md,
-    fontWeight: "300",
+    fontWeight: '300',
     paddingBottom: 4,
     borderBottomColor: theme.primaryColor,
     borderBottomWidth: 1,

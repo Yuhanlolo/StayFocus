@@ -1,6 +1,7 @@
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 
 export async function isLocked() {
-  let locked: boolean = await NativeModules.LockDetectionModule.getScreenStatus();
+  let locked: boolean =
+    await NativeModules.LockDetectionModule.getScreenStatus();
   return locked;
 }
