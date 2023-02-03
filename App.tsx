@@ -2,7 +2,7 @@
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {LogBox } from 'react-native';
+import { LogBox } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import SignupPage from "./src/screens/SignupPage";
@@ -23,7 +23,6 @@ export default function App() {
   const user = useAppStore((state) => state.uid);
 
   return (
-    
     <ThemeProvider>
       <SafeAreaProvider>
         <SafeAreaView style={styles.container}>

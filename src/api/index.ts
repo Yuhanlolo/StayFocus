@@ -11,6 +11,7 @@ export * from "./store";
 export * from "./firestore";
 export * from "./auth";
 export * from "./notification";
+export * from "./isLocked";
 
 export function saveSession() {
   const session = getSession();

@@ -14,12 +14,14 @@ import com.facebook.react.bridge.ReactMethod;
 import java.util.Map;
 import java.util.HashMap;
 
+import android.app.Application;
 import android.util.Log;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.app.KeyguardManager;
+import android.os.PowerManager;
 
 public class LockDetectionModule extends ReactContextBaseJavaModule {
 
@@ -34,11 +36,21 @@ public class LockDetectionModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getScreenStatus(Promise promise) {
-        KeyguardManager mKeyguardManager = (KeyguardManager)
-        MainApplication.getInstance().getSystemService(Context.KEYGUARD_SERVICE);
-        boolean flag = mKeyguardManager.inKeyguardRestrictedInputMode();
-        WritableMap map = Arguments.createMap();
-        map.putString("flag", String.valueOf(flag));
-        promise.resolve(map);
+        // Taken from https://gist.github.com/Jeevuz/4ec01688083670b1f3f92af64e44c112
+        boolean isLocked = false;
+        Application context = MainApplication.getInstance();
+        KeyguardManager keyguardManager = (KeyguardManager)context.getSystemService(Context.KEYGUARD_SERVICE);
+
+        if (keyguardManager.inKeyguardRestrictedInputMode()) {
+            isLocked = true;
+        } else {
+            // If password is not set in the settings, the inKeyguardRestrictedInputMode() returns false,
+            // so we need to check if screen on for this case
+
+            PowerManager powerManager = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+            isLocked = !powerManager.isInteractive();
+        }
+
+        promise.resolve(isLocked);
     }
 }
