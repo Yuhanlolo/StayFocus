@@ -6,7 +6,8 @@ interface GiveUpAttempt {
 
 export interface Session {
   plan: string;
-  timestamp: string;
+  startTime: string;
+  endTime: string;
   focusDurationMinutes: number;
   completedMinutes: number;
   giveUpAttempts: GiveUpAttempt[];
@@ -19,4 +20,10 @@ export interface UserSettings {
     hour: number;
     minute: number;
   };
+}
+
+export interface AnalyticsData {
+  sessionsCount: number;
+  sessionsMinutes: number;
+  lastSessionEndTime: string;
 }

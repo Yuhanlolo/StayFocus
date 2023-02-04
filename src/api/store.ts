@@ -69,7 +69,8 @@ interface SessionStore extends Session {
 
 const defaultSession = {
   plan: 'Doing stuff',
-  timestamp: '',
+  startTime: '',
+  endTime: '',
   focusDurationMinutes: -1,
   completedMinutes: -1,
   giveUpAttempts: [],
@@ -81,7 +82,7 @@ export const useSessionStore = create<SessionStore>()(set => ({
   newSession: (plan, minutes) =>
     set({
       plan: plan || defaultSession.plan,
-      timestamp: new Date().toString(),
+      startTime: new Date().toJSON(),
       focusDurationMinutes: clamp(
         defaultApp.minMinutes,
         minutes,
@@ -94,7 +95,7 @@ export const useSessionStore = create<SessionStore>()(set => ({
       giveUpAttempts: [
         ...state.giveUpAttempts,
         {
-          timestamp: new Date().toString(),
+          timestamp: new Date().toJSON(),
           answers: answers,
           givenUp: givenUp,
         },
@@ -119,7 +120,8 @@ export function getSession(): Session {
   const store = useSessionStore.getState();
   return {
     plan: store.plan,
-    timestamp: store.timestamp,
+    startTime: store.startTime,
+    endTime: store.endTime,
     focusDurationMinutes: store.focusDurationMinutes,
     completedMinutes: store.completedMinutes,
     giveUpAttempts: store.giveUpAttempts,

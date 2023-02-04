@@ -1,5 +1,4 @@
 import {
-  getFirestore,
   doc,
   setDoc,
   collection,
@@ -25,7 +24,7 @@ const db = initializeFirestore(app, {experimentalForceLongPolling: true});
 const dbName = 'testdb';
 
 export function saveSessionToFirestore(uid: string, session: Session) {
-  const sessionRef = doc(db, dbName, uid, 'log', new Date().toJSON());
+  const sessionRef = doc(db, dbName, uid, 'log', session.startTime);
   setDoc(sessionRef, session);
 }
 
