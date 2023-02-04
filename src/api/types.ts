@@ -1,7 +1,6 @@
 interface GiveUpAttempt {
   timestamp: string;
   givenUp: boolean;
-  answers: string[];
 }
 
 export interface Session {
@@ -11,7 +10,6 @@ export interface Session {
   focusDurationMinutes: number;
   completedMinutes: number;
   giveUpAttempts: GiveUpAttempt[];
-  reflectionAnswers: string[];
 }
 
 export interface UserSettings {

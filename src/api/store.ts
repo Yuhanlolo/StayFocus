@@ -8,8 +8,8 @@ import {Session, UserSettings} from './types';
 // AppStore: client-side persistent store for
 // authentication info and global app settings
 interface AppStore extends UserSettings {
-  uid?: string;
-  username?: string;
+  uid: string | undefined;
+  username: string | undefined;
   dailyMinMinutes: number;
   reminderTime: {
     hour: number;
@@ -30,7 +30,7 @@ const defaultApp = {
     hour: 8,
     minute: 0,
   },
-  minMinutes: 25,
+  minMinutes: 1,
   maxMinutes: 120,
   focusSessions: [],
 };
@@ -62,9 +62,8 @@ export const resetUserInfo = () => useAppStore.setState(defaultApp);
 interface SessionStore extends Session {
   newSession: (plan: string, minutes: number) => void;
   saveCompletedMinutes: (minutes: number) => void;
-  saveGiveUpAttempt: (answers: string[], givenUp: boolean) => void;
-  saveReflectionAnswers: (answers: string[]) => void;
-  saveLastGiveUpAttempt: (answers: string[]) => void;
+  saveGiveUpAttempt: (givenUp: boolean) => void;
+  saveLastGiveUpAttempt: () => void;
 }
 
 const defaultSession = {
@@ -74,7 +73,6 @@ const defaultSession = {
   focusDurationMinutes: -1,
   completedMinutes: -1,
   giveUpAttempts: [],
-  reflectionAnswers: [],
 };
 
 export const useSessionStore = create<SessionStore>()(set => ({
@@ -90,25 +88,22 @@ export const useSessionStore = create<SessionStore>()(set => ({
       ),
     }),
   saveCompletedMinutes: minutes => set({completedMinutes: minutes}),
-  saveGiveUpAttempt: (answers, givenUp) =>
+  saveGiveUpAttempt: givenUp =>
     set(state => ({
       giveUpAttempts: [
         ...state.giveUpAttempts,
         {
           timestamp: new Date().toJSON(),
-          answers: answers,
           givenUp: givenUp,
         },
       ],
     })),
-  saveReflectionAnswers: answers => set({reflectionAnswers: answers}),
-  saveLastGiveUpAttempt: answers =>
+  saveLastGiveUpAttempt: () =>
     set(state => ({
       giveUpAttempts: state.giveUpAttempts.map((v, i) => {
         return i === state.giveUpAttempts.length - 1
           ? {
               ...v,
-              answers: answers,
               givenUp: true,
             }
           : v;
@@ -125,7 +120,6 @@ export function getSession(): Session {
     focusDurationMinutes: store.focusDurationMinutes,
     completedMinutes: store.completedMinutes,
     giveUpAttempts: store.giveUpAttempts,
-    reflectionAnswers: store.reflectionAnswers,
   };
 }
 

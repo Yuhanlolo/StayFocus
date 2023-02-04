@@ -3,8 +3,8 @@ import {AppState, Text, View} from 'react-native';
 import notifee from '@notifee/react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {createStyles, secondsToHHMMSS, useStrings} from '../helpers';
-import {CustomButton, Screen, ReflectionModal} from '../components';
+import {createStyles, secondsToHHMMSS} from '../helpers';
+import {CustomButton, Screen, CustomModal} from '../components';
 import {
   onLeaveFocusNotification,
   notificationId,
@@ -29,7 +29,6 @@ function TimerPage({navigation}) {
   const dateLocked = useRef(Date.now());
 
   const minutes = useSessionStore(state => state.focusDurationMinutes);
-  const plan = useSessionStore(state => state.plan);
   const saveCompletedMinutes = useSessionStore(
     state => state.saveCompletedMinutes,
   );
@@ -42,25 +41,23 @@ function TimerPage({navigation}) {
   const elapsedMinutes = () =>
     Math.ceil((initialSeconds - secondsRef.current) / 60);
 
-  const strings = useStrings('leaveFocusDialog', {
-    focusDurationMinutes: minutes,
-  });
-
   const toggleTimerAndModal = () => {
     setPaused(!paused);
     setModal(!modal);
   };
 
-  const onBackToFocus = (answers: string[]) => {
-    saveGiveUpAttempt(answers, false);
+  const onBackToFocus = () => {
+    saveGiveUpAttempt(false);
     toggleTimerAndModal();
   };
 
-  const onCompleteGiveUp = (answers: string[]) => {
-    saveGiveUpAttempt(answers, true);
+  const onLeave = () => {
+    saveGiveUpAttempt(true);
     saveCompletedMinutes(elapsedMinutes());
     saveSession();
-    navigation.navigate('HomePage');
+    navigation.navigate('FocusEndedPage', {
+      elapsedMinutes: elapsedMinutes(),
+    });
   };
 
   const onComplete = () => {
@@ -75,12 +72,13 @@ function TimerPage({navigation}) {
           clearInterval(interval);
           onComplete();
         } else {
-          setSeconds(seconds => seconds - 1);
+          setSeconds(secs => secs - 1);
         }
       }, 1000);
 
       return () => clearInterval(interval);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paused]);
 
   useFocusEffect(() => {
@@ -95,7 +93,7 @@ function TimerPage({navigation}) {
             dateLocked.current = Date.now();
           } else {
             enableNotification.current = true;
-            saveGiveUpAttempt([], false);
+            saveGiveUpAttempt(false);
             onLeaveFocusNotification(enableNotification);
           }
         } else if (nextAppState === 'active') {
@@ -105,13 +103,11 @@ function TimerPage({navigation}) {
             let secondsDelta = Math.floor(
               (Date.now() - dateLocked.current) / 1000,
             );
-            // Either the focus session continues or ends
+            // Either the focus session continues or completed
             if (secondsDelta < secondsRef.current) {
-              setSeconds(seconds => seconds - secondsDelta);
+              setSeconds(secs => secs - secondsDelta);
             } else {
-              navigation.navigate('FocusEndedPage', {
-                elapsedMinutes: elapsedMinutes(),
-              });
+              onComplete();
             }
           } else {
             // If the user clicks the notification in the time limit, the
@@ -122,9 +118,7 @@ function TimerPage({navigation}) {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
             } else {
-              navigation.navigate('FocusEndedPage', {
-                elapsedMinutes: elapsedMinutes(),
-              });
+              onLeave();
             }
           }
         }
@@ -147,18 +141,28 @@ function TimerPage({navigation}) {
           Leave focus mode
         </CustomButton>
       </View>
-      <Text style={styles.plan}>{plan}</Text>
+      <Text style={styles.plan}>Focusing</Text>
       <Text style={styles.timer}>{timeString(seconds)}</Text>
       {modal && (
-        <ReflectionModal
+        <CustomModal
           visible={true}
-          title={strings.dialogTitle}
-          prompts={strings.questions.concat([strings.finalMessage])}
           onRequestClose={toggleTimerAndModal}
-          onComplete={onCompleteGiveUp}
-          onBack={onBackToFocus}
-          styles={styles.modal}
-        />
+          title="Leaving focus mode"
+          styles={styles.modal}>
+          <Text style={styles.modalText}>Are you sure you want to leave?</Text>
+          <View style={styles.modalButtonContainer}>
+            <CustomButton
+              onPress={onBackToFocus}
+              styles={{button: styles.modalButton}}>
+              Back to focus
+            </CustomButton>
+            <CustomButton
+              onPress={onLeave}
+              styles={{button: styles.modalButton}}>
+              Leave
+            </CustomButton>
+          </View>
+        </CustomModal>
       )}
     </Screen>
   );
@@ -192,6 +196,21 @@ const useStyles = createStyles(theme => ({
   modal: {
     justifyContent: 'flex-end',
     paddingBottom: 60,
+  },
+  modalText: {
+    marginBottom: 16,
+    color: theme.muteColor,
+    fontSize: theme.fontSizes.sm,
+    textAlign: 'center',
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  modalButton: {
+    borderRadius: 16,
+    rippleColor: theme.primaryColor,
   },
 }));
 
