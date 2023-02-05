@@ -25,7 +25,7 @@ function HomePage({navigation}) {
     <Screen>
       <View style={styles.iconContainer}>
         <Pressable onPress={navigation.toggleDrawer}>
-          <Gear size={32} color={styles.icon.color} />
+          <Gear size={32} color={styles.icon.color!} />
         </Pressable>
       </View>
       <View style={styles.section1}>

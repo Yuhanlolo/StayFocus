@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
-import Svg, {Path} from 'react-native-svg';
 
 import {getAnalyticsData} from '../../api';
+import {CaretLeft, CaretRight} from '../../components';
 import {createStyles, dateToYYYYMMDD} from '../../helpers';
 import SettingsScreen from './SettingsScreen';
 
@@ -31,39 +31,11 @@ export default function LogPage({navigation}) {
       onBack={() => navigation.navigate('Home')}>
       <View style={styles.dateContainer}>
         <Pressable onPress={moveBackOneDay}>
-          <Svg
-            width={styles.arrows.width}
-            height={styles.arrows.width}
-            fill={styles.arrows.color}
-            viewBox="0 0 256 256">
-            <Path fill="none" d="M0 0h256v256H0z" />
-            <Path
-              fill="none"
-              stroke={styles.arrows.color}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={32}
-              d="m160 208-80-80 80-80"
-            />
-          </Svg>
+          <CaretLeft size={styles.arrows.width} color={styles.arrows.color} />
         </Pressable>
         <Text style={styles.dateText}>{dateToYYYYMMDD(date)}</Text>
         <Pressable onPress={moveForwardOneDay}>
-          <Svg
-            width={styles.arrows.width}
-            height={styles.arrows.width}
-            fill={styles.arrows.color}
-            viewBox="0 0 256 256">
-            <Path fill="none" d="M0 0h256v256H0z" />
-            <Path
-              fill="none"
-              stroke={styles.arrows.color}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={32}
-              d="m96 48 80 80-80 80"
-            />
-          </Svg>
+          <CaretRight size={styles.arrows.width} color={styles.arrows.color} />
         </Pressable>
       </View>
       <Text style={styles.text}>

@@ -8,8 +8,8 @@ import {Session, UserSettings} from './types';
 // AppStore: client-side persistent store for
 // authentication info and global app settings
 interface AppStore extends UserSettings {
-  uid?: string;
-  username?: string;
+  uid: string | undefined;
+  username: string | undefined;
   dailyMinMinutes: number;
   reminderTime: {
     hour: number;
