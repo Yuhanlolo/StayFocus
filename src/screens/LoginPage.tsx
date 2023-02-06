@@ -5,6 +5,7 @@ import {CustomButton, Screen} from '../components';
 import {createStyles} from '../helpers';
 import {loginUser} from '../api';
 
+
 function LoginPage({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
