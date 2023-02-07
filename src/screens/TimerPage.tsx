@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {AppState, Text, View} from 'react-native';
+import {AppState, Text, View, Image} from 'react-native';
 import notifee from '@notifee/react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -12,6 +12,8 @@ import {
   useSessionStore,
   isLocked,
 } from '../api';
+
+import ChatRefQuitPage from './ChatRefQuitPage';
 
 const timeString = (secs: number) => {
   const [h, m, s] = secondsToHHMMSS(secs);
@@ -38,18 +40,9 @@ function TimerPage({navigation}) {
   const [seconds, setSeconds] = useState(initialSeconds);
   const secondsRef = useRef(0);
   secondsRef.current = seconds;
+
   const elapsedMinutes = () =>
     Math.ceil((initialSeconds - secondsRef.current) / 60);
-
-  const toggleTimerAndModal = () => {
-    setPaused(!paused);
-    setModal(!modal);
-  };
-
-  const onBackToFocus = () => {
-    saveGiveUpAttempt(false);
-    toggleTimerAndModal();
-  };
 
   const onLeave = () => {
     saveGiveUpAttempt(true);
@@ -137,33 +130,17 @@ function TimerPage({navigation}) {
       <View style={styles.buttonContainer}>
         <CustomButton
           styles={{button: styles.button, text: styles.buttonText}}
-          onPress={toggleTimerAndModal}>
+          onPress={()=>{navigation.navigate('ChatRefQuitPage')}}>
           Leave focus mode
         </CustomButton>
       </View>
-      <Text style={styles.plan}>Focusing</Text>
-      <Text style={styles.timer}>{timeString(seconds)}</Text>
-      {modal && (
-        <CustomModal
-          visible={true}
-          onRequestClose={toggleTimerAndModal}
-          title="Leaving focus mode"
-          styles={styles.modal}>
-          <Text style={styles.modalText}>Are you sure you want to leave?</Text>
-          <View style={styles.modalButtonContainer}>
-            <CustomButton
-              onPress={onBackToFocus}
-              styles={{button: styles.modalButton}}>
-              Back to focus
-            </CustomButton>
-            <CustomButton
-              onPress={onLeave}
-              styles={{button: styles.modalButton}}>
-              Leave
-            </CustomButton>
-          </View>
-        </CustomModal>
-      )}
+      <View style = {styles.bubble}>
+        <Text style={styles.plan}>There are</Text>
+        <Text style={styles.timer}>{timeString(seconds)}</Text>
+        <Text style={styles.plan}>left in the session</Text>
+      </View>
+      <View style = {styles.arrow}/>
+      <Image source={require('../../assets/home_page.png')} style = {styles.image} resizeMode = 'contain'/>
     </Screen>
   );
 }
@@ -181,7 +158,7 @@ const useStyles = createStyles(theme => ({
     fontSize: theme.fontSizes.sm,
   },
   plan: {
-    marginTop: 160,
+    marginTop: 15,
     marginBottom: 8,
     color: theme.textColor,
     fontSize: theme.fontSizes.lg,
@@ -193,25 +170,35 @@ const useStyles = createStyles(theme => ({
     fontSize: 2 * theme.fontSizes.xl,
     textAlign: 'center',
   },
-  modal: {
-    justifyContent: 'flex-end',
-    paddingBottom: 60,
+  bubble: {
+    flexDirection: 'column',
+    backgroundColor: '#506F4C',
+    alignItems: "center",
+    paddingHorizontal: 10,
+    top: '15%',
+    height: '35%',
+    width: '90%',
+    borderRadius: 25,
+    borderWidth: 7,
+    borderColor: '#506F4C',
   },
-  modalText: {
-    marginBottom: 16,
-    color: theme.muteColor,
-    fontSize: theme.fontSizes.sm,
-    textAlign: 'center',
+  image: {
+    top: '15%',
+    height: '18%',
+    width: '100%',
+    left: '25%',
   },
-  modalButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  modalButton: {
-    borderRadius: 16,
-    rippleColor: theme.primaryColor,
-  },
+  arrow: {
+    top: '15%',
+    left: '25%',
+    width: 30,
+    height: 30,
+    borderWidth: 20,
+    borderTopColor: '#506F4C',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderLeftColor: 'transparent',
+},
 }));
 
 export default TimerPage;

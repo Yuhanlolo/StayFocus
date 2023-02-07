@@ -2,23 +2,23 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, LogBox } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import chatScript from '../ChatScripts/chatReflectionScript_giveUp';
-import ParaAPI from '../API/Para';
-import SentiAPI from '../API/SentiGPT';
-import GPTAPI from '../API/GPT';
+import chatScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
+import ParaAPI from '../gpt_apis/Para';
+import SentiAPI from '../gpt_apis/SentiGPT';
+import GPTAPI from '../gpt_apis/GPT';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import SetTimePage from './TimeSet';
-import SuccessPage from './ChatFinish';
+import TimerPage from './TimerPage';
+import HomePage from './HomePage';
 
 let flag = 'false';
 let count = 0;
 let ava_index = 0;
 
 
-function ChatRefQuit({ route, navigation }) {
+function ChatRefQuitPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
   const [minLeft, setMinLeft] = useState('24');
   const [secLeft, setSecLeft] = useState('27');
@@ -153,21 +153,18 @@ function ChatRefQuit({ route, navigation }) {
     if(tag == 'Positive')
     {
         console.log('pos');
-        avat = "https://s1.ax1x.com/2022/12/31/pS93lz6.png";
         ava_index = 1;
     }
     
     if(tag == 'Negative')
     {
         console.log('neg');
-        avat = "https://i.328888.xyz/2022/12/27/Uyixv.png";
         ava_index = 0;
     }
     
     if(tag == 'Neutral')
     {
         console.log('neu');
-        avat = "https://i.328888.xyz/2022/12/27/Uyyty.png";
         ava_index = 2;
     }
   }
@@ -276,7 +273,7 @@ function ChatRefQuit({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: new Date(),});
-                navigation.navigate('SetTimePage');
+                navigation.navigate('HomePage');
               }}>
               <Text style = {styles.buttonTextLeft}>{'   Yes   '}</Text>
             </TouchableOpacity>
@@ -286,7 +283,7 @@ function ChatRefQuit({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 chat_history.push({character: 'user', sent: 'No', ava: -1, date: new Date(),});
-                navigation.navigate('SuccessPage');
+                navigation.navigate('TimerPage');
               }}>
               <Text style = {styles.buttonTextRight}>{'    No   '}</Text>
             </TouchableOpacity>
@@ -405,4 +402,4 @@ function ChatRefQuit({ route, navigation }) {
 
   });
 
-export default ChatRefQuit;
+export default ChatRefQuitPage;

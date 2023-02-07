@@ -2,15 +2,16 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, LogBox } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import chatScript from '../ChatScripts/chatReflectionScript_congrats';
-import ParaAPI from '../API/Para';
-import SentiAPI from '../API/SentiGPT';
-import GPTAPI from '../API/GPT';
+import chatScript from '../chat_reflection_scripts/chatReflectionScript_congrats';
+import {useSessionStore} from '../api';
+import ParaAPI from '../gpt_apis/Para';
+import SentiAPI from '../gpt_apis/SentiGPT';
+import GPTAPI from '../gpt_apis/GPT';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import SetTimePage from './TimeSet';
+import HomePage from './HomePage';
 
 
 let flag = 'false';
@@ -18,7 +19,7 @@ let count_finish = 0;
 let ava_index = 1;
 
 
-function ChatRefFinish({ route, navigation }) {
+function ChatRefFinishPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
   const [minLeft, setMinLeft] = useState('24');
   const [secLeft, setSecLeft] = useState('27');
@@ -140,21 +141,18 @@ function ChatRefFinish({ route, navigation }) {
     if(tag == 'Positive')
     {
         console.log('pos');
-        avat = "https://s1.ax1x.com/2022/12/31/pS93lz6.png";
         ava_index = 1;
     }
     
     if(tag == 'Negative')
     {
         console.log('neg');
-        avat = "https://i.328888.xyz/2022/12/27/Uyixv.png";
         ava_index = 0;
     }
     
     if(tag == 'Neutral')
     {
         console.log('neu');
-        avat = "https://img1.imgtp.com/2023/02/04/jjyrMHT5.png";
         ava_index = 2;
     }
   }
@@ -255,7 +253,7 @@ function ChatRefFinish({ route, navigation }) {
               onPress={() => {
                 count_finish = 0;
                 chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: new Date(),});
-                navigation.navigate('SetTimePage');
+                navigation.navigate('HomePage');
               }}>
               <Text style = {styles.buttonText}>{'back to home'}</Text>
             </TouchableOpacity>
@@ -357,4 +355,4 @@ function ChatRefFinish({ route, navigation }) {
 
   });
 
-export default ChatRefFinish;
+export default ChatRefFinishPage;

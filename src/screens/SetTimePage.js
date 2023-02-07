@@ -2,13 +2,13 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText } from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import chatScript from '../ChatScripts/chatScript';
-import ParaAPI from '../API/Para';
+import chatScript from '../chat_reflection_scripts/chatScript';
+import ParaAPI from '../gpt_apis/Para';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import QuitPage from './ChatQuit';
+import TimerPage from './TimerPage';
 
 const chat_user = {
   _id: 1,
@@ -39,10 +39,7 @@ let ava_index = 1;
 function SetTimePage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
   const [timeSet, setTimeSet] = useState(0);
-  const [userId, setUserId] = useState('');
-  const [oneTimeId, setOneTimeId] = useState('');
-
-
+  const newSession = useSessionStore(state => state.newSession);
 
   useFocusEffect(React.useCallback(() => {
     let notice = 'Please enter or select your focus time.';
@@ -158,7 +155,8 @@ function SetTimePage({ route, navigation }) {
         if(timeNum >= 25 && timeNum <= 125)
         {
           setTimeSet(timeNum);
-          navigation.navigate('QuitPage');
+          newSession('Focusing', timeNum);
+          navigation.navigate('TimerPage');
         }
       }
       if(isNaN(timeNum))
@@ -209,11 +207,11 @@ function SetTimePage({ route, navigation }) {
         <View>
           <MessageText {...props}/>
           <View style = {styles.dropdown}>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(25); chat_history.push({character: 'user', sent: '25 mins', ava: -1, date: new Date()}); navigation.navigate('QuitPage');}}>{'            25 mins             '}</Text>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(50); chat_history.push({character: 'user', sent: '50 mins', ava: -1, date: new Date()}); navigation.navigate('QuitPage');}}>{'            50 mins             '}</Text>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(75); chat_history.push({character: 'user', sent: '75 mins', ava: -1, date: new Date()}); navigation.navigate('QuitPage');}}>{'            75 mins             '}</Text>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(100); chat_history.push({character: 'user', sent: '100 mins', ava: -1, date: new Date()}); navigation.navigate('QuitPage');}}>{'            100 mins           '}</Text>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(125); chat_history.push({character: 'user', sent: '125 mins', ava: -1, date: new Date()}); navigation.navigate('QuitPage');}}>{'            125 mins           '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(25); chat_history.push({character: 'user', sent: '25 mins', ava: -1, date: new Date()}); newSession('Focusing', 25); navigation.navigate('TimerPage'); }}>{'            25 mins             '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(50); chat_history.push({character: 'user', sent: '50 mins', ava: -1, date: new Date()}); newSession('Focusing', 50); navigation.navigate('TimerPage'); }}>{'            50 mins             '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(75); chat_history.push({character: 'user', sent: '75 mins', ava: -1, date: new Date()}); newSession('Focusing', 75); navigation.navigate('TimerPage'); }}>{'            75 mins             '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(100); chat_history.push({character: 'user', sent: '100 mins', ava: -1, date: new Date()}); newSession('Focusing', 100); navigation.navigate('TimerPage');}}>{'            100 mins           '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(125); chat_history.push({character: 'user', sent: '125 mins', ava: -1, date: new Date()}); newSession('Focusing', 125); navigation.navigate('TimerPage');}}>{'            125 mins           '}</Text>
           </View>
         </View>
       );
