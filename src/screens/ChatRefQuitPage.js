@@ -13,6 +13,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TimerPage from './TimerPage';
 import HomePage from './HomePage';
 
+//In this page we need to upload all the chat records to the database(firestore) if the user choose to leave the focus mode(give up)
+//the location where we can call the function is in onpress method in "Yes" button
+
 let flag = 'false';
 let count = 0;
 let ava_index = 0;
@@ -258,6 +261,8 @@ function ChatRefQuitPage({ route, navigation }) {
     </Send>
     )
   }
+
+  //need a function like "uploadChatHistory(chat_history)" in the onPress function in "Yes" button
 
   const renderMessageText = (props) => {
     const {

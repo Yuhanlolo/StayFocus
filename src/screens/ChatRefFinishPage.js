@@ -13,6 +13,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomePage from './HomePage';
 
+//In this page we need to upload all the chat records to the database(firestore)
+//the location where we can call the function is in onpress method in "back to home" button
 
 let flag = 'false';
 let count_finish = 0;
@@ -240,6 +242,7 @@ function ChatRefFinishPage({ route, navigation }) {
     )
   }
 
+  //need a function like "uploadChatHistory(chat_history)" in the onPress function in "back to home" button
   const renderMessageText = (props) => {
     const {
       currentMessage,
