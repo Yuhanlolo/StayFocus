@@ -77,10 +77,11 @@ const useStyles = createStyles(theme => ({
   bubbleTextPress: {
     color: 'white',
     fontFamily: 'Roboto',
-    fontSize: 22,
+    fontSize: 30,
     textAlign: 'center',
     textAlignVertical: 'center',
     textDecorationLine: 'underline',
+    textDecorationThickness:5,
   },
   image: {
     top: '20%',

@@ -43,6 +43,16 @@ const useStyles = createStyles(theme => ({
     fontWeight: '400',
     textAlign: 'center',
   },
+  planPress: {
+    marginTop: 20,
+    marginBottom: 8,
+    color: theme.textColor,
+    fontSize: 23,
+    fontWeight: '400',
+    textAlign: 'center',
+    textDecorationLine:'underline',
+    textDecorationThickness:5,
+  },
   timer: {
     color: theme.textColor,
     fontSize: 2 * theme.fontSizes.xl,
