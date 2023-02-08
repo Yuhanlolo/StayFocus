@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {AppState, Text, View, Image} from 'react-native';
+import {AppState, Text, View, Image, DeviceEventEmitter} from 'react-native';
 import notifee from '@notifee/react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -59,7 +59,7 @@ function TimerPage({navigation}) {
   };
 
   useEffect(() => {
-    if (!paused) {
+    if (paused == false) {
       const interval = setInterval(() => {
         if (secondsRef.current <= 0) {
           clearInterval(interval);
@@ -73,6 +73,12 @@ function TimerPage({navigation}) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paused]);
+
+  useFocusEffect(React.useCallback(() => {	
+    DeviceEventEmitter.addListener('keepFocus', () => {
+      setPaused(false);
+      });
+  }, []));
 
   useFocusEffect(() => {
     const subscription = AppState.addEventListener(
@@ -130,7 +136,7 @@ function TimerPage({navigation}) {
       <View style={styles.buttonContainer}>
         <CustomButton
           styles={{button: styles.button, text: styles.buttonText}}
-          onPress={()=>{navigation.navigate('ChatRefQuitPage')}}>
+          onPress={()=>{setPaused(true); navigation.navigate('ChatRefQuitPage', {timeString: timeString(seconds)})}}>
           Leave focus mode
         </CustomButton>
       </View>

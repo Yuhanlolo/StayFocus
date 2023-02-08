@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, LogBox } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, DeviceEventEmitter } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
@@ -20,8 +20,7 @@ let ava_index = 0;
 
 function ChatRefQuitPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
-  const [minLeft, setMinLeft] = useState('24');
-  const [secLeft, setSecLeft] = useState('27');
+  const [timeString, setTimeString] = useState('');
 
   const chatbots = [{
     _id: 2,
@@ -46,6 +45,9 @@ function ChatRefQuitPage({ route, navigation }) {
   }
 
 	useFocusEffect(React.useCallback(() => {
+    let timeString = route.params.timeString;
+    setTimeString(timeString);
+
     let sentence = chatScript.openup;
 
     let msgs = new Array();
@@ -283,6 +285,7 @@ function ChatRefQuitPage({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 chat_history.push({character: 'user', sent: 'No', ava: -1, date: new Date(),});
+                DeviceEventEmitter.emit('keepFocus');
                 navigation.navigate('TimerPage');
               }}>
               <Text style = {styles.buttonTextRight}>{'    No   '}</Text>
@@ -314,7 +317,7 @@ function ChatRefQuitPage({ route, navigation }) {
 
   return (
   <View style = {styles.background}>
-    <Text style = {styles.timerText}>{'Back to focus mode'}{' {'}{minLeft}{':'}{secLeft}{'}'}</Text>
+    <Text style = {styles.timerText}>{'Back to focus mode'}{' { '}{timeString}{' }'}</Text>
     <GiftedChat
       messages={messages}
       onSend={messages => onSend(messages)}

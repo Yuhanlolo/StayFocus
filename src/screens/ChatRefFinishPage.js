@@ -24,6 +24,8 @@ function ChatRefFinishPage({ route, navigation }) {
   const [minLeft, setMinLeft] = useState('24');
   const [secLeft, setSecLeft] = useState('27');
 
+  const minutes = useSessionStore(state => state.focusDurationMinutes);
+
   const chatbots = [{
     _id: 2,
     name: 'chatbot',
@@ -47,7 +49,8 @@ function ChatRefFinishPage({ route, navigation }) {
   }
 
   useFocusEffect(React.useCallback(() => {
-    let sentence = chatScript.openup;
+    let sent = chatScript.openup;
+    let sentence = sent.replace('60', minutes.toString());
 
     let msgs = new Array();
     for(i=0; i<chat_history.length; i++)

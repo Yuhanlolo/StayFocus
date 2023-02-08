@@ -4,6 +4,7 @@ import { GiftedChat, Bubble, Send, MessageText } from 'react-native-gifted-chat'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatScript';
 import ParaAPI from '../gpt_apis/Para';
+import {useSessionStore} from '../api';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
