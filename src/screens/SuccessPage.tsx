@@ -13,7 +13,7 @@ function SuccessPage({navigation}) {
       <View style = {styles.bubble}>
         <Text style={styles.plan}>Focus mode completed</Text>
         <Text style={styles.timer}>00:00</Text>
-        <Text style={styles.plan} onPress={()=>{navigation.navigate('ChatRefFinishPage')}}>Quick reflection</Text>
+        <Text style={styles.planPress} onPress={()=>{navigation.navigate('ChatRefFinishPage')}}>Quick reflection</Text>
       </View>
       <View style = {styles.arrow}/>
       <Image source={require('../../assets/home_page.png')} style = {styles.image} resizeMode = 'contain'/>
