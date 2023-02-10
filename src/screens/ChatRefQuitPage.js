@@ -2,26 +2,18 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, DeviceEventEmitter } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import chatScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
-import giveUp_default from '../default_scripts/giveup_script';
-import ParaAPI from '../gpt_apis/Para';
-import SentiAPI from '../gpt_apis/SentiGPT';
-import GPTAPI from '../gpt_apis/GPT';
+import chatScript from '../chat_reflection_scripts/chatScript';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import TimerPage from './TimerPage';
 import HomePage from './HomePage';
-import giveUpScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
 
 //In this page we need to upload all the chat records to the database(firestore) if the user choose to leave the focus mode(give up)
 //the location where we can call the function is in onpress method in "Yes" button
 
-let flag = 'false';
 let count = 0;
-let ava_index = 0;
-let userControl = 'true';
 
 function ChatRefQuitPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
@@ -53,7 +45,7 @@ function ChatRefQuitPage({ route, navigation }) {
     let timeString = route.params.timeString;
     setTimeString(timeString);
 
-    let sentence = chatScript.openup;
+    let sentence = chatScript.quit;
 
     let msgs = new Array();
     for(i=0; i<chat_history.length; i++)
@@ -92,121 +84,6 @@ function ChatRefQuitPage({ route, navigation }) {
     chat_history.push({character: 'chatbot', sent: sentence, ava: 0, date: new Date(),});
 	}, []));
 
-  function botSend(txt)
-  {
-     if(flag == 'true')
-     {
-        let sentence = txt;
-        if(sentence != 'Typing...')
-        {
-          chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: new Date(),});
-        }
-        let botMessage = {
-          _id: Math.round(Math.random() * 1000000),
-          text: sentence,
-          createdAt: new Date(),
-          user: chatbots[ava_index],
-          };
-        setMessages(previousMessages => GiftedChat.append(previousMessages, botMessage));
-        flag = 'false';
-      }
-  }
-
-  function onDelete()
-  {
-    setMessages(previousMessages => previousMessages.filter(message => message.text !== 'Typing...'));
-  }
-
-  async function doubleAns(ans, script)
-  {
-    let start_log = chatScript.openup;
-    let default_log;
-    if(count == 0)
-    {
-      start_log = chatScript.openup;
-    }
-    if(count == 1)
-    {
-      start_log = chatScript.second;
-      default_log =  giveUp_default.second;
-    }
-    if(count == 2)
-    {
-      start_log = chatScript.third;
-      default_log = giveUp_default.third
-    }
-
-    let answer = await new Promise(async (resolve, reject) => {
-      let apires;
-      setTimeout(() => {
-        if (apires) {
-          resolve(apires);
-        } else {
-          resolve(default_log);
-        }
-      }, 10000)
-      apires = await GPTAPI(ans, start_log);
-      resolve(apires);
-
-    })
-    onDelete();
-    botSend(answer);
-
-    let paraSen = await ParaAPI(script);
-    flag = 'true';
-    userControl = 'true';
-    let index = Math.floor(Math.random()*2); 
-    console.log('para:', paraSen);
-    botSend(paraSen[index]);
-  }
-
-  async function endAns(ans, script)
-  {
-    let answer = await new Promise(async (resolve, reject) => {
-      let apires;
-      setTimeout(() => {
-        if (apires) {
-          resolve(apires);
-        } else {
-          resolve(giveUpScript.end);
-        }
-      }, 10000)
-      apires = await GPTAPI(ans, chatScript.third);
-      resolve(apires);
-
-    })
-
-    onDelete();
-    botSend(answer);
-    flag = 'true';
-    botSend(script);
-    console.log('history: ', chat_history);
-    userControl = 'true';
-  }
-
-  async function avaControl(sentence)
-  {
-
-    let tag = await SentiAPI(sentence);
-    if(tag == 'Positive')
-    {
-        console.log('pos');
-        ava_index = 1;
-    }
-    
-    if(tag == 'Negative')
-    {
-        console.log('neg');
-        ava_index = 0;
-    }
-    
-    if(tag == 'Neutral')
-    {
-        console.log('neu');
-        ava_index = 2;
-    }
-  }
-
   const onSend = useCallback((messageArray) => {
     const message = messageArray[0];
     const myMessage = {
@@ -216,43 +93,6 @@ function ChatRefQuitPage({ route, navigation }) {
       user: chat_user,
     }
     setMessages(previousMessages => GiftedChat.append(previousMessages, myMessage));
-    flag = 'true';
-    let userAns = myMessage.text;
-    chat_history.push({character: 'user', sent: userAns, ava: -1, date: new Date(),});
-    
-    if(userControl == 'true')
-    {
-      botSend('Typing...');
-    }
-
-    flag = 'true';
-
-
-    if(count == 2 && userControl == 'true')
-    {
-      userControl = 'false';
-      count = count + 1;
-      avaControl(userAns);
-      console.log('index:', ava_index);
-      endAns(userAns, chatScript.end);
-    }
-    if(count == 1 && userControl == 'true')
-    {
-      userControl = 'false';
-      count = count + 1;
-      avaControl(userAns);
-      console.log('index:', ava_index);
-      doubleAns(userAns, chatScript.third);
-    }
-    if(count == 0 && userControl == 'true')
-    {
-      userControl = 'false';
-      count = count + 1;
-      avaControl(userAns);
-      console.log('index:', ava_index);
-      doubleAns(userAns, chatScript.second);
-    }
-
   }, [])
 
   const renderBubble = (props) =>
@@ -309,7 +149,7 @@ function ChatRefQuitPage({ route, navigation }) {
       currentMessage,
     } = props;
     let judgeText = currentMessage.text;
-    if(judgeText == chatScript.end || judgeText == 'Please press the buttons to make a choice.')
+    if(judgeText == chatScript.quit)
     {
       return (
         <View>
@@ -350,7 +190,7 @@ function ChatRefQuitPage({ route, navigation }) {
   };
 
   const renderInputToolbar = (props) => {
-    if (count > 2) {
+    if (count == 0) {
     } else {
     return(
       <InputToolbar
