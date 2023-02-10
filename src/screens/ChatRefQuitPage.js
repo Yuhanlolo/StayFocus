@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, DeviceEventEmitter } from 're
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
+import giveUp_default from '../default_scripts/giveup_script';
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
 import GPTAPI from '../gpt_apis/GPT';
@@ -12,6 +13,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import TimerPage from './TimerPage';
 import HomePage from './HomePage';
+import giveUpScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
 
 //In this page we need to upload all the chat records to the database(firestore) if the user choose to leave the focus mode(give up)
 //the location where we can call the function is in onpress method in "Yes" button
@@ -107,7 +109,6 @@ function ChatRefQuitPage({ route, navigation }) {
           };
         setMessages(previousMessages => GiftedChat.append(previousMessages, botMessage));
         flag = 'false';
-        userControl = 'true';
       }
   }
 
@@ -119,24 +120,41 @@ function ChatRefQuitPage({ route, navigation }) {
   async function doubleAns(ans, script)
   {
     let start_log = chatScript.openup;
+    let default_log;
     if(count == 0)
     {
       start_log = chatScript.openup;
     }
     if(count == 1)
     {
-      start_log = chatScript.sencond;
+      start_log = chatScript.second;
+      default_log =  giveUp_default.second;
     }
     if(count == 2)
     {
       start_log = chatScript.third;
+      default_log = giveUp_default.third
     }
 
-    let answer = await GPTAPI(ans, start_log);
-    let paraSen = await ParaAPI(script);
+    let answer = await new Promise(async (resolve, reject) => {
+      let apires;
+      setTimeout(() => {
+        if (apires) {
+          resolve(apires);
+        } else {
+          resolve(default_log);
+        }
+      }, 10000)
+      apires = await GPTAPI(ans, start_log);
+      resolve(apires);
+
+    })
     onDelete();
     botSend(answer);
+
+    let paraSen = await ParaAPI(script);
     flag = 'true';
+    userControl = 'true';
     let index = Math.floor(Math.random()*2); 
     console.log('para:', paraSen);
     botSend(paraSen[index]);
@@ -144,7 +162,20 @@ function ChatRefQuitPage({ route, navigation }) {
 
   async function endAns(ans, script)
   {
-    let answer = await GPTAPI(ans, chatScript.third);
+    let answer = await new Promise(async (resolve, reject) => {
+      let apires;
+      setTimeout(() => {
+        if (apires) {
+          resolve(apires);
+        } else {
+          resolve(giveUpScript.end);
+        }
+      }, 10000)
+      apires = await GPTAPI(ans, chatScript.third);
+      resolve(apires);
+
+    })
+
     onDelete();
     botSend(answer);
     flag = 'true';
@@ -219,7 +250,7 @@ function ChatRefQuitPage({ route, navigation }) {
       count = count + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, chatScript.sencond);
+      doubleAns(userAns, chatScript.second);
     }
 
   }, [])
