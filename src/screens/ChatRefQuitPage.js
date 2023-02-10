@@ -13,7 +13,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import TimerPage from './TimerPage';
 import HomePage from './HomePage';
-import giveUpScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
 
 //In this page we need to upload all the chat records to the database(firestore) if the user choose to leave the focus mode(give up)
 //the location where we can call the function is in onpress method in "Yes" button
@@ -168,7 +167,7 @@ function ChatRefQuitPage({ route, navigation }) {
         if (apires) {
           resolve(apires);
         } else {
-          resolve(giveUpScript.end);
+          resolve(chatScript.end);
         }
       }, 10000)
       apires = await GPTAPI(ans, chatScript.third);
