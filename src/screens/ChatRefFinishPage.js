@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, LogBox } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_congrats';
+import congrats_default from '../default_scripts/finish_script';
 import {useSessionStore} from '../api';
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
@@ -17,6 +18,7 @@ import HomePage from './HomePage';
 //the location where we can call the function is in onpress method in "back to home" button
 
 let flag = 'false';
+let userControl = 'true';
 let count_finish = 0;
 let ava_index = 1;
 
@@ -119,7 +121,19 @@ function ChatRefFinishPage({ route, navigation }) {
 
   async function doubleAns(ans, script)
   {
-    let answer = await GPTAPI(ans, chatScript.openup);
+    let answer = await new Promise(async (resolve, reject) => {
+      let apires;
+      setTimeout(() => {
+        if (apires) {
+          resolve(apires);
+        } else {
+          resolve(congrats_default.question);
+        }
+      }, 10000)
+      apires = await GPTAPI(ans, chatScript.openup);
+      resolve(apires);
+
+    })
     let paraSen = await ParaAPI(script);
     onDelete();
     botSend(answer);
@@ -127,16 +141,30 @@ function ChatRefFinishPage({ route, navigation }) {
     let index = Math.floor(Math.random()*2); 
     console.log('para:', paraSen);
     botSend(paraSen[index]);
+    userControl = 'true';
   }
 
   async function endAns(ans, script)
   {
-    let answer = await GPTAPI(ans, chatScript.openup);
+    let answer = await new Promise(async (resolve, reject) => {
+      let apires;
+      setTimeout(() => {
+        if (apires) {
+          resolve(apires);
+        } else {
+          resolve(congrats_default.end);
+        }
+      }, 10000)
+      apires = await GPTAPI(ans, chatScript.openup);
+      resolve(apires);
+
+    })
     onDelete();
     botSend(answer);
     flag = 'true';
     botSend(script);
     console.log('history: ', chat_history);
+    userControl = 'true';
   }
 
   async function avaControl(sentence)
@@ -175,18 +203,24 @@ function ChatRefFinishPage({ route, navigation }) {
     let userAns = myMessage.text;
     chat_history.push({character: 'user', sent: userAns, ava: -1, date: new Date(),});
 
-    botSend('Typing...');
+    if(userControl == 'true')
+    {
+      botSend('Typing...');
+    }
+  
     flag = 'true';
 
-    if(count_finish == 1)
+    if(count_finish == 1 && userControl == 'true')
     {
+      userControl = 'false';
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
       endAns(userAns, chatScript.end);
     }
-    if(count_finish == 0)
+    if(count_finish == 0 && userControl == 'true')
     {
+      userControl = 'false';
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
