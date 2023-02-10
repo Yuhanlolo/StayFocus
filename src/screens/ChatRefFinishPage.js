@@ -17,6 +17,7 @@ import HomePage from './HomePage';
 //the location where we can call the function is in onpress method in "back to home" button
 
 let flag = 'false';
+let userControl = 'true';
 let count_finish = 0;
 let ava_index = 1;
 
@@ -127,6 +128,7 @@ function ChatRefFinishPage({ route, navigation }) {
     let index = Math.floor(Math.random()*2); 
     console.log('para:', paraSen);
     botSend(paraSen[index]);
+    userControl = 'true';
   }
 
   async function endAns(ans, script)
@@ -137,6 +139,7 @@ function ChatRefFinishPage({ route, navigation }) {
     flag = 'true';
     botSend(script);
     console.log('history: ', chat_history);
+    userControl = 'true';
   }
 
   async function avaControl(sentence)
@@ -175,18 +178,24 @@ function ChatRefFinishPage({ route, navigation }) {
     let userAns = myMessage.text;
     chat_history.push({character: 'user', sent: userAns, ava: -1, date: new Date(),});
 
-    botSend('Typing...');
+    if(userControl == 'true')
+    {
+      botSend('Typing...');
+    }
+  
     flag = 'true';
 
-    if(count_finish == 1)
+    if(count_finish == 1 && userControl == 'true')
     {
+      userControl = 'false';
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
       endAns(userAns, chatScript.end);
     }
-    if(count_finish == 0)
+    if(count_finish == 0 && userControl == 'true')
     {
+      userControl = 'false';
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);

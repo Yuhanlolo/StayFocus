@@ -19,7 +19,7 @@ import HomePage from './HomePage';
 let flag = 'false';
 let count = 0;
 let ava_index = 0;
-
+let userControl = 'true';
 
 function ChatRefQuitPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
@@ -107,6 +107,7 @@ function ChatRefQuitPage({ route, navigation }) {
           };
         setMessages(previousMessages => GiftedChat.append(previousMessages, botMessage));
         flag = 'false';
+        userControl = 'true';
       }
   }
 
@@ -149,6 +150,7 @@ function ChatRefQuitPage({ route, navigation }) {
     flag = 'true';
     botSend(script);
     console.log('history: ', chat_history);
+    userControl = 'true';
   }
 
   async function avaControl(sentence)
@@ -186,27 +188,34 @@ function ChatRefQuitPage({ route, navigation }) {
     flag = 'true';
     let userAns = myMessage.text;
     chat_history.push({character: 'user', sent: userAns, ava: -1, date: new Date(),});
+    
+    if(userControl == 'true')
+    {
+      botSend('Typing...');
+    }
 
-    botSend('Typing...');
     flag = 'true';
 
 
-    if(count == 2)
+    if(count == 2 && userControl == 'true')
     {
+      userControl = 'false';
       count = count + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
       endAns(userAns, chatScript.end);
     }
-    if(count == 1)
+    if(count == 1 && userControl == 'true')
     {
+      userControl = 'false';
       count = count + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
       doubleAns(userAns, chatScript.third);
     }
-    if(count == 0)
+    if(count == 0 && userControl == 'true')
     {
+      userControl = 'false';
       count = count + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
