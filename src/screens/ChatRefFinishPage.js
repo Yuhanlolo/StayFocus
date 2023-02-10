@@ -25,8 +25,6 @@ let ava_index = 1;
 
 function ChatRefFinishPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
-  const [minLeft, setMinLeft] = useState('24');
-  const [secLeft, setSecLeft] = useState('27');
 
   const minutes = useSessionStore(state => state.focusDurationMinutes);
 
