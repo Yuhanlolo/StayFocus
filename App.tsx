@@ -13,7 +13,6 @@ import DrawerNavigator from './src/screens/DrawerNavigator';
 import FocusEndedPage from './src/screens/FocusEndedPage';
 import SetTimePage from './src/screens/SetTimePage';
 import ChatRefQuitPage from './src/screens/ChatRefQuitPage';
-import ChatRefFinishPage from './src/screens/ChatRefFinishPage';
 import {createStyles, ThemeProvider} from './src/helpers';
 import {useAppStore} from './src/api';
 
@@ -44,7 +43,6 @@ export default function App() {
                   />
                   <Stack.Screen name="SetTimePage" component={SetTimePage} />
                   <Stack.Screen name="ChatRefQuitPage" component={ChatRefQuitPage} />
-                  <Stack.Screen name="ChatRefFinishPage" component={ChatRefFinishPage} />
                 </>
               ) : (
                 <>
