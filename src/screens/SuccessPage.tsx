@@ -26,7 +26,7 @@ function SuccessPage({navigation}) {
 
   return (
     <Screen>
-      <Text style={styles.text}>{strings.initialMessage}</Text>
+      <Text style={styles.text}>{strings.initialMessage.replace('.', '') + ' mins.'}</Text>
       <CustomButton
         styles={{button: styles.button}}
         onPress={() => setModal(true)}>
