@@ -46,6 +46,7 @@ async function onReminderNotification(date: Date) {
         pressAction: {
           id: 'default',
         },
+        smallIcon: 'ic_launcher',
       },
     },
     trigger,
