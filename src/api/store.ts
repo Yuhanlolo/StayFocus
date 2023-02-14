@@ -63,6 +63,7 @@ interface SessionStore extends Session {
   newSession: (plan: string, minutes: number) => void;
   saveCompletedMinutes: (minutes: number) => void;
   saveGiveUpAttempt: (givenUp: boolean) => void;
+  saveChatPrompts: (prompts: JSON[]) => void;
   saveLastGiveUpAttempt: () => void;
 }
 
@@ -73,6 +74,7 @@ const defaultSession = {
   focusDurationMinutes: -1,
   completedMinutes: -1,
   giveUpAttempts: [],
+  chatPrompts: [],
 };
 
 export const useSessionStore = create<SessionStore>()(set => ({
@@ -98,6 +100,7 @@ export const useSessionStore = create<SessionStore>()(set => ({
         },
       ],
     })),
+  saveChatPrompts: prompts => set({chatPrompts: prompts}),
   saveLastGiveUpAttempt: () =>
     set(state => ({
       giveUpAttempts: state.giveUpAttempts.map((v, i) => {
@@ -119,6 +122,7 @@ export function getSession(): Session {
     endTime: store.endTime,
     focusDurationMinutes: store.focusDurationMinutes,
     completedMinutes: store.completedMinutes,
+    chatPrompts: store.chatPrompts,
     giveUpAttempts: store.giveUpAttempts,
   };
 }

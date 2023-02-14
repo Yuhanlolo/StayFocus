@@ -4,7 +4,7 @@ import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_congrats';
 import congrats_default from '../default_scripts/finish_script';
-import {useSessionStore} from '../api';
+import {useSessionStore, saveSession} from '../api';
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
 import GPTAPI from '../gpt_apis/GPT';
@@ -25,6 +25,10 @@ let ava_index = 1;
 
 function ChatRefFinishPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
+
+  const saveChatPrompts = useSessionStore(
+    state => state.saveChatPrompts,
+  );
 
   const minutes = useSessionStore(state => state.focusDurationMinutes);
 
@@ -132,13 +136,14 @@ function ChatRefFinishPage({ route, navigation }) {
       resolve(apires);
 
     })
-    let paraSen = await ParaAPI(script);
+    //let paraSen = await ParaAPI(script);
     onDelete();
     botSend(answer);
     flag = 'true';
     let index = Math.floor(Math.random()*2); 
-    console.log('para:', paraSen);
-    botSend(paraSen[index]);
+    //console.log('para:', paraSen);
+    //botSend(paraSen[index]);
+    botSend(script);
     userControl = 'true';
   }
 
@@ -291,6 +296,8 @@ function ChatRefFinishPage({ route, navigation }) {
               onPress={() => {
                 count_finish = 0;
                 chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: new Date(),});
+                saveChatPrompts(chat_history);
+                saveSession();
                 navigation.navigate('HomePage');
               }}>
               <Text style = {styles.buttonText}>{'back to home'}</Text>

@@ -4,6 +4,7 @@ import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
 import giveUp_default from '../default_scripts/giveup_script';
+import {useSessionStore, saveSession} from '../api';
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
 import GPTAPI from '../gpt_apis/GPT';
@@ -25,6 +26,21 @@ let userControl = 'true';
 function ChatRefQuitPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
   const [timeString, setTimeString] = useState('');
+
+  const saveChatPrompts = useSessionStore(
+    state => state.saveChatPrompts,
+  );
+
+  const saveGiveUpAttempt = useSessionStore(state => state.saveGiveUpAttempt);
+
+  const minutes = useSessionStore(state => state.focusDurationMinutes);
+
+  const saveCompletedMinutes = useSessionStore(
+    state => state.saveCompletedMinutes,
+  );
+
+  const elapsedMinutes = () =>
+  Math.ceil(minutes - Number(timeString.substring(0,2)));
 
   const chatbots = [{
     _id: 2,
@@ -151,12 +167,13 @@ function ChatRefQuitPage({ route, navigation }) {
     onDelete();
     botSend(answer);
 
-    let paraSen = await ParaAPI(script);
+    //let paraSen = await ParaAPI(script);
     flag = 'true';
     userControl = 'true';
     let index = Math.floor(Math.random()*2); 
-    console.log('para:', paraSen);
-    botSend(paraSen[index]);
+    //console.log('para:', paraSen);
+    //botSend(paraSen[index]);
+    botSend(script);
   }
 
   async function endAns(ans, script)
@@ -319,6 +336,10 @@ function ChatRefQuitPage({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: new Date(),});
+                saveChatPrompts(chat_history);
+                saveGiveUpAttempt(true);
+                saveCompletedMinutes(elapsedMinutes());
+                saveSession();
                 navigation.navigate('HomePage');
               }}>
               <Text style = {styles.buttonTextLeft}>{'   Yes   '}</Text>
@@ -329,6 +350,7 @@ function ChatRefQuitPage({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 chat_history.push({character: 'user', sent: 'No', ava: -1, date: new Date(),});
+                saveGiveUpAttempt(false);
                 DeviceEventEmitter.emit('keepFocus');
                 navigation.navigate('TimerPage');
               }}>
