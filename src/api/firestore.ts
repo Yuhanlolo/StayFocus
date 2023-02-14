@@ -21,7 +21,7 @@ import {Session, UserSettings} from './types';
 */
 const db = initializeFirestore(app, {experimentalForceLongPolling: true});
 
-const dbName = 'test-baseline';
+const dbName = 'test-chatbot';
 
 export function saveSessionToFirestore(uid: string, session: Session) {
   const sessionRef = doc(db, dbName, uid, 'log', session.startTime);

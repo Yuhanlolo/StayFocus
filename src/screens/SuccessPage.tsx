@@ -4,16 +4,24 @@ import {CustomButton, Screen} from '../components';
 import {createStyles} from '../helpers';
 
 import HomePage from './HomePage';
+import {useSessionStore, saveSession} from '../api';
 
 function SuccessPage({navigation}) {
   const styles = useStyles();
+  const saveChatPrompts = useSessionStore(
+    state => state.saveChatPrompts,
+  );
 
   return (
     <Screen>
       <View style = {styles.bubble}>
         <Text style={styles.plan}>Focus mode completed</Text>
         <Text style={styles.timer}>00:00</Text>
-        <Text style={styles.planPress} onPress={()=>{navigation.navigate('HomePage')}}>back to home</Text>
+        <Text style={styles.planPress} onPress={()=>{
+          chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: new Date(),});
+          saveChatPrompts(chat_history);
+          saveSession();
+          navigation.navigate('HomePage')}}>back to home</Text>
       </View>
       <View style = {styles.arrow}/>
       <Image source={require('../../assets/home_page.png')} style = {styles.image} resizeMode = 'contain'/>

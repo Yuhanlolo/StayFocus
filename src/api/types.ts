@@ -10,6 +10,7 @@ export interface Session {
   focusDurationMinutes: number;
   completedMinutes: number;
   giveUpAttempts: GiveUpAttempt[];
+  chatPrompts: JSON[];
 }
 
 export interface UserSettings {

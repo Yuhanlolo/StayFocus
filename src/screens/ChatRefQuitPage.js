@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, DeviceEventEmitter } from 're
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatScript';
+import {useSessionStore, saveSession} from '../api';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -18,6 +19,21 @@ let count = 0;
 function ChatRefQuitPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
   const [timeString, setTimeString] = useState('');
+
+  const saveChatPrompts = useSessionStore(
+    state => state.saveChatPrompts,
+  );
+
+  const saveGiveUpAttempt = useSessionStore(state => state.saveGiveUpAttempt);
+
+  const minutes = useSessionStore(state => state.focusDurationMinutes);
+
+  const saveCompletedMinutes = useSessionStore(
+    state => state.saveCompletedMinutes,
+  );
+
+  const elapsedMinutes = () =>
+  Math.ceil(minutes - Number(timeString.substring(0,2)));
 
   const chatbots = [{
     _id: 2,
@@ -160,6 +176,10 @@ function ChatRefQuitPage({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: new Date(),});
+                saveChatPrompts(chat_history);
+                saveGiveUpAttempt(true);
+                saveCompletedMinutes(elapsedMinutes());
+                saveSession();
                 navigation.navigate('HomePage');
               }}>
               <Text style = {styles.buttonTextLeft}>{'   Yes   '}</Text>
@@ -170,6 +190,7 @@ function ChatRefQuitPage({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 chat_history.push({character: 'user', sent: 'No', ava: -1, date: new Date(),});
+                saveGiveUpAttempt(true);
                 DeviceEventEmitter.emit('keepFocus');
                 navigation.navigate('TimerPage');
               }}>
