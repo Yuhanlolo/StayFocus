@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_congrats';
 import congrats_default from '../default_scripts/finish_script';
 import {useSessionStore, saveSession} from '../api';
+import {dateToString} from '../helpers/utilities';
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
 import GPTAPI from '../gpt_apis/GPT';
@@ -93,7 +94,8 @@ function ChatRefFinishPage({ route, navigation }) {
     msgs.push(set);
 
     setMessages(msgs.reverse());
-    chat_history.push({character: 'chatbot', sent: sentence, ava: 1, date: new Date(),});
+    chat_history.push({character: 'chatbot', sent: sentence, ava: 1, date: dateToString(new Date()),});
+    once_history.push({character: 'chatbot', sent: sentence, ava: 1, date: dateToString(new Date()),});
 	}, []));
 
   function botSend(txt)
@@ -103,7 +105,8 @@ function ChatRefFinishPage({ route, navigation }) {
         let sentence = txt;
         if(sentence != 'Typing...')
         {
-          chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: new Date(),});
+          chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
+          once_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
         }
         let botMessage = {
           _id: Math.round(Math.random() * 1000000),
@@ -204,7 +207,8 @@ function ChatRefFinishPage({ route, navigation }) {
     setMessages(previousMessages => GiftedChat.append(previousMessages, myMessage));
     flag = 'true';
     let userAns = myMessage.text;
-    chat_history.push({character: 'user', sent: userAns, ava: -1, date: new Date(),});
+    chat_history.push({character: 'user', sent: userAns, ava: -1, date: dateToString(new Date()),});
+    once_history.push({character: 'user', sent: userAns, ava: -1, date: dateToString(new Date()),});
 
     if(userControl == 'true')
     {
@@ -295,8 +299,9 @@ function ChatRefFinishPage({ route, navigation }) {
               style={styles.button}
               onPress={() => {
                 count_finish = 0;
-                chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: new Date(),});
-                saveChatPrompts(chat_history);
+                chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
+                saveChatPrompts(once_history);
                 saveSession();
                 navigation.navigate('HomePage');
               }}>

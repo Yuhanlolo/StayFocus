@@ -164,7 +164,7 @@ const useStyles = createStyles(theme => ({
     fontSize: theme.fontSizes.sm,
   },
   plan: {
-    marginTop: 15,
+    marginTop: 25,
     marginBottom: 8,
     color: theme.textColor,
     fontSize: theme.fontSizes.lg,
@@ -173,7 +173,7 @@ const useStyles = createStyles(theme => ({
   },
   timer: {
     color: theme.textColor,
-    fontSize: 2 * theme.fontSizes.xl,
+    fontSize: 1.5 * theme.fontSizes.xl,
     textAlign: 'center',
   },
   bubble: {

@@ -34,3 +34,19 @@ export function shuffleArray(array: any[]) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
+
+export function dateToString(date: Date) {
+
+  var year = date.getFullYear();
+  var month = date.getMonth();
+  var day = date.getDate();
+  var hours = date.getHours();
+  var min = date.getMinutes();
+  var second = date.getSeconds();
+  return year + "-" +
+      ((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
+      (day > 9 ? day : ("0" + day)) + " " +
+      (hours > 9 ? hours : ("0" + hours)) + ":" +
+      (min > 9 ? min : ("0" + min)) + ":" +
+      (second > 9 ? second : ("0" + second));
+}

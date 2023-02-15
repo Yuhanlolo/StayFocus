@@ -46,3 +46,12 @@ export function getSessionsFromFirestore(uid: string) {
   const todaySessions = query(sessionsRef);
   return getDocs(todaySessions);
 }
+
+export async function getChatPrompts(uid: string) {
+  const querySnapshot = await getDocs(collection(db, dbName, uid, 'log'));
+  let histories = new Array();
+  querySnapshot.forEach((doc) => {
+    histories = [...histories, ...doc.data().chatPrompts];
+})
+  return histories;
+}

@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
 import giveUp_default from '../default_scripts/giveup_script';
 import {useSessionStore, saveSession} from '../api';
+import {dateToString} from '../helpers/utilities';
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
 import GPTAPI from '../gpt_apis/GPT';
@@ -104,7 +105,8 @@ function ChatRefQuitPage({ route, navigation }) {
     msgs.push(set);
 
     setMessages(msgs.reverse());
-    chat_history.push({character: 'chatbot', sent: sentence, ava: 0, date: new Date(),});
+    chat_history.push({character: 'chatbot', sent: sentence, ava: 0, date: dateToString(new Date()),});
+    once_history.push({character: 'chatbot', sent: sentence, ava: 0, date: dateToString(new Date()),});
 	}, []));
 
   function botSend(txt)
@@ -114,7 +116,8 @@ function ChatRefQuitPage({ route, navigation }) {
         let sentence = txt;
         if(sentence != 'Typing...')
         {
-          chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: new Date(),});
+          chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
+          once_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
         }
         let botMessage = {
           _id: Math.round(Math.random() * 1000000),
@@ -234,7 +237,8 @@ function ChatRefQuitPage({ route, navigation }) {
     setMessages(previousMessages => GiftedChat.append(previousMessages, myMessage));
     flag = 'true';
     let userAns = myMessage.text;
-    chat_history.push({character: 'user', sent: userAns, ava: -1, date: new Date(),});
+    chat_history.push({character: 'user', sent: userAns, ava: -1, date: dateToString(new Date()),});
+    once_history.push({character: 'user', sent: userAns, ava: -1, date: dateToString(new Date()),});
     
     if(userControl == 'true')
     {
@@ -335,8 +339,9 @@ function ChatRefQuitPage({ route, navigation }) {
               style={styles.buttonLeft}
               onPress={() => {
                 count = 0;
-                chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: new Date(),});
-                saveChatPrompts(chat_history);
+                chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
+                saveChatPrompts(once_history);
                 saveGiveUpAttempt(true);
                 saveCompletedMinutes(elapsedMinutes());
                 saveSession();
@@ -349,7 +354,8 @@ function ChatRefQuitPage({ route, navigation }) {
               style={styles.buttonRight}
               onPress={() => {
                 count = 0;
-                chat_history.push({character: 'user', sent: 'No', ava: -1, date: new Date(),});
+                chat_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
                 saveGiveUpAttempt(false);
                 DeviceEventEmitter.emit('keepFocus');
                 navigation.navigate('TimerPage');

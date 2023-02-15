@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, Pressable, View, Keyboard, Image} from 'react-native';
 
 import {createStyles} from '../helpers';
@@ -7,15 +7,42 @@ import {useSessionStore} from '../api';
 
 import SetTimePage from './SetTimePage';
 
+import { useFocusEffect } from '@react-navigation/native';
+
+import {getChatPrompts} from '../api/firestore';
+import {
+  getSession,
+  getAppStore,
+  resetSessionStore,
+} from '../api/store';
+
 //Home page to set focusing time
 
 function HomePage({navigation}) {
+  const appStore = getAppStore();
+  const uid = appStore.uid!;
 
   const onPress = () => {
     // Unfocus the input before changing page, so that the
     // user sees if their input gets clamped to min or max
     navigation.navigate('SetTimePage');
   };
+
+  useEffect(() => {
+    (async () => {
+      chat_history = await getChatPrompts(uid);
+      for(i=0; i<chat_history.length; i++)
+      {
+        let date = chat_history[i].date;
+        date = new Date(date);
+        chat_history[i].date = date;
+      }
+    })()
+  }, []);
+
+  useFocusEffect(React.useCallback(() => {
+      once_history = [];
+	}, []));
 
   const styles = useStyles();
   return (
