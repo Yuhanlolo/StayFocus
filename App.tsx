@@ -19,6 +19,7 @@ import {useAppStore} from './src/api';
 LogBox.ignoreAllLogs();
 
 global.chat_history = new Array();
+global.once_history = new Array();
 
 const Stack = createNativeStackNavigator();
 

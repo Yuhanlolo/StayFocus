@@ -1,7 +1,7 @@
 import {Text, Image, View} from 'react-native';
 
 import {CustomButton, Screen} from '../components';
-import {createStyles} from '../helpers';
+import {createStyles, dateToString} from '../helpers';
 
 import HomePage from './HomePage';
 import {useSessionStore, saveSession} from '../api';
@@ -18,8 +18,9 @@ function SuccessPage({navigation}) {
         <Text style={styles.plan}>Focus mode completed</Text>
         <Text style={styles.timer}>00:00</Text>
         <Text style={styles.planPress} onPress={()=>{
-          chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: new Date(),});
-          saveChatPrompts(chat_history);
+          chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
+          once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
+          saveChatPrompts(once_history);
           saveSession();
           navigation.navigate('HomePage')}}>back to home</Text>
       </View>
@@ -71,7 +72,7 @@ const useStyles = createStyles(theme => ({
     backgroundColor: '#506F4C',
     alignItems: "center",
     paddingHorizontal: 10,
-    top: '15%',
+    top: '22%',
     height: '35%',
     width: '90%',
     borderRadius: 25,
@@ -79,13 +80,13 @@ const useStyles = createStyles(theme => ({
     borderColor: '#506F4C',
   },
   image: {
-    top: '15%',
+    top: '22%',
     height: '18%',
     width: '100%',
     left: '25%',
   },
   arrow: {
-    top: '15%',
+    top: '22%',
     left: '25%',
     width: 30,
     height: 30,

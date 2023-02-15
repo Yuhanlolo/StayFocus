@@ -4,6 +4,7 @@ import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatScript';
 import {useSessionStore, saveSession} from '../api';
+import {dateToString} from '../helpers/utilities';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -97,7 +98,8 @@ function ChatRefQuitPage({ route, navigation }) {
     msgs.push(set);
 
     setMessages(msgs.reverse());
-    chat_history.push({character: 'chatbot', sent: sentence, ava: 0, date: new Date(),});
+    chat_history.push({character: 'chatbot', sent: sentence, ava: 0, date: dateToString(new Date()),});
+    once_history.push({character: 'chatbot', sent: sentence, ava: 0, date: dateToString(new Date()),});
 	}, []));
 
   const onSend = useCallback((messageArray) => {
@@ -175,8 +177,9 @@ function ChatRefQuitPage({ route, navigation }) {
               style={styles.buttonLeft}
               onPress={() => {
                 count = 0;
-                chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: new Date(),});
-                saveChatPrompts(chat_history);
+                chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
+                saveChatPrompts(once_history);
                 saveGiveUpAttempt(true);
                 saveCompletedMinutes(elapsedMinutes());
                 saveSession();
@@ -189,7 +192,8 @@ function ChatRefQuitPage({ route, navigation }) {
               style={styles.buttonRight}
               onPress={() => {
                 count = 0;
-                chat_history.push({character: 'user', sent: 'No', ava: -1, date: new Date(),});
+                chat_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
                 saveGiveUpAttempt(true);
                 DeviceEventEmitter.emit('keepFocus');
                 navigation.navigate('TimerPage');

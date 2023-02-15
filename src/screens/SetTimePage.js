@@ -6,6 +6,8 @@ import chatScript from '../chat_reflection_scripts/chatScript';
 import ParaAPI from '../gpt_apis/Para';
 import {useSessionStore} from '../api';
 
+import {dateToString} from '../helpers/utilities';
+
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -87,8 +89,10 @@ function SetTimePage({ route, navigation }) {
     });
 
     setMessages(msgs.reverse());
-    chat_history.push({character: 'chatbot', sent: notice, ava: 1, date: new Date(),});
-    chat_history.push({character: 'chatbot', sent: sentence, ava: 1, date: new Date(),});
+    chat_history.push({character: 'chatbot', sent: notice, ava: 1, date: dateToString(new Date()),});
+    chat_history.push({character: 'chatbot', sent: sentence, ava: 1, date: dateToString(new Date()),});
+    once_history.push({character: 'chatbot', sent: notice, ava: 1, date: dateToString(new Date()),});
+    once_history.push({character: 'chatbot', sent: sentence, ava: 1, date: dateToString(new Date()),});
 	}, []));
 
   function extractTime (txt)
@@ -111,7 +115,8 @@ function SetTimePage({ route, navigation }) {
         let sentence = txt;
         if(sentence != 'Typing...')
         {
-          chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: new Date(),});
+          chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
+          once_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
         }
         let botMessage = {
           _id: Math.round(Math.random() * 1000000),
@@ -133,7 +138,8 @@ function SetTimePage({ route, navigation }) {
       user: chat_user,
     }
     setMessages(previousMessages => GiftedChat.append(previousMessages, myMessage));
-    chat_history.push({character: 'user', sent: myMessage.text, ava: -1, date: new Date()});
+    chat_history.push({character: 'user', sent: myMessage.text, ava: -1, date: dateToString(new Date())});
+    once_history.push({character: 'user', sent: myMessage.text, ava: -1, date: dateToString(new Date())});
     flag = 'true';
     select = 'false';
     if(extractTime(myMessage.text) == 'NAN')
@@ -208,11 +214,11 @@ function SetTimePage({ route, navigation }) {
         <View>
           <MessageText {...props}/>
           <View style = {styles.dropdown}>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(25); chat_history.push({character: 'user', sent: '25 mins', ava: -1, date: new Date()}); newSession('Focusing', 25); navigation.navigate('TimerPage'); }}>{'            25 mins             '}</Text>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(50); chat_history.push({character: 'user', sent: '50 mins', ava: -1, date: new Date()}); newSession('Focusing', 50); navigation.navigate('TimerPage'); }}>{'            50 mins             '}</Text>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(75); chat_history.push({character: 'user', sent: '75 mins', ava: -1, date: new Date()}); newSession('Focusing', 75); navigation.navigate('TimerPage'); }}>{'            75 mins             '}</Text>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(100); chat_history.push({character: 'user', sent: '100 mins', ava: -1, date: new Date()}); newSession('Focusing', 100); navigation.navigate('TimerPage');}}>{'            100 mins           '}</Text>
-            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(125); chat_history.push({character: 'user', sent: '125 mins', ava: -1, date: new Date()}); newSession('Focusing', 125); navigation.navigate('TimerPage');}}>{'            125 mins           '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(25); chat_history.push({character: 'user', sent: '25 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '25 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 25); navigation.navigate('TimerPage'); }}>{'            25 mins             '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(50); chat_history.push({character: 'user', sent: '50 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '50 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 50); navigation.navigate('TimerPage'); }}>{'            50 mins             '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(75); chat_history.push({character: 'user', sent: '75 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '75 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 75); navigation.navigate('TimerPage'); }}>{'            75 mins             '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(100); chat_history.push({character: 'user', sent: '100 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '100 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 100); navigation.navigate('TimerPage');}}>{'            100 mins           '}</Text>
+            <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(125); chat_history.push({character: 'user', sent: '125 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '125 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 125); navigation.navigate('TimerPage');}}>{'            125 mins           '}</Text>
           </View>
         </View>
       );
