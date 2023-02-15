@@ -22,11 +22,15 @@ function HomePage({navigation}) {
 
   const appStore = getAppStore();
   const uid = appStore.uid!;
+  let tag = false;
 
   const onPress = () => {
     // Unfocus the input before changing page, so that the
     // user sees if their input gets clamped to min or max
-    navigation.navigate('SetTimePage');
+    if(tag == true)
+    {
+      navigation.navigate('SetTimePage');
+    }
   };
 
   useEffect(() => {
@@ -38,6 +42,7 @@ function HomePage({navigation}) {
         date = new Date(date);
         chat_history[i].date = date;
       }
+      tag = true;
     })()
   }, []);
 
