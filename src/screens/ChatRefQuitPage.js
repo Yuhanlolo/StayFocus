@@ -389,7 +389,15 @@ function ChatRefQuitPage({ route, navigation }) {
 
   return (
   <View style = {styles.background}>
-    <Text style = {styles.timerText}>{'Back to focus mode'}{' { '}{timeString}{' }'}</Text>
+    <Text style = {styles.timerText} 
+      onPress={() => {
+      count = 0;
+      chat_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
+      once_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
+      saveGiveUpAttempt(false);
+      DeviceEventEmitter.emit('keepFocus');
+      navigation.navigate('TimerPage');
+    }}>{'Back to focus mode'}{' { '}{timeString}{' }'}</Text>
     <GiftedChat
       messages={messages}
       onSend={messages => onSend(messages)}
@@ -473,6 +481,7 @@ function ChatRefQuitPage({ route, navigation }) {
       fontFamily: 'Roboto',
       fontSize: 18,
       color: 'white',
+      zIndex: 100,
     },
 
   });
