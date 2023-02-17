@@ -30,7 +30,7 @@ export function TimeDropdown({value, setValue}: TimeDropdownProps) {
   const display = (v: number) => numToString(v) + ' minutes';
   const parse = (t: string) => parseInt(t.replace(' minutes', ''), 10) || 0;
 
-  const showError = () => (value < min || value > max) && !open;
+  const showError = () => (value < min || value > max) && !isFocus;
 
   const styles = useStyles();
 
@@ -95,6 +95,7 @@ const useStyles = createStyles(theme => ({
     height: 50,
     borderRadius: 6,
     backgroundColor: theme.textColor,
+    color: 'black',
     fontSize: theme.fontSizes.sm,
     textAlign: 'center',
     padding: 8,
