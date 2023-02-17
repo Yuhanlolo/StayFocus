@@ -30,8 +30,8 @@ const defaultApp = {
     hour: 8,
     minute: 0,
   },
-  minMinutes: 1,
-  maxMinutes: 120,
+  minMinutes: 25,
+  maxMinutes: 125,
   focusSessions: [],
 };
 
