@@ -18,6 +18,15 @@ export default function SettingsPage({navigation}) {
     navigation.navigate('Home');
   };
 
+  const getTime = (d : String) => {
+    let hour = d.substring(12,14);
+    let minTxt = d.substring(15,17);
+    let hourNum = Number(hour) + 8;
+    let hourTxt = hourNum.toString();
+    let time = hourTxt + ':' + minTxt;
+    return time;
+  }
+
   const onConfirm = () => {
     saveSettings(minutes, date);
     setReminder(date);
@@ -31,7 +40,7 @@ export default function SettingsPage({navigation}) {
   return (
     <SettingsScreen title="Settings" onBack={onBack}>
       <Text style={styles.text}>
-        For each day, I plan to focus for at least
+        For each day, I plan to focus for at least: {minutes} mins
       </Text>
       <TimeDropdown value={minutes} setValue={setMinutes} />
       <Text style={styles.text2}>I want to be reminded at</Text>
@@ -42,6 +51,7 @@ export default function SettingsPage({navigation}) {
         androidVariant="nativeAndroid"
         textColor="#ffffff"
       />
+      <Text style={styles.text2current}>Current reminder time: {getTime(JSON.stringify(date))}</Text>
       <CustomButton
         onPress={onConfirm}
         styles={{button: styles.button, text: styles.buttonText}}>
@@ -57,7 +67,7 @@ export default function SettingsPage({navigation}) {
 const useStyles = createStyles(theme => ({
   text: {
     width: '80%',
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 8,
     color: theme.textColor,
     fontSize: theme.fontSizes.md,
@@ -71,13 +81,20 @@ const useStyles = createStyles(theme => ({
     fontSize: theme.fontSizes.md,
     textAlign: 'center',
   },
+  text2current: {
+    width: '80%',
+    marginBottom: 8,
+    color: theme.textColor,
+    fontSize: theme.fontSizes.md,
+    textAlign: 'center',
+  },
   button: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: theme.primaryColor,
     rippleColor: theme.secondaryColor,
   },
   buttonText: {
-    color: theme.muteColor,
+    color: 'white',
     fontSize: theme.fontSizes.sm,
   },
   textSaved: {

@@ -22,6 +22,7 @@ const timeString = (secs: number) => {
 };
 
 function TimerPage({navigation}) {
+  let tag = false;
   const [paused, setPaused] = useState(false);
   const [modal, setModal] = useState(false);
   const enableNotification = useRef(true);
@@ -83,6 +84,10 @@ function TimerPage({navigation}) {
     }
   }, [paused]);
 
+  useEffect(() => {
+    tag = true;
+  }, []);
+
   useFocusEffect(() => {
     const subscription = AppState.addEventListener(
       'change',
@@ -90,6 +95,7 @@ function TimerPage({navigation}) {
         const locked = await isLocked();
         if (nextAppState.match(/inactive|background/)) {
           // Either the user locks the screen or quit the app
+          tag = false;
           if (locked) {
             screenLocked.current = locked;
             dateLocked.current = Date.now();
@@ -122,9 +128,12 @@ function TimerPage({navigation}) {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
             } else {
-              navigation.navigate('FocusEndedPage', {
-                elapsedMinutes: elapsedMinutes(),
-              });
+              if(tag == false)
+              {
+                navigation.navigate('FocusEndedPage', {
+                  elapsedMinutes: elapsedMinutes(),
+                });
+              }
             }
           }
         }

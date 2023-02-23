@@ -43,6 +43,7 @@ async function onReminderNotification(date: Date) {
       body: 'Ready to focus? Set your focusing goal now!',
       android: {
         channelId: channelId,
+        smallIcon: 'ic_launcher',
         pressAction: {
           id: 'default',
         },
@@ -83,6 +84,7 @@ export async function onLeaveFocusNotification(
           },
           android: {
             channelId,
+            smallIcon: 'ic_launcher',
             pressAction: {
               id: 'default',
             },
@@ -113,6 +115,7 @@ export async function onLeaveFocusNotification(
       },
       android: {
         channelId: channelId,
+        smallIcon: 'ic_launcher',
         pressAction: {
           id: 'default',
         },
