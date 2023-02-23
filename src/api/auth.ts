@@ -39,7 +39,7 @@ export async function createUser(
     updateProfile(user, {displayName: username});
     // updateProfile does not trigger auth state change, so these method calls
     // cannot be done in the onAuthStateChanged observer, so we put them here
-    saveUserInfo(user.uid, username);
+    saveUserInfo({uid: user.uid, username: username, dateCreated: new Date()});
     saveUserToFirestore(user.uid, username);
   } catch (error) {
     console.log(error.code);
@@ -57,7 +57,7 @@ export async function loginUser(
       password,
     );
     const user = userCredential.user;
-    saveUserInfo(user.uid, user.displayName);
+    saveUserInfo({uid: user.uid, username: user.displayName});
     return [true];
   } catch (error) {
     const errorMsg = errorCodeToMessage(error.code);

@@ -10,6 +10,7 @@ import {Session, UserSettings} from './types';
 interface AppStore extends UserSettings {
   uid: string | undefined;
   username: string | undefined;
+  dateCreated: Date | undefined;
   dailyMinMinutes: number;
   reminderTime: {
     hour: number;
@@ -25,12 +26,13 @@ interface AppStore extends UserSettings {
 const defaultApp = {
   uid: undefined,
   username: undefined,
+  dateCreated: undefined,
   dailyMinMinutes: 25,
   reminderTime: {
     hour: 8,
     minute: 0,
   },
-  minMinutes: 1,
+  minMinutes: 25,
   maxMinutes: 120,
   focusSessions: [],
 };
@@ -52,8 +54,12 @@ export const useAppStore = create<AppStore>()(
 
 export const getAppStore = () => useAppStore.getState();
 
-export const saveUserInfo = (uid: string, username: string) =>
-  useAppStore.setState({uid: uid, username: username});
+interface UserInfo {
+  uid: string;
+  username: string;
+  dateCreated: Date;
+}
+export const saveUserInfo = (info: UserInfo) => useAppStore.setState(info);
 
 export const resetUserInfo = () => useAppStore.setState(defaultApp);
 
