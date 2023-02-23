@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {AppState, Text, View} from 'react-native';
+import {Alert, AppState, Text, View} from 'react-native';
 import notifee from '@notifee/react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -22,6 +22,7 @@ const timeString = (secs: number) => {
 };
 
 function TimerPage({navigation}) {
+  let tag = false;
   const [paused, setPaused] = useState(false);
   const [modal, setModal] = useState(false);
   const enableNotification = useRef(true);
@@ -66,6 +67,10 @@ function TimerPage({navigation}) {
   };
 
   useEffect(() => {
+    tag = true;
+  }, []);
+
+  useEffect(() => {
     if (!paused) {
       const interval = setInterval(() => {
         if (secondsRef.current <= 0) {
@@ -88,6 +93,7 @@ function TimerPage({navigation}) {
         const locked = await isLocked();
         if (nextAppState.match(/inactive|background/)) {
           // Either the user locks the screen or quit the app
+          tag = false;
           if (locked) {
             screenLocked.current = locked;
             dateLocked.current = Date.now();
@@ -118,7 +124,11 @@ function TimerPage({navigation}) {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
             } else {
-              onLeave();
+              //
+              if(tag == false)
+              {
+                onLeave();
+              }
             }
           }
         }

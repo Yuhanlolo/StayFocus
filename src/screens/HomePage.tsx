@@ -17,7 +17,10 @@ function HomePage({navigation}) {
     // Unfocus the input before changing page, so that the
     // user sees if their input gets clamped to min or max
     Keyboard.dismiss();
-    setTimeout(() => navigation.navigate('TimerPage'), 500);
+    if(value >= 25 && value <= 125)
+    {
+      setTimeout(() => navigation.navigate('TimerPage'), 500);
+    }
   };
 
   const styles = useStyles();
