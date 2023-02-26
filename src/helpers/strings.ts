@@ -14,6 +14,8 @@ function getStrings({
         [`You have been focused for ${focusDurationMinutes}, are you sure to leave?`],
         ['Is anything distracting you at this moment?'],
         ['Is anything going on in your mind now?'],
+        ['Did you encounter any challenges during the focus session?'],
+        [`How did you feel during the past ${focusDurationMinutes}?`],
         ['What is your plan after leaving this focus session?'],
         [
           'What was your original plan for this focus session?',
@@ -32,6 +34,8 @@ function getStrings({
         [`You have been focused for ${completedMinutes}, are you sure to leave?`],
         ['Was anything distracting you earlier?'],
         ['Was anything going on in your mind earlier ?'],
+        [`How did you feel during the past ${completedMinutes}?`],
+        ['Did you encounter any challenges during the focus session?'],
         ['What was your plan after leaving this focus session?'],
         [
            'What was your original plan for this focus session?',
@@ -40,6 +44,44 @@ function getStrings({
         [`Placeholder for ${focusDurationMinutes}`],
       ],
       finalMessage: 'Thank you.',
+    },
+     leaveFocusEarlyDialog: {
+      dialogTitle: 'Quick questions before you leave',
+      numberOfQuestions: 3,
+      fixedQuestions: [['Why do you want to check your phone now?']],
+      randomizedQuestions: [
+        [`You just got started a few minutes, why are you want to leave the session now?`],
+        ['Is anything distracting you at this moment?'],
+        ['Is anything going on in your mind now?'],
+        ['Did you encounter any challenges during the focus session?'],
+        [`How did you feel during the past ${focusDurationMinutes}?`],
+        ['What is your plan after leaving this focus session?'],
+        [
+          'What was your original plan for this focus session?',
+          'Great Plan! How did it go?',
+        ],
+        [`Placeholder for ${focusDurationMinutes}`],
+      ],
+      finalMessage: 'Thank you. Your focus session has ended.',
+    },
+    leaveFocusCloseToGoalDialog: {
+      dialogTitle: 'Quick questions before you leave',
+      numberOfQuestions: 3,
+      fixedQuestions: [['Why do you want to check your phone now?']],
+      randomizedQuestions: [
+        [`You are almost there, why do you want to leave the session now?`],
+        ['Is anything distracting you at this moment?'],
+        ['Is anything going on in your mind now?'],
+        ['Did you encounter any challenges during the focus session?'],
+        [`How did you feel during the past ${focusDurationMinutes}?`],
+        ['What is your plan after leaving this focus session?'],
+        [
+          'What was your original plan for this focus session?',
+          'Great Plan! How did it go?',
+        ],
+        [`Placeholder for ${focusDurationMinutes}`],
+      ],
+      finalMessage: 'Thank you. Your focus session has ended.',
     },
     completedDialog: {
       dialogTitle: 'Quick questions',
@@ -55,6 +97,9 @@ function getStrings({
         ['How did you managed to complete the session without being distracted by your phone?'],
         ['What the next plan?'],
         [`How is your productivity during the past ${completedMinutes} minutes?`],
+        ['Was it challenging to complete the focusing session?',
+         'Any thoughts about setting a longer focusing goal next time?'
+        ],
       ],
       finalMessage: "Great! You've completed this focusing session.",
     },
