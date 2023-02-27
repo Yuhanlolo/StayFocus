@@ -1,10 +1,15 @@
-import {useEffect, useRef} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {Text} from 'react-native';
+
+import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 
 import {CustomButton, Screen} from '../components';
 import {createStyles} from '../helpers';
 
-function FocusEndedPage({navigation}) {
+function FocusEndedPage({route, navigation}) {
+
+  const [timeString, setTimeString] = useState('');
+
   let pressed = useRef(false);
 
   const styles = useStyles();
@@ -21,6 +26,11 @@ function FocusEndedPage({navigation}) {
     [navigation],
   );
 
+  useFocusEffect(React.useCallback(() => {
+    let timeString = route.params.timeString;
+    setTimeString(timeString);
+	}, []));
+
   return (
     <Screen>
       <Text style={styles.text}>Your focus session has ended.</Text>
@@ -28,9 +38,9 @@ function FocusEndedPage({navigation}) {
         styles={{button: styles.button}}
         onPress={() => {
           pressed.current = true;
-          navigation.navigate('HomePage');
+          navigation.navigate('ChatRefEndPage', {timeString: timeString});
         }}>
-        Back to home
+        Quick Reflection
       </CustomButton>
     </Screen>
   );

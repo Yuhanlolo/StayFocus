@@ -12,7 +12,6 @@ function SuccessPage({navigation}) {
     <Screen>
       <View style = {styles.bubble}>
         <Text style={styles.plan}>Focus mode completed</Text>
-        <Text style={styles.timer}>00:00</Text>
         <Text style={styles.planPress} onPress={()=>{navigation.navigate('ChatRefFinishPage')}}>Quick reflection</Text>
       </View>
       <View style = {styles.arrow}/>
@@ -47,7 +46,7 @@ const useStyles = createStyles(theme => ({
     marginTop: 20,
     marginBottom: 8,
     color: theme.textColor,
-    fontSize: 23,
+    fontSize: 25,
     fontWeight: '400',
     textAlign: 'center',
     textDecorationLine:'underline',
@@ -61,6 +60,7 @@ const useStyles = createStyles(theme => ({
   bubble: {
     flexDirection: 'column',
     backgroundColor: '#506F4C',
+    justifyContent: 'center',
     alignItems: "center",
     paddingHorizontal: 10,
     top: '22%',

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {AppState, Text, View, Image, DeviceEventEmitter} from 'react-native';
+import {AppState, Text, View, Image, DeviceEventEmitter, BackHandler} from 'react-native';
 import notifee from '@notifee/react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -46,11 +46,9 @@ function TimerPage({navigation}) {
     Math.ceil((initialSeconds - secondsRef.current) / 60);
 
   const onLeave = () => {
-    saveGiveUpAttempt(true);
-    saveCompletedMinutes(elapsedMinutes());
-    saveSession();
     navigation.navigate('FocusEndedPage', {
       elapsedMinutes: elapsedMinutes(),
+      timeString: timeString(seconds)
     });
   };
 
@@ -77,6 +75,19 @@ function TimerPage({navigation}) {
 
   useEffect(() => {
     tag = true;
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   useFocusEffect(React.useCallback(() => {	

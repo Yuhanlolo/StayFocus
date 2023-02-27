@@ -43,7 +43,7 @@ export default function SettingsPage({navigation}) {
         For each day, I plan to focus for at least: {minutes} mins
       </Text>
       <TimeDropdown value={minutes} setValue={setMinutes} />
-      <Text style={styles.text2}>I want to be reminded at</Text>
+      <Text style={styles.text2}>I want to be reminded at: {getTime(JSON.stringify(date))}</Text>
       <DatePicker
         date={date}
         onDateChange={setDate}
@@ -51,7 +51,6 @@ export default function SettingsPage({navigation}) {
         androidVariant="nativeAndroid"
         textColor="#ffffff"
       />
-      <Text style={styles.text2current}>Current reminder time: {getTime(JSON.stringify(date))}</Text>
       <CustomButton
         onPress={onConfirm}
         styles={{button: styles.button, text: styles.buttonText}}>

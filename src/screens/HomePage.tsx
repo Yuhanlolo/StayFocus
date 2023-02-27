@@ -18,10 +18,11 @@ import {
 
 //Home page to set focusing time
 
+let tag = false;
+
 function HomePage({navigation}) {
   const appStore = getAppStore();
   const uid = appStore.uid!;
-  let tag = false;
 
   const onPress = () => {
     // Unfocus the input before changing page, so that the

@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, DeviceEventEmitter } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, LogBox } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import chatScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
-import giveUp_default from '../default_scripts/giveup_script';
+import chatScript from '../chat_reflection_scripts/chatReflectionScript_congrats';
+import congrats_default from '../default_scripts/finish_script';
+import endScript from '../chat_reflection_scripts/chatReflectionScript_end';
 import {useSessionStore, saveSession} from '../api';
-import {dateToString} from '../helpers/utilities';
+import {dateToString, shuffleArray} from '../helpers/utilities';
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
 import GPTAPI from '../gpt_apis/GPT';
@@ -13,18 +14,15 @@ import GPTAPI from '../gpt_apis/GPT';
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import TimerPage from './TimerPage';
 import HomePage from './HomePage';
 
-//In this page we need to upload all the chat records to the database(firestore) if the user choose to leave the focus mode(give up)
-//the location where we can call the function is in onpress method in "Yes" button
-
 let flag = 'false';
-let count = 0;
-let ava_index = 0;
 let userControl = 'true';
+let count_finish = 0;
+let ava_index = 0;
 
-function ChatRefQuitPage({ route, navigation }) {
+
+function ChatRefEndPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
   const [timeString, setTimeString] = useState('');
 
@@ -32,16 +30,16 @@ function ChatRefQuitPage({ route, navigation }) {
     state => state.saveChatPrompts,
   );
 
-  const saveGiveUpAttempt = useSessionStore(state => state.saveGiveUpAttempt);
-
   const minutes = useSessionStore(state => state.focusDurationMinutes);
+
+  const elapsedMinutes = () =>
+  Math.ceil(minutes - Number(timeString.substring(0,2)));
 
   const saveCompletedMinutes = useSessionStore(
     state => state.saveCompletedMinutes,
   );
 
-  const elapsedMinutes = () =>
-  Math.ceil(minutes - Number(timeString.substring(0,2)));
+  const saveGiveUpAttempt = useSessionStore(state => state.saveGiveUpAttempt);
 
   const chatbots = [{
     _id: 2,
@@ -65,11 +63,19 @@ function ChatRefQuitPage({ route, navigation }) {
     avatar: "https://i.328888.xyz/2022/12/27/UyZwU.png",
   }
 
-	useFocusEffect(React.useCallback(() => {
+  let prompts = [endScript.rand_1, endScript.rand_2, endScript.rand_3, endScript.rand_4, endScript.rand_5, endScript.rand_6];
+  let item2delete = prompts[Math.floor(Math.random()*prompts.length)];
+  let questions = prompts.filter(item => item != item2delete);
+  shuffleArray(questions);
+
+  useFocusEffect(React.useCallback(() => {
+    console.log('mins:', minutes);
     let timeString = route.params.timeString;
     setTimeString(timeString);
+    console.log('timeString:', timeString);
 
-    let sentence = chatScript.openup;
+    let sent = endScript.fixed;
+    let sentence = sent.replace('X', Math.ceil(minutes - Number(timeString.substring(0,2))).toString());
 
     let msgs = new Array();
     for(i=0; i<chat_history.length; i++)
@@ -96,12 +102,13 @@ function ChatRefQuitPage({ route, navigation }) {
       }
     }
 
-    let set = {
+    let set = {          
       _id: Math.round(Math.random() * 1000000),
       text: sentence,
       createdAt: new Date(),
       user: chatbots[0],
     };
+
     msgs.push(set);
 
     setMessages(msgs.reverse());
@@ -137,46 +144,28 @@ function ChatRefQuitPage({ route, navigation }) {
 
   async function doubleAns(ans, script)
   {
-    let start_log = chatScript.openup;
-    let default_log;
-    if(count == 0)
-    {
-      start_log = chatScript.openup;
-    }
-    if(count == 1)
-    {
-      start_log = chatScript.second;
-      default_log =  giveUp_default.second;
-    }
-    if(count == 2)
-    {
-      start_log = chatScript.third;
-      default_log = giveUp_default.third
-    }
-
     let answer = await new Promise(async (resolve, reject) => {
       let apires;
       setTimeout(() => {
         if (apires) {
           resolve(apires);
         } else {
-          resolve(default_log);
+          resolve(congrats_default.question);
         }
       }, 10000)
-      apires = await GPTAPI(ans, start_log);
+      apires = await GPTAPI(ans, endScript.fixed);
       resolve(apires);
 
     })
+    //let paraSen = await ParaAPI(script);
     onDelete();
     botSend(answer);
-
-    //let paraSen = await ParaAPI(script);
     flag = 'true';
-    userControl = 'true';
     let index = Math.floor(Math.random()*2); 
     //console.log('para:', paraSen);
     //botSend(paraSen[index]);
     botSend(script);
+    userControl = 'true';
   }
 
   async function endAns(ans, script)
@@ -187,14 +176,13 @@ function ChatRefQuitPage({ route, navigation }) {
         if (apires) {
           resolve(apires);
         } else {
-          resolve(giveUp_default.end);
+          resolve(congrats_default.end);
         }
       }, 10000)
-      apires = await GPTAPI(ans, chatScript.third);
+      apires = await GPTAPI(ans, endScript.fixed);
       resolve(apires);
 
     })
-
     onDelete();
     botSend(answer);
     flag = 'true';
@@ -239,38 +227,61 @@ function ChatRefQuitPage({ route, navigation }) {
     let userAns = myMessage.text;
     chat_history.push({character: 'user', sent: userAns, ava: -1, date: dateToString(new Date()),});
     once_history.push({character: 'user', sent: userAns, ava: -1, date: dateToString(new Date()),});
-    
+
     if(userControl == 'true')
     {
       botSend('Typing...');
     }
-
+  
     flag = 'true';
 
-
-    if(count == 2 && userControl == 'true')
+    if(count_finish == 5 && userControl == 'true')
     {
       userControl = 'false';
-      count = count + 1;
+      count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      endAns(userAns, chatScript.end);
+      endAns(userAns, endScript.end);
     }
-    if(count == 1 && userControl == 'true')
+    if(count_finish == 4 && userControl == 'true')
     {
       userControl = 'false';
-      count = count + 1;
+      count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, chatScript.third);
+      doubleAns(userAns, questions[0]);
     }
-    if(count == 0 && userControl == 'true')
+    if(count_finish == 3 && userControl == 'true')
     {
       userControl = 'false';
-      count = count + 1;
+      count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, chatScript.second);
+      doubleAns(userAns, questions[1]);
+    }
+    if(count_finish == 2 && userControl == 'true')
+    {
+      userControl = 'false';
+      count_finish = count_finish + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, questions[2]);
+    }
+    if(count_finish == 1 && userControl == 'true')
+    {
+      userControl = 'false';
+      count_finish = count_finish + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, questions[3]);
+    }
+    if(count_finish == 0 && userControl == 'true')
+    {
+      userControl = 'false';
+      count_finish = count_finish + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, questions[4]);
     }
 
   }, [])
@@ -322,45 +333,31 @@ function ChatRefQuitPage({ route, navigation }) {
     )
   }
 
-  //need a function like "uploadChatHistory(chat_history)" in the onPress function in "Yes" button
-
+  //need a function like "uploadChatHistory(chat_history)" in the onPress function in "back to home" button
   const renderMessageText = (props) => {
     const {
       currentMessage,
     } = props;
     let judgeText = currentMessage.text;
-    if(judgeText == chatScript.end || judgeText == 'Please press the buttons to make a choice.')
+    if(judgeText == endScript.end || judgeText == 'Please press the buttons to make a choice.')
     {
       return (
         <View>
           <MessageText {...props}/>
           <View style = {{flexDirection: 'row', justifyContent: 'center'}}>
             <TouchableOpacity
-              style={styles.buttonLeft}
+              style={styles.button}
               onPress={() => {
-                count = 0;
-                chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
-                once_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
+                count_finish = 0;
+                chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
                 saveChatPrompts(once_history);
                 saveGiveUpAttempt(true);
                 saveCompletedMinutes(elapsedMinutes());
                 saveSession();
                 navigation.navigate('HomePage');
               }}>
-              <Text style = {styles.buttonTextLeft}>{'   Yes   '}</Text>
-            </TouchableOpacity>
-            <Text>{'       '}</Text>
-            <TouchableOpacity
-              style={styles.buttonRight}
-              onPress={() => {
-                count = 0;
-                chat_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
-                once_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
-                saveGiveUpAttempt(false);
-                DeviceEventEmitter.emit('keepFocus');
-                navigation.navigate('TimerPage');
-              }}>
-              <Text style = {styles.buttonTextRight}>{'    No   '}</Text>
+              <Text style = {styles.buttonText}>{'back to home'}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -377,7 +374,7 @@ function ChatRefQuitPage({ route, navigation }) {
   };
 
   const renderInputToolbar = (props) => {
-    if (count > 2) {
+    if (count_finish > 5) {
     } else {
     return(
       <InputToolbar
@@ -389,15 +386,6 @@ function ChatRefQuitPage({ route, navigation }) {
 
   return (
   <View style = {styles.background}>
-    <Text style = {styles.timerText} 
-      onPress={() => {
-      count = 0;
-      chat_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
-      once_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
-      saveGiveUpAttempt(false);
-      DeviceEventEmitter.emit('keepFocus');
-      navigation.navigate('TimerPage');
-    }}>{'Back to focus mode'}{' { '}{timeString}{' }'}</Text>
     <GiftedChat
       messages={messages}
       onSend={messages => onSend(messages)}
@@ -441,7 +429,7 @@ function ChatRefQuitPage({ route, navigation }) {
       textDecorationLine: 'underline',
     },
 
-    buttonTextLeft: {
+    buttonText: {
       fontFamily: "Roboto",
       color: 'black',
       textAlign: 'center',
@@ -449,27 +437,11 @@ function ChatRefQuitPage({ route, navigation }) {
       fontSize: 18,
     },
 
-    buttonTextRight: {
-      fontFamily: "Roboto",
-      color: 'black',
-      textAlign: 'center',
-      textAlignVertical: 'center',
-      fontSize: 18,
-    },
-
-    buttonRight: {
+    button: {
       backgroundColor: "white",
       alignItems: "center",
       height: '100%',
-      borderRadius: 8.5,
-      padding: 10,
-      borderColor: '#B8C59E'
-    },
-
-    buttonLeft: {
-      backgroundColor: "white",
-      alignItems: "center",
-      height: '100%',
+      width: '70%',
       borderRadius: 8.5,
       padding: 10,
       borderColor: '#B8C59E'
@@ -481,9 +453,8 @@ function ChatRefQuitPage({ route, navigation }) {
       fontFamily: 'Roboto',
       fontSize: 18,
       color: 'white',
-      zIndex: 100,
     },
 
   });
 
-export default ChatRefQuitPage;
+export default ChatRefEndPage;
