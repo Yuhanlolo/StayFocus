@@ -15,7 +15,7 @@ export * from './isLocked';
 export * from './analytics';
 
 export function saveSession() {
-  useSessionStore.setState({endTime: new Date().toString()});
+  useSessionStore.setState({endTime: Date().toString()});
   const appStore = getAppStore();
   const uid = appStore.uid!;
 
