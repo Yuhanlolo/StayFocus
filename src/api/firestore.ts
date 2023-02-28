@@ -5,6 +5,8 @@ import {
   query,
   getDocs,
   initializeFirestore,
+  updateDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 
 import {app} from './firebase';
@@ -30,7 +32,15 @@ export function saveSessionToFirestore(uid: string, session: Session) {
 
 export function saveUserToFirestore(uid: string, username: string) {
   const userRef = doc(db, dbName, uid);
-  setDoc(userRef, {username: username}, {merge: true});
+  setDoc(
+    userRef,
+    {
+      username: username,
+      settings: {},
+      settings_changes: [],
+    },
+    {merge: true},
+  );
 }
 
 export function saveUserSettingsToFirestore(
@@ -38,7 +48,13 @@ export function saveUserSettingsToFirestore(
   settings: UserSettings,
 ) {
   const userRef = doc(db, dbName, uid);
-  setDoc(userRef, settings, {merge: true});
+  updateDoc(userRef, {
+    settings: settings,
+    settings_changes: arrayUnion({
+      newSettings: settings,
+      time: Date().toString(),
+    }),
+  });
 }
 
 export function getSessionsFromFirestore(uid: string) {
