@@ -88,7 +88,7 @@ export const useSessionStore = create<SessionStore>()(set => ({
   newSession: (plan, minutes) =>
     set({
       plan: plan || defaultSession.plan,
-      startTime: new Date().toJSON(),
+      startTime: new Date().toString(),
       focusDurationMinutes: clamp(
         defaultApp.minMinutes,
         minutes,
@@ -101,7 +101,7 @@ export const useSessionStore = create<SessionStore>()(set => ({
       giveUpAttempts: [
         ...state.giveUpAttempts,
         {
-          timestamp: new Date().toJSON(),
+          timestamp: new Date().toString(),
           answers: answers,
           givenUp: givenUp,
         },
