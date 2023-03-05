@@ -4,7 +4,7 @@ import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_congrats';
 import congrats_default from '../default_scripts/finish_script';
-import endScript from '../chat_reflection_scripts/chatReflectionScript_end';
+import {endScript} from '../chat_reflection_scripts/chatReflectionScript_end';
 import {useSessionStore, saveSession} from '../api';
 import {dateToString, shuffleArray} from '../helpers/utilities';
 import ParaAPI from '../gpt_apis/Para';

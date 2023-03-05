@@ -5,10 +5,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_congrats';
 import congrats_default from '../default_scripts/finish_script';
 import {useSessionStore, saveSession} from '../api';
-import {dateToString} from '../helpers/utilities';
+import {dateToString, shuffleArray} from '../helpers/utilities';
+
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
 import GPTAPI from '../gpt_apis/GPT';
+
+import { congrats } from '../chat_reflection_scripts/chatReflectionScript_congrats';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -55,9 +58,13 @@ function ChatRefFinishPage({ route, navigation }) {
     avatar: "https://i.328888.xyz/2022/12/27/UyZwU.png",
   }
 
+  let congrat_prompts = [congrats.rand_1, congrats.rand_2, congrats.rand_3, congrats.rand_4, congrats.rand_5, congrats.rand_6];
+  shuffleArray(congrat_prompts);
+  let congrat_questions = [congrat_prompts[0], congrat_prompts[1], congrat_prompts[2], congrat_prompts[3], congrat_prompts[4]];
+
   useFocusEffect(React.useCallback(() => {
-    let sent = chatScript.openup;
-    let sentence = sent.replace('60', minutes.toString());
+    let sent = congrats.fixed;
+    let sentence = sent.replace('X', minutes.toString());
 
     let msgs = new Array();
     for(i=0; i<chat_history.length; i++)
@@ -98,6 +105,13 @@ function ChatRefFinishPage({ route, navigation }) {
     once_history.push({character: 'chatbot', sent: sentence, ava: 1, date: dateToString(new Date()),});
 	}, []));
 
+  function question_process(arr)
+  {
+    res = [arr[0][0], arr[1][0], arr[2][0], arr[3][0], arr[4][0]]; 
+    return res;
+  }
+
+
   function botSend(txt)
   {
      if(flag == 'true')
@@ -135,7 +149,7 @@ function ChatRefFinishPage({ route, navigation }) {
           resolve(congrats_default.question);
         }
       }, 10000)
-      apires = await GPTAPI(ans, chatScript.openup);
+      apires = await GPTAPI(ans, congrats.fixed);
       resolve(apires);
 
     })
@@ -161,7 +175,7 @@ function ChatRefFinishPage({ route, navigation }) {
           resolve(congrats_default.end);
         }
       }, 10000)
-      apires = await GPTAPI(ans, chatScript.openup);
+      apires = await GPTAPI(ans, congrats.fixed);
       resolve(apires);
 
     })
@@ -205,6 +219,9 @@ function ChatRefFinishPage({ route, navigation }) {
       user: chat_user,
     }
     setMessages(previousMessages => GiftedChat.append(previousMessages, myMessage));
+
+    let questions = question_process(congrat_questions);
+
     flag = 'true';
     let userAns = myMessage.text;
     chat_history.push({character: 'user', sent: userAns, ava: -1, date: dateToString(new Date()),});
@@ -217,13 +234,45 @@ function ChatRefFinishPage({ route, navigation }) {
   
     flag = 'true';
 
+    if(count_finish == 5 && userControl == 'true')
+    {
+      userControl = 'false';
+      count_finish = count_finish + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      endAns(userAns, congrats.end);
+    }
+    if(count_finish == 4 && userControl == 'true')
+    {
+      userControl = 'false';
+      count_finish = count_finish + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, questions[0]);
+    }
+    if(count_finish == 3 && userControl == 'true')
+    {
+      userControl = 'false';
+      count_finish = count_finish + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, questions[1]);
+    }
+    if(count_finish == 2 && userControl == 'true')
+    {
+      userControl = 'false';
+      count_finish = count_finish + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, questions[2]);
+    }
     if(count_finish == 1 && userControl == 'true')
     {
       userControl = 'false';
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      endAns(userAns, chatScript.end);
+      doubleAns(userAns, questions[3]);
     }
     if(count_finish == 0 && userControl == 'true')
     {
@@ -231,7 +280,7 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, chatScript.question);
+      doubleAns(userAns, questions[4]);
     }
 
   }, [])
@@ -289,7 +338,7 @@ function ChatRefFinishPage({ route, navigation }) {
       currentMessage,
     } = props;
     let judgeText = currentMessage.text;
-    if(judgeText == chatScript.end || judgeText == 'Please press the buttons to make a choice.')
+    if(judgeText == congrats.end || judgeText == 'Please press the buttons to make a choice.')
     {
       return (
         <View>
@@ -322,7 +371,7 @@ function ChatRefFinishPage({ route, navigation }) {
   };
 
   const renderInputToolbar = (props) => {
-    if (count_finish > 1) {
+    if (count_finish > 5) {
     } else {
     return(
       <InputToolbar

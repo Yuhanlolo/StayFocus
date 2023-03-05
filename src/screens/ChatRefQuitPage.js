@@ -5,10 +5,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
 import giveUp_default from '../default_scripts/giveup_script';
 import {useSessionStore, saveSession} from '../api';
-import {dateToString} from '../helpers/utilities';
+
+import {dateToString, shuffleArray} from '../helpers/utilities';
+
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
 import GPTAPI from '../gpt_apis/GPT';
+
+import { giveUpEarly } from '../chat_reflection_scripts/chatReflectionScript_giveUp';
+import { giveUpNormal } from '../chat_reflection_scripts/chatReflectionScript_giveUp';
+import { giveUpClose2Goal } from '../chat_reflection_scripts/chatReflectionScript_giveUp';
+import { giveupDefault } from '../default_scripts/new_default_scripts';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -23,6 +30,9 @@ let flag = 'false';
 let count = 0;
 let ava_index = 0;
 let userControl = 'true';
+let mode = '';
+let focusTime = 0;
+let tag = 0; //if the question need to be answer twice the tag will be 1, else 0;
 
 function ChatRefQuitPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
@@ -65,11 +75,42 @@ function ChatRefQuitPage({ route, navigation }) {
     avatar: "https://i.328888.xyz/2022/12/27/UyZwU.png",
   }
 
+  let early_prompts = [giveUpEarly.rand_1, giveUpEarly.rand_2, giveUpEarly.rand_3, giveUpEarly.rand_4, giveUpEarly.rand_5, giveUpEarly.rand_6, giveUpEarly.rand_7];
+  shuffleArray(early_prompts);
+  let early_questions = [early_prompts[0], early_prompts[1], early_prompts[2], early_prompts[3], early_prompts[4]];
+
+  let close_prompts = [giveUpClose2Goal.rand_1, giveUpClose2Goal.rand_2, giveUpClose2Goal.rand_3, giveUpClose2Goal.rand_4, giveUpClose2Goal.rand_5, giveUpClose2Goal.rand_6, giveUpClose2Goal.rand_7];
+  shuffleArray(close_prompts);
+  let close_questions = [close_prompts[0], close_prompts[1], close_prompts[2], close_prompts[3], close_prompts[4]];
+
+  let normal_prompts = [giveUpNormal.rand_1, giveUpNormal.rand_2, giveUpNormal.rand_3, giveUpNormal.rand_4, giveUpNormal.rand_5, giveUpNormal.rand_6, giveUpNormal.rand_7];
+  shuffleArray(normal_prompts);
+  let normal_questions = [normal_prompts[0], normal_prompts[1], normal_prompts[2], normal_prompts[3], normal_prompts[4]];
+
+  let default_answers = [giveupDefault.rand_1, giveupDefault.rand_2, giveupDefault.rand_3, giveupDefault.rand_4];
+
 	useFocusEffect(React.useCallback(() => {
     let timeString = route.params.timeString;
     setTimeString(timeString);
 
-    let sentence = chatScript.openup;
+    focusTime = Math.ceil(minutes - Number(timeString.substring(0,2)));
+    let sentence = '';
+
+    if(focusTime < 10)
+    {
+      mode = 'early';
+      sentence = giveUpEarly.fixed;
+    }
+    if(focusTime >= 10 && focusTime < (minutes - 10))
+    {
+      mode = 'normal';
+      sentence = giveUpNormal.fixed;
+    }
+    if(focusTime >= (minutes - 10))
+    {
+      mode = 'close';
+      sentence = giveUpClose2Goal.fixed;
+    }
 
     let msgs = new Array();
     for(i=0; i<chat_history.length; i++)
@@ -109,6 +150,12 @@ function ChatRefQuitPage({ route, navigation }) {
     once_history.push({character: 'chatbot', sent: sentence, ava: 0, date: dateToString(new Date()),});
 	}, []));
 
+  function question_process(arr)
+  {
+    res = [arr[0][0], arr[1][0], arr[2][0], arr[3][0], arr[4][0]]; 
+    return res;
+  }
+
   function botSend(txt)
   {
      if(flag == 'true')
@@ -137,22 +184,10 @@ function ChatRefQuitPage({ route, navigation }) {
 
   async function doubleAns(ans, script)
   {
-    let start_log = chatScript.openup;
-    let default_log;
-    if(count == 0)
-    {
-      start_log = chatScript.openup;
-    }
-    if(count == 1)
-    {
-      start_log = chatScript.second;
-      default_log =  giveUp_default.second;
-    }
-    if(count == 2)
-    {
-      start_log = chatScript.third;
-      default_log = giveUp_default.third
-    }
+    let start_log = giveUpNormal.fixed;
+    let default_log  = giveUp_default.end;
+    let index = Math.floor(Math.random()*3);
+    let default_answer = default_answers[index]; 
 
     let answer = await new Promise(async (resolve, reject) => {
       let apires;
@@ -160,7 +195,7 @@ function ChatRefQuitPage({ route, navigation }) {
         if (apires) {
           resolve(apires);
         } else {
-          resolve(default_log);
+          resolve(default_answer);
         }
       }, 10000)
       apires = await GPTAPI(ans, start_log);
@@ -173,7 +208,6 @@ function ChatRefQuitPage({ route, navigation }) {
     //let paraSen = await ParaAPI(script);
     flag = 'true';
     userControl = 'true';
-    let index = Math.floor(Math.random()*2); 
     //console.log('para:', paraSen);
     //botSend(paraSen[index]);
     botSend(script);
@@ -181,6 +215,8 @@ function ChatRefQuitPage({ route, navigation }) {
 
   async function endAns(ans, script)
   {
+    let start_log = giveUpNormal.fixed;
+
     let answer = await new Promise(async (resolve, reject) => {
       let apires;
       setTimeout(() => {
@@ -190,7 +226,7 @@ function ChatRefQuitPage({ route, navigation }) {
           resolve(giveUp_default.end);
         }
       }, 10000)
-      apires = await GPTAPI(ans, chatScript.third);
+      apires = await GPTAPI(ans, start_log);
       resolve(apires);
 
     })
@@ -235,6 +271,21 @@ function ChatRefQuitPage({ route, navigation }) {
       user: chat_user,
     }
     setMessages(previousMessages => GiftedChat.append(previousMessages, myMessage));
+
+    let questions = [];
+    if(mode == 'early')
+    {
+      questions = question_process(early_questions);
+    }
+    if(mode == 'normal')
+    {
+      questions = question_process(normal_questions);
+    }
+    if(mode == 'close')
+    {
+      questions = question_process(close_questions);
+    }
+
     flag = 'true';
     let userAns = myMessage.text;
     chat_history.push({character: 'user', sent: userAns, ava: -1, date: dateToString(new Date()),});
@@ -247,32 +298,97 @@ function ChatRefQuitPage({ route, navigation }) {
 
     flag = 'true';
 
+    if(count == 5 && tag != 1 && userControl == 'true')
+    {
+      userControl = 'false';
+      count = count + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      endAns(userAns, giveUpNormal.end);
+    }
+    if(count == 4 && tag != 1 && userControl == 'true')
+    {
+      let checkSentence = questions[0];
+      checkSentence = checkSentence.replace('X', focusTime);
 
-    if(count == 2 && userControl == 'true')
-    {
+      if(checkSentence == 'What was your original plan for this focus session?')
+      {
+        tag = 1;
+      }
       userControl = 'false';
       count = count + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      endAns(userAns, chatScript.end);
+      doubleAns(userAns, checkSentence);
     }
-    if(count == 1 && userControl == 'true')
+    if(count == 3 && tag != 1 && userControl == 'true')
     {
-      userControl = 'false';
-      count = count + 1;
-      avaControl(userAns);
-      console.log('index:', ava_index);
-      doubleAns(userAns, chatScript.third);
-    }
-    if(count == 0 && userControl == 'true')
-    {
-      userControl = 'false';
-      count = count + 1;
-      avaControl(userAns);
-      console.log('index:', ava_index);
-      doubleAns(userAns, chatScript.second);
-    }
+      let checkSentence = questions[1];
+      checkSentence = checkSentence.replace('X', focusTime);
 
+      if(checkSentence == 'What was your original plan for this focus session?')
+      {
+        tag = 1;
+      }
+      userControl = 'false';
+      count = count + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, checkSentence);
+    }
+    if(count == 2 && tag != 1 && userControl == 'true')
+    {
+      let checkSentence = questions[2];
+      checkSentence = checkSentence.replace('X', focusTime);
+
+      if(checkSentence == 'What was your original plan for this focus session?')
+      {
+        tag = 1;
+      }
+      userControl = 'false';
+      count = count + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, checkSentence);
+    }
+    if(count == 1 && tag != 1 && userControl == 'true')
+    {
+      let checkSentence = questions[3];
+      checkSentence = checkSentence.replace('X', focusTime);
+
+      if(checkSentence == 'What was your original plan for this focus session?')
+      {
+        tag = 1;
+      }
+      userControl = 'false';
+      count = count + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, checkSentence);
+    }
+    if(count == 0 && tag != 1 && userControl == 'true')
+    {
+      let checkSentence = questions[4];
+      checkSentence = checkSentence.replace('X', focusTime);
+
+      if(checkSentence == 'What was your original plan for this focus session?')
+      {
+        tag = 1;
+      }
+      userControl = 'false';
+      count = count + 1;
+      avaControl(userAns);
+      console.log('index:', ava_index);
+      doubleAns(userAns, checkSentence);
+    }
+    if(tag == 1 && userControl == 'true')
+    {
+      userControl = 'false';
+      let followedQues = 'Great Plan! How did it go?';
+      avaControl(userAns);
+      doubleAns(userAns, followedQues);
+      tag = 0;
+    }
   }, [])
 
   const renderBubble = (props) =>
@@ -329,7 +445,7 @@ function ChatRefQuitPage({ route, navigation }) {
       currentMessage,
     } = props;
     let judgeText = currentMessage.text;
-    if(judgeText == chatScript.end || judgeText == 'Please press the buttons to make a choice.')
+    if(judgeText == giveUpNormal.end || judgeText == 'Please press the buttons to make a choice.')
     {
       return (
         <View>
@@ -377,7 +493,7 @@ function ChatRefQuitPage({ route, navigation }) {
   };
 
   const renderInputToolbar = (props) => {
-    if (count > 2) {
+    if (count > 5) {
     } else {
     return(
       <InputToolbar
@@ -389,15 +505,18 @@ function ChatRefQuitPage({ route, navigation }) {
 
   return (
   <View style = {styles.background}>
-    <Text style = {styles.timerText} 
-      onPress={() => {
-      count = 0;
-      chat_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
-      once_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
-      saveGiveUpAttempt(false);
-      DeviceEventEmitter.emit('keepFocus');
-      navigation.navigate('TimerPage');
-    }}>{'Back to focus mode'}{' { '}{timeString}{' }'}</Text>
+    <TouchableOpacity
+      style = {styles.button}
+      onPress={()=>{
+        count = 0;
+        chat_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
+        once_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
+        saveGiveUpAttempt(false);
+        DeviceEventEmitter.emit('keepFocus');
+        navigation.navigate('TimerPage');
+      }}>
+      <Text style = {styles.timerText}>{'Back to focus mode'}{' { '}{timeString}{' }'}</Text>
+    </TouchableOpacity>
     <GiftedChat
       messages={messages}
       onSend={messages => onSend(messages)}
@@ -473,6 +592,17 @@ function ChatRefQuitPage({ route, navigation }) {
       borderRadius: 8.5,
       padding: 10,
       borderColor: '#B8C59E'
+    },
+
+    button: {
+      backgroundColor: '#506F4C',
+      height: '6%',
+      width: '75%',
+      borderRadius: 20,
+      padding: 10,
+      marginTop: 15,
+      marginBottom: 15,
+      borderColor: '#B8C59E',
     },
 
     timerText: {
