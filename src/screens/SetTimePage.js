@@ -214,9 +214,13 @@ function SetTimePage({ route, navigation }) {
           <MessageText {...props}/>
           <View style = {styles.dropdown}>
             <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(25); chat_history.push({character: 'user', sent: '25 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '25 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 25); navigation.navigate('TimerPage'); }}>{'            25 mins             '}</Text>
+            <Text style = {styles.marginText}>{' '}</Text>
             <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(50); chat_history.push({character: 'user', sent: '50 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '50 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 50); navigation.navigate('TimerPage'); }}>{'            50 mins             '}</Text>
+            <Text style = {styles.marginText}>{' '}</Text>
             <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(75); chat_history.push({character: 'user', sent: '75 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '75 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 75); navigation.navigate('TimerPage'); }}>{'            75 mins             '}</Text>
+            <Text style = {styles.marginText}>{' '}</Text>
             <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(100); chat_history.push({character: 'user', sent: '100 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '100 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 100); navigation.navigate('TimerPage');}}>{'            100 mins           '}</Text>
+            <Text style = {styles.marginText}>{' '}</Text>
             <Text style = {styles.dropdownText} onPress = {() => {setTimeSet(125); chat_history.push({character: 'user', sent: '125 mins', ava: -1, date: dateToString(new Date())}); once_history.push({character: 'user', sent: '125 mins', ava: -1, date: dateToString(new Date())}); newSession('Focusing', 125); navigation.navigate('TimerPage');}}>{'            125 mins           '}</Text>
           </View>
         </View>
@@ -291,6 +295,10 @@ function SetTimePage({ route, navigation }) {
       textAlign: 'center',
       textAlignVertical: 'center',
       textDecorationLine: 'underline',
+    },
+
+    marginText: {
+      fontSize: 5,
     },
 
   });

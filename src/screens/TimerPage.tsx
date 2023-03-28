@@ -130,6 +130,8 @@ function TimerPage({navigation}) {
             // pending notification is cleared. Otherwise, the user clicks
             // the pending notification and so the focus session ended.
             const pending = await notifee.getTriggerNotificationIds();
+            enableNotification.current = false;
+            notifee.cancelNotification(notificationId);
             if (pending.includes(notificationId)) {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);

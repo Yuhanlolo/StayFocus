@@ -12,5 +12,5 @@ export const congrats = {
   rand_4: ['How is your productivity during the past minutes?'],
   rand_5: ['Was it challenging to complete the focusing session?'],
   rand_6: ['Any thoughts about setting a longer focusing goal next time?'],
-  end: "Great! You've done this focusing session.",
+  end: "Great! You've done this focusing session. Please press the button to submit the session and go to home page.",
 }

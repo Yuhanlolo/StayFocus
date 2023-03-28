@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {Text} from 'react-native';
-
+import notifee from '@notifee/react-native';
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 
 import {CustomButton, Screen} from '../components';

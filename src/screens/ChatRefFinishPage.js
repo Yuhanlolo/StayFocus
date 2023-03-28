@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, LogBox } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, LogBox, BackHandler } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_congrats';
@@ -9,9 +9,10 @@ import {dateToString, shuffleArray} from '../helpers/utilities';
 
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
-import GPTAPI from '../gpt_apis/GPT';
+import GPTAPI from '../gpt_apis/Completion';
 
 import { congrats } from '../chat_reflection_scripts/chatReflectionScript_congrats';
+import {congratsDefaultNew} from '../default_scripts/new_default_scripts';
 
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -62,6 +63,8 @@ function ChatRefFinishPage({ route, navigation }) {
   shuffleArray(congrat_prompts);
   let congrat_questions = [congrat_prompts[0], congrat_prompts[1], congrat_prompts[2], congrat_prompts[3], congrat_prompts[4]];
 
+  let congrat_default  = [congratsDefaultNew.rand_1, congratsDefaultNew.rand_2, congratsDefaultNew.rand_3, congratsDefaultNew.rand_4, congratsDefaultNew.rand_5];
+
   useFocusEffect(React.useCallback(() => {
     let sent = congrats.fixed;
     let sentence = sent.replace('X', minutes.toString());
@@ -104,6 +107,19 @@ function ChatRefFinishPage({ route, navigation }) {
     chat_history.push({character: 'chatbot', sent: sentence, ava: 1, date: dateToString(new Date()),});
     once_history.push({character: 'chatbot', sent: sentence, ava: 1, date: dateToString(new Date()),});
 	}, []));
+
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   function question_process(arr)
   {
@@ -161,6 +177,30 @@ function ChatRefFinishPage({ route, navigation }) {
     //console.log('para:', paraSen);
     //botSend(paraSen[index]);
     botSend(script);
+    userControl = 'true';
+  }
+
+  async function doubleAnsCompletion(ans, script, num)
+  {
+    let order = Math.floor(Math.random()*num);
+    let default_answer = congrat_default[order]; 
+    congrat_default = congrat_default.filter(item => item != default_answer)
+
+    let answer = await new Promise(async (resolve, reject) => {
+      let apires;
+      setTimeout(() => {
+        if (apires) {
+          resolve(apires);
+        } else {
+          resolve(default_answer);
+        }
+      }, 10000)
+      apires = await GPTAPI(ans, congrats.fixed);
+      resolve(apires);
+
+    })
+    onDelete();
+    botSend(answer);
     userControl = 'true';
   }
 
@@ -240,7 +280,9 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      endAns(userAns, congrats.end);
+      //endAns(userAns, congrats.end);
+      onDelete();
+      botSend(congrats.end);
     }
     if(count_finish == 4 && userControl == 'true')
     {
@@ -248,7 +290,7 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[0]);
+      doubleAnsCompletion(userAns, questions[0], 1);
     }
     if(count_finish == 3 && userControl == 'true')
     {
@@ -256,7 +298,7 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[1]);
+      doubleAnsCompletion(userAns, questions[1], 2);
     }
     if(count_finish == 2 && userControl == 'true')
     {
@@ -264,7 +306,7 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[2]);
+      doubleAnsCompletion(userAns, questions[2], 3);
     }
     if(count_finish == 1 && userControl == 'true')
     {
@@ -272,7 +314,7 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[3]);
+      doubleAnsCompletion(userAns, questions[3], 4);
     }
     if(count_finish == 0 && userControl == 'true')
     {
@@ -280,7 +322,7 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[4]);
+      doubleAnsCompletion(userAns, questions[4], 5);
     }
 
   }, [])
@@ -347,6 +389,7 @@ function ChatRefFinishPage({ route, navigation }) {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
+                userControl = 'true';
                 count_finish = 0;
                 chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
                 once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
@@ -354,7 +397,7 @@ function ChatRefFinishPage({ route, navigation }) {
                 saveSession();
                 navigation.navigate('HomePage');
               }}>
-              <Text style = {styles.buttonText}>{'back to home'}</Text>
+              <Text style = {styles.buttonText}>{'Save your focus log'}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -431,7 +474,7 @@ function ChatRefFinishPage({ route, navigation }) {
       color: 'black',
       textAlign: 'center',
       textAlignVertical: 'center',
-      fontSize: 18,
+      fontSize: 15,
     },
 
     button: {

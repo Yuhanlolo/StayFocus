@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, LogBox } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, LogBox, BackHandler } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_congrats';
@@ -7,6 +7,7 @@ import congrats_default from '../default_scripts/finish_script';
 import {endScript} from '../chat_reflection_scripts/chatReflectionScript_end';
 import {useSessionStore, saveSession} from '../api';
 import {dateToString, shuffleArray} from '../helpers/utilities';
+import { giveupDefault } from '../default_scripts/new_default_scripts';
 import ParaAPI from '../gpt_apis/Para';
 import SentiAPI from '../gpt_apis/SentiGPT';
 import GPTAPI from '../gpt_apis/GPT';
@@ -67,6 +68,7 @@ function ChatRefEndPage({ route, navigation }) {
   let item2delete = prompts[Math.floor(Math.random()*prompts.length)];
   let questions = prompts.filter(item => item != item2delete);
   shuffleArray(questions);
+  let default_answers = [giveupDefault.rand_1, giveupDefault.rand_2, giveupDefault.rand_3, giveupDefault.rand_4, giveupDefault.rand_5];
 
   useFocusEffect(React.useCallback(() => {
     console.log('mins:', minutes);
@@ -116,6 +118,19 @@ function ChatRefEndPage({ route, navigation }) {
     once_history.push({character: 'chatbot', sent: sentence, ava: 0, date: dateToString(new Date()),});
 	}, []));
 
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   function botSend(txt)
   {
      if(flag == 'true')
@@ -142,15 +157,19 @@ function ChatRefEndPage({ route, navigation }) {
     setMessages(previousMessages => previousMessages.filter(message => message.text !== 'Typing...'));
   }
 
-  async function doubleAns(ans, script)
+  async function doubleAns(ans, script, num)
   {
+    let order = Math.floor(Math.random()*num);
+    let default_answer = default_answers[order]; 
+    default_answers = default_answers.filter(item => item != default_answer)
+
     let answer = await new Promise(async (resolve, reject) => {
       let apires;
       setTimeout(() => {
         if (apires) {
           resolve(apires);
         } else {
-          resolve(congrats_default.question);
+          resolve(default_answer);
         }
       }, 10000)
       apires = await GPTAPI(ans, endScript.fixed);
@@ -241,7 +260,9 @@ function ChatRefEndPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      endAns(userAns, endScript.end);
+      //endAns(userAns, endScript.end);
+      onDelete();
+      botSend(endScript.end);
     }
     if(count_finish == 4 && userControl == 'true')
     {
@@ -249,7 +270,7 @@ function ChatRefEndPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[0]);
+      doubleAns(userAns, questions[0], 1);
     }
     if(count_finish == 3 && userControl == 'true')
     {
@@ -257,7 +278,7 @@ function ChatRefEndPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[1]);
+      doubleAns(userAns, questions[1], 2);
     }
     if(count_finish == 2 && userControl == 'true')
     {
@@ -265,7 +286,7 @@ function ChatRefEndPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[2]);
+      doubleAns(userAns, questions[2], 3);
     }
     if(count_finish == 1 && userControl == 'true')
     {
@@ -273,7 +294,7 @@ function ChatRefEndPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[3]);
+      doubleAns(userAns, questions[3], 4);
     }
     if(count_finish == 0 && userControl == 'true')
     {
@@ -281,7 +302,7 @@ function ChatRefEndPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[4]);
+      doubleAns(userAns, questions[4], 5);
     }
 
   }, [])
@@ -349,6 +370,7 @@ function ChatRefEndPage({ route, navigation }) {
               style={styles.button}
               onPress={() => {
                 count_finish = 0;
+                userControl = 'true';
                 chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
                 once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
                 saveChatPrompts(once_history);
@@ -357,7 +379,7 @@ function ChatRefEndPage({ route, navigation }) {
                 saveSession();
                 navigation.navigate('HomePage');
               }}>
-              <Text style = {styles.buttonText}>{'back to home'}</Text>
+              <Text style = {styles.buttonText}>{'Save your focus log'}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -434,7 +456,7 @@ function ChatRefEndPage({ route, navigation }) {
       color: 'black',
       textAlign: 'center',
       textAlignVertical: 'center',
-      fontSize: 18,
+      fontSize: 15,
     },
 
     button: {

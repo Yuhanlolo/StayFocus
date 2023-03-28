@@ -47,7 +47,7 @@ function HomePage({navigation}) {
   }, []);
 
   useFocusEffect(React.useCallback(() => {
-      once_history = [];
+    once_history = [];
 	}, []));
 
   const styles = useStyles();

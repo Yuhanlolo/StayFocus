@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, DeviceEventEmitter } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, DeviceEventEmitter, BackHandler } from 'react-native';
 import { GiftedChat, Bubble, Send, MessageText, InputToolbar} from 'react-native-gifted-chat';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import chatScript from '../chat_reflection_scripts/chatReflectionScript_giveUp';
@@ -87,7 +87,7 @@ function ChatRefQuitPage({ route, navigation }) {
   shuffleArray(normal_prompts);
   let normal_questions = [normal_prompts[0], normal_prompts[1], normal_prompts[2], normal_prompts[3], normal_prompts[4]];
 
-  let default_answers = [giveupDefault.rand_1, giveupDefault.rand_2, giveupDefault.rand_3, giveupDefault.rand_4];
+  let default_answers = [giveupDefault.rand_1, giveupDefault.rand_2, giveupDefault.rand_3, giveupDefault.rand_4, giveupDefault.rand_5];
 
 	useFocusEffect(React.useCallback(() => {
     let timeString = route.params.timeString;
@@ -150,6 +150,19 @@ function ChatRefQuitPage({ route, navigation }) {
     once_history.push({character: 'chatbot', sent: sentence, ava: 0, date: dateToString(new Date()),});
 	}, []));
 
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   function question_process(arr)
   {
     res = [arr[0][0], arr[1][0], arr[2][0], arr[3][0], arr[4][0]]; 
@@ -186,7 +199,7 @@ function ChatRefQuitPage({ route, navigation }) {
   {
     let start_log = giveUpNormal.fixed;
     let default_log  = giveUp_default.end;
-    let index = Math.floor(Math.random()*3);
+    let index = Math.floor(Math.random()*5);
     let default_answer = default_answers[index]; 
 
     let answer = await new Promise(async (resolve, reject) => {
@@ -263,6 +276,8 @@ function ChatRefQuitPage({ route, navigation }) {
   }
 
   const onSend = useCallback((messageArray) => {
+    console.log('count: ', count);
+    console.log('userControl: ', userControl);
     const message = messageArray[0];
     const myMessage = {
       _id: Math.round(Math.random() * 1000000),
@@ -304,7 +319,9 @@ function ChatRefQuitPage({ route, navigation }) {
       count = count + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      endAns(userAns, giveUpNormal.end);
+      //endAns(userAns, giveUpNormal.end);
+      onDelete();
+      botSend(giveUpNormal.end);
     }
     if(count == 4 && tag != 1 && userControl == 'true')
     {
@@ -455,13 +472,12 @@ function ChatRefQuitPage({ route, navigation }) {
               style={styles.buttonLeft}
               onPress={() => {
                 count = 0;
-                chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
-                once_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
-                saveChatPrompts(once_history);
-                saveGiveUpAttempt(true);
-                saveCompletedMinutes(elapsedMinutes());
-                saveSession();
-                navigation.navigate('HomePage');
+                userControl = 'true';
+                chat_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
+                saveGiveUpAttempt(false);
+                DeviceEventEmitter.emit('keepFocus');
+                navigation.navigate('TimerPage');
               }}>
               <Text style = {styles.buttonTextLeft}>{'   Yes   '}</Text>
             </TouchableOpacity>
@@ -470,11 +486,14 @@ function ChatRefQuitPage({ route, navigation }) {
               style={styles.buttonRight}
               onPress={() => {
                 count = 0;
-                chat_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
-                once_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
-                saveGiveUpAttempt(false);
-                DeviceEventEmitter.emit('keepFocus');
-                navigation.navigate('TimerPage');
+                userControl = 'true';
+                chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
+                saveChatPrompts(once_history);
+                saveGiveUpAttempt(true);
+                saveCompletedMinutes(elapsedMinutes());
+                saveSession();
+                navigation.navigate('HomePage');
               }}>
               <Text style = {styles.buttonTextRight}>{'    No   '}</Text>
             </TouchableOpacity>
