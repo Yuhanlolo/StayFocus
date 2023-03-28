@@ -11,16 +11,12 @@ function getStrings({
       numberOfQuestions: 3,
       fixedQuestions: [['Why do you want to check your phone right now?']],
       randomizedQuestions: [
-        ['Which app are you trying to check now?'],
-        ['Is checking your phone part of the current task?'],
-        ['Is anything distracting you now?'],
-        ['Did you encounter any challenges during the focus session?'],
-        [`How did you feel during the past ${focusDurationMinutes}?`],
-        ['How long do you plan to spend on your phone this time?'],
+        [`How did you feel during the past ${focusDurationMinutes}`],
+        ['What are the challenges during the focus session, if any?'],
         ['What is the most important thing you plan to do today?'],
         [
           'What was your original plan for this focus session?',
-          'Great Plan! How did it go?',
+          'How did the plan go?', // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
         [`Placeholder for ${focusDurationMinutes}`],
       ],
@@ -32,16 +28,12 @@ function getStrings({
       numberOfQuestions: 3,
       fixedQuestions: [['Why did you just check your phone?']],
       randomizedQuestions: [
-        ['Which app did you just check?'],
-        ['Was checking your phone part of the task that you worked on?'],
-        ['Was anything distracting you earlier?'],
-        ['Did you encounter any challenges during the focus session?'],
+        ['What were the challenges during the focus session, if any?'],
         [`How did you feel during the past ${completedMinutes}?`],
-        ['Do you how long you spent on your phone this time?'],
         ['What is the most important thing you plan to do today?'],
         [
            'What was your original plan for this focus session?',
-           'Great Plan! How did it go?',
+           'How did the plan go?',  // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
         [`Placeholder for ${focusDurationMinutes}`],
       ],
@@ -52,16 +44,12 @@ function getStrings({
       numberOfQuestions: 3,
       fixedQuestions: [[`You just got started a few minutes, why are you want to leave the session now?`]],
       randomizedQuestions: [
-        ['Which app are you trying to check now?'],
-        ['Is checking your phone part of the current task?'],
-        ['Is anything distracting you now?'],
-        ['Did you encounter any challenges during the focus session?'],
+        ['What are the challenges during the focus session, if any?'],
         [`How did you feel during the past ${focusDurationMinutes}?`],
-        ['How long do you plan to spend on your phone this time?'],
         ['What is the most important thing you plan to do today?'],
         [
           'What was your original plan for this focus session?',
-          'Great Plan! How did it go?',
+          'How did the plan go?',  // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
         [`Placeholder for ${focusDurationMinutes}`],
       ],
@@ -72,16 +60,12 @@ function getStrings({
       numberOfQuestions: 3,
       fixedQuestions: [['Your are almost there, why do you want to check your phone now?']],
       randomizedQuestions: [
-        ['Which app are you trying to check now?'],
-        ['Is checking your phone part of the current task?'],
-        ['Is anything distracting you now?'],
-        ['Did you encounter any challenges during the focus session?'],
+        ['What are the challenges during the focus session, if any?'],
         [`How did you feel during the past ${focusDurationMinutes}?`],
-        ['How long do you plan to spend on your phone this time?'],
         ['What is the most important thing you plan to do today?'],
         [
           'What was your original plan for this focus session?',
-          'Great Plan! How did it go?',
+          'How did the plan go?',  // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
         [`Placeholder for ${focusDurationMinutes}`],
       ],
@@ -97,10 +81,9 @@ function getStrings({
         ],
       ],
       randomizedQuestions: [
-        ['Overall, how was your focus session?'],
+        ['Does the complete session bring you closer to your goal today?'],
         ['What is your next plan?'],
-        ['Did the session bring you close to your goal today?'],
-        ['How do you feel without phone distraction?'],
+        ['How do you feel now?'],
         ['Any other thoughts to share, like challenges or strategies?'],
       ],
       finalMessage: "Thanks! Take some breaks and see you next time.",
