@@ -1,4 +1,8 @@
-import {saveSessionToFirestore, saveUserSettingsToFirestore} from './firestore';
+import {
+  saveSessionToFirestore,
+  saveUsageStatsToFireStore,
+  saveUserSettingsToFirestore,
+} from './firestore';
 import {
   getSession,
   getAppStore,
@@ -6,6 +10,10 @@ import {
   useSessionStore,
 } from './store';
 import {UserSettings} from './types';
+
+import {NativeModules} from 'react-native';
+
+const {UsageStatsModule} = NativeModules;
 
 export * from './store';
 export * from './firestore';
@@ -40,4 +48,13 @@ export function saveSettings(minutes: number, date: Date) {
   };
   appStore.saveSettings(data);
   saveUserSettingsToFirestore(uid, data);
+}
+
+export function saveUsageStats() {
+  const days = 7;
+  const appStore = getAppStore();
+  const uid = appStore.uid!;
+  UsageStatsModule.getStats(days, (data: string) =>
+    saveUsageStatsToFireStore(uid, data),
+  );
 }
