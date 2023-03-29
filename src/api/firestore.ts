@@ -38,6 +38,7 @@ export function saveUserToFirestore(uid: string, username: string) {
       username: username,
       settings: {},
       settings_changes: [],
+      usage_stats: '',
     },
     {merge: true},
   );
@@ -54,6 +55,13 @@ export function saveUserSettingsToFirestore(
       newSettings: settings,
       time: Date().toString(),
     }),
+  });
+}
+
+export function saveUsageStatsToFireStore(uid: string, stats: string) {
+  const userRef = doc(db, dbName, uid);
+  updateDoc(userRef, {
+    usage_stats: stats,
   });
 }
 

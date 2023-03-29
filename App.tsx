@@ -3,6 +3,7 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {LogBox} from 'react-native';
+import {useEffect} from 'react';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 import SignupPage from './src/screens/SignupPage';
@@ -14,7 +15,7 @@ import FocusEndedPage from './src/screens/FocusEndedPage';
 import SetTimePage from './src/screens/SetTimePage';
 import ChatRefQuitPage from './src/screens/ChatRefQuitPage';
 import {createStyles, ThemeProvider} from './src/helpers';
-import {useAppStore} from './src/api';
+import {saveUsageStats, useAppStore} from './src/api';
 
 LogBox.ignoreAllLogs();
 
@@ -26,6 +27,12 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const styles = useStyles();
   const user = useAppStore(state => state.uid);
+
+  useEffect(() => {
+    if (user) {
+      saveUsageStats();
+    }
+  }, [user]);
 
   return (
     <ThemeProvider>
