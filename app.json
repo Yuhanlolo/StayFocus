@@ -1,4 +1,9 @@
 {
   "name": "stayfocus",
-  "displayName": "stayfocus"
+  "displayName": "stayfocus",
+  "extra": {
+    "eas": {
+      "projectId": "93be5f20-c811-4c91-a7e8-1db0dfb4a495"
+    }
+  }
 }
