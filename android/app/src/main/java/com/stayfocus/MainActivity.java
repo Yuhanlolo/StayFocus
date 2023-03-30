@@ -52,9 +52,9 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(null);
+    super.onCreate(savedInstanceState);
 
-    if (UsageStatsModule.getUsageStatsList(this).isEmpty()) {
+    if (!UsageStatsModule.hasUsagePermission(this)) {
       Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
       startActivity(intent);
     }
