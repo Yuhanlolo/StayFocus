@@ -17,6 +17,7 @@ public class LockDetectionPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
 
         modules.add(new LockDetectionModule(reactContext));
+        modules.add(new UsageStatsModule(reactContext));
 
         return modules;
     }
