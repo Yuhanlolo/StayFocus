@@ -59,9 +59,9 @@ function ChatRefFinishPage({ route, navigation }) {
     avatar: "https://i.328888.xyz/2022/12/27/UyZwU.png",
   }
 
-  let congrat_prompts = [congrats.rand_1, congrats.rand_2, congrats.rand_3, congrats.rand_4, congrats.rand_5, congrats.rand_6];
+  let congrat_prompts = [congrats.rand_1, congrats.rand_2, congrats.rand_3, congrats.rand_4];
   shuffleArray(congrat_prompts);
-  let congrat_questions = [congrat_prompts[0], congrat_prompts[1], congrat_prompts[2], congrat_prompts[3], congrat_prompts[4]];
+  let congrat_questions = [congrat_prompts[0], congrat_prompts[1], congrat_prompts[2], congrat_prompts[3]];
 
   let congrat_default  = [congratsDefaultNew.rand_1, congratsDefaultNew.rand_2, congratsDefaultNew.rand_3, congratsDefaultNew.rand_4, congratsDefaultNew.rand_5];
 
@@ -123,7 +123,7 @@ function ChatRefFinishPage({ route, navigation }) {
 
   function question_process(arr)
   {
-    res = [arr[0][0], arr[1][0], arr[2][0], arr[3][0], arr[4][0]]; 
+    res = [arr[0][0], arr[1][0], arr[2][0], arr[3][0]]; 
     return res;
   }
 
@@ -290,7 +290,7 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAnsCompletion(userAns, questions[2], 3);
+      doubleAnsCompletion(userAns, questions[0], 1);
     }
     if(count_finish == 1 && userControl == 'true')
     {
@@ -298,7 +298,7 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAnsCompletion(userAns, questions[3], 4);
+      doubleAnsCompletion(userAns, questions[1], 2);
     }
     if(count_finish == 0 && userControl == 'true')
     {
@@ -306,7 +306,7 @@ function ChatRefFinishPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAnsCompletion(userAns, questions[4], 5);
+      doubleAnsCompletion(userAns, questions[2], 3);
     }
 
   }, [])

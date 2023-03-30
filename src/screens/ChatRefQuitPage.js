@@ -75,17 +75,17 @@ function ChatRefQuitPage({ route, navigation }) {
     avatar: "https://i.328888.xyz/2022/12/27/UyZwU.png",
   }
 
-  let early_prompts = [giveUpEarly.rand_1, giveUpEarly.rand_2, giveUpEarly.rand_3, giveUpEarly.rand_4, giveUpEarly.rand_5, giveUpEarly.rand_6, giveUpEarly.rand_7];
+  let early_prompts = [giveUpEarly.rand_1, giveUpEarly.rand_2, giveUpEarly.rand_3, giveUpEarly.rand_4];
   shuffleArray(early_prompts);
-  let early_questions = [early_prompts[0], early_prompts[1], early_prompts[2], early_prompts[3], early_prompts[4]];
+  let early_questions = [early_prompts[0], early_prompts[1], early_prompts[2], early_prompts[3]];
 
-  let close_prompts = [giveUpClose2Goal.rand_1, giveUpClose2Goal.rand_2, giveUpClose2Goal.rand_3, giveUpClose2Goal.rand_4, giveUpClose2Goal.rand_5, giveUpClose2Goal.rand_6, giveUpClose2Goal.rand_7];
+  let close_prompts = [giveUpClose2Goal.rand_1, giveUpClose2Goal.rand_2, giveUpClose2Goal.rand_3, giveUpClose2Goal.rand_4];
   shuffleArray(close_prompts);
-  let close_questions = [close_prompts[0], close_prompts[1], close_prompts[2], close_prompts[3], close_prompts[4]];
+  let close_questions = [close_prompts[0], close_prompts[1], close_prompts[2], close_prompts[3]];
 
-  let normal_prompts = [giveUpNormal.rand_1, giveUpNormal.rand_2, giveUpNormal.rand_3, giveUpNormal.rand_4, giveUpNormal.rand_5, giveUpNormal.rand_6, giveUpNormal.rand_7];
+  let normal_prompts = [giveUpNormal.rand_1, giveUpNormal.rand_2, giveUpNormal.rand_3, giveUpNormal.rand_4];
   shuffleArray(normal_prompts);
-  let normal_questions = [normal_prompts[0], normal_prompts[1], normal_prompts[2], normal_prompts[3], normal_prompts[4]];
+  let normal_questions = [normal_prompts[0], normal_prompts[1], normal_prompts[2], normal_prompts[3]];
 
   let default_answers = [giveupDefault.rand_1, giveupDefault.rand_2, giveupDefault.rand_3, giveupDefault.rand_4, giveupDefault.rand_5];
 
@@ -165,7 +165,7 @@ function ChatRefQuitPage({ route, navigation }) {
 
   function question_process(arr)
   {
-    res = [arr[0][0], arr[1][0], arr[2][0], arr[3][0], arr[4][0]]; 
+    res = [arr[0][0], arr[1][0], arr[2][0], arr[3][0]]; 
     return res;
   }
 
@@ -326,7 +326,7 @@ function ChatRefQuitPage({ route, navigation }) {
     }
     if(count == 2 && tag != 1 && userControl == 'true')
     {
-      let checkSentence = questions[2];
+      let checkSentence = questions[0];
       checkSentence = checkSentence.replace('X', focusTime);
 
       if(checkSentence == 'What was your original plan for this focus session?')
@@ -341,7 +341,7 @@ function ChatRefQuitPage({ route, navigation }) {
     }
     if(count == 1 && tag != 1 && userControl == 'true')
     {
-      let checkSentence = questions[3];
+      let checkSentence = questions[1];
       checkSentence = checkSentence.replace('X', focusTime);
 
       if(checkSentence == 'What was your original plan for this focus session?')
@@ -356,7 +356,7 @@ function ChatRefQuitPage({ route, navigation }) {
     }
     if(count == 0 && tag != 1 && userControl == 'true')
     {
-      let checkSentence = questions[4];
+      let checkSentence = questions[2];
       checkSentence = checkSentence.replace('X', focusTime);
 
       if(checkSentence == 'What was your original plan for this focus session?')

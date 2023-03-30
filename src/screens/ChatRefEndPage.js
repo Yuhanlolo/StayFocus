@@ -64,7 +64,7 @@ function ChatRefEndPage({ route, navigation }) {
     avatar: "https://i.328888.xyz/2022/12/27/UyZwU.png",
   }
 
-  let prompts = [endScript.rand_1, endScript.rand_2, endScript.rand_3, endScript.rand_4, endScript.rand_5, endScript.rand_6];
+  let prompts = [endScript.rand_1, endScript.rand_2, endScript.rand_3, endScript.rand_4];
   let item2delete = prompts[Math.floor(Math.random()*prompts.length)];
   let questions = prompts.filter(item => item != item2delete);
   shuffleArray(questions);
@@ -270,7 +270,7 @@ function ChatRefEndPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[2], 3);
+      doubleAns(userAns, questions[0], 1);
     }
     if(count_finish == 1 && userControl == 'true')
     {
@@ -278,7 +278,7 @@ function ChatRefEndPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[3], 4);
+      doubleAns(userAns, questions[1], 2);
     }
     if(count_finish == 0 && userControl == 'true')
     {
@@ -286,7 +286,7 @@ function ChatRefEndPage({ route, navigation }) {
       count_finish = count_finish + 1;
       avaControl(userAns);
       console.log('index:', ava_index);
-      doubleAns(userAns, questions[4], 5);
+      doubleAns(userAns, questions[2], 3);
     }
 
   }, [])

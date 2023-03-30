@@ -21,6 +21,7 @@ export const giveUpClose2Goal = {
   rand_2: ['What was your original plan for this focus session?'],
   rand_3: ['What is the most important thing you plan to do today?'],
   rand_4: ['What are the challenges during the focus session, if any?'],
+  end: 'Do you still want to stay in the focus mode?',
 };
 
 export const giveUpNormal = {

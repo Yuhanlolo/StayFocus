@@ -45,7 +45,6 @@ function SetTimePage({ route, navigation }) {
 
   useFocusEffect(React.useCallback(() => {
     let notice = 'Please enter or select your focus time.';
-    let sentence = chatScript.set;
 
     let msgs = new Array();
     for(i=0; i<chat_history.length; i++)
@@ -75,12 +74,6 @@ function SetTimePage({ route, navigation }) {
     console.log('****history:', chat_history);
 
     msgs.push({
-      _id: Math.round(Math.random() * 1000000),
-      text: sentence,
-      createdAt: new Date(),
-      user: chatbots[1],
-    });
-    msgs.push({
       _id: 1,
       text: notice,
       createdAt: new Date(),
@@ -89,9 +82,7 @@ function SetTimePage({ route, navigation }) {
 
     setMessages(msgs.reverse());
     chat_history.push({character: 'chatbot', sent: notice, ava: 1, date: dateToString(new Date()),});
-    chat_history.push({character: 'chatbot', sent: sentence, ava: 1, date: dateToString(new Date()),});
     once_history.push({character: 'chatbot', sent: notice, ava: 1, date: dateToString(new Date()),});
-    once_history.push({character: 'chatbot', sent: sentence, ava: 1, date: dateToString(new Date()),});
 	}, []));
 
   function extractTime (txt)
