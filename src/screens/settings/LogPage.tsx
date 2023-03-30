@@ -8,7 +8,7 @@ import SettingsScreen from './SettingsScreen';
 
 export default function LogPage({navigation}) {
   const dateCreated = new Date(
-    useAppStore(state => state.dateCreated)!.valueOf(),
+    (useAppStore(state => state.dateCreated) || new Date()).valueOf(),
   );
   const today = new Date();
   dateCreated.setHours(12, 0, 0, 0);
