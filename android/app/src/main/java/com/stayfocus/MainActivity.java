@@ -54,7 +54,7 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (UsageStatsModule.getUsageStatsList(this).isEmpty()) {
+    if (!UsageStatsModule.hasUsagePermission(this)) {
       Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
       startActivity(intent);
     }
