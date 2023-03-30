@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import create from 'zustand';
-import {persist} from 'zustand/middleware';
+import {createJSONStorage, persist} from 'zustand/middleware';
 
 import {clamp} from '../helpers';
 import {Session, UserSettings} from './types';
@@ -47,7 +47,7 @@ export const useAppStore = create<AppStore>()(
     }),
     {
       name: 'app-data',
-      getStorage: () => AsyncStorage,
+      storage: createJSONStorage(() => AsyncStorage),
     },
   ),
 );
