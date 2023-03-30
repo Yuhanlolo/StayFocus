@@ -71,10 +71,13 @@ export async function onLeaveFocusNotification(
   // BackgroundTimer.start();
   let t = timeoutSecond;
   BackgroundTimer.start();
+  notification_control = true;
+  console.log('if in');
   const intervalId: string = BackgroundTimer.setInterval(() => {
     console.log(`timeout ${t}`);
-    if (t > 0) {
-      if (enable.current) {
+    console.log('notification tag:', notification_control);
+    if (t > 0 && notification_control == true) {
+      if (enable.current && notification_control == true) {
         notifee.displayNotification({
           id: notificationId,
           title: 'StayFocused',
@@ -93,6 +96,7 @@ export async function onLeaveFocusNotification(
       }
       t = t - 1;
     } else {
+      t = 10;
       BackgroundTimer.clearInterval(intervalId);
     }
   }, 1000);

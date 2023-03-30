@@ -254,7 +254,7 @@ function ChatRefEndPage({ route, navigation }) {
   
     flag = 'true';
 
-    if(count_finish == 5 && userControl == 'true')
+    if(count_finish == 3 && userControl == 'true')
     {
       userControl = 'false';
       count_finish = count_finish + 1;
@@ -263,22 +263,6 @@ function ChatRefEndPage({ route, navigation }) {
       //endAns(userAns, endScript.end);
       onDelete();
       botSend(endScript.end);
-    }
-    if(count_finish == 4 && userControl == 'true')
-    {
-      userControl = 'false';
-      count_finish = count_finish + 1;
-      avaControl(userAns);
-      console.log('index:', ava_index);
-      doubleAns(userAns, questions[0], 1);
-    }
-    if(count_finish == 3 && userControl == 'true')
-    {
-      userControl = 'false';
-      count_finish = count_finish + 1;
-      avaControl(userAns);
-      console.log('index:', ava_index);
-      doubleAns(userAns, questions[1], 2);
     }
     if(count_finish == 2 && userControl == 'true')
     {
@@ -396,7 +380,7 @@ function ChatRefEndPage({ route, navigation }) {
   };
 
   const renderInputToolbar = (props) => {
-    if (count_finish > 5) {
+    if (count_finish > 3) {
     } else {
     return(
       <InputToolbar

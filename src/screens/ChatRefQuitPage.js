@@ -313,7 +313,8 @@ function ChatRefQuitPage({ route, navigation }) {
 
     flag = 'true';
 
-    if(count == 5 && tag != 1 && userControl == 'true')
+
+    if(count == 3 && tag != 1 && userControl == 'true')
     {
       userControl = 'false';
       count = count + 1;
@@ -322,36 +323,6 @@ function ChatRefQuitPage({ route, navigation }) {
       //endAns(userAns, giveUpNormal.end);
       onDelete();
       botSend(giveUpNormal.end);
-    }
-    if(count == 4 && tag != 1 && userControl == 'true')
-    {
-      let checkSentence = questions[0];
-      checkSentence = checkSentence.replace('X', focusTime);
-
-      if(checkSentence == 'What was your original plan for this focus session?')
-      {
-        tag = 1;
-      }
-      userControl = 'false';
-      count = count + 1;
-      avaControl(userAns);
-      console.log('index:', ava_index);
-      doubleAns(userAns, checkSentence);
-    }
-    if(count == 3 && tag != 1 && userControl == 'true')
-    {
-      let checkSentence = questions[1];
-      checkSentence = checkSentence.replace('X', focusTime);
-
-      if(checkSentence == 'What was your original plan for this focus session?')
-      {
-        tag = 1;
-      }
-      userControl = 'false';
-      count = count + 1;
-      avaControl(userAns);
-      console.log('index:', ava_index);
-      doubleAns(userAns, checkSentence);
     }
     if(count == 2 && tag != 1 && userControl == 'true')
     {
@@ -512,7 +483,7 @@ function ChatRefQuitPage({ route, navigation }) {
   };
 
   const renderInputToolbar = (props) => {
-    if (count > 5) {
+    if (count > 3) {
     } else {
     return(
       <InputToolbar
