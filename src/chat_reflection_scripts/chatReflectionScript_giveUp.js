@@ -8,28 +8,34 @@ export const giveUpScript = {
 
 export const giveUpEarly = {
   fixed: 'You just got started a few minutes, why do you want to leave the session now?',
-  rand_1: [`How did you feel during the past X minutes?`],
+  rand_1: [`In general, how did you feel during the session?`],
   rand_2: ['What was your original plan for this focus session?'],
-  rand_3: ['What is the most important thing you plan to do today?'],
+  rand_3: ['What is the most important thing for you to do today?'],
   rand_4: ['What are the challenges during the focus session, if any?'],
+  rand_5: ['Hong long are you planning to check your phone this time?'],
+  rand_6: ['Are there any alternative activities you could engage in instead of checking your phone?'],
   end: 'Do you still want to stay in the focus mode?',
 };
 
 export const giveUpClose2Goal = {
-  fixed: 'Your are almost there, why do you want to check your phone now?',
-  rand_1: [`How did you feel during the past X minutes?`],
+  fixed: 'Your are almost there, why do you want to leave the session now?',
+  rand_1: [`In general, how did you feel during the session?`],
   rand_2: ['What was your original plan for this focus session?'],
-  rand_3: ['What is the most important thing you plan to do today?'],
+  rand_3: ['What is the most important thing for you to do today?'],
   rand_4: ['What are the challenges during the focus session, if any?'],
+  rand_5: ['Hong long are you planning to check your phone this time?'],
+  rand_6: ['Are there any alternative activities you could engage in instead of checking your phone?'],
   end: 'Do you still want to stay in the focus mode?',
 };
 
 export const giveUpNormal = {
   fixed: 'Why do you want to check your phone right now?',
-  rand_1: [`How did you feel during the past X minutes?`],
+  rand_1: [`In general, how did you feel during the session?`],
   rand_2: ['What was your original plan for this focus session?'],
-  rand_3: ['What is the most important thing you plan to do today?'],
+  rand_3: ['What is the most important thing for you to do today?'],
   rand_4: ['What are the challenges during the focus session, if any?'],
+  rand_5: ['Hong long are you planning to check your phone this time?'],
+  rand_6: ['Are there any alternative activities you could engage in instead of checking your phone?'],
   end: 'Do you still want to stay in the focus mode?',
 };
 
