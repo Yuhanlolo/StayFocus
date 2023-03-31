@@ -161,17 +161,17 @@ function TimerPage({navigation}) {
           onRequestClose={toggleTimerAndModal}
           title="Leaving focus mode"
           styles={styles.modal}>
-          <Text style={styles.modalText}>Are you sure you want to leave?</Text>
+          <Text style={styles.modalText}>Do you still want to stay in the focus mode?</Text>
           <View style={styles.modalButtonContainer}>
             <CustomButton
               onPress={onBackToFocus}
               styles={{button: styles.modalButton}}>
-              Back to focus
+              Yes
             </CustomButton>
             <CustomButton
               onPress={onLeave}
               styles={{button: styles.modalButton}}>
-              Leave
+              No
             </CustomButton>
           </View>
         </CustomModal>
