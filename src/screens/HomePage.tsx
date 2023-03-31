@@ -60,7 +60,7 @@ function HomePage({navigation}) {
       </View>
       
       <View style = {styles.bubble}>
-        <Text style = {styles.bubbleText}>{'\n'}{'Are you ready to focus'}{'\n'}{'with me?'}{'\n'}</Text>
+        <Text style = {styles.bubbleText}>{'\n'}{'Ready to start a focus session with me?'}{'\n'}</Text>
         <Text style = {styles.bubbleTextPress} onPress = {onPress}>{'start'}</Text>
       </View>
       <View style = {styles.arrow}/>

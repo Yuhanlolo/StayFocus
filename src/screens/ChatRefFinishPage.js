@@ -135,8 +135,17 @@ function ChatRefFinishPage({ route, navigation }) {
         let sentence = txt;
         if(sentence != 'Typing...')
         {
-          chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
-          once_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
+          if(count_finish > 3)
+          {
+            pureText = congrats.end;
+            chat_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
+            once_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
+          }
+          else
+          {
+            chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
+            once_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
+          }
         }
         let botMessage = {
           _id: Math.round(Math.random() * 1000000),
@@ -381,7 +390,7 @@ function ChatRefFinishPage({ route, navigation }) {
                 saveSession();
                 navigation.navigate('HomePage');
               }}>
-              <Text style = {styles.buttonText}>{'Save your focus log'}</Text>
+              <Text style = {styles.buttonText}>{'Back to home'}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -410,6 +419,24 @@ function ChatRefFinishPage({ route, navigation }) {
 
   return (
   <View style = {styles.background}>
+    <View style = {{flexDirection: 'row-reverse'}}>
+      <TouchableOpacity
+        style = {count_finish>0 ? styles.exitButtonPlus : styles.exitButton}
+        onPress={()=>{
+          if(count_finish > 0)
+          {
+            userControl = 'true';
+            count_finish = 0;
+            chat_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
+            once_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
+            saveChatPrompts(once_history);
+            saveSession();
+            navigation.navigate('HomePage');
+          }
+        }}>
+        <Text style = {count_finish>0 ? styles.timerText : styles.exitText}>{'End the session'}</Text>
+      </TouchableOpacity>
+    </View>
     <GiftedChat
       messages={messages}
       onSend={messages => onSend(messages)}
@@ -458,27 +485,61 @@ function ChatRefFinishPage({ route, navigation }) {
       color: 'black',
       textAlign: 'center',
       textAlignVertical: 'center',
-      fontSize: 15,
+      fontSize: 18,
     },
 
     button: {
-      backgroundColor: "white",
-      alignItems: "center",
-      height: '100%',
-      width: '70%',
-      borderRadius: 8.5,
+      backgroundColor: '#585858',
+      height: '60%',
+      width: '58%',
+      borderRadius: 20,
       padding: 10,
-      borderColor: '#B8C59E'
+      marginTop: 15,
+      marginBottom: 15,
+      borderColor: '#B8C59E',
+    },
+
+    exitButton: {
+      backgroundColor: '#585858',
+      height: '60%',
+      width: '40%',
+      borderRadius: 20,
+      padding: 10,
+      marginTop: 15,
+      marginBottom: 15,
+      borderColor: '#303030',
+    },
+
+    exitButtonPlus: {
+      backgroundColor: '#585858',
+      height: '60%',
+      width: '40%',
+      borderRadius: 20,
+      padding: 10,
+      marginTop: 15,
+      marginBottom: 15,
+      borderColor: '#B8C59E',
     },
 
     timerText: {
       top: '4%',
-      left: '5%',
+      textAlign: 'center',
+      textAlignVertical: 'center',
       fontFamily: 'Roboto',
-      fontSize: 18,
+      fontSize: 15,
       color: 'white',
+      zIndex: 100,
     },
 
+    exitText: {
+      top: '4%',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      fontFamily: 'Roboto',
+      fontSize: 15,
+      color: '#817F7F',
+      zIndex: 100,
+    },
   });
 
 export default ChatRefFinishPage;

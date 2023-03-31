@@ -176,8 +176,17 @@ function ChatRefQuitPage({ route, navigation }) {
         let sentence = txt;
         if(sentence != 'Typing...')
         {
-          chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
-          once_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
+          if(count > 3)
+          {
+            pureText = giveUpNormal.end;
+            chat_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
+            once_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
+          }
+          else
+          {
+            chat_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
+            once_history.push({character: 'chatbot', sent: sentence, ava: ava_index, date: dateToString(new Date()),});
+          }
         }
         let botMessage = {
           _id: Math.round(Math.random() * 1000000),
@@ -444,8 +453,8 @@ function ChatRefQuitPage({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 userControl = 'true';
-                chat_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
-                once_history.push({character: 'user', sent: 'No', ava: -1, date: dateToString(new Date()),});
+                chat_history.push({character: 'user', sent: 'Yes.', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'Yes.', ava: -1, date: dateToString(new Date()),});
                 saveGiveUpAttempt(false);
                 DeviceEventEmitter.emit('keepFocus');
                 navigation.navigate('TimerPage');
@@ -458,8 +467,8 @@ function ChatRefQuitPage({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 userControl = 'true';
-                chat_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
-                once_history.push({character: 'user', sent: 'Yes', ava: -1, date: dateToString(new Date()),});
+                chat_history.push({character: 'user', sent: 'No.', ava: -1, date: dateToString(new Date()),});
+                once_history.push({character: 'user', sent: 'No.', ava: -1, date: dateToString(new Date()),});
                 saveChatPrompts(once_history);
                 saveGiveUpAttempt(true);
                 saveCompletedMinutes(elapsedMinutes());
@@ -495,29 +504,52 @@ function ChatRefQuitPage({ route, navigation }) {
 
   return (
   <View style = {styles.background}>
-    <TouchableOpacity
-      style = {styles.button}
-      onPress={()=>{
-        count = 0;
-        chat_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
-        once_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
-        saveGiveUpAttempt(false);
-        DeviceEventEmitter.emit('keepFocus');
-        navigation.navigate('TimerPage');
-      }}>
-      <Text style = {styles.timerText}>{'Back to focus mode'}{' { '}{timeString}{' }'}</Text>
-    </TouchableOpacity>
-    <GiftedChat
-      messages={messages}
-      onSend={messages => onSend(messages)}
-      user={chat_user}
-      textInputStyle={styles.textInput}
-      renderBubble={renderBubble}
-      alwaysShowSend
-      renderSend={renderSend}
-      renderMessageText={renderMessageText}
-      renderInputToolbar={renderInputToolbar}
-    />
+    <View style = {{flexDirection: 'row', flex: 1}}>
+      <TouchableOpacity
+        style = {styles.button}
+        onPress={()=>{
+          count = 0;
+          chat_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
+          once_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
+          saveGiveUpAttempt(false);
+          DeviceEventEmitter.emit('keepFocus');
+          navigation.navigate('TimerPage');
+        }}>
+        <Text style = {styles.timerText}>{'Back to focus'}{' { '}{timeString}{' }'}</Text>
+      </TouchableOpacity>
+      <Text>{'   '}</Text>
+      <TouchableOpacity
+        style = {count>0 ? styles.exitButtonPlus : styles.exitButton}
+        onPress={()=>{
+          if(count > 0)
+          {
+            count = 0;
+            userControl = 'true';
+            chat_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
+            once_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
+            saveChatPrompts(once_history);
+            saveGiveUpAttempt(true);
+            saveCompletedMinutes(elapsedMinutes());
+            saveSession();
+            navigation.navigate('HomePage');
+          }
+        }}>
+        <Text style = {count>0 ? styles.timerText : styles.exitText}>{'End the session'}</Text>
+      </TouchableOpacity>
+    </View>
+    <View style = {{flex: 10}}>
+      <GiftedChat
+        messages={messages}
+        onSend={messages => onSend(messages)}
+        user={chat_user}
+        textInputStyle={styles.textInput}
+        renderBubble={renderBubble}
+        alwaysShowSend
+        renderSend={renderSend}
+        renderMessageText={renderMessageText}
+        renderInputToolbar={renderInputToolbar}
+      />
+    </View>
   </View>
   )
 }
@@ -585,9 +617,31 @@ function ChatRefQuitPage({ route, navigation }) {
     },
 
     button: {
-      backgroundColor: '#506F4C',
-      height: '6%',
-      width: '75%',
+      backgroundColor: '#585858',
+      height: '60%',
+      width: '58%',
+      borderRadius: 20,
+      padding: 10,
+      marginTop: 15,
+      marginBottom: 15,
+      borderColor: '#B8C59E',
+    },
+
+    exitButton: {
+      backgroundColor: '#585858',
+      height: '60%',
+      width: '40%',
+      borderRadius: 20,
+      padding: 10,
+      marginTop: 15,
+      marginBottom: 15,
+      borderColor: '#303030',
+    },
+
+    exitButtonPlus: {
+      backgroundColor: '#585858',
+      height: '60%',
+      width: '40%',
       borderRadius: 20,
       padding: 10,
       marginTop: 15,
@@ -597,10 +651,21 @@ function ChatRefQuitPage({ route, navigation }) {
 
     timerText: {
       top: '4%',
-      left: '5%',
+      textAlign: 'center',
+      textAlignVertical: 'center',
       fontFamily: 'Roboto',
-      fontSize: 18,
+      fontSize: 15,
       color: 'white',
+      zIndex: 100,
+    },
+
+    exitText: {
+      top: '4%',
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      fontFamily: 'Roboto',
+      fontSize: 15,
+      color: '#817F7F',
       zIndex: 100,
     },
 
