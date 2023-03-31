@@ -75,15 +75,15 @@ function ChatRefQuitPage({ route, navigation }) {
     avatar: "https://i.328888.xyz/2022/12/27/UyZwU.png",
   }
 
-  let early_prompts = [giveUpEarly.rand_1, giveUpEarly.rand_2, giveUpEarly.rand_3, giveUpEarly.rand_4];
+  let early_prompts = [giveUpEarly.rand_1, giveUpEarly.rand_2, giveUpEarly.rand_3, giveUpEarly.rand_4, giveUpEarly.rand_5, giveUpEarly.rand_6];
   shuffleArray(early_prompts);
   let early_questions = [early_prompts[0], early_prompts[1], early_prompts[2], early_prompts[3]];
 
-  let close_prompts = [giveUpClose2Goal.rand_1, giveUpClose2Goal.rand_2, giveUpClose2Goal.rand_3, giveUpClose2Goal.rand_4];
+  let close_prompts = [giveUpClose2Goal.rand_1, giveUpClose2Goal.rand_2, giveUpClose2Goal.rand_3, giveUpClose2Goal.rand_4, giveUpClose2Goal.rand_5, giveUpClose2Goal.rand_6];
   shuffleArray(close_prompts);
   let close_questions = [close_prompts[0], close_prompts[1], close_prompts[2], close_prompts[3]];
 
-  let normal_prompts = [giveUpNormal.rand_1, giveUpNormal.rand_2, giveUpNormal.rand_3, giveUpNormal.rand_4];
+  let normal_prompts = [giveUpNormal.rand_1, giveUpNormal.rand_2, giveUpNormal.rand_3, giveUpNormal.rand_4, giveUpNormal.rand_5, giveUpNormal.rand_6];
   shuffleArray(normal_prompts);
   let normal_questions = [normal_prompts[0], normal_prompts[1], normal_prompts[2], normal_prompts[3]];
 

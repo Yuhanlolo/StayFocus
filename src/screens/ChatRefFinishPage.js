@@ -489,13 +489,12 @@ function ChatRefFinishPage({ route, navigation }) {
     },
 
     button: {
-      backgroundColor: '#585858',
-      height: '60%',
-      width: '58%',
-      borderRadius: 20,
+      backgroundColor: "white",
+      alignItems: "center",
+      height: '100%',
+      width: '70%',
+      borderRadius: 8.5,
       padding: 10,
-      marginTop: 15,
-      marginBottom: 15,
       borderColor: '#B8C59E',
     },
 
