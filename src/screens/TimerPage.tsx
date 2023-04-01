@@ -13,6 +13,8 @@ import {
   isLocked,
 } from '../api';
 
+global.notification_control = false;
+
 const timeString = (secs: number) => {
   const [h, m, s] = secondsToHHMMSS(secs);
   const hh = h.toString().padStart(2, '0');
@@ -97,6 +99,9 @@ function TimerPage({navigation}) {
           // Either the user locks the screen or quit the app
           tag = false;
           if (locked) {
+            notification_control = false;
+            enableNotification.current = false;
+            notifee.cancelNotification(notificationId);
             screenLocked.current = locked;
             dateLocked.current = Date.now();
           } else {
@@ -106,6 +111,9 @@ function TimerPage({navigation}) {
           }
         } else if (nextAppState === 'active') {
           // Either the user unlocks the screen or return to the app
+          enableNotification.current = false;
+          notifee.cancelNotification(notificationId);
+          notification_control = false;
           if (screenLocked.current) {
             screenLocked.current = false;
             let secondsDelta = Math.floor(
