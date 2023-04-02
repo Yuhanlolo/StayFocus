@@ -71,6 +71,12 @@ function TimerPage({navigation}) {
     navigation.navigate('SuccessPage');
   };
 
+  const onLeave = () => {
+    navigation.navigate('FocusEndedPage', {
+      elapsedMinutes: elapsedMinutes(),
+    });
+  };
+
   useEffect(() => {
     if (!paused) {
       const interval = setInterval(() => {
@@ -123,9 +129,10 @@ function TimerPage({navigation}) {
             if (secondsDelta < secondsRef.current) {
               setSeconds(seconds => seconds - secondsDelta);
             } else {
-              navigation.navigate('FocusEndedPage', {
-                elapsedMinutes: elapsedMinutes(),
-              });
+              onComplete();
+              //navigation.navigate('FocusEndedPage', {
+              //  elapsedMinutes: elapsedMinutes(),
+              //});
             }
           } else {
             // If the user clicks the notification in the time limit, the
@@ -140,9 +147,7 @@ function TimerPage({navigation}) {
             } else {
               if(tag == false)
               {
-                navigation.navigate('FocusEndedPage', {
-                  elapsedMinutes: elapsedMinutes(),
-                });
+                onLeave();
               }
             }
           }
