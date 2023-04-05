@@ -137,7 +137,7 @@ function ChatRefFinishPage({ route, navigation }) {
         {
           if(count_finish > 3)
           {
-            pureText = congrats.end;
+            pureText = congrats.end + ' ';
             chat_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
             once_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
           }

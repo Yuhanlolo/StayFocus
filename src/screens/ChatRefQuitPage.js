@@ -179,7 +179,7 @@ function ChatRefQuitPage({ route, navigation }) {
         {
           if(count > 3)
           {
-            pureText = giveUpNormal.end;
+            pureText = giveUpNormal.end + ' ';
             chat_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
             once_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
           }

@@ -143,7 +143,7 @@ function ChatRefEndPage({ route, navigation }) {
           //endScript.end
           if(count_finish > 3)
           {
-            pureText = endScript.end;
+            pureText = endScript.end + ' ';
             chat_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
             once_history.push({character: 'chatbot', sent: pureText, ava: ava_index, date: dateToString(new Date()),});
           }
