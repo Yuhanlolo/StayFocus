@@ -26,3 +26,10 @@ export interface AnalyticsData {
   sessionsMinutes: number;
   lastSessionEndTime: string;
 }
+
+interface EventStats {
+  screen_time_seconds: number;
+  screen_unlock_count: number;
+}
+
+export type UsageStats = Record<string, EventStats>;
