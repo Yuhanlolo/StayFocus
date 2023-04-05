@@ -13,6 +13,8 @@ import {
   isLocked,
 } from '../api';
 
+global.notification_control = false;
+
 const timeString = (secs: number) => {
   const [h, m, s] = secondsToHHMMSS(secs);
   const hh = h.toString().padStart(2, '0');
@@ -69,6 +71,12 @@ function TimerPage({navigation}) {
     navigation.navigate('SuccessPage');
   };
 
+  const onLeave = () => {
+    navigation.navigate('FocusEndedPage', {
+      elapsedMinutes: elapsedMinutes(),
+    });
+  };
+
   useEffect(() => {
     if (!paused) {
       const interval = setInterval(() => {
@@ -97,6 +105,9 @@ function TimerPage({navigation}) {
           // Either the user locks the screen or quit the app
           tag = false;
           if (locked) {
+            notification_control = false;
+            enableNotification.current = false;
+            notifee.cancelNotification(notificationId);
             screenLocked.current = locked;
             dateLocked.current = Date.now();
           } else {
@@ -106,6 +117,9 @@ function TimerPage({navigation}) {
           }
         } else if (nextAppState === 'active') {
           // Either the user unlocks the screen or return to the app
+          enableNotification.current = false;
+          notifee.cancelNotification(notificationId);
+          notification_control = false;
           if (screenLocked.current) {
             screenLocked.current = false;
             let secondsDelta = Math.floor(
@@ -115,9 +129,10 @@ function TimerPage({navigation}) {
             if (secondsDelta < secondsRef.current) {
               setSeconds(seconds => seconds - secondsDelta);
             } else {
-              navigation.navigate('FocusEndedPage', {
-                elapsedMinutes: elapsedMinutes(),
-              });
+              onComplete();
+              //navigation.navigate('FocusEndedPage', {
+              //  elapsedMinutes: elapsedMinutes(),
+              //});
             }
           } else {
             // If the user clicks the notification in the time limit, the
@@ -132,9 +147,7 @@ function TimerPage({navigation}) {
             } else {
               if(tag == false)
               {
-                navigation.navigate('FocusEndedPage', {
-                  elapsedMinutes: elapsedMinutes(),
-                });
+                onLeave();
               }
             }
           }
