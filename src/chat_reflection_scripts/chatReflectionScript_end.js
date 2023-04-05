@@ -4,5 +4,7 @@ export const endScript = {
   rand_2: 'What was your original plan for this focus session?',
   rand_3: 'What is the most important thing you plan to do today?',
   rand_4: 'What were the challenges during the focus session, if any?',
-  end: 'Thank you for sharing your thoughts! Please press the button to save your focus log.',
+  rand_5: 'Hong long are you planning to check your phone this time?',
+  rand_6: 'Are there any alternative activities you could engage in instead of checking your phone?',
+  end: 'Thank you for sharing your thoughts!',
 }

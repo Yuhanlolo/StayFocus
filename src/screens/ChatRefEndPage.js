@@ -64,11 +64,13 @@ function ChatRefEndPage({ route, navigation }) {
     avatar: "https://i.328888.xyz/2022/12/27/UyZwU.png",
   }
 
-  let prompts = [endScript.rand_1, endScript.rand_2, endScript.rand_3, endScript.rand_4];
-  let item2delete = prompts[Math.floor(Math.random()*prompts.length)];
-  let questions = prompts.filter(item => item != item2delete);
-  shuffleArray(questions);
+  let prompts = [endScript.rand_1, endScript.rand_2, endScript.rand_3, endScript.rand_4, endScript.rand_5, endScript.rand_6];
+  //let item2delete = prompts[Math.floor(Math.random()*prompts.length)];
+  //let questions = prompts.filter(item => item != item2delete);
+  shuffleArray(prompts);
+  let questions = prompts;
   let default_answers = [giveupDefault.rand_1, giveupDefault.rand_2, giveupDefault.rand_3, giveupDefault.rand_4, giveupDefault.rand_5];
+  let question_temp = endScript.fixed;
 
   useFocusEffect(React.useCallback(() => {
     console.log('mins:', minutes);
@@ -182,7 +184,7 @@ function ChatRefEndPage({ route, navigation }) {
           resolve(default_answer);
         }
       }, 10000)
-      apires = await GPTAPI(ans, endScript.fixed);
+      apires = await GPTAPI(ans, question_temp);
       resolve(apires);
 
     })
@@ -268,11 +270,13 @@ function ChatRefEndPage({ route, navigation }) {
     {
       userControl = 'false';
       count_finish = count_finish + 1;
+      console.log('last question: ', question_temp);
       avaControl(userAns);
       console.log('index:', ava_index);
       //endAns(userAns, endScript.end);
       onDelete();
       botSend(endScript.end);
+      question_temp = endScript.fixed;
       chat_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
       once_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
       saveChatPrompts(once_history);
@@ -284,6 +288,8 @@ function ChatRefEndPage({ route, navigation }) {
     {
       userControl = 'false';
       count_finish = count_finish + 1;
+      console.log('last question: ', question_temp);
+      question_temp = questions[0];
       avaControl(userAns);
       console.log('index:', ava_index);
       doubleAns(userAns, questions[0], 1);
@@ -292,6 +298,8 @@ function ChatRefEndPage({ route, navigation }) {
     {
       userControl = 'false';
       count_finish = count_finish + 1;
+      console.log('last question: ', question_temp);
+      question_temp = questions[1];
       avaControl(userAns);
       console.log('index:', ava_index);
       doubleAns(userAns, questions[1], 2);
@@ -300,6 +308,8 @@ function ChatRefEndPage({ route, navigation }) {
     {
       userControl = 'false';
       count_finish = count_finish + 1;
+      console.log('last question: ', question_temp);
+      question_temp = questions[2];
       avaControl(userAns);
       console.log('index:', ava_index);
       doubleAns(userAns, questions[2], 3);
@@ -371,6 +381,7 @@ function ChatRefEndPage({ route, navigation }) {
               onPress={() => {
                 count_finish = 0;
                 userControl = 'true';
+                question_temp = endScript.fixed;
                 //chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
                 //once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
                 //saveChatPrompts(once_history);
@@ -416,6 +427,7 @@ function ChatRefEndPage({ route, navigation }) {
           {
             count_finish = 0;
             userControl = 'true';
+            question_temp = endScript.fixed;
             chat_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
             once_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
             saveChatPrompts(once_history);
