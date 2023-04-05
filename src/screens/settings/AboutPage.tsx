@@ -11,7 +11,8 @@ export default function AboutPage({navigation}) {
       title="About StayFocus"
       onBack={() => navigation.navigate('Home')}>
       <Text style={styles.text}>Instruction</Text>
-      <Text style={styles.text}>Privacy and Data Collection</Text>
+      <Text style={styles.text}>During the study, please remember to start at least 4 focus sessions per day, although you may not be able to complete all the sessions</Text>
+      <Text style={styles.text}>Thank you for your interest and participation!</Text>
     </SettingsScreen>
   );
 }
