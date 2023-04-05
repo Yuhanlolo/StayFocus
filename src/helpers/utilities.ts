@@ -34,3 +34,9 @@ export function shuffleArray(array: any[]) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
+
+// Taken from https://stackoverflow.com/a/69462557
+// Thanks Sweden!
+export function timestamp() {
+  return new Date().toLocaleString('sv-SE');
+}

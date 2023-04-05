@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import create from 'zustand';
 import {createJSONStorage, persist} from 'zustand/middleware';
 
-import {clamp} from '../helpers';
+import {clamp, timestamp} from '../helpers';
 import {Session, UserSettings} from './types';
 
 // AppStore: client-side persistent store for
@@ -86,7 +86,7 @@ export const useSessionStore = create<SessionStore>()(set => ({
   newSession: (plan, minutes) =>
     set({
       plan: plan || defaultSession.plan,
-      startTime: Date().toString(),
+      startTime: timestamp(),
       focusDurationMinutes: clamp(
         defaultApp.minMinutes,
         minutes,
@@ -99,7 +99,8 @@ export const useSessionStore = create<SessionStore>()(set => ({
       giveUpAttempts: [
         ...state.giveUpAttempts,
         {
-          timestamp: Date().toString(),
+          timestamp: timestamp(),
+          answers: answers,
           givenUp: givenUp,
         },
       ],

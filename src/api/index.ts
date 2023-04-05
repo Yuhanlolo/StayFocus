@@ -1,3 +1,4 @@
+import {timestamp} from '../helpers';
 import {
   saveSessionToFirestore,
   saveUsageStatsToFireStore,
@@ -23,7 +24,7 @@ export * from './isLocked';
 export * from './analytics';
 
 export function saveSession() {
-  useSessionStore.setState({endTime: Date().toString()});
+  useSessionStore.setState({endTime: timestamp()});
   const appStore = getAppStore();
   const uid = appStore.uid!;
 
@@ -55,6 +56,6 @@ export function saveUsageStats() {
   const appStore = getAppStore();
   const uid = appStore.uid!;
   UsageStatsModule.getStats(days, (data: string) =>
-    saveUsageStatsToFireStore(uid, data),
+    saveUsageStatsToFireStore(uid, JSON.parse(data)),
   );
 }
