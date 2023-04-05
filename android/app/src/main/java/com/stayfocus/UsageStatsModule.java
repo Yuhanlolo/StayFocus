@@ -7,19 +7,17 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
-import android.app.usage.UsageEvents;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
+import android.app.AppOpsManager;
+import android.os.Process;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
-import android.widget.Toast;
+import android.app.usage.*;
 
-import java.util.Calendar;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+
 
 public class UsageStatsModule extends ReactContextBaseJavaModule {
     public UsageStatsModule(ReactApplicationContext context) {
@@ -34,33 +32,41 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getStats(int durationInDays, Callback f) {
         try {
-            String stats = getStatsString(getAggregateStatsMap(getReactApplicationContext(), durationInDays));
+            String stats = getStatsString(getEventStats(getReactApplicationContext(), durationInDays));
             f.invoke(stats);
         } catch (Exception e) {
             f.invoke("Error: " + e.getMessage());
         }
     }
 
-    public static Map<String, UsageStats> getAggregateStatsMap(Context context, int durationInDays){
+    public static List<EventStats> getEventStats(Context context, int durationInDays){
         UsageStatsManager usm = (UsageStatsManager)context.getSystemService(Context.USAGE_STATS_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        long endTime = calendar.getTimeInMillis();
-        calendar.add(Calendar.DATE, -durationInDays);
-        long startTime = calendar.getTimeInMillis();
 
-        Map<String, UsageStats> aggregateStatsMap = usm.queryAndAggregateUsageStats(startTime, endTime);
-        return aggregateStatsMap;
+        long endTime = Instant.now().truncatedTo(ChronoUnit.DAYS).toEpochMilli();
+        long startTime = endTime - 7*24*60*60*1000;
+
+        List<EventStats> eventStatsList = usm.queryEventStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        return eventStatsList;
     }
 
-    public static String getStatsString(Map<String, UsageStats> aggregateStats){
+    public static String getStatsString(List<EventStats> eventStatsList) {
         String result = "{\n";
 
-        for(Map.Entry<String, UsageStats> entry: aggregateStats.entrySet()) {
-            String name = entry.getKey();
-            UsageStats stats = entry.getValue();
-            String info = "    \"lastTimeUsed\": " + stats.getLastTimeUsed() + ",\n"
-                        + "    \"totalTimeInForeground\": " + stats.getTotalTimeInForeground() + "\n";
-            result += "  \"" + name + "\": {\n" + info + "  },\n";
+        for (EventStats stats: eventStatsList) {
+            int type = stats.getEventType();
+            long start = stats.getFirstTimeStamp();
+            long end = stats.getLastTimeStamp();
+
+            LocalDateTime startDateTime = Instant.ofEpochMilli(start).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            LocalDateTime endDateTime = Instant.ofEpochMilli(end).atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+            if (type == UsageEvents.Event.SCREEN_INTERACTIVE) {
+                long totalTimeSeconds = stats.getTotalTime() / 1000;
+                result += String.format("\"%s to %s\": {\n  \"screen_time_seconds\": %d,\n", startDateTime, endDateTime, totalTimeSeconds);
+            } else if (type == UsageEvents.Event.KEYGUARD_HIDDEN) {
+                long totalCount = stats.getCount();
+                result += String.format("  \"screen_unlock_count\": %s\n},", totalCount);
+            }
         }
 
         result = result.substring(0, result.length() - 1);

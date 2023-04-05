@@ -50,3 +50,9 @@ export function dateToString(date: Date) {
       (min > 9 ? min : ("0" + min)) + ":" +
       (second > 9 ? second : ("0" + second));
 }
+
+// Taken from https://stackoverflow.com/a/69462557
+// Thanks Sweden!
+export function timestamp() {
+  return new Date().toLocaleString('sv-SE');
+}
