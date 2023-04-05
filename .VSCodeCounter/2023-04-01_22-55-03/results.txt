@@ -1,0 +1,180 @@
+Date : 2023-04-01 22:55:03
+Directory : d:\StayFocus
+Total : 97 files,  35664 codes, 388 comments, 817 blanks, all 36869 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          6 |     30,252 |          0 |          6 |     30,258 |
+| JavaScript         |         22 |      2,076 |         41 |        276 |      2,393 |
+| TypeScript JSX     |         19 |      1,523 |         23 |        163 |      1,709 |
+| TypeScript         |         15 |        639 |         25 |         88 |        752 |
+| Java               |          9 |        442 |         75 |         92 |        609 |
+| Groovy             |          3 |        206 |        140 |         38 |        384 |
+| C++                |          8 |        172 |         23 |         60 |        255 |
+| XML                |          7 |        107 |         26 |         14 |        147 |
+| Objective-C++      |          1 |         99 |          6 |         29 |        134 |
+| Batch              |          1 |         68 |          0 |         22 |         90 |
+| Objective-C        |          2 |         61 |          0 |         17 |         78 |
+| Java Properties    |          2 |         11 |         26 |         10 |         47 |
+| JSON with Comments |          1 |          6 |          3 |          2 |         11 |
+| Ignore             |          1 |          2 |          0 |          0 |          2 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                        | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                           |         97 |     35,664 |        388 |        817 |     36,869 |
+| . (Files)                                                                                                                   |         12 |     30,311 |         13 |         23 |     30,347 |
+| __tests__                                                                                                                   |          1 |          7 |          4 |          4 |         15 |
+| android                                                                                                                     |         28 |        955 |        289 |        231 |      1,475 |
+| android (Files)                                                                                                             |          4 |        123 |         35 |         37 |        195 |
+| android\app                                                                                                                 |         23 |        827 |        254 |        193 |      1,274 |
+| android\app (Files)                                                                                                         |          1 |        157 |        131 |         32 |        320 |
+| android\app\src                                                                                                             |         22 |        670 |        123 |        161 |        954 |
+| android\app\src\debug                                                                                                       |          2 |         71 |          8 |          9 |         88 |
+| android\app\src\debug (Files)                                                                                               |          1 |         11 |          0 |          3 |         14 |
+| android\app\src\debug\java                                                                                                  |          1 |         60 |          8 |          6 |         74 |
+| android\app\src\debug\java\com                                                                                              |          1 |         60 |          8 |          6 |         74 |
+| android\app\src\debug\java\com\stayfocus                                                                                    |          1 |         60 |          8 |          6 |         74 |
+| android\app\src\main                                                                                                        |         20 |        599 |        115 |        152 |        866 |
+| android\app\src\main (Files)                                                                                                |          1 |         27 |          0 |          3 |         30 |
+| android\app\src\main\java                                                                                                   |          8 |        382 |         67 |         86 |        535 |
+| android\app\src\main\java\com                                                                                               |          8 |        382 |         67 |         86 |        535 |
+| android\app\src\main\java\com\stayfocus                                                                                     |          8 |        382 |         67 |         86 |        535 |
+| android\app\src\main\java\com\stayfocus (Files)                                                                             |          5 |        247 |         29 |         56 |        332 |
+| android\app\src\main\java\com\stayfocus\newarchitecture                                                                     |          3 |        135 |         38 |         30 |        203 |
+| android\app\src\main\java\com\stayfocus\newarchitecture (Files)                                                             |          1 |         83 |         20 |         14 |        117 |
+| android\app\src\main\java\com\stayfocus\newarchitecture\components                                                          |          1 |         22 |          8 |          7 |         37 |
+| android\app\src\main\java\com\stayfocus\newarchitecture\modules                                                             |          1 |         30 |         10 |          9 |         49 |
+| android\app\src\main\jni                                                                                                    |          7 |        167 |         23 |         56 |        246 |
+| android\app\src\main\res                                                                                                    |          4 |         23 |         25 |          7 |         55 |
+| android\app\src\main\res\drawable                                                                                           |          1 |         11 |         23 |          3 |         37 |
+| android\app\src\main\res\values                                                                                             |          2 |          8 |          2 |          4 |         14 |
+| android\app\src\main\res\xml                                                                                                |          1 |          4 |          0 |          0 |          4 |
+| android\gradle                                                                                                              |          1 |          5 |          0 |          1 |          6 |
+| android\gradle\wrapper                                                                                                      |          1 |          5 |          0 |          1 |          6 |
+| ios                                                                                                                         |          7 |        270 |          7 |         53 |        330 |
+| ios\stayfocus                                                                                                               |          6 |        217 |          7 |         39 |        263 |
+| ios\stayfocus (Files)                                                                                                       |          4 |        158 |          7 |         37 |        202 |
+| ios\stayfocusTests                                                                                                          |          1 |         53 |          0 |         14 |         67 |
+| ios\stayfocus\Images.xcassets                                                                                               |          2 |         59 |          0 |          2 |         61 |
+| ios\stayfocus\Images.xcassets (Files)                                                                                       |          1 |          6 |          0 |          1 |          7 |
+| ios\stayfocus\Images.xcassets\AppIcon.appiconset                                                                            |          1 |         53 |          0 |          1 |         54 |
+| src                                                                                                                         |         49 |      4,121 |         75 |        506 |      4,702 |
+| src\api                                                                                                                     |          9 |        489 |         24 |         69 |        582 |
+| src\chat_reflection_scripts                                                                                                 |          4 |         66 |         12 |         10 |         88 |
+| src\components                                                                                                              |          6 |        353 |          3 |         37 |        393 |
+| src\default_scripts                                                                                                         |          3 |         31 |          0 |          5 |         36 |
+| src\gpt_apis                                                                                                                |          6 |        135 |          0 |         31 |        166 |
+| src\helpers                                                                                                                 |          4 |        175 |          1 |         25 |        201 |
+| src\screens                                                                                                                 |         17 |      2,872 |         35 |        329 |      3,236 |
+| src\screens (Files)                                                                                                         |         12 |      2,609 |         33 |        303 |      2,945 |
+| src\screens\settings                                                                                                        |          5 |        263 |          2 |         26 |        291 |
++-----------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                                    | language           | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| d:\StayFocus\.eslintrc.js                                                                                                   | JavaScript         |         16 |          0 |          1 |         17 |
+| d:\StayFocus\.prettierignore                                                                                                | Ignore             |          2 |          0 |          0 |          2 |
+| d:\StayFocus\.prettierrc.js                                                                                                 | JavaScript         |          7 |          0 |          1 |          8 |
+| d:\StayFocus\.watchmanconfig                                                                                                | JSON               |          1 |          0 |          1 |          2 |
+| d:\StayFocus\App.tsx                                                                                                        | TypeScript JSX     |         69 |          1 |          9 |         79 |
+| d:\StayFocus\__tests__\App-test.tsx                                                                                         | TypeScript JSX     |          7 |          4 |          4 |         15 |
+| d:\StayFocus\android\app\build.gradle                                                                                       | Groovy             |        157 |        131 |         32 |        320 |
+| d:\StayFocus\android\app\src\debug\AndroidManifest.xml                                                                      | XML                |         11 |          0 |          3 |         14 |
+| d:\StayFocus\android\app\src\debug\java\com\stayfocus\ReactNativeFlipper.java                                               | Java               |         60 |          8 |          6 |         74 |
+| d:\StayFocus\android\app\src\main\AndroidManifest.xml                                                                       | XML                |         27 |          0 |          3 |         30 |
+| d:\StayFocus\android\app\src\main\java\com\stayfocus\LockDetectionModule.java                                               | Java               |         43 |          3 |         10 |         56 |
+| d:\StayFocus\android\app\src\main\java\com\stayfocus\LockDetectionPackage.java                                              | Java               |         22 |          0 |          8 |         30 |
+| d:\StayFocus\android\app\src\main\java\com\stayfocus\MainActivity.java                                                      | Java               |         40 |         12 |         11 |         63 |
+| d:\StayFocus\android\app\src\main\java\com\stayfocus\MainApplication.java                                                   | Java               |         74 |         14 |         12 |        100 |
+| d:\StayFocus\android\app\src\main\java\com\stayfocus\UsageStatsModule.java                                                  | Java               |         68 |          0 |         15 |         83 |
+| d:\StayFocus\android\app\src\main\java\com\stayfocus\newarchitecture\MainApplicationReactNativeHost.java                    | Java               |         83 |         20 |         14 |        117 |
+| d:\StayFocus\android\app\src\main\java\com\stayfocus\newarchitecture\components\MainComponentsRegistry.java                 | Java               |         22 |          8 |          7 |         37 |
+| d:\StayFocus\android\app\src\main\java\com\stayfocus\newarchitecture\modules\MainApplicationTurboModuleManagerDelegate.java | Java               |         30 |         10 |          9 |         49 |
+| d:\StayFocus\android\app\src\main\jni\MainApplicationModuleProvider.cpp                                                     | C++                |         16 |         10 |          7 |         33 |
+| d:\StayFocus\android\app\src\main\jni\MainApplicationModuleProvider.h                                                       | C++                |         11 |          0 |          6 |         17 |
+| d:\StayFocus\android\app\src\main\jni\MainApplicationTurboModuleManagerDelegate.cpp                                         | C++                |         37 |          1 |          8 |         46 |
+| d:\StayFocus\android\app\src\main\jni\MainApplicationTurboModuleManagerDelegate.h                                           | C++                |         25 |          5 |          9 |         39 |
+| d:\StayFocus\android\app\src\main\jni\MainComponentsRegistry.cpp                                                            | C++                |         45 |          6 |         15 |         66 |
+| d:\StayFocus\android\app\src\main\jni\MainComponentsRegistry.h                                                              | C++                |         23 |          1 |          9 |         33 |
+| d:\StayFocus\android\app\src\main\jni\OnLoad.cpp                                                                            | C++                |         10 |          0 |          2 |         12 |
+| d:\StayFocus\android\app\src\main\res\drawable\rn_edit_text_material.xml                                                    | XML                |         11 |         23 |          3 |         37 |
+| d:\StayFocus\android\app\src\main\res\values\strings.xml                                                                    | XML                |          3 |          0 |          1 |          4 |
+| d:\StayFocus\android\app\src\main\res\values\styles.xml                                                                     | XML                |          5 |          2 |          3 |         10 |
+| d:\StayFocus\android\app\src\main\res\xml\network_security_config.xml                                                       | XML                |          4 |          0 |          0 |          4 |
+| d:\StayFocus\android\build.gradle                                                                                           | Groovy             |         39 |          9 |          4 |         52 |
+| d:\StayFocus\android\gradle.properties                                                                                      | Java Properties    |          6 |         26 |          9 |         41 |
+| d:\StayFocus\android\gradle\wrapper\gradle-wrapper.properties                                                               | Java Properties    |          5 |          0 |          1 |          6 |
+| d:\StayFocus\android\gradlew.bat                                                                                            | Batch              |         68 |          0 |         22 |         90 |
+| d:\StayFocus\android\settings.gradle                                                                                        | Groovy             |         10 |          0 |          2 |         12 |
+| d:\StayFocus\app.json                                                                                                       | JSON               |          4 |          0 |          1 |          5 |
+| d:\StayFocus\babel.config.js                                                                                                | JavaScript         |          4 |          0 |          1 |          5 |
+| d:\StayFocus\index.js                                                                                                       | JavaScript         |          4 |          3 |          3 |         10 |
+| d:\StayFocus\ios\stayfocusTests\stayfocusTests.m                                                                            | Objective-C        |         53 |          0 |         14 |         67 |
+| d:\StayFocus\ios\stayfocus\AppDelegate.h                                                                                    | C++                |          5 |          0 |          4 |          9 |
+| d:\StayFocus\ios\stayfocus\AppDelegate.mm                                                                                   | Objective-C++      |         99 |          6 |         29 |        134 |
+| d:\StayFocus\ios\stayfocus\Images.xcassets\AppIcon.appiconset\Contents.json                                                 | JSON               |         53 |          0 |          1 |         54 |
+| d:\StayFocus\ios\stayfocus\Images.xcassets\Contents.json                                                                    | JSON               |          6 |          0 |          1 |          7 |
+| d:\StayFocus\ios\stayfocus\LaunchScreen.storyboard                                                                          | XML                |         46 |          1 |          1 |         48 |
+| d:\StayFocus\ios\stayfocus\main.m                                                                                           | Objective-C        |          8 |          0 |          3 |         11 |
+| d:\StayFocus\metro.config.js                                                                                                | JavaScript         |         10 |          6 |          2 |         18 |
+| d:\StayFocus\package-lock.json                                                                                              | JSON               |     30,122 |          0 |          1 |     30,123 |
+| d:\StayFocus\package.json                                                                                                   | JSON               |         66 |          0 |          1 |         67 |
+| d:\StayFocus\src\api\analytics.ts                                                                                           | TypeScript         |         35 |          0 |          5 |         40 |
+| d:\StayFocus\src\api\auth.ts                                                                                                | TypeScript         |         69 |          5 |          8 |         82 |
+| d:\StayFocus\src\api\firebase.ts                                                                                            | TypeScript         |         11 |          0 |          3 |         14 |
+| d:\StayFocus\src\api\firestore.ts                                                                                           | TypeScript         |         63 |          9 |         10 |         82 |
+| d:\StayFocus\src\api\index.ts                                                                                               | TypeScript         |         51 |          0 |         10 |         61 |
+| d:\StayFocus\src\api\isLocked.ts                                                                                            | TypeScript         |          6 |          0 |          2 |          8 |
+| d:\StayFocus\src\api\notification.ts                                                                                        | TypeScript         |        115 |          6 |         14 |        135 |
+| d:\StayFocus\src\api\store.ts                                                                                               | TypeScript         |        114 |          4 |         13 |        131 |
+| d:\StayFocus\src\api\types.ts                                                                                               | TypeScript         |         25 |          0 |          4 |         29 |
+| d:\StayFocus\src\chat_reflection_scripts\chatReflectionScript_congrats.js                                                   | JavaScript         |         13 |          0 |          2 |         15 |
+| d:\StayFocus\src\chat_reflection_scripts\chatReflectionScript_end.js                                                        | JavaScript         |          8 |          0 |          1 |          9 |
+| d:\StayFocus\src\chat_reflection_scripts\chatReflectionScript_giveUp.js                                                     | JavaScript         |         37 |         12 |          5 |         54 |
+| d:\StayFocus\src\chat_reflection_scripts\chatScript.js                                                                      | JavaScript         |          8 |          0 |          2 |         10 |
+| d:\StayFocus\src\components\CustomButton.tsx                                                                                | TypeScript JSX     |         38 |          0 |          6 |         44 |
+| d:\StayFocus\src\components\CustomModal.tsx                                                                                 | TypeScript JSX     |         64 |          0 |          6 |         70 |
+| d:\StayFocus\src\components\Icons.tsx                                                                                       | TypeScript JSX     |         88 |          0 |          7 |         95 |
+| d:\StayFocus\src\components\Screen.tsx                                                                                      | TypeScript JSX     |         35 |          0 |          7 |         42 |
+| d:\StayFocus\src\components\TimeDropdown.tsx                                                                                | TypeScript JSX     |        123 |          3 |         10 |        136 |
+| d:\StayFocus\src\components\index.ts                                                                                        | TypeScript         |          5 |          0 |          1 |          6 |
+| d:\StayFocus\src\default_scripts\finish_script.js                                                                           | JavaScript         |          5 |          0 |          1 |          6 |
+| d:\StayFocus\src\default_scripts\giveup_script.js                                                                           | JavaScript         |          6 |          0 |          2 |          8 |
+| d:\StayFocus\src\default_scripts\new_default_scripts.js                                                                     | JavaScript         |         20 |          0 |          2 |         22 |
+| d:\StayFocus\src\gpt_apis\Completion.js                                                                                     | JavaScript         |         19 |          0 |          6 |         25 |
+| d:\StayFocus\src\gpt_apis\GPT.js                                                                                            | JavaScript         |         19 |          0 |          6 |         25 |
+| d:\StayFocus\src\gpt_apis\Para.js                                                                                           | JavaScript         |         21 |          0 |          6 |         27 |
+| d:\StayFocus\src\gpt_apis\Senti.js                                                                                          | JavaScript         |         23 |          0 |          3 |         26 |
+| d:\StayFocus\src\gpt_apis\SentiGPT.js                                                                                       | JavaScript         |         19 |          0 |          6 |         25 |
+| d:\StayFocus\src\gpt_apis\Usage.js                                                                                          | JavaScript         |         34 |          0 |          4 |         38 |
+| d:\StayFocus\src\helpers\index.ts                                                                                           | TypeScript         |          3 |          0 |          1 |          4 |
+| d:\StayFocus\src\helpers\strings.ts                                                                                         | TypeScript         |         85 |          0 |          7 |         92 |
+| d:\StayFocus\src\helpers\styling.tsx                                                                                        | TypeScript JSX     |         43 |          0 |          9 |         52 |
+| d:\StayFocus\src\helpers\utilities.ts                                                                                       | TypeScript         |         44 |          1 |          8 |         53 |
+| d:\StayFocus\src\screens\ChatRefEndPage.js                                                                                  | JavaScript         |        467 |          6 |         57 |        530 |
+| d:\StayFocus\src\screens\ChatRefFinishPage.js                                                                               | JavaScript         |        475 |          7 |         62 |        544 |
+| d:\StayFocus\src\screens\ChatRefQuitPage.js                                                                                 | JavaScript         |        591 |          7 |         76 |        674 |
+| d:\StayFocus\src\screens\DrawerNavigator.tsx                                                                                | TypeScript JSX     |         82 |          0 |          6 |         88 |
+| d:\StayFocus\src\screens\FocusEndedPage.tsx                                                                                 | TypeScript JSX     |         53 |          2 |         11 |         66 |
+| d:\StayFocus\src\screens\HomePage.tsx                                                                                       | TypeScript JSX     |        121 |          3 |         15 |        139 |
+| d:\StayFocus\src\screens\LoginPage.tsx                                                                                      | TypeScript JSX     |        109 |          0 |          9 |        118 |
+| d:\StayFocus\src\screens\SetTimePage.js                                                                                     | JavaScript         |        270 |          0 |         27 |        297 |
+| d:\StayFocus\src\screens\SignupPage.tsx                                                                                     | TypeScript JSX     |        135 |          1 |          8 |        144 |
+| d:\StayFocus\src\screens\SuccessPage.tsx                                                                                    | TypeScript JSX     |         86 |          0 |          7 |         93 |
+| d:\StayFocus\src\screens\TimerPage.tsx                                                                                      | TypeScript JSX     |        210 |          7 |         24 |        241 |
+| d:\StayFocus\src\screens\index.ts                                                                                           | TypeScript         |         10 |          0 |          1 |         11 |
+| d:\StayFocus\src\screens\settings\AboutPage.tsx                                                                             | TypeScript JSX     |         24 |          0 |          5 |         29 |
+| d:\StayFocus\src\screens\settings\LogPage.tsx                                                                               | TypeScript JSX     |        103 |          1 |          8 |        112 |
+| d:\StayFocus\src\screens\settings\SettingsPage.tsx                                                                          | TypeScript JSX     |         96 |          1 |          9 |        106 |
+| d:\StayFocus\src\screens\settings\SettingsScreen.tsx                                                                        | TypeScript JSX     |         37 |          0 |          3 |         40 |
+| d:\StayFocus\src\screens\settings\index.ts                                                                                  | TypeScript         |          3 |          0 |          1 |          4 |
+| d:\StayFocus\tsconfig.json                                                                                                  | JSON with Comments |          6 |          3 |          2 |         11 |
+| Total                                                                                                                       |                    |     35,664 |        388 |        817 |     36,869 |
++-----------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

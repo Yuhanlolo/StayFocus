@@ -273,6 +273,12 @@ function ChatRefEndPage({ route, navigation }) {
       //endAns(userAns, endScript.end);
       onDelete();
       botSend(endScript.end);
+      chat_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
+      once_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
+      saveChatPrompts(once_history);
+      saveGiveUpAttempt(true);
+      saveCompletedMinutes(elapsedMinutes());
+      saveSession();
     }
     if(count_finish == 2 && userControl == 'true')
     {
@@ -365,12 +371,12 @@ function ChatRefEndPage({ route, navigation }) {
               onPress={() => {
                 count_finish = 0;
                 userControl = 'true';
-                chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
-                once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
-                saveChatPrompts(once_history);
-                saveGiveUpAttempt(true);
-                saveCompletedMinutes(elapsedMinutes());
-                saveSession();
+                //chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
+                //once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
+                //saveChatPrompts(once_history);
+                //saveGiveUpAttempt(true);
+                //saveCompletedMinutes(elapsedMinutes());
+                //saveSession();
                 navigation.navigate('HomePage');
               }}>
               <Text style = {styles.buttonText}>{'Back to home'}</Text>
@@ -404,9 +410,9 @@ function ChatRefEndPage({ route, navigation }) {
   <View style = {styles.background}>
     <View style = {{flexDirection: 'row-reverse'}}>
       <TouchableOpacity
-        style = {count_finish>0 ? styles.exitButtonPlus : styles.exitButton}
+        style = {count_finish>1 && count_finish<4 ? styles.exitButtonPlus : styles.exitButton}
         onPress={()=>{
-          if(count_finish > 0)
+          if(count_finish > 1 && count_finish < 4)
           {
             count_finish = 0;
             userControl = 'true';
@@ -419,7 +425,7 @@ function ChatRefEndPage({ route, navigation }) {
             navigation.navigate('HomePage');
           }
         }}>
-        <Text style = {count_finish>0 ? styles.timerText : styles.exitText}>{'End the session'}</Text>
+        <Text style = {count_finish>1 && count_finish<4? styles.timerText : styles.exitText}>{'End the session'}</Text>
       </TouchableOpacity>
     </View>
     <GiftedChat

@@ -292,6 +292,10 @@ function ChatRefFinishPage({ route, navigation }) {
       //endAns(userAns, congrats.end);
       onDelete();
       botSend(congrats.end);
+      chat_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
+      once_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
+      saveChatPrompts(once_history);
+      saveSession();
     }
     if(count_finish == 2 && userControl == 'true')
     {
@@ -384,10 +388,10 @@ function ChatRefFinishPage({ route, navigation }) {
               onPress={() => {
                 userControl = 'true';
                 count_finish = 0;
-                chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
-                once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
-                saveChatPrompts(once_history);
-                saveSession();
+                //chat_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
+                //once_history.push({character: 'user', sent: 'Back to home.', ava: -1, date: dateToString(new Date()),});
+                //saveChatPrompts(once_history);
+                //saveSession();
                 navigation.navigate('HomePage');
               }}>
               <Text style = {styles.buttonText}>{'Back to home'}</Text>
@@ -421,9 +425,9 @@ function ChatRefFinishPage({ route, navigation }) {
   <View style = {styles.background}>
     <View style = {{flexDirection: 'row-reverse'}}>
       <TouchableOpacity
-        style = {count_finish>0 ? styles.exitButtonPlus : styles.exitButton}
+        style = {count_finish>1 && count_finish<4 ? styles.exitButtonPlus : styles.exitButton}
         onPress={()=>{
-          if(count_finish > 0)
+          if(count_finish > 1 && count_finish < 4)
           {
             userControl = 'true';
             count_finish = 0;
@@ -434,7 +438,7 @@ function ChatRefFinishPage({ route, navigation }) {
             navigation.navigate('HomePage');
           }
         }}>
-        <Text style = {count_finish>0 ? styles.timerText : styles.exitText}>{'End the session'}</Text>
+        <Text style = {count_finish>1 && count_finish<4 ? styles.timerText : styles.exitText}>{'End the session'}</Text>
       </TouchableOpacity>
     </View>
     <GiftedChat

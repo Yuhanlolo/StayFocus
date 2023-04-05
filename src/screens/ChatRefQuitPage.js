@@ -33,6 +33,7 @@ let userControl = 'true';
 let mode = '';
 let focusTime = 0;
 let tag = 0; //if the question need to be answer twice the tag will be 1, else 0;
+let question_tmp = giveUpNormal.fixed;
 
 function ChatRefQuitPage({ route, navigation }) {
   const [messages, setMessages] = useState([]);
@@ -220,7 +221,7 @@ function ChatRefQuitPage({ route, navigation }) {
           resolve(default_answer);
         }
       }, 10000)
-      apires = await GPTAPI(ans, start_log);
+      apires = await GPTAPI(ans, question_tmp);
       resolve(apires);
 
     })
@@ -327,6 +328,7 @@ function ChatRefQuitPage({ route, navigation }) {
     {
       userControl = 'false';
       count = count + 1;
+      console.log('last question: ', question_tmp);
       avaControl(userAns);
       console.log('index:', ava_index);
       //endAns(userAns, giveUpNormal.end);
@@ -342,6 +344,8 @@ function ChatRefQuitPage({ route, navigation }) {
       {
         tag = 1;
       }
+      console.log('last question: ', question_tmp);
+      question_tmp = checkSentence;
       userControl = 'false';
       count = count + 1;
       avaControl(userAns);
@@ -357,6 +361,8 @@ function ChatRefQuitPage({ route, navigation }) {
       {
         tag = 1;
       }
+      console.log('last question: ', question_tmp);
+      question_tmp = checkSentence;
       userControl = 'false';
       count = count + 1;
       avaControl(userAns);
@@ -372,6 +378,8 @@ function ChatRefQuitPage({ route, navigation }) {
       {
         tag = 1;
       }
+      console.log('last question: ', question_tmp);
+      question_tmp = checkSentence;
       userControl = 'false';
       count = count + 1;
       avaControl(userAns);
@@ -382,6 +390,8 @@ function ChatRefQuitPage({ route, navigation }) {
     {
       userControl = 'false';
       let followedQues = 'Great Plan! How did it go?';
+      console.log('last question: ', question_tmp);
+      question_tmp = followedQues;
       avaControl(userAns);
       doubleAns(userAns, followedQues);
       tag = 0;
@@ -453,6 +463,7 @@ function ChatRefQuitPage({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 userControl = 'true';
+                question_tmp = giveUpNormal.fixed;
                 chat_history.push({character: 'user', sent: 'Yes.', ava: -1, date: dateToString(new Date()),});
                 once_history.push({character: 'user', sent: 'Yes.', ava: -1, date: dateToString(new Date()),});
                 saveGiveUpAttempt(false);
@@ -467,6 +478,7 @@ function ChatRefQuitPage({ route, navigation }) {
               onPress={() => {
                 count = 0;
                 userControl = 'true';
+                question_tmp = giveUpNormal.fixed;
                 chat_history.push({character: 'user', sent: 'No.', ava: -1, date: dateToString(new Date()),});
                 once_history.push({character: 'user', sent: 'No.', ava: -1, date: dateToString(new Date()),});
                 saveChatPrompts(once_history);
@@ -509,6 +521,8 @@ function ChatRefQuitPage({ route, navigation }) {
         style = {styles.button}
         onPress={()=>{
           count = 0;
+          userControl = 'true';
+          question_tmp = giveUpNormal.fixed;
           chat_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
           once_history.push({character: 'user', sent: 'Back to focus mode', ava: -1, date: dateToString(new Date()),});
           saveGiveUpAttempt(false);
@@ -519,12 +533,13 @@ function ChatRefQuitPage({ route, navigation }) {
       </TouchableOpacity>
       <Text>{'   '}</Text>
       <TouchableOpacity
-        style = {count>0 ? styles.exitButtonPlus : styles.exitButton}
+        style = {count>1 ? styles.exitButtonPlus : styles.exitButton}
         onPress={()=>{
-          if(count > 0)
+          if(count > 1)
           {
             count = 0;
             userControl = 'true';
+            question_tmp = giveUpNormal.fixed;
             chat_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
             once_history.push({character: 'user', sent: 'End the session.', ava: -1, date: dateToString(new Date()),});
             saveChatPrompts(once_history);
@@ -534,7 +549,7 @@ function ChatRefQuitPage({ route, navigation }) {
             navigation.navigate('HomePage');
           }
         }}>
-        <Text style = {count>0 ? styles.timerText : styles.exitText}>{'End the session'}</Text>
+        <Text style = {count>1 ? styles.timerText : styles.exitText}>{'End the session'}</Text>
       </TouchableOpacity>
     </View>
     <View style = {{flex: 10}}>
