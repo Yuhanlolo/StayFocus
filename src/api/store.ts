@@ -100,7 +100,6 @@ export const useSessionStore = create<SessionStore>()(set => ({
         ...state.giveUpAttempts,
         {
           timestamp: timestamp(),
-          answers: answers,
           givenUp: givenUp,
         },
       ],

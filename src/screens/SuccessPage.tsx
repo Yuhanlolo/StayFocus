@@ -11,7 +11,7 @@ function SuccessPage({navigation}) {
   return (
     <Screen>
       <Text style={styles.text}>
-        Congrats! You have finished your focusing goal.
+        Congrats! You have completed this focus session.
       </Text>
       <CustomButton
         styles={{button: styles.button}}
