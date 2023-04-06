@@ -7,10 +7,13 @@ import {
   initializeFirestore,
   updateDoc,
   arrayUnion,
+  getDoc,
+  writeBatch,
 } from 'firebase/firestore';
 
 import {app} from './firebase';
-import {Session, UserSettings} from './types';
+import {Session, UsageStats, UserSettings} from './types';
+import {timestamp} from '../helpers';
 
 /*
   Fix weird Firestore connection timeout that only occurs on the
@@ -38,7 +41,7 @@ export function saveUserToFirestore(uid: string, username: string) {
       username: username,
       settings: {},
       settings_changes: [],
-      usage_stats: '',
+      date_created: new Date().toJSON(),
     },
     {merge: true},
   );
@@ -53,22 +56,30 @@ export function saveUserSettingsToFirestore(
     settings: settings,
     settings_changes: arrayUnion({
       newSettings: settings,
-      time: Date().toString(),
+      time: timestamp(),
     }),
   });
 }
 
-export function saveUsageStatsToFireStore(uid: string, stats: string) {
-  const userRef = doc(db, dbName, uid);
-  updateDoc(userRef, {
-    usage_stats: stats,
-  });
+export function saveUsageStatsToFireStore(uid: string, stats: UsageStats) {
+  const batch = writeBatch(db);
+  for (const key in stats) {
+    const docRef = doc(db, dbName, uid, 'stats', key);
+    batch.set(docRef, stats[key]);
+  }
+  batch.commit();
 }
 
 export function getSessionsFromFirestore(uid: string) {
   const sessionsRef = collection(db, dbName, uid, 'log');
   const todaySessions = query(sessionsRef);
   return getDocs(todaySessions);
+}
+
+export async function getDateCreatedFromFirestore(uid: string) {
+  const userRef = doc(db, dbName, uid);
+  const docSnap = await getDoc(userRef);
+  return docSnap.data()!.date_created;
 }
 
 export async function getChatPrompts(uid: string) {

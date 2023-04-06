@@ -35,6 +35,12 @@ export function shuffleArray(array: any[]) {
   }
 }
 
+// Taken from https://stackoverflow.com/a/69462557
+// Thanks Sweden!
+export function timestamp() {
+  return new Date().toLocaleString('sv-SE');
+}
+
 export function dateToString(date: Date) {
 
   var year = date.getFullYear();

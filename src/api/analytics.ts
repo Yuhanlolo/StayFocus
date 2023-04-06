@@ -3,8 +3,6 @@ import {AnalyticsData} from './types';
 
 function _AnalyticsData(date: string): AnalyticsData {
   const sessions = getAppStore().focusSessions;
-  console.log(sessions);
-  console.log(date);
   let completedCount = 0;
   let minutes = 0;
   let lastSessionEndTime = '';
