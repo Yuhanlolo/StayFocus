@@ -26,7 +26,7 @@ const timeString = (secs: number) => {
 };
 
 function TimerPage({navigation}) {
-  let tag = false;
+  let tag_check = false;
   const [paused, setPaused] = useState(false);
   const [modal, setModal] = useState(false);
   const enableNotification = useRef(true);
@@ -76,7 +76,7 @@ function TimerPage({navigation}) {
   }, [paused]);
 
   useEffect(() => {
-    tag = true;
+    tag_check = true;
   }, []);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ function TimerPage({navigation}) {
         const locked = await isLocked();
         if (nextAppState.match(/inactive|background/)) {
           // Either the user locks the screen or quit the app
-          tag = false;
+          tag_check = false;
           if (locked) {
             notification_control = false;
             enableNotification.current = false;
@@ -144,7 +144,7 @@ function TimerPage({navigation}) {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
             } else {
-              if(tag == false)
+              if(tag_check == false)
               {
                 onLeave();
               }
