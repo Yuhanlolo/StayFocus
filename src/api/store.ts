@@ -3,7 +3,7 @@ import create from 'zustand';
 import {createJSONStorage, persist} from 'zustand/middleware';
 
 import {clamp, timestamp} from '../helpers';
-import {Session, UserSettings} from './types';
+import {Session, UserInfo, UserSettings} from './types';
 
 // AppStore: client-side persistent store for
 // authentication info and global app settings
@@ -54,12 +54,10 @@ export const useAppStore = create<AppStore>()(
 
 export const getAppStore = () => useAppStore.getState();
 
-interface UserInfo {
-  uid: string;
-  username: string;
-  dateCreated: Date;
-}
 export const saveUserInfo = (info: UserInfo) => useAppStore.setState(info);
+
+export const saveSessions = (sessions: Session[]) =>
+  useAppStore.setState({focusSessions: sessions});
 
 export const resetUserInfo = () => useAppStore.setState(defaultApp);
 

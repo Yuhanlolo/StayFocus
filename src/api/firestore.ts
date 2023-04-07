@@ -2,7 +2,6 @@ import {
   doc,
   setDoc,
   collection,
-  query,
   getDocs,
   initializeFirestore,
   updateDoc,
@@ -12,7 +11,7 @@ import {
 } from 'firebase/firestore';
 
 import {app} from './firebase';
-import {Session, UsageStats, UserSettings} from './types';
+import {Session, UsageStats, UserInfo, UserSettings} from './types';
 import {timestamp} from '../helpers';
 
 /*
@@ -26,6 +25,7 @@ import {timestamp} from '../helpers';
 */
 const db = initializeFirestore(app, {experimentalForceLongPolling: true});
 
+/* TODO: put user info into a common database shared by all 4 versions */
 const dbName = 'test-baseline';
 
 export function saveSessionToFirestore(uid: string, session: Session) {
@@ -70,10 +70,26 @@ export function saveUsageStatsToFireStore(uid: string, stats: UsageStats) {
   batch.commit();
 }
 
-export function getSessionsFromFirestore(uid: string) {
+export async function getUserInfoFromFirestore(uid: string): Promise<UserInfo> {
+  const userRef = doc(db, dbName, uid);
+  const docData = (await getDoc(userRef)).data()!;
+  return {
+    uid: uid,
+    username: docData.username,
+    dateCreated: docData.date_created,
+  };
+}
+
+export async function getSessionsFromFirestore(
+  uid: string,
+): Promise<Session[]> {
   const sessionsRef = collection(db, dbName, uid, 'log');
-  const todaySessions = query(sessionsRef);
-  return getDocs(todaySessions);
+  const sessionsSnap = await getDocs(sessionsRef);
+  let sessions: Session[] = [];
+  sessionsSnap.forEach(document => {
+    sessions.push(document.data() as Session);
+  });
+  return sessions;
 }
 
 export async function getDateCreatedFromFirestore(uid: string) {

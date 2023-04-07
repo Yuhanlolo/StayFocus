@@ -62,15 +62,15 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
 
             if (type == UsageEvents.Event.SCREEN_INTERACTIVE) {
                 long totalTimeSeconds = stats.getTotalTime() / 1000;
-                result += String.format("\"%s to %s\": {\n  \"screen_time_seconds\": %d,\n", startDateTime, endDateTime, totalTimeSeconds);
+                result += String.format("\"%s to %s\": {\"screen_time_seconds\": %d", startDateTime, endDateTime, totalTimeSeconds);
             } else if (type == UsageEvents.Event.KEYGUARD_HIDDEN) {
                 long totalCount = stats.getCount();
-                result += String.format("  \"screen_unlock_count\": %s\n},", totalCount);
+                result += String.format(", \"screen_unlock_count\": %s},", totalCount);
             }
         }
 
         result = result.substring(0, result.length() - 1);
-        result += "}";
+        result += "\n}";
 
         return result;
     }
