@@ -8,7 +8,7 @@ function getStrings({
   return {
     leaveFocusDialog: {
       dialogTitle: 'Quick questions before you leave',
-      numberOfQuestions: 3,
+      numberOfQuestions: 4,
       fixedQuestions: [['Why do you want to check your phone right now?']],
       randomizedQuestions: [
         [`How did you feel during the past ${focusDurationMinutes}`],
@@ -26,7 +26,7 @@ function getStrings({
     focusEndedDialog: {
       dialogTitle: 'Quick reflection questions',
       initialMessage: `Your focus session has ended because you have left the app. You have been focused for ${completedMinutes}.`,
-      numberOfQuestions: 3,
+      numberOfQuestions: 4,
       fixedQuestions: [['Why did you just check your phone?']],
       randomizedQuestions: [
         ['What were the challenges during the focus session, if any?'],
@@ -43,11 +43,11 @@ function getStrings({
     },
      leaveFocusEarlyDialog: {
       dialogTitle: 'Quick questions before you leave',
-      numberOfQuestions: 3,
+      numberOfQuestions: 4,
       fixedQuestions: [[`You just got started a few minutes, why are you want to leave the session now?`]],
       randomizedQuestions: [
         ['What are the challenges during the focus session, if any?'],
-        [`How did you feel during the past ${focusDurationMinutes}?`],
+        [`How did you feel during the past ${focusDurationMinutes} minutes?`],
         ['What is the most important thing you plan to do today?'],
         [
           'What was your original plan for this focus session?',
@@ -60,11 +60,11 @@ function getStrings({
     },
     leaveFocusCloseToGoalDialog: {
       dialogTitle: 'Quick questions before you leave',
-      numberOfQuestions: 3,
+      numberOfQuestions: 4,
       fixedQuestions: [['Your are almost there, why do you want to check your phone now?']],
       randomizedQuestions: [
         ['What are the challenges during the focus session, if any?'],
-        [`How did you feel during the past ${focusDurationMinutes}?`],
+        [`How did you feel during the past ${focusDurationMinutes} minutes?`],
         ['What is the most important thing you plan to do today?'],
         [
           'What was your original plan for this focus session?',
@@ -77,8 +77,8 @@ function getStrings({
     },
     completedDialog: {
       dialogTitle: 'Quick questions',
-      initialMessage: `Congrats! You have focused for ${completedMinutes}.`,
-      numberOfQuestions: 3,
+      initialMessage: `Congrats! You have focused for ${completedMinutes} minutes.`,
+      numberOfQuestions: 4,
       fixedQuestions: [
         [
           `How did the focus session go?`,
