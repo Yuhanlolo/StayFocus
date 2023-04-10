@@ -30,11 +30,13 @@ export function ReflectionModal({
 
   const addAnswer = (ans: string) => setAnswers([...answers, ans]);
 
-  const emptyFirstAnswer = () => promptIndex === 0 && input === '';
+  const emptyFirstOrSecondAnswer = () => promptIndex <= 1 && input === '';
 
   const next = () => {
     if (promptIndex < prompts.length - 1) {
-      if (emptyFirstAnswer()) return;
+      if (emptyFirstOrSecondAnswer()) {
+        return;
+      }
       addAnswer(input);
       setInput('');
       setPromptIndex(promptIndex + 1);
@@ -53,7 +55,7 @@ export function ReflectionModal({
     }
   };
 
-  const defaultStyles = useModalStyles(emptyFirstAnswer());
+  const defaultStyles = useModalStyles(emptyFirstOrSecondAnswer());
 
   return (
     <CustomModal
