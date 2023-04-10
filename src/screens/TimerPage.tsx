@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {AppState, Text, View} from 'react-native';
+import {AppState, Text, View, BackHandler} from 'react-native';
 import notifee from '@notifee/react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -12,6 +12,7 @@ import {
   useSessionStore,
   isLocked,
 } from '../api';
+import { tags } from 'react-native-svg/lib/typescript/xml';
 
 global.notification_control = false;
 
@@ -23,8 +24,10 @@ const timeString = (secs: number) => {
   return h > 0 ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`;
 };
 
+let tag = true;
+let tag_check = false;
+
 function TimerPage({navigation}) {
-  let tag = false;
   const [paused, setPaused] = useState(false);
   const [modal, setModal] = useState(false);
   const enableNotification = useRef(true);
@@ -60,6 +63,7 @@ function TimerPage({navigation}) {
   };
 
   const onCompleteGiveUp = (answers: string[]) => {
+    tag = true;
     saveGiveUpAttempt(answers, true);
     saveCompletedMinutes(elapsedMinutes());
     saveSession();
@@ -67,11 +71,13 @@ function TimerPage({navigation}) {
   };
 
   const onComplete = () => {
+    tag = true;
     saveCompletedMinutes(minutes);
     navigation.navigate('SuccessPage');
   };
 
   const onLeave = () => {
+    tag = true;
     navigation.navigate('FocusEndedPage', {
       elapsedMinutes: elapsedMinutes(),
     });
@@ -94,33 +100,52 @@ function TimerPage({navigation}) {
 
   useEffect(() => {
     tag = true;
+    tag_check = false;
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   useFocusEffect(() => {
+    //console.log('tag:', tag);
     const subscription = AppState.addEventListener(
       'change',
       async nextAppState => {
         const locked = await isLocked();
         if (nextAppState.match(/inactive|background/)) {
           // Either the user locks the screen or quit the app
-          tag = false;
-          if (locked) {
+
+          if (locked == true) {
+            tag_check = true;
             notification_control = false;
             enableNotification.current = false;
             notifee.cancelNotification(notificationId);
-            screenLocked.current = locked;
+            screenLocked.current = true;
             dateLocked.current = Date.now();
           } else {
+            tag = false;
             enableNotification.current = true;
             saveGiveUpAttempt([], false);
             onLeaveFocusNotification(enableNotification);
           }
         } else if (nextAppState === 'active') {
           // Either the user unlocks the screen or return to the app
-          enableNotification.current = false;
-          notifee.cancelNotification(notificationId);
+          //enableNotification.current = false;
+          //notifee.cancelNotification(notificationId);
           notification_control = false;
-          if (screenLocked.current) {
+          tag_check = false;
+
+          if (screenLocked.current == true || enableNotification.current == false) {
             screenLocked.current = false;
             let secondsDelta = Math.floor(
               (Date.now() - dateLocked.current) / 1000,
@@ -139,13 +164,14 @@ function TimerPage({navigation}) {
             // pending notification is cleared. Otherwise, the user clicks
             // the pending notification and so the focus session ended.
             const pending = await notifee.getTriggerNotificationIds();
-            enableNotification.current = false;
-            notifee.cancelNotification(notificationId);
+
             if (pending.includes(notificationId)) {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
             } else {
-              if(tag == false)
+              enableNotification.current = false;
+              notifee.cancelNotification(notificationId);
+              if(tag == false && tag_check == false)
               {
                 onLeave();
               }
