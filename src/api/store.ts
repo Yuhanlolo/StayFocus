@@ -11,6 +11,7 @@ interface AppStore extends UserSettings {
   uid: string | undefined;
   username: string | undefined;
   dateCreated: Date | undefined;
+  lastUploadStatDate: Date | undefined;
   dailyMinMinutes: number;
   reminderTime: {
     hour: number;
@@ -19,6 +20,7 @@ interface AppStore extends UserSettings {
   minMinutes: number;
   maxMinutes: number;
   focusSessions: Session[];
+  setUploadDate: () => void;
   saveSettings: (settings: UserSettings) => void;
   saveSession: (session: Session) => void;
 }
@@ -27,6 +29,7 @@ const defaultApp = {
   uid: undefined,
   username: undefined,
   dateCreated: undefined,
+  lastUploadStatDate: undefined,
   dailyMinMinutes: 25,
   reminderTime: {
     hour: 8,
@@ -44,6 +47,7 @@ export const useAppStore = create<AppStore>()(
       saveSettings: settings => set(settings),
       saveSession: session =>
         set(state => ({focusSessions: [...state.focusSessions, session]})),
+      setUploadDate: () => set({lastUploadStatDate: new Date()}),
     }),
     {
       name: 'app-data',

@@ -42,10 +42,10 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     public static List<EventStats> getEventStats(Context context, int durationInDays){
         UsageStatsManager usm = (UsageStatsManager)context.getSystemService(Context.USAGE_STATS_SERVICE);
 
-        long endTime = Instant.now().truncatedTo(ChronoUnit.DAYS).toEpochMilli();
-        long startTime = endTime - 7*24*60*60*1000;
+        Instant endTime = Instant.now().minus(1, ChronoUnit.DAYS).truncatedTo(ChronoUnit.DAYS);
+        Instant startTime = endTime.minus(durationInDays, ChronoUnit.DAYS);
 
-        List<EventStats> eventStatsList = usm.queryEventStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        List<EventStats> eventStatsList = usm.queryEventStats(UsageStatsManager.INTERVAL_DAILY, startTime.toEpochMilli(), endTime.toEpochMilli());
         return eventStatsList;
     }
 
