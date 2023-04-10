@@ -40,3 +40,8 @@ export function shuffleArray(array: any[]) {
 export function timestamp() {
   return new Date().toLocaleString('sv-SE');
 }
+
+// https://stackoverflow.com/a/40890488
+export function isDateBeforeToday(date: Date) {
+  return new Date(date.toDateString()) < new Date(new Date().toDateString());
+}
