@@ -10,7 +10,12 @@ export interface Session {
   focusDurationMinutes: number;
   completedMinutes: number;
   giveUpAttempts: GiveUpAttempt[];
-  chatPrompts: JSON[];
+}
+
+export interface UserInfo {
+  uid: string;
+  username: string;
+  dateCreated: Date;
 }
 
 export interface UserSettings {
@@ -23,7 +28,8 @@ export interface UserSettings {
 
 export interface AnalyticsData {
   sessionsCount: number;
-  sessionsMinutes: number;
+  completedSessionsCount: number;
+  focusMinutes: number;
   lastSessionEndTime: string;
 }
 

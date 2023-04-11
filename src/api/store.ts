@@ -1,15 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import create from 'zustand';
-import {persist} from 'zustand/middleware';
+import {createJSONStorage, persist} from 'zustand/middleware';
 
 import {clamp, timestamp} from '../helpers';
-import {Session, UserSettings} from './types';
+import {Session, UserInfo, UserSettings} from './types';
 
 // AppStore: client-side persistent store for
 // authentication info and global app settings
 interface AppStore extends UserSettings {
   uid: string | undefined;
   username: string | undefined;
+  dateCreated: Date | undefined;
+  lastUploadStatDate: Date | undefined;
   dailyMinMinutes: number;
   reminderTime: {
     hour: number;
@@ -18,6 +20,7 @@ interface AppStore extends UserSettings {
   minMinutes: number;
   maxMinutes: number;
   focusSessions: Session[];
+  setUploadDate: () => void;
   saveSettings: (settings: UserSettings) => void;
   saveSession: (session: Session) => void;
 }
@@ -25,13 +28,15 @@ interface AppStore extends UserSettings {
 const defaultApp = {
   uid: undefined,
   username: undefined,
+  dateCreated: undefined,
+  lastUploadStatDate: undefined,
   dailyMinMinutes: 25,
   reminderTime: {
     hour: 8,
     minute: 0,
   },
-  minMinutes: 1,
-  maxMinutes: 120,
+  minMinutes: 25,
+  maxMinutes: 125,
   focusSessions: [],
 };
 
@@ -42,18 +47,21 @@ export const useAppStore = create<AppStore>()(
       saveSettings: settings => set(settings),
       saveSession: session =>
         set(state => ({focusSessions: [...state.focusSessions, session]})),
+      setUploadDate: () => set({lastUploadStatDate: new Date()}),
     }),
     {
       name: 'app-data',
-      getStorage: () => AsyncStorage,
+      storage: createJSONStorage(() => AsyncStorage),
     },
   ),
 );
 
 export const getAppStore = () => useAppStore.getState();
 
-export const saveUserInfo = (uid: string, username: string) =>
-  useAppStore.setState({uid: uid, username: username});
+export const saveUserInfo = (info: UserInfo) => useAppStore.setState(info);
+
+export const saveSessions = (sessions: Session[]) =>
+  useAppStore.setState({focusSessions: sessions});
 
 export const resetUserInfo = () => useAppStore.setState(defaultApp);
 
@@ -63,7 +71,6 @@ interface SessionStore extends Session {
   newSession: (plan: string, minutes: number) => void;
   saveCompletedMinutes: (minutes: number) => void;
   saveGiveUpAttempt: (givenUp: boolean) => void;
-  saveChatPrompts: (prompts: JSON[]) => void;
   saveLastGiveUpAttempt: () => void;
 }
 
@@ -74,7 +81,6 @@ const defaultSession = {
   focusDurationMinutes: -1,
   completedMinutes: -1,
   giveUpAttempts: [],
-  chatPrompts: [],
 };
 
 export const useSessionStore = create<SessionStore>()(set => ({
@@ -100,7 +106,6 @@ export const useSessionStore = create<SessionStore>()(set => ({
         },
       ],
     })),
-  saveChatPrompts: prompts => set({chatPrompts: prompts}),
   saveLastGiveUpAttempt: () =>
     set(state => ({
       giveUpAttempts: state.giveUpAttempts.map((v, i) => {
@@ -122,7 +127,6 @@ export function getSession(): Session {
     endTime: store.endTime,
     focusDurationMinutes: store.focusDurationMinutes,
     completedMinutes: store.completedMinutes,
-    chatPrompts: store.chatPrompts,
     giveUpAttempts: store.giveUpAttempts,
   };
 }

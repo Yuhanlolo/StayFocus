@@ -2,8 +2,8 @@ import Svg, {Circle, Path} from 'react-native-svg';
 import {ColorValue} from 'react-native';
 
 interface IconProps {
-  size: number;
-  color: ColorValue;
+  size: string | number | undefined;
+  color: ColorValue | undefined;
 }
 
 export function LeftArrow({size, color}: IconProps) {
@@ -89,6 +89,38 @@ export function CaretUp({size, color}: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="2 0 22 24" fill="none">
       <Path d="M12 6L5 18H19Z" fill={color} />
+    </Svg>
+  );
+}
+
+export function CaretLeft({size, color}: IconProps) {
+  return (
+    <Svg width={size} height={size} fill={color} viewBox="0 0 256 256">
+      <Path fill="none" d="M0 0h256v256H0z" />
+      <Path
+        fill="none"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={32}
+        d="m160 208-80-80 80-80"
+      />
+    </Svg>
+  );
+}
+
+export function CaretRight({size, color}: IconProps) {
+  return (
+    <Svg width={size} height={size} fill={color} viewBox="0 0 256 256">
+      <Path fill="none" d="M0 0h256v256H0z" />
+      <Path
+        fill="none"
+        stroke={color}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={32}
+        d="m96 48 80 80-80 80"
+      />
     </Svg>
   );
 }

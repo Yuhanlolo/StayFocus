@@ -16,7 +16,7 @@ import SetTimePage from './src/screens/SetTimePage';
 import ChatRefQuitPage from './src/screens/ChatRefQuitPage';
 import ChatRefFinishPage from './src/screens/ChatRefFinishPage';
 import ChatRefEndPage from './src/screens/ChatRefEndPage';
-import {createStyles, ThemeProvider} from './src/helpers';
+import {createStyles, isDateBeforeToday, ThemeProvider} from './src/helpers';
 import {saveUsageStats, useAppStore} from './src/api';
 
 LogBox.ignoreAllLogs();
@@ -29,12 +29,19 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const styles = useStyles();
   const user = useAppStore(state => state.uid);
+  const lastUploadStatDate = useAppStore(state => state.lastUploadStatDate);
+  const setUploadDate = useAppStore(state => state.setUploadDate);
 
   useEffect(() => {
     if (user) {
-      saveUsageStats();
+      if (!lastUploadStatDate) {
+        saveUsageStats(7);
+      } else if (isDateBeforeToday(lastUploadStatDate)) {
+        saveUsageStats(1);
+        setUploadDate();
+      }
     }
-  }, [user]);
+  }, [user, lastUploadStatDate, setUploadDate]);
 
   return (
     <ThemeProvider>
