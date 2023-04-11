@@ -51,8 +51,7 @@ export function saveSettings(minutes: number, date: Date) {
   saveUserSettingsToFirestore(uid, data);
 }
 
-export function saveUsageStats() {
-  const days = 7;
+export function saveUsageStats(days: number) {
   const appStore = getAppStore();
   const uid = appStore.uid!;
   UsageStatsModule.getStats(days, (data: string) =>

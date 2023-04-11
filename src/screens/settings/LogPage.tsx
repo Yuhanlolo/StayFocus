@@ -1,26 +1,41 @@
 import React, {useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
-import Svg, {Path} from 'react-native-svg';
 
-import {getAnalyticsData} from '../../api';
+import {getAnalyticsData, useAppStore} from '../../api';
+import {CaretLeft, CaretRight} from '../../components';
 import {createStyles, dateToYYYYMMDD} from '../../helpers';
 import SettingsScreen from './SettingsScreen';
 
 export default function LogPage({navigation}) {
-  const styles = useStyles();
-  const [date, setDate] = useState(new Date());
+  const dateCreated = new Date(
+    useAppStore(state => state.dateCreated)!.valueOf(),
+  );
+  const today = new Date();
+  dateCreated.setHours(12, 0, 0, 0);
+  today.setHours(12, 0, 0, 0);
+  const [date, setDate] = useState(today);
+  const [enabled, setEnabled] = useState([
+    dateCreated.getTime() < today.getTime(),
+    false,
+  ]);
+
+  const styles = useStyles(enabled);
 
   // Who the heck designed this abomination of an API
   const moveBackOneDay = () => {
     const yesterday = new Date(date.valueOf());
     yesterday.setDate(date.getDate() - 1);
+    yesterday.setHours(12, 0, 0, 0);
+    setEnabled([yesterday.getTime() > dateCreated.getTime(), true]);
     setDate(yesterday);
   };
 
   const moveForwardOneDay = () => {
-    const yesterday = new Date(date.valueOf());
-    yesterday.setDate(date.getDate() + 1);
-    setDate(yesterday);
+    const tomorrow = new Date(date.valueOf());
+    tomorrow.setDate(date.getDate() + 1);
+    tomorrow.setHours(12, 0, 0, 0);
+    setEnabled([true, tomorrow.getTime() < today.getTime()]);
+    setDate(tomorrow);
   };
 
   const data = getAnalyticsData(dateToYYYYMMDD(date));
@@ -30,53 +45,34 @@ export default function LogPage({navigation}) {
       title="Focusing Log"
       onBack={() => navigation.navigate('Home')}>
       <View style={styles.dateContainer}>
-        <Pressable onPress={moveBackOneDay}>
-          <Svg
-            width={styles.arrows.width}
-            height={styles.arrows.width}
-            fill={styles.arrows.color}
-            viewBox="0 0 256 256">
-            <Path fill="none" d="M0 0h256v256H0z" />
-            <Path
-              fill="none"
-              stroke={styles.arrows.color}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={32}
-              d="m160 208-80-80 80-80"
-            />
-          </Svg>
+        <Pressable onPress={moveBackOneDay} disabled={!enabled[0]}>
+          <CaretLeft
+            size={styles.arrowLeft.width}
+            color={styles.arrowLeft.color}
+          />
         </Pressable>
         <Text style={styles.dateText}>{dateToYYYYMMDD(date)}</Text>
-        <Pressable onPress={moveForwardOneDay}>
-          <Svg
-            width={styles.arrows.width}
-            height={styles.arrows.width}
-            fill={styles.arrows.color}
-            viewBox="0 0 256 256">
-            <Path fill="none" d="M0 0h256v256H0z" />
-            <Path
-              fill="none"
-              stroke={styles.arrows.color}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={32}
-              d="m96 48 80 80-80 80"
-            />
-          </Svg>
+        <Pressable onPress={moveForwardOneDay} disabled={!enabled[1]}>
+          <CaretRight
+            size={styles.arrowRight.width}
+            color={styles.arrowRight.color}
+          />
         </Pressable>
       </View>
       <Text style={styles.text}>
-        You completed{' '}
-        <Text style={{fontWeight: '700'}}>{data.sessionsCount}</Text> focus
-        sessions.
+        Sessions started:{' '}
+        <Text style={{fontWeight: '700'}}>{data.sessionsCount}</Text>
       </Text>
       <Text style={styles.text}>
-        You stayed focused for{' '}
-        <Text style={{fontWeight: '700'}}>{data.sessionsMinutes}</Text> minutes.
+        Sessions completed:{' '}
+        <Text style={{fontWeight: '700'}}>{data.completedSessionsCount}</Text>
       </Text>
       <Text style={styles.text}>
-        The last focus session ended at{' '}
+        Total focus duration:{' '}
+        <Text style={{fontWeight: '700'}}>{data.focusMinutes}</Text> minutes
+      </Text>
+      <Text style={styles.text}>
+        Last focus session ended at{' '}
         <Text style={{fontWeight: '700'}}>
           {data.lastSessionEndTime.substring(11, 16)}
         </Text>
@@ -86,7 +82,7 @@ export default function LogPage({navigation}) {
   );
 }
 
-const useStyles = createStyles(theme => ({
+const useStyles = createStyles((theme, enabled: boolean[]) => ({
   dateContainer: {
     marginTop: 20,
     flexDirection: 'row',
@@ -97,9 +93,13 @@ const useStyles = createStyles(theme => ({
     color: theme.textColor,
     fontSize: theme.fontSizes.md,
   },
-  arrows: {
+  arrowLeft: {
     width: 32,
-    color: theme.primaryColor,
+    color: enabled[0] ? theme.primaryColor : theme.secondaryColor,
+  },
+  arrowRight: {
+    width: 32,
+    color: enabled[1] ? theme.primaryColor : theme.secondaryColor,
   },
   text: {
     width: '80%',
