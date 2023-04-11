@@ -51,11 +51,11 @@ export function saveSettings(minutes: number, date: Date) {
   saveUserSettingsToFirestore(uid, data);
 }
 
-export function saveUsageStats() {
-  const days = 7;
+export function saveUsageStats(days: number) {
   const appStore = getAppStore();
   const uid = appStore.uid!;
-  UsageStatsModule.getStats(days, (data: string) =>
-    saveUsageStatsToFireStore(uid, JSON.parse(data)),
-  );
+  UsageStatsModule.getStats(days, (data: string) => {
+    console.log(data);
+    saveUsageStatsToFireStore(uid, JSON.parse(data));
+  });
 }

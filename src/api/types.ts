@@ -13,6 +13,12 @@ export interface Session {
   chatPrompts: JSON[];
 }
 
+export interface UserInfo {
+  uid: string;
+  username: string;
+  dateCreated: Date;
+}
+
 export interface UserSettings {
   dailyMinMinutes: number;
   reminderTime: {
@@ -23,7 +29,8 @@ export interface UserSettings {
 
 export interface AnalyticsData {
   sessionsCount: number;
-  sessionsMinutes: number;
+  completedSessionsCount: number;
+  focusMinutes: number;
   lastSessionEndTime: string;
 }
 

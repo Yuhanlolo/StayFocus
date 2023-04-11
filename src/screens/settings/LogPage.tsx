@@ -7,8 +7,19 @@ import {createStyles, dateToYYYYMMDD} from '../../helpers';
 import SettingsScreen from './SettingsScreen';
 
 export default function LogPage({navigation}) {
-  const styles = useStyles();
-  const [date, setDate] = useState(new Date());
+  const dateCreated = new Date(
+    useAppStore(state => state.dateCreated)!.valueOf(),
+  );
+  const today = new Date();
+  dateCreated.setHours(12, 0, 0, 0);
+  today.setHours(12, 0, 0, 0);
+  const [date, setDate] = useState(today);
+  const [enabled, setEnabled] = useState([
+    dateCreated.getTime() < today.getTime(),
+    false,
+  ]);
+
+  const styles = useStyles(enabled);
 
   // Who the heck designed this abomination of an API
   const moveBackOneDay = () => {
@@ -67,16 +78,19 @@ export default function LogPage({navigation}) {
         </Pressable>
       </View>
       <Text style={styles.text}>
-        You completed{' '}
-        <Text style={{fontWeight: '700'}}>{data.sessionsCount}</Text> focus
-        sessions.
+        Sessions started:{' '}
+        <Text style={{fontWeight: '700'}}>{data.sessionsCount}</Text>
       </Text>
       <Text style={styles.text}>
-        You stayed focused for{' '}
-        <Text style={{fontWeight: '700'}}>{data.sessionsMinutes}</Text> minutes.
+        Sessions completed:{' '}
+        <Text style={{fontWeight: '700'}}>{data.completedSessionsCount}</Text>
       </Text>
       <Text style={styles.text}>
-        The last focus session ended at{' '}
+        Total focus duration:{' '}
+        <Text style={{fontWeight: '700'}}>{data.focusMinutes}</Text> minutes
+      </Text>
+      <Text style={styles.text}>
+        Last focus session ended at{' '}
         <Text style={{fontWeight: '700'}}>
           {data.lastSessionEndTime.substring(11, 16)}
         </Text>

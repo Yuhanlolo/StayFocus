@@ -8,8 +8,12 @@ import {
 } from 'firebase/auth';
 
 import {app} from './firebase';
-import {saveUserToFirestore} from './firestore';
-import {saveUserInfo, resetUserInfo} from './store';
+import {
+  getSessionsFromFirestore,
+  getUserInfoFromFirestore,
+  saveUserToFirestore,
+} from './firestore';
+import {saveUserInfo, resetUserInfo, saveSessions} from './store';
 
 const auth = getAuth(app);
 
@@ -39,7 +43,7 @@ export async function createUser(
     updateProfile(user, {displayName: username});
     // updateProfile does not trigger auth state change, so these method calls
     // cannot be done in the onAuthStateChanged observer, so we put them here
-    saveUserInfo(user.uid, username);
+    saveUserInfo({ uid: user.uid, username: username, dateCreated: new Date() });
     saveUserToFirestore(user.uid, username);
   } catch (error) {
     console.log(error.code);
@@ -57,9 +61,14 @@ export async function loginUser(
       password,
     );
     const user = userCredential.user;
-    saveUserInfo(user.uid, user.displayName);
+    // Restore user info in local store
+    const userInfo = await getUserInfoFromFirestore(user.uid);
+    const sessionsData = await getSessionsFromFirestore(user.uid);
+    saveUserInfo(userInfo);
+    saveSessions(sessionsData);
     return [true];
   } catch (error) {
+    console.log(error);
     const errorMsg = errorCodeToMessage(error.code);
     return [false, errorMsg];
   }

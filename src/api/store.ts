@@ -3,13 +3,15 @@ import create from 'zustand';
 import {persist} from 'zustand/middleware';
 
 import {clamp, timestamp} from '../helpers';
-import {Session, UserSettings} from './types';
+import {Session, UserInfo, UserSettings} from './types';
 
 // AppStore: client-side persistent store for
 // authentication info and global app settings
 interface AppStore extends UserSettings {
   uid: string | undefined;
   username: string | undefined;
+  dateCreated: Date | undefined;
+  lastUploadStatDate: Date | undefined;
   dailyMinMinutes: number;
   reminderTime: {
     hour: number;
@@ -18,6 +20,7 @@ interface AppStore extends UserSettings {
   minMinutes: number;
   maxMinutes: number;
   focusSessions: Session[];
+  setUploadDate: () => void;
   saveSettings: (settings: UserSettings) => void;
   saveSession: (session: Session) => void;
 }
@@ -25,6 +28,8 @@ interface AppStore extends UserSettings {
 const defaultApp = {
   uid: undefined,
   username: undefined,
+  dateCreated: undefined,
+  lastUploadStatDate: undefined,
   dailyMinMinutes: 25,
   reminderTime: {
     hour: 8,
@@ -42,6 +47,7 @@ export const useAppStore = create<AppStore>()(
       saveSettings: settings => set(settings),
       saveSession: session =>
         set(state => ({focusSessions: [...state.focusSessions, session]})),
+      setUploadDate: () => set({lastUploadStatDate: new Date()}),
     }),
     {
       name: 'app-data',
@@ -52,8 +58,10 @@ export const useAppStore = create<AppStore>()(
 
 export const getAppStore = () => useAppStore.getState();
 
-export const saveUserInfo = (uid: string, username: string) =>
-  useAppStore.setState({uid: uid, username: username});
+export const saveUserInfo = (info: UserInfo) => useAppStore.setState(info);
+
+export const saveSessions = (sessions: Session[]) =>
+  useAppStore.setState({focusSessions: sessions});
 
 export const resetUserInfo = () => useAppStore.setState(defaultApp);
 
