@@ -6,12 +6,11 @@ import {
   initializeFirestore,
   updateDoc,
   arrayUnion,
-  getDoc,
   writeBatch,
 } from 'firebase/firestore';
 
 import {app} from './firebase';
-import {Session, UsageStats, UserInfo, UserSettings} from './types';
+import {Session, UsageStats, UserSettings} from './types';
 import {timestamp} from '../helpers';
 
 /*
@@ -40,7 +39,6 @@ export function saveUserToFirestore(uid: string, username: string) {
       username: username,
       settings: {},
       settings_changes: [],
-      date_created: new Date().toJSON(),
     },
     {merge: true},
   );
@@ -69,16 +67,6 @@ export function saveUsageStatsToFireStore(uid: string, stats: UsageStats) {
   batch.commit();
 }
 
-export async function getUserInfoFromFirestore(uid: string): Promise<UserInfo> {
-  const userRef = doc(db, dbName, uid);
-  const docData = (await getDoc(userRef)).data()!;
-  return {
-    uid: uid,
-    username: docData.username,
-    dateCreated: docData.date_created,
-  };
-}
-
 export async function getSessionsFromFirestore(
   uid: string,
 ): Promise<Session[]> {
@@ -89,10 +77,4 @@ export async function getSessionsFromFirestore(
     sessions.push(document.data() as Session);
   });
   return sessions;
-}
-
-export async function getDateCreatedFromFirestore(uid: string) {
-  const userRef = doc(db, dbName, uid);
-  const docSnap = await getDoc(userRef);
-  return docSnap.data()!.date_created;
 }
