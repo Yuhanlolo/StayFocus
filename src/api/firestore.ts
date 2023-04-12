@@ -84,6 +84,6 @@ export async function getChatPrompts(uid: string) {
   let histories = new Array();
   querySnapshot.forEach((doc) => {
     histories = [...histories, ...doc.data().chatPrompts];
-})
+  });
   return histories;
 }
