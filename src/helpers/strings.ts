@@ -5,6 +5,7 @@ function getStrings({
   focusDurationMinutes,
   completedMinutes,
 }: StringsInput) {
+  plan;
   return {
     leaveFocusDialog: {
       dialogTitle: 'Quick questions before you leave',
@@ -19,7 +20,9 @@ function getStrings({
           'How did the plan go?', // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
         ['Hong long are you planning to check your phone this time?'],
-        ['Are there any alternative activities you could engage in instead of checking your phone?'],
+        [
+          'Are there any alternative activities you could engage in instead of checking your phone?',
+        ],
       ],
       finalMessage: 'Thank you. Your focus session has ended.',
     },
@@ -33,45 +36,57 @@ function getStrings({
         [`How did you feel during the past ${completedMinutes}?`],
         ['What is the most important thing you plan to do today?'],
         [
-           'What was your original plan for this focus session?',
-           'How did the plan go?',  // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
+          'What was your original plan for this focus session?',
+          'How did the plan go?', // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
         ['Hong long did you just spend on checking your phone?'],
-        ['Were there any alternative activities you could have engaged in instead of checking your phone?'],
+        [
+          'Were there any alternative activities you could have engaged in instead of checking your phone?',
+        ],
       ],
       finalMessage: 'Thank you.',
     },
-     leaveFocusEarlyDialog: {
+    leaveFocusEarlyDialog: {
       dialogTitle: 'Quick questions before you leave',
       numberOfQuestions: 4,
-      fixedQuestions: [[`You just got started a few minutes, why are you want to leave the session now?`]],
+      fixedQuestions: [
+        [
+          'You just got started a few minutes, why are you want to leave the session now?',
+        ],
+      ],
       randomizedQuestions: [
         ['What are the challenges during the focus session, if any?'],
         [`How did you feel during the past ${focusDurationMinutes} minutes?`],
         ['What is the most important thing you plan to do today?'],
         [
           'What was your original plan for this focus session?',
-          'How did the plan go?',  // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
+          'How did the plan go?', // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
         ['Hong long are you planning to check your phone this time?'],
-        ['Are there any alternative activities you could engage in instead of checking your phone?'],
+        [
+          'Are there any alternative activities you could engage in instead of checking your phone?',
+        ],
       ],
       finalMessage: 'Thank you. Your focus session has ended.',
     },
     leaveFocusCloseToGoalDialog: {
       dialogTitle: 'Quick questions before you leave',
       numberOfQuestions: 4,
-      fixedQuestions: [['Your are almost there, why do you want to check your phone now?']],
+      fixedQuestions: [
+        ['Your are almost there, why do you want to check your phone now?'],
+      ],
       randomizedQuestions: [
         ['What are the challenges during the focus session, if any?'],
         [`How did you feel during the past ${focusDurationMinutes} minutes?`],
         ['What is the most important thing you plan to do today?'],
         [
           'What was your original plan for this focus session?',
-          'How did the plan go?',  // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
+          'How did the plan go?', // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
         ['Hong long are you planning to check your phone this time?'],
-        ['Are there any alternative activities you could engage in instead of checking your phone?'],
+        [
+          'Are there any alternative activities you could engage in instead of checking your phone?',
+        ],
       ],
       finalMessage: 'Thank you. Your focus session has ended.',
     },
@@ -79,18 +94,14 @@ function getStrings({
       dialogTitle: 'Quick questions',
       initialMessage: `Congrats! You have focused for ${completedMinutes} minutes.`,
       numberOfQuestions: 4,
-      fixedQuestions: [
-        [
-          `How did the focus session go?`,
-        ],
-      ],
+      fixedQuestions: [['How did the focus session go?']],
       randomizedQuestions: [
         ['Does the complete session bring you closer to your goal today?'],
         ['What is your next plan?'],
         ['How do you feel now?'],
         ['Any other thoughts to share, like challenges or strategies?'],
       ],
-      finalMessage: "Thanks! Take some breaks and see you next time.",
+      finalMessage: 'Thanks! Take some breaks and see you next time.',
     },
   };
 }

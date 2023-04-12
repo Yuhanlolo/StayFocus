@@ -1,7 +1,6 @@
 interface GiveUpAttempt {
   timestamp: string;
   givenUp: boolean;
-  answers: string[];
 }
 
 export interface Session {
@@ -11,7 +10,12 @@ export interface Session {
   focusDurationMinutes: number;
   completedMinutes: number;
   giveUpAttempts: GiveUpAttempt[];
-  reflectionAnswers: string[];
+}
+
+export interface UserInfo {
+  uid: string;
+  username: string;
+  dateCreated: Date;
 }
 
 export interface UserSettings {
@@ -24,7 +28,8 @@ export interface UserSettings {
 
 export interface AnalyticsData {
   sessionsCount: number;
-  sessionsMinutes: number;
+  completedSessionsCount: number;
+  focusMinutes: number;
   lastSessionEndTime: string;
 }
 

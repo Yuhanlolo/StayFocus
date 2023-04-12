@@ -8,8 +8,12 @@ import {
 } from 'firebase/auth';
 
 import {app} from './firebase';
-import {saveUserToFirestore} from './firestore';
-import {saveUserInfo, resetUserInfo} from './store';
+import {
+  getSessionsFromFirestore,
+  getUserInfoFromFirestore,
+  saveUserToFirestore,
+} from './firestore';
+import {saveUserInfo, resetUserInfo, saveSessions} from './store';
 
 const auth = getAuth(app);
 
@@ -57,9 +61,14 @@ export async function loginUser(
       password,
     );
     const user = userCredential.user;
-    saveUserInfo({uid: user.uid, username: user.displayName});
+    // Restore user info in local store
+    const userInfo = await getUserInfoFromFirestore(user.uid);
+    const sessionsData = await getSessionsFromFirestore(user.uid);
+    saveUserInfo(userInfo);
+    saveSessions(sessionsData);
     return [true];
   } catch (error) {
+    console.log(error);
     const errorMsg = errorCodeToMessage(error.code);
     return [false, errorMsg];
   }
