@@ -18,7 +18,6 @@ import java.util.*;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 
-
 public class UsageStatsModule extends ReactContextBaseJavaModule {
     public UsageStatsModule(ReactApplicationContext context) {
         super(context);
