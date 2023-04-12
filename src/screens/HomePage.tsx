@@ -3,7 +3,7 @@ import {Text, Pressable, View, Keyboard} from 'react-native';
 
 import {createStyles} from '../helpers';
 import {CustomButton, Screen, TimeDropdown, Gear} from '../components';
-import {useSessionStore} from '../api';
+import {useAppStore, useSessionStore} from '../api';
 
 //Home page to set focusing time
 
@@ -11,14 +11,15 @@ function HomePage({navigation}) {
   const [value, setValue] = useState(25);
 
   const newSession = useSessionStore(state => state.newSession);
+  const minMinutes = useAppStore(state => state.minMinutes);
+  const maxMinutes = useAppStore(state => state.maxMinutes);
 
   const onPress = () => {
     newSession('Focusing', value);
     // Unfocus the input before changing page, so that the
     // user sees if their input gets clamped to min or max
     Keyboard.dismiss();
-    if(value >= 25 && value <= 125)
-    {
+    if (value >= minMinutes && value <= maxMinutes) {
       setTimeout(() => navigation.navigate('TimerPage'), 500);
     }
   };

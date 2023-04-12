@@ -35,7 +35,7 @@ const defaultApp = {
     hour: 8,
     minute: 0,
   },
-  minMinutes: 25,
+  minMinutes: 0,
   maxMinutes: 125,
   focusSessions: [],
 };
@@ -70,7 +70,8 @@ export const resetUserInfo = () => useAppStore.setState(defaultApp);
 interface SessionStore extends Session {
   newSession: (plan: string, minutes: number) => void;
   saveCompletedMinutes: (minutes: number) => void;
-  saveGiveUpAttempt: (givenUp: boolean) => void;
+  saveGiveUpAttempt: (answers: string[], givenUp: boolean) => void;
+  saveReflectionAnswers: (answers: string[]) => void;
   saveLastGiveUpAttempt: () => void;
 }
 
@@ -81,6 +82,7 @@ const defaultSession = {
   focusDurationMinutes: -1,
   completedMinutes: -1,
   giveUpAttempts: [],
+  reflectionAnswers: [],
 };
 
 export const useSessionStore = create<SessionStore>()(set => ({
@@ -96,16 +98,18 @@ export const useSessionStore = create<SessionStore>()(set => ({
       ),
     }),
   saveCompletedMinutes: minutes => set({completedMinutes: minutes}),
-  saveGiveUpAttempt: givenUp =>
+  saveGiveUpAttempt: (answers, givenUp) =>
     set(state => ({
       giveUpAttempts: [
         ...state.giveUpAttempts,
         {
           timestamp: timestamp(),
+          answers: answers,
           givenUp: givenUp,
         },
       ],
     })),
+  saveReflectionAnswers: answers => set({reflectionAnswers: answers}),
   saveLastGiveUpAttempt: () =>
     set(state => ({
       giveUpAttempts: state.giveUpAttempts.map((v, i) => {
@@ -128,6 +132,7 @@ export function getSession(): Session {
     focusDurationMinutes: store.focusDurationMinutes,
     completedMinutes: store.completedMinutes,
     giveUpAttempts: store.giveUpAttempts,
+    reflectionAnswers: store.reflectionAnswers,
   };
 }
 
