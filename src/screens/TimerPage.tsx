@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useEffect, useState, useRef} from 'react';
 import {Alert, AppState, Text, View} from 'react-native';
 import notifee from '@notifee/react-native';
@@ -135,7 +136,7 @@ function TimerPage({navigation}) {
               notifee.cancelNotification(notificationId);
             } else {
               //
-              if(tag == false)
+              if(tag === false)
               {
                 onLeave();
               }
@@ -161,8 +162,9 @@ function TimerPage({navigation}) {
           Leave focus mode
         </CustomButton>
       </View>
-      <Text style={styles.plan}>Focusing</Text>
+      <Text style={styles.plan}>There are</Text>
       <Text style={styles.timer}>{timeString(seconds)}</Text>
+      <Text style={styles.plan2}>left in the session</Text>
       {modal && (
         <CustomModal
           visible={true}
@@ -203,6 +205,13 @@ const useStyles = createStyles(theme => ({
   plan: {
     marginTop: 160,
     marginBottom: 8,
+    color: theme.textColor,
+    fontSize: theme.fontSizes.lg,
+    fontWeight: '400',
+    textAlign: 'center',
+  },
+  plan2: {
+    marginTop: 12,
     color: theme.textColor,
     fontSize: theme.fontSizes.lg,
     fontWeight: '400',
