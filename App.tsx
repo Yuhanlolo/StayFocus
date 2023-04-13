@@ -3,7 +3,6 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {LogBox} from 'react-native';
-import {useEffect} from 'react';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 import SignupPage from './src/screens/SignupPage';
@@ -14,7 +13,7 @@ import DrawerNavigator from './src/screens/DrawerNavigator';
 import FocusEndedPage from './src/screens/FocusEndedPage';
 import SetTimePage from './src/screens/SetTimePage';
 import ChatRefQuitPage from './src/screens/ChatRefQuitPage';
-import {createStyles, isDateBeforeToday, ThemeProvider} from './src/helpers';
+import {createStyles, ThemeProvider} from './src/helpers';
 import {saveUsageStats, useAppStore} from './src/api';
 
 LogBox.ignoreAllLogs();
@@ -27,19 +26,8 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const styles = useStyles();
   const user = useAppStore(state => state.uid);
-  const lastUploadStatDate = useAppStore(state => state.lastUploadStatDate);
-  const setUploadDate = useAppStore(state => state.setUploadDate);
 
-  useEffect(() => {
-    if (user) {
-      if (!lastUploadStatDate) {
-        saveUsageStats(7);
-      } else if (isDateBeforeToday(lastUploadStatDate)) {
-        saveUsageStats(1);
-        setUploadDate();
-      }
-    }
-  }, [user, lastUploadStatDate, setUploadDate]);
+  saveUsageStats();
 
   return (
     <ThemeProvider>

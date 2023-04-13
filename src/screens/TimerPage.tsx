@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useEffect, useState, useRef} from 'react';
 import {AppState, Text, View, Image, DeviceEventEmitter} from 'react-native';
 import notifee from '@notifee/react-native';
@@ -60,7 +61,7 @@ function TimerPage({navigation}) {
   };
 
   useEffect(() => {
-    if (paused == false) {
+    if (paused === false) {
       const interval = setInterval(() => {
         if (secondsRef.current <= 0) {
           clearInterval(interval);
@@ -123,7 +124,7 @@ function TimerPage({navigation}) {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
             } else {
-              if(tag == false)
+              if(tag === false)
               {
                 onLeave();
               }
