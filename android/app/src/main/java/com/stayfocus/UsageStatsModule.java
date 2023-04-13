@@ -50,7 +50,7 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
     }
 
     public static String getStatsString(List<EventStats> eventStatsList) {
-        String result = "{\n";
+        Map<String, Stats> map = new LinkedHashMap<>();
 
         for (EventStats stats: eventStatsList) {
             int type = stats.getEventType();
@@ -60,16 +60,21 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
             LocalDateTime startDateTime = Instant.ofEpochMilli(start).atZone(ZoneId.systemDefault()).toLocalDateTime();
             LocalDateTime endDateTime = Instant.ofEpochMilli(end).atZone(ZoneId.systemDefault()).toLocalDateTime();
 
+            String timerange = String.format("\"%s to %s\"", startDateTime, endDateTime);
+            map.putIfAbsent(timerange, new Stats());
+
             if (type == UsageEvents.Event.SCREEN_INTERACTIVE) {
-                long totalTimeSeconds = stats.getTotalTime() / 1000;
-                result += String.format("\"%s to %s\": {\n  \"screen_time_seconds\": %d,\n", startDateTime, endDateTime, totalTimeSeconds);
+                map.get(timerange).screen_time_seconds = stats.getTotalTime() / 1000;
             } else if (type == UsageEvents.Event.KEYGUARD_HIDDEN) {
-                long totalCount = stats.getCount();
-                result += String.format("  \"screen_unlock_count\": %s\n},", totalCount);
+                map.get(timerange).screen_unlock_count = stats.getCount();
             }
         }
 
-        result = result.substring(0, result.length() - 1);
+        String result = "{";
+        for (Map.Entry<String, Stats> pair : map.entrySet()) {
+            result += String.format("%s: %s,", pair.getKey(), pair.getValue());
+        }
+        result = result.substring(0, result.length() - 1); // remove trailing comma
         result += "}";
 
         return result;
@@ -79,5 +84,20 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         AppOpsManager appOps = (AppOpsManager)context.getSystemService(Context.APP_OPS_SERVICE);
         int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.getPackageName());
         return mode == AppOpsManager.MODE_ALLOWED;
+    }
+}
+
+class Stats {
+    public long screen_time_seconds = -1;
+    public long screen_unlock_count = -1;
+
+    public Stats() {}
+
+    public String toString() {
+        return String.format(
+            "{\"screen_time_seconds\": %d, \"screen_unlock_count\": %d}",
+            screen_time_seconds,
+            screen_unlock_count
+        );
     }
 }
