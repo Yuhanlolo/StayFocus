@@ -38,6 +38,8 @@ public class LockDetectionModule extends ReactContextBaseJavaModule {
     public void getScreenStatus(Promise promise) {
         // Taken from https://gist.github.com/Jeevuz/4ec01688083670b1f3f92af64e44c112
         boolean isLocked = false;
+        boolean flag_1 = false;
+        boolean flag_2 = false;
         Application context = MainApplication.getInstance();
         KeyguardManager keyguardManager = (KeyguardManager)context.getSystemService(Context.KEYGUARD_SERVICE);
 
@@ -47,8 +49,15 @@ public class LockDetectionModule extends ReactContextBaseJavaModule {
             // If password is not set in the settings, the inKeyguardRestrictedInputMode() returns false,
             // so we need to check if screen on for this case
 
+            //PowerManager powerManager = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+            //isLocked = !powerManager.isInteractive();
             PowerManager powerManager = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
-            isLocked = !powerManager.isInteractive();
+            flag_1 = !powerManager.isInteractive();
+            flag_2 = !powerManager.isScreenOn();
+            if (flag_2 == true || flag_1 == true)
+            {
+                isLocked = true;
+            }
         }
 
         promise.resolve(isLocked);
