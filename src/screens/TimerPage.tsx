@@ -25,8 +25,10 @@ const timeString = (secs: number) => {
   return h > 0 ? `${hh}:${mm}:${ss}` : `${mm}:${ss}`;
 };
 
+let chatbot_tag = true;
+let chatbot_tag_check = false;
+
 function TimerPage({navigation}) {
-  let tag_check = false;
   const [paused, setPaused] = useState(false);
   const [modal, setModal] = useState(false);
   const enableNotification = useRef(true);
@@ -48,6 +50,7 @@ function TimerPage({navigation}) {
     Math.ceil((initialSeconds - secondsRef.current) / 60);
 
   const onLeave = () => {
+    chatbot_tag = true;
     navigation.navigate('FocusEndedPage', {
       elapsedMinutes: elapsedMinutes(),
       timeString: timeString(seconds)
@@ -55,6 +58,7 @@ function TimerPage({navigation}) {
   };
 
   const onComplete = () => {
+    chatbot_tag = true;
     saveCompletedMinutes(minutes);
     navigation.navigate('SuccessPage');
   };
@@ -76,7 +80,8 @@ function TimerPage({navigation}) {
   }, [paused]);
 
   useEffect(() => {
-    tag_check = true;
+    chatbot_tag = true;
+    chatbot_tag_check = false;
   }, []);
 
   useEffect(() => {
@@ -105,24 +110,24 @@ function TimerPage({navigation}) {
         const locked = await isLocked();
         if (nextAppState.match(/inactive|background/)) {
           // Either the user locks the screen or quit the app
-          tag_check = false;
-          if (locked) {
+          if (locked == true) {
+            chatbot_tag_check = true;
             notification_control = false;
             enableNotification.current = false;
             notifee.cancelNotification(notificationId);
-            screenLocked.current = locked;
+            screenLocked.current = true;
             dateLocked.current = Date.now();
           } else {
+            chatbot_tag = false;
             enableNotification.current = true;
             saveGiveUpAttempt(false);
             onLeaveFocusNotification(enableNotification);
           }
         } else if (nextAppState === 'active') {
           // Either the user unlocks the screen or return to the app
-          enableNotification.current = false;
-          notifee.cancelNotification(notificationId);
+          chatbot_tag_check = false;
           notification_control = false;
-          if (screenLocked.current) {
+          if (screenLocked.current == true || enableNotification.current == false) {
             screenLocked.current = false;
             let secondsDelta = Math.floor(
               (Date.now() - dateLocked.current) / 1000,
@@ -138,13 +143,14 @@ function TimerPage({navigation}) {
             // pending notification is cleared. Otherwise, the user clicks
             // the pending notification and so the focus session ended.
             const pending = await notifee.getTriggerNotificationIds();
-            enableNotification.current = false;
-            notifee.cancelNotification(notificationId);
+
             if (pending.includes(notificationId)) {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
             } else {
-              if(tag_check == false)
+              enableNotification.current = false;
+              notifee.cancelNotification(notificationId);
+              if(chatbot_tag == false && chatbot_tag_check == false)
               {
                 onLeave();
               }
