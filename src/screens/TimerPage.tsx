@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useEffect, useState, useRef} from 'react';
 import {AppState, Text, View, BackHandler} from 'react-native';
 import notifee from '@notifee/react-native';
@@ -35,7 +36,6 @@ function TimerPage({navigation}) {
   const dateLocked = useRef(Date.now());
 
   const minutes = useSessionStore(state => state.focusDurationMinutes);
-  const plan = useSessionStore(state => state.plan);
   const saveCompletedMinutes = useSessionStore(
     state => state.saveCompletedMinutes,
   );
@@ -125,7 +125,7 @@ function TimerPage({navigation}) {
         if (nextAppState.match(/inactive|background/)) {
           // Either the user locks the screen or quit the app
 
-          if (locked == true) {
+          if (locked === true) {
             tag_check = true;
             notification_control = false;
             enableNotification.current = false;
@@ -145,7 +145,7 @@ function TimerPage({navigation}) {
           notification_control = false;
           tag_check = false;
 
-          if (screenLocked.current == true || enableNotification.current == false) {
+          if (screenLocked.current === true || enableNotification.current === false) {
             screenLocked.current = false;
             let secondsDelta = Math.floor(
               (Date.now() - dateLocked.current) / 1000,
@@ -171,7 +171,7 @@ function TimerPage({navigation}) {
             } else {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
-              if(tag == false && tag_check == false)
+              if(tag === false && tag_check === false)
               {
                 onLeave();
               }
@@ -197,8 +197,9 @@ function TimerPage({navigation}) {
           Leave focus mode
         </CustomButton>
       </View>
-      <Text style={styles.plan}>{plan}</Text>
+      <Text style={styles.plan}>There are</Text>
       <Text style={styles.timer}>{timeString(seconds)}</Text>
+      <Text style={styles.plan2}>left in the session</Text>
       {modal && (
         <ReflectionModal
           visible={true}
@@ -229,6 +230,13 @@ const useStyles = createStyles(theme => ({
   plan: {
     marginTop: 160,
     marginBottom: 8,
+    color: theme.textColor,
+    fontSize: theme.fontSizes.lg,
+    fontWeight: '400',
+    textAlign: 'center',
+  },
+  plan2: {
+    marginTop: 12,
     color: theme.textColor,
     fontSize: theme.fontSizes.lg,
     fontWeight: '400',

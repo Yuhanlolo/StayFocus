@@ -42,6 +42,6 @@ export function timestamp() {
 }
 
 // https://stackoverflow.com/a/40890488
-export function isDateBeforeToday(date: Date) {
-  return new Date(date.toDateString()) < new Date(new Date().toDateString());
+export function isDateBeforeToday(date: string) {
+  return date < dateToYYYYMMDD(new Date());
 }
