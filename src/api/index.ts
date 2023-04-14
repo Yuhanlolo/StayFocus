@@ -1,4 +1,4 @@
-import {timestamp} from '../helpers';
+import {isDateBeforeToday, timestamp} from '../helpers';
 import {
   saveSessionToFirestore,
   saveUsageStatsToFireStore,
@@ -51,11 +51,27 @@ export function saveSettings(minutes: number, date: Date) {
   saveUserSettingsToFirestore(uid, data);
 }
 
-export function saveUsageStats(days: number) {
+function _saveUsageStats(days: number) {
   const appStore = getAppStore();
   const uid = appStore.uid!;
   UsageStatsModule.getStats(days, (data: string) => {
-    console.log(data);
     saveUsageStatsToFireStore(uid, JSON.parse(data));
+    console.log(data);
   });
+}
+
+export function saveUsageStats() {
+  const appStore = getAppStore();
+  if (appStore.uid) {
+    const lastUploadStatDate = appStore.lastUploadStatDate;
+    const setUploadDate = appStore.setUploadDate;
+    if (!lastUploadStatDate) {
+      _saveUsageStats(7);
+      setUploadDate();
+    } else if (isDateBeforeToday(lastUploadStatDate)) {
+      console.log(lastUploadStatDate);
+      _saveUsageStats(1);
+      setUploadDate();
+    }
+  }
 }
