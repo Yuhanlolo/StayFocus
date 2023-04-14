@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import create from 'zustand';
 import {createJSONStorage, persist} from 'zustand/middleware';
 
-import {clamp, timestamp} from '../helpers';
+import {clamp, dateToYYYYMMDD, timestamp} from '../helpers';
 import {Session, UserInfo, UserSettings} from './types';
 
 // AppStore: client-side persistent store for
@@ -11,7 +11,7 @@ interface AppStore extends UserSettings {
   uid: string | undefined;
   username: string | undefined;
   dateCreated: Date | undefined;
-  lastUploadStatDate: Date | undefined;
+  lastUploadStatDate: string | undefined;
   dailyMinMinutes: number;
   reminderTime: {
     hour: number;
@@ -47,7 +47,7 @@ export const useAppStore = create<AppStore>()(
       saveSettings: settings => set(settings),
       saveSession: session =>
         set(state => ({focusSessions: [...state.focusSessions, session]})),
-      setUploadDate: () => set({lastUploadStatDate: new Date()}),
+      setUploadDate: () => set({lastUploadStatDate: dateToYYYYMMDD(new Date())}),
     }),
     {
       name: 'app-data',

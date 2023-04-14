@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useEffect, useState, useRef} from 'react';
 import {AppState, Text, View, Image, DeviceEventEmitter, BackHandler} from 'react-native';
 import notifee from '@notifee/react-native';
