@@ -70,6 +70,7 @@ function TimerPage({navigation}) {
   const onComplete = () => {
     tag = true;
     saveCompletedMinutes(minutes);
+    saveSession();
     navigation.navigate('SuccessPage');
   };
 
@@ -119,7 +120,7 @@ function TimerPage({navigation}) {
             notification_control = false;
             enableNotification.current = false;
             notifee.cancelNotification(notificationId);
-            screenLocked.current = locked;
+            screenLocked.current = true;
             dateLocked.current = Date.now();
           } else {
             tag = false;
@@ -151,14 +152,9 @@ function TimerPage({navigation}) {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
             } else {
-<<<<<<< HEAD
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
               if(tag == false && tag_check == false)
-=======
-              //
-              if(tag === false)
->>>>>>> 8a2f7bdb4cf87fb3326c4be8421537f15df40f7e
               {
                 onLeave();
               }
