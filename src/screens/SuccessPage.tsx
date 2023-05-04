@@ -15,7 +15,8 @@ function SuccessPage({navigation}) {
       </Text>
       <CustomButton
         styles={{button: styles.button}}
-        onPress={() => navigation.navigate('HomePage')}>
+        onPress={() => 
+        {navigation.navigate('HomePage');}}>
         Back to home
       </CustomButton>
     </Screen>
