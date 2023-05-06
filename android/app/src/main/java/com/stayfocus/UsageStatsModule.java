@@ -74,7 +74,7 @@ public class UsageStatsModule extends ReactContextBaseJavaModule {
         for (Map.Entry<String, Stats> pair : map.entrySet()) {
             result += String.format("%s: %s,", pair.getKey(), pair.getValue());
         }
-        result = result.substring(0, result.length() - 1); // remove trailing comma
+        result = result.replaceAll(",$", ""); // remove trailing comma
         result += "}";
 
         return result;

@@ -22,6 +22,7 @@ export default function DrawerNavigator() {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
+        unmountOnBlur: true,
         drawerStyle: styles.drawer,
         drawerItemStyle: styles.drawerItem,
         drawerLabelStyle: styles.drawerLabel,
