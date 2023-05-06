@@ -151,7 +151,7 @@ function TimerPage({navigation}) {
             } else {
               enableNotification.current = false;
               notifee.cancelNotification(notificationId);
-              if(chatbot_tag == false && chatbot_tag_check == false)
+              if(chatbot_tag === false && chatbot_tag_check === false)
               {
                 onLeave();
               }

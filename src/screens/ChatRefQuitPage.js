@@ -342,7 +342,7 @@ function ChatRefQuitPage({ route, navigation }) {
 
       if(checkSentence == 'What was your original plan for this focus session?')
       {
-        tag = 1;
+        tag = 0;
       }
       console.log('last question: ', question_tmp);
       question_tmp = checkSentence;
@@ -359,7 +359,7 @@ function ChatRefQuitPage({ route, navigation }) {
 
       if(checkSentence == 'What was your original plan for this focus session?')
       {
-        tag = 1;
+        tag = 0;
       }
       console.log('last question: ', question_tmp);
       question_tmp = checkSentence;
@@ -376,7 +376,7 @@ function ChatRefQuitPage({ route, navigation }) {
 
       if(checkSentence == 'What was your original plan for this focus session?')
       {
-        tag = 1;
+        tag = 0;
       }
       console.log('last question: ', question_tmp);
       question_tmp = checkSentence;
@@ -386,7 +386,7 @@ function ChatRefQuitPage({ route, navigation }) {
       console.log('index:', ava_index);
       doubleAns(userAns, checkSentence);
     }
-    if(tag == 1 && userControl == 'true')
+    if(tag == 2 && userControl == 'true')
     {
       userControl = 'false';
       let followedQues = 'Great Plan! How did it go?';
