@@ -19,7 +19,7 @@ function getStrings({
           'What was your original plan for this focus session?',
           'How did the plan go?', // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
-        ['Hong long are you planning to check your phone this time?'],
+        ['How long are you planning to check your phone this time?'],
         [
           'Are there any alternative activities you could engage in instead of checking your phone?',
         ],
@@ -39,7 +39,7 @@ function getStrings({
           'What was your original plan for this focus session?',
           'How did the plan go?', // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
-        ['Hong long did you just spend on checking your phone?'],
+        ['How long did you just spend on checking your phone?'],
         [
           'Were there any alternative activities you could have engaged in instead of checking your phone?',
         ],
@@ -62,7 +62,7 @@ function getStrings({
           'What was your original plan for this focus session?',
           'How did the plan go?', // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
-        ['Hong long are you planning to check your phone this time?'],
+        ['How long are you planning to check your phone this time?'],
         [
           'Are there any alternative activities you could engage in instead of checking your phone?',
         ],
@@ -83,7 +83,7 @@ function getStrings({
           'What was your original plan for this focus session?',
           'How did the plan go?', // For the chatbot version, don't append the follow-up question "Great Plan ..." because sometimes it creates mixing sentiment with the chatbot's auto-reply
         ],
-        ['Hong long are you planning to check your phone this time?'],
+        ['How long are you planning to check your phone this time?'],
         [
           'Are there any alternative activities you could engage in instead of checking your phone?',
         ],
