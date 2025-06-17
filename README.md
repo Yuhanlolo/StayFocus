@@ -8,6 +8,5 @@ This repo includes the three different versions (i.e., baseline, reflection, and
 - `chatbot-reflection`: full version of StayFocused.
 
 **📖 What you need to configure:**
-- OpenAI api-key;
-- Database configurations.
-- Server and backend address in files under `src/gpt_apis` of the `chatbot-reflection` branch.
+- GPT-apis on the server, and configure the urls in files under `src/gpt_apis` of the `chatbot-reflection` branch;
+- Database configurations in `src/api/firebase.ts`.
