@@ -12,7 +12,7 @@ function GPTchatbot(question, start_sentence) {
     	body: JSON.stringify({"question":question,"start_chat_log":start_sentence})
     };
 
-    const url = 'http://43.132.233.221:8080/chatbot';
+    const url = 'your-backend-with-gpt-api';
 
     fetch(url, options)
       .then(response => response.json())
