@@ -9,7 +9,7 @@ function sentimentAnalyze(txt) {
     const options = {
       method: 'GET',
       headers: {
-        'X-RapidAPI-Key': 'bbfbb45401msh8e0769c39043966p148085jsn58f39432ddb8',
+        'X-RapidAPI-Key': 'your-api-key',
         'X-RapidAPI-Host': 'twinword-sentiment-analysis.p.rapidapi.com'
       }
     };
