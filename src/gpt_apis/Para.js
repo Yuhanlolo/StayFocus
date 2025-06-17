@@ -8,7 +8,7 @@ function paraphrase(txt) {
     	method: 'POST',
     	headers: {
     		'content-type': 'application/json',
-    		'X-RapidAPI-Key': 'bbfbb45401msh8e0769c39043966p148085jsn58f39432ddb8',
+    		'X-RapidAPI-Key': 'your-api-key',
     		'X-RapidAPI-Host': 'paraphrase-genius.p.rapidapi.com'
     	},
     	body: JSON.stringify({"text":txt,"result_type":"multiple"})
