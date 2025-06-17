@@ -12,7 +12,7 @@ function SentiGPT(sentence) {
     	body: JSON.stringify({"sentence":sentence})
     };
 
-    const url = 'http://43.132.233.221:8081/senti';
+    const url = 'your-backend-with-gpt-api';
 
     fetch(url, options)
       .then(response => response.json())
