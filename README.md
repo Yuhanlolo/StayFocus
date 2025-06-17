@@ -1,4 +1,4 @@
-## StayFocused [chi-24 full paper & cui-23 poster]
+## StayFocused [📎[chi-24 full paper](https://yuhanlolo.github.io/me/papers/chi24-stayfocused-li.pdf) & 📎[cui-23 poster](https://yuhanlolo.github.io/me/papers/cui23-ea-li.pdf)]
 This repo includes the three different versions (i.e., baseline, reflection, and reflection-chatbot) of StayFocused, a time-management mobile app. StayFocused helps people focus on their current tasks and reduce compulsive smartphone use by integrating a reflective chatbot. The figure below shows how the reflective chatbot of StayFocused full version reacts in two scenarios: a) leaving the focus session earlier, and b) completing the focus session.
 ![image](SF-teaser.png) 
 
